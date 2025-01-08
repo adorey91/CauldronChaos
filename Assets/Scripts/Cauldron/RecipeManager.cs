@@ -22,7 +22,7 @@ public class RecipeManager : MonoBehaviour
             }
             else
             {
-                if (addedIngredients == 0)
+                if (addedIngredients.Count == 0)
                     _isRecipeGood = false;
 
                 RecipeOutput();
