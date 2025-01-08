@@ -4,12 +4,25 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
+    
     public enum GameState { MainMenu, Gameplay, Pause, Settings, GameOver }
     public GameState gameState;
     private GameState previousState;
 
     [Header("Managers")]
     [SerializeField] private UiManager uiManager;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (instance != this)
+            Destroy(gameObject);
+    }
 
     private void Start()
     {
