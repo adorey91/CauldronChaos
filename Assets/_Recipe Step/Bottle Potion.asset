@@ -9,6 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfe98772fbe827d448b6c40e4e5d002a, type: 3}
-  m_Name: Ingredient3
+  m_Script: {fileID: 11500000, guid: 0a726084077bf8f4d9977d2b67b9fdb2, type: 3}
+  m_Name: Bottle Potion
   m_EditorClassIdentifier: 
+  stepType: 0
+  ingredient: {fileID: 11400000, guid: 9f6595b33c3a97d428878d57f29fcc9a, type: 2}
+  stirAmount: 0
