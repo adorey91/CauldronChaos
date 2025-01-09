@@ -17,6 +17,10 @@ public class UiManager : MonoBehaviour
     [SerializeField] private GameObject videoPanel;
     [SerializeField] private GameObject controlsPanel;
 
+    private void Start()
+    {
+        
+    }
     private void SetActiveUI(Canvas canvas)
     {
         mainMenu.enabled = false;
