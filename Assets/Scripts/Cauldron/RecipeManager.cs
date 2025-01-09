@@ -11,11 +11,13 @@ public class RecipeManager : MonoBehaviour
     [SerializeField] private GameObject badPotion;
 
     // These are the ingredients that can be added to the cauldron, but will be removed later.
+    [Header("For Testing Only")]
     [SerializeField] private IngredientSO mushroom;
     [SerializeField] private IngredientSO bottle;
+    [SerializeField] private IngredientSO unknown;
 
     // List to hold the ingredients added to the cauldron
-    [SerializeField] private List<IngredientSO> addedIngredients;
+    private List<IngredientSO> addedIngredients = new();
 
     // Recipe variables
     private RecipeSO _currentRecipe;
@@ -25,6 +27,7 @@ public class RecipeManager : MonoBehaviour
 
     public void Start()
     {
+        addedIngredients.Clear();
         _currentStepIndex = 0;
         _currentRecipe = null;
         _nextStep = null;
@@ -42,7 +45,10 @@ public class RecipeManager : MonoBehaviour
         {
             AddIngredient(bottle);
         }
-        
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            AddIngredient(unknown);
+        }
     }
 
     private void OnEnable()
@@ -57,82 +63,112 @@ public class RecipeManager : MonoBehaviour
 
     private void AddIngredient(IngredientSO ingredient)
     {
-        // If the recipe is null, find a recipe that starts with this ingredient
-        if (_currentRecipe == null)
+        // If the list is empty, check if the ingredient is the first step in any recipe
+        if (addedIngredients.Count == 0)
         {
-            _isRecipeGood = false;
-
-            foreach (RecipeSO recipe in availableRecipes)
-            {
-                // Check if the first step is adding this ingredient
-                if (recipe.steps[0].stepType == RecipeStepSO.StepType.AddIngredient &&
-                    recipe.steps[0].ingredient == ingredient)
-                {
-                    addedIngredients.Add(ingredient);
-                    _currentRecipe = recipe;
-                    _isRecipeGood = true;
-
-                    if (recipe.recipeName == "Potion of Hydration")
-                    {
-                        RecipeOutput(); // Immediately create the potion
-                        return;         // Exit early
-                    }
-
-                    _currentStepIndex++;
-                    _nextStep = _currentRecipe.steps[_currentStepIndex];
-                    Debug.Log($"Recipe started: {_currentRecipe.name}");
-                    return;
-                }
-            }
+            StartNewRecipe(ingredient);
+            return;
         }
-        // if the recipe is not null, check if the ingredient matches the next step
         else
         {
-            if (_nextStep.ingredient == ingredient && _isRecipeGood)
+            // If the next step is not null, process the next step else handle the incorrect step
+            if (_nextStep != null)
+                ProcessNextStep(ingredient);
+            else
+                HandleIncorrectStep(ingredient);
+        }
+    }
+
+    private void StartNewRecipe(IngredientSO ingredient)
+    {
+        // Check if the ingredient is the first step in any recipe
+        foreach (RecipeSO recipe in availableRecipes)
+        {
+            if (recipe.steps[0].ingredient == ingredient)
             {
                 addedIngredients.Add(ingredient);
+                _currentRecipe = recipe;
+                _isRecipeGood = true;
 
+                // If the ingredient is the last step in the recipe, complete the recipe
                 if (ingredient.ingredientName == "Bottle")
                 {
-                    RecipeOutput();
+                    CompleteRecipe();
                     return;
                 }
 
-                if (_currentStepIndex > _currentRecipe.steps.Length)
-                {
-                    _currentStepIndex++;
-                }
+                _currentStepIndex++;
+                _nextStep = recipe.steps[_currentStepIndex];
 
-                _nextStep = _currentRecipe.steps[_currentStepIndex];
-                Debug.Log($"Ingredient added: {ingredient.ingredientName}");
-                _isRecipeGood = true;
-            }
-            else
-            {
-                Debug.Log("This ingredient doesn't match the recipe.");
-                addedIngredients.Add(ingredient);
-
-                _isRecipeGood = false;
+                return;
             }
         }
-
+        _isRecipeGood = false;
+        addedIngredients.Add(ingredient);
     }
 
-
-    public void RecipeOutput()
+    private void ProcessNextStep(IngredientSO ingredient)
     {
+        _isRecipeGood = true;
+        Debug.Log(ingredient.ingredientName + " added");
+
+        // Check if the ingredient is the next step in the recipe
+        if (_nextStep.ingredient == ingredient)
+        {
+            addedIngredients.Add(ingredient);
+
+            if (_currentStepIndex < _currentRecipe.steps.Length)
+            {
+                // If the ingredient is the last step in the recipe, complete the recipe
+                if (ingredient.ingredientName == "Bottle")
+                {
+                    CompleteRecipe();
+                    return;
+                }
+                
+                _currentStepIndex++;
+                _nextStep = _currentRecipe.steps[_currentStepIndex];
+                Debug.Log("Next step: " + _currentStepIndex);
+            }
+            
+        }
+        else
+        {
+            _nextStep = null;
+            HandleIncorrectStep(ingredient);
+        }
+    }
+
+    private void HandleIncorrectStep(IngredientSO ingredient)
+    {
+        _isRecipeGood = false;
+        addedIngredients.Add(ingredient);
+
+        if (ingredient.ingredientName == "Bottle")
+            CompleteRecipe();
+    }
+
+    public void CompleteRecipe()
+    {
+        GameObject completedPotion;
+
         if (_isRecipeGood)
         {
             Debug.Log("Good potion");
-            Instantiate(_currentRecipe.potionPrefab, Vector3.up, Quaternion.identity);
+            completedPotion = Instantiate(_currentRecipe.potionPrefab, Vector3.up, Quaternion.identity);
         }
         else
         {
             Debug.Log("Bad potion");
-            GameObject potion = Instantiate(badPotion, Vector3.up, Quaternion.identity);
-            BadPotion badPotionScript = potion.GetComponent<BadPotion>();
-            badPotionScript.recipeFailed = _currentRecipe;
+            completedPotion = Instantiate(badPotion, Vector3.up, Quaternion.identity);
         }
+
+        PotionOutput potionOutput = completedPotion.GetComponent<PotionOutput>();
+        
+        if(_currentRecipe != null)
+            potionOutput.recipeGiven = _currentRecipe;
+
+        potionOutput.isPotionGood = _isRecipeGood;
 
         addedIngredients.Clear();
         _currentStepIndex = 0;

@@ -16,7 +16,7 @@ public class Customer : MonoBehaviour
     //public void OrderComplete(PotionOutput potionGiven)
     public void OrderComplete(PotionOutputTest potionGiven)
     {
-        if (!potionGiven.isPotionBad)
+        if (potionGiven.isPotionGood)
         {
             HandleSuccess();
         }

@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PotionOutput
+public class PotionOutput : MonoBehaviour
 {
-    public bool isPotionBad = false;
+    public bool isPotionGood;
     public RecipeSO recipeGiven;
 }

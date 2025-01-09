@@ -5,6 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PotionOutputTest", menuName = "Scriptables/PotionOutputTest")]
 public class PotionOutputTest : ScriptableObject
 {
-    public bool isPotionBad = false;
+    public bool isPotionGood;
     public RecipeSO recipeGiven;
 }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8164534334273660709}
   - component: {fileID: 2352611873850710877}
   - component: {fileID: 6373731476178631334}
+  - component: {fileID: 4959854315567679272}
   m_Layer: 0
   m_Name: Red Potion
   m_TagString: Untagged
@@ -107,3 +108,17 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4959854315567679272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7128674915924419728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6575f28d0449666458b7c76d0ac6d6ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPotionBad: 0
+  recipeGiven: {fileID: 0}
