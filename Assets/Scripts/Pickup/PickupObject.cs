@@ -19,7 +19,7 @@ public class PickupObject : MonoBehaviour
     private void Update()
     {
         //moves pickup towards the target position if the positions do not match
-        if(rb.position != targetPos.position)
+        if(isHeld && rb.position != targetPos.position)
         {
             rb.MovePosition(targetPos.position);
         }

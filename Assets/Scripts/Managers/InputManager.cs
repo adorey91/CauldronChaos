@@ -78,9 +78,9 @@ public class InputManager : MonoBehaviour
     }
 
     //function that returns the input for pickup
-    public InputAction.CallbackContext GetPickupInput()
+    public bool GetPickupInput()
     {
-        return pickupInput;
+        return pickupInput.performed;
     }
 
 }

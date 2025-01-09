@@ -268,7 +268,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2365aa82508257248828513cc11c57a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isHeld: 0
 --- !u!1 &136285200
 GameObject:
   m_ObjectHideFlags: 0
@@ -620,6 +619,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 159591892}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1033170955
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1033170956}
+  m_Layer: 0
+  m_Name: Held Item Location
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1033170956
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033170955}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1417701084}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1211401108
 GameObject:
   m_ObjectHideFlags: 0
@@ -728,7 +758,7 @@ GameObject:
   - component: {fileID: 1276347406}
   - component: {fileID: 1276347405}
   m_Layer: 0
-  m_Name: PickupDetection
+  m_Name: Pickup Detection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1043,6 +1073,7 @@ GameObject:
   - component: {fileID: 1417701087}
   - component: {fileID: 1417701086}
   - component: {fileID: 1417701085}
+  - component: {fileID: 1417701088}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1114,6 +1145,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1276347404}
+  - {fileID: 1033170956}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1417701085
@@ -1181,6 +1213,20 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1417701088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417701080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a9fd9305fcebe4e825ba1ff291a80c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickupVolume: {fileID: 1276347405}
+  pickupHolder: {fileID: 1033170956}
 --- !u!1 &1610517869
 GameObject:
   m_ObjectHideFlags: 0
