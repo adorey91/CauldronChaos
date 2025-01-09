@@ -10,10 +10,10 @@ public class CustomTimer
     public float elapsedTime;
     public bool isRunning;
 
-    public CustomTimer(float newDuration)
+    public CustomTimer(float newDuration, bool isInMinutes)
     {
-        // duration in minutes
-        duration = newDuration * 60;
+        // Convert duration to seconds if it's provided in minutes
+        duration = isInMinutes ? newDuration * 60 : newDuration;
         elapsedTime = 0;
         isRunning = false;
     }

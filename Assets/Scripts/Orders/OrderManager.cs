@@ -23,22 +23,28 @@ public class OrderManager : MonoBehaviour
 
     // Timer for the day - sets 5 minute timer
     [Header("Day Timer Settings")]
-    private CustomTimer dayTimer = new(5);
+    [SerializeField] private int minutesPerDay = 5;
+    private CustomTimer dayTimer;
     [SerializeField] private TextMeshProUGUI dayTimerText;
 
     // Customer Order Timer
-    private CustomTimer newCustomerTimer = new(0.1f);
+    [Header("Customer Timer Settings")]
+    [Tooltip("Time in seconds for a new customer to appear")] 
+    [SerializeField] private int newCustomerTime = 6;
+    private CustomTimer newCustomerTimer;
 
+    // used for testing, will be removed later
     [Header("Testing Only")]
-    // used for testing
-    bool finished;
     [SerializeField] private PotionOutputTest[] potion;
+    bool finished;
     int potionIndex = 0;
     bool startCustomer = false;
 
 
     private void Start()
     {
+        dayTimer = new CustomTimer(minutesPerDay, true);
+        newCustomerTimer = new CustomTimer(newCustomerTime, false);
         availableRecipes = recipeManager.FindAvailableRecipes();
         _activeOrders.Clear();
     }
@@ -50,6 +56,12 @@ public class OrderManager : MonoBehaviour
         {
             // starts the "work day" timer
             dayTimer.StartTimer();
+
+            // starts the customer timer
+            startCustomer = true;
+            Debug.Log("Customer Started");
+            GenerateOrder();
+            newCustomerTimer.StartTimer();
         }
 
         if (dayTimer.UpdateTimer())
@@ -65,13 +77,6 @@ public class OrderManager : MonoBehaviour
             int seconds = Mathf.FloorToInt(remainingTime % 60);
 
             dayTimerText.text = $"{minutes:00}:{seconds:00}";
-        }
-
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            startCustomer = true;
-            Debug.Log("Customer Started");
-            newCustomerTimer.StartTimer();
         }
 
         if(startCustomer)
