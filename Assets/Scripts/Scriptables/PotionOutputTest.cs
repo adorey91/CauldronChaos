@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PotionOutput
+[CreateAssetMenu(fileName = "PotionOutputTest", menuName = "Scriptables/PotionOutputTest")]
+public class PotionOutputTest : ScriptableObject
 {
     public bool isPotionBad = false;
     public RecipeSO recipeGiven;

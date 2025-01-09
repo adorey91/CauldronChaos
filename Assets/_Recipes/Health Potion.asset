@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9955730c230844b4994e755982e1c60a, type: 3}
   m_Name: Health Potion
   m_EditorClassIdentifier: 
+  recipeName: Potion of Healing
   steps:
   - {fileID: 11400000, guid: 1263d1af773c1934389a86be3ac2a831, type: 2}
   - {fileID: 11400000, guid: 610915c10d0751b44b86fdcd1393864f, type: 2}
   potionPrefab: {fileID: 7128674915924419728, guid: e38acb4457d53ce4ba882afe0c096832, type: 3}
+  potionIcon: {fileID: 21300000, guid: b99272a280d050343a8273195bb9d415, type: 3}

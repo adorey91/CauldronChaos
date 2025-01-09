@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4a37bc3a6c4da4449b969b7d46369d12, type: 2}
+  - {fileID: 2100000, guid: 541cc0bcf68f6b84e8472b135b757195, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -94,11 +94,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7128674915924419728}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6575f28d0449666458b7c76d0ac6d6ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 7d50f5bed9f150747b983b0f629d97c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPotionBad: 0
-  recipeGiven: {fileID: 0}
+  recipeFailed: {fileID: 0}
 --- !u!136 &6373731476178631334
 CapsuleCollider:
   m_ObjectHideFlags: 0

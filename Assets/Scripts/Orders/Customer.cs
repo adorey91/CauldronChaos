@@ -9,12 +9,14 @@ public class Customer : MonoBehaviour
 
     public void AssignOrder(RecipeSO order)
     {
+        Debug.Log("Customer assigned order: " + order.recipeName);
         this.order = order;
     }
 
-    public void OrderComplete(RecipeSO recipeGiven)
+    //public void OrderComplete(PotionOutput potionGiven)
+    public void OrderComplete(PotionOutputTest potionGiven)
     {
-        if(recipeGiven == order)
+        if (!potionGiven.isPotionBad)
         {
             HandleSuccess();
         }
@@ -22,7 +24,6 @@ public class Customer : MonoBehaviour
         {
             HandleFailure();
         }
-
     }
 
     private void HandleFailure()

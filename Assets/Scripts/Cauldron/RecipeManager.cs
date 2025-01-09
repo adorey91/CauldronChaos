@@ -33,6 +33,7 @@ public class RecipeManager : MonoBehaviour
     public void Update()
     {
         // All of these are for testing only. They will be removed later.
+
         if (Input.GetKeyDown(KeyCode.M))
         {
             AddIngredient(mushroom);
@@ -41,11 +42,7 @@ public class RecipeManager : MonoBehaviour
         {
             AddIngredient(bottle);
         }
-    }
-
-    public RecipeSO[] FindAvailableRecipes()
-    {
-        return availableRecipes;
+        
     }
 
     private void OnEnable()
@@ -58,10 +55,6 @@ public class RecipeManager : MonoBehaviour
         Actions.AddIngredient -= AddIngredient;
     }
 
-    /// <summary>
-    /// I think the way this should work will be you call the Action from the interaction script that will take the ingredientSO and pass it to this method.
-    /// </summary>
-    /// <param name="ingredient"></param>
     private void AddIngredient(IngredientSO ingredient)
     {
         // If the recipe is null, find a recipe that starts with this ingredient
@@ -128,24 +121,27 @@ public class RecipeManager : MonoBehaviour
 
     public void RecipeOutput()
     {
-        GameObject potion;
         if (_isRecipeGood)
         {
             Debug.Log("Good potion");
-            potion = Instantiate(_currentRecipe.potionPrefab, Vector3.up, Quaternion.identity);
+            Instantiate(_currentRecipe.potionPrefab, Vector3.up, Quaternion.identity);
         }
         else
         {
             Debug.Log("Bad potion");
-            potion = Instantiate(badPotion, Vector3.up, Quaternion.identity);
+            GameObject potion = Instantiate(badPotion, Vector3.up, Quaternion.identity);
+            BadPotion badPotionScript = potion.GetComponent<BadPotion>();
+            badPotionScript.recipeFailed = _currentRecipe;
         }
-
-        PotionOutput potionOutput = potion.GetComponent<PotionOutput>();
-        potionOutput.recipeGiven = _currentRecipe;
 
         addedIngredients.Clear();
         _currentStepIndex = 0;
         _currentRecipe = null;
         _nextStep = null;
+    }
+
+    public RecipeSO[] FindAvailableRecipes()
+    {
+        return availableRecipes;
     }
 }
