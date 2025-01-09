@@ -25,7 +25,7 @@ public class InputManager : MonoBehaviour
                 _instance = Instantiate(Resources.Load("InputManager") as GameObject).GetComponent<InputManager>();
                 _instance.name = "InputManager"; //renames the game object to InputManager
             }
-            return instance; //returns 
+            return _instance; //returns 
         }
     }
 
