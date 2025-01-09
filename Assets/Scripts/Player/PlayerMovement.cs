@@ -6,12 +6,10 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Player Movement Variables")]
     [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float rotationSpeed = 180;
 
     [Header("Object References")]
-    [SerializeField] private CharacterController playerController;
-
-    private Vector2 moveDir;
-    private Vector3 movement;
+    [SerializeField] private Rigidbody playerRB;
 
     // Start is called before the first frame update
     void Start()
@@ -20,18 +18,26 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         //get movement input from input manager
-        moveDir = InputManager.instance.GetMoveInput().ReadValue<Vector2>();
+        Vector2 moveDir = InputManager.instance.GetMoveInput().ReadValue<Vector2>().normalized;
 
         //translate Vector2 to Vector3
-        movement = new Vector3(moveDir.x, 0, moveDir.y);
+        Vector3 movement = new Vector3(moveDir.x, 0, moveDir.y);
+
+        //rotate towards direction
+        if (movement != Vector3.zero)
+        {
+            Quaternion toRotation = Quaternion.LookRotation(movement, Vector3.up);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.fixedDeltaTime);
+        }
+        
 
         //apply multipliers
-        movement *= moveSpeed * Time.deltaTime;
+        movement *= moveSpeed * Time.fixedDeltaTime;
 
         //apply movement
-        playerController.Move(movement);
+        playerRB.MovePosition(playerRB.position + movement);
     }
 }
