@@ -139,4 +139,9 @@ public class RecipeManager : MonoBehaviour
         _currentRecipe = null;
         _nextStep = null;
     }
+
+    public RecipeSO[] FindAvailableRecipes()
+    {
+        return availableRecipes;
+    }
 }
