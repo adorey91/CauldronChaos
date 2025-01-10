@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,7 @@ public class RecipeBookUI : MonoBehaviour
     [SerializeField] private GameObject nextPage;
 
     [Header("Page Prefabs")]
+    [SerializeField] private TextMeshProUGUI recipeTitle;
     [SerializeField] private GameObject recipeUiPrefab;
     [SerializeField] private GameObject ingredientStepPrefab;
 
@@ -24,8 +26,6 @@ public class RecipeBookUI : MonoBehaviour
 
     // Recipe UI Components
     private GameObject _newRecipeUI;
-    private GameObject _ingredientHolderTop;
-    private GameObject _ingredientHolderBottom;
     private GameObject _newIngredientUI;
 
 
@@ -45,6 +45,7 @@ public class RecipeBookUI : MonoBehaviour
     // this will need to be reworked as currently it will only fill the right side.
     public void SetRecipes()
     {
+
         _recipeNumber = 0;
         for (int i = 0; i < 4; i++)
         {
@@ -59,8 +60,8 @@ public class RecipeBookUI : MonoBehaviour
                 Debug.LogError("Image component not found in the children of _newRecipeUI!");
 
 
-            _ingredientHolderBottom = _newRecipeUI.transform.Find("IngredientsHolderBottom").gameObject;
-            _ingredientHolderTop = _newRecipeUI.transform.Find("IngredientsHolderTop").gameObject;
+            //_ingredientHolderBottom = _newRecipeUI.transform.Find("IngredientsHolderBottom").gameObject;
+            //_ingredientHolderTop = _newRecipeUI.transform.Find("IngredientsHolderTop").gameObject;
 
             CreateIngredientUI();
 
@@ -81,14 +82,14 @@ public class RecipeBookUI : MonoBehaviour
 
     private void CreateIngredientUI()
     {
-        for (int recipeStep = 0; recipeStep < availableRecipes[_recipeNumber].steps.Length; recipeStep++)
-        {
-            if (recipeStep < 3)
-                _newIngredientUI = Instantiate(ingredientStepPrefab, _ingredientHolderTop.transform);
-            else
-                _newIngredientUI = Instantiate(ingredientStepPrefab, _ingredientHolderBottom.transform);
+        //for (int recipeStep = 0; recipeStep < availableRecipes[_recipeNumber].steps.Length; recipeStep++)
+        //{
+        //    if (recipeStep < 3)
+        //        _newIngredientUI = Instantiate(ingredientStepPrefab, _ingredientHolderTop.transform);
+        //    else
+        //        _newIngredientUI = Instantiate(ingredientStepPrefab, _ingredientHolderBottom.transform);
 
-            _newIngredientUI.GetComponent<Image>().sprite = availableRecipes[_recipeNumber].steps[recipeStep].ingredient.icon;
-        }
+        //    _newIngredientUI.GetComponent<Image>().sprite = availableRecipes[_recipeNumber].steps[recipeStep].ingredient.icon;
+        //}
     }
 }
