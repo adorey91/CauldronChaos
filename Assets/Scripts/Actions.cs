@@ -8,4 +8,5 @@ using UnityEngine.Events;
 public static class Actions
 {
     public static Action <IngredientSO> AddIngredient;
+    public static Action ToggleRecipeBook;
 }

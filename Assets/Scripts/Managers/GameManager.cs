@@ -1,14 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    
-    public enum GameState { MainMenu, Gameplay, Pause, Settings, GameOver }
+
+    public enum GameState { MainMenu, Gameplay, EndOfDay, Pause, Settings, GameOver }
     public GameState gameState;
-    private GameState previousState;
+    private GameState _previousState;
+    private GameState _newState;
 
     [Header("Managers")]
     [SerializeField] private UiManager uiManager;
@@ -31,19 +34,34 @@ public class GameManager : MonoBehaviour
 
     public void LoadState(string state)
     {
-        GameState newState;
         if (state == "previousState")
-            newState = previousState;
+            _newState = _previousState;
         else
-            newState = (GameState)System.Enum.Parse(typeof(GameState), state);
+        {
+            if (Enum.TryParse(state, out GameState gamestate))
+                _newState = gamestate;
+            else
+                Debug.LogError(state + " doesn't exist");
+        }
 
-        SetState(newState);
+        SetState(_newState);
     }
+
+    // this should be called when hitting the pause button. 
+    public void EscapeState()
+    {
+        switch (gameState)
+        {
+            case GameState.Pause: SetState(GameState.Gameplay); break;
+            case GameState.Gameplay: SetState(GameState.Pause); break;
+        }
+    }
+
 
     private void SetState(GameState state)
     {
         if (state == GameState.Settings)
-            previousState = gameState;
+            _previousState = gameState;
 
         gameState = state;
 
@@ -51,6 +69,7 @@ public class GameManager : MonoBehaviour
         {
             case GameState.MainMenu: MainMenu(); break;
             case GameState.Gameplay: Gameplay(); break;
+            case GameState.EndOfDay: EndOfDay(); break;
             case GameState.Pause: Pause(); break;
             case GameState.Settings: Settings(); break;
             case GameState.GameOver: GameOver(); break;
@@ -59,16 +78,25 @@ public class GameManager : MonoBehaviour
 
     private void MainMenu()
     {
+        Time.timeScale = 0;
         uiManager.MainMenu();
     }
 
     private void Gameplay()
     {
+        Time.timeScale = 1;
         uiManager.Gameplay();
+    }
+
+    private void EndOfDay()
+    {
+        Time.timeScale = 0;
+        uiManager.EndOfDay();
     }
 
     private void Pause()
     {
+        Time.timeScale = 0;
         uiManager.Pause();
     }
 
@@ -79,6 +107,14 @@ public class GameManager : MonoBehaviour
 
     private void GameOver()
     {
+        Time.timeScale = 0;
         uiManager.GameOver();
     }
+
+    public void QuitGame()
+    {
+        Debug.Log("Quitting Game");
+        Application.Quit();
+    }
+
 }

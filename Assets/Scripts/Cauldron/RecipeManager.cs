@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This manager will need to be reworked later as I think this should only handle the recipes and telling the cauldron / recipe book which recipes they can use
+/// </summary>
 public class RecipeManager : MonoBehaviour
 {
     [Header("Available Recipes")]
