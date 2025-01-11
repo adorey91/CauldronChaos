@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class PotionOutput : MonoBehaviour
 {
-    public bool isPotionBad = false;
+    public bool isPotionGood;
     public RecipeSO recipeGiven;
 }
