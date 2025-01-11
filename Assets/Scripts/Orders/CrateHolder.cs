@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CrateHolder : MonoBehaviour
+public class CrateHolder : MonoBehaviour, IInteractable
 {
-    [SerializeField] private GameObject ingredientPrefab;
+   public GameObject ingredientPrefab;
 
-    public GameObject PickUp()
+    public void Interact(InteractionDetector player)
     {
-        return ingredientPrefab;
+        if(player.HasIngredient() || player.HasPotion()) return;
+
+        player.AddIngredient(ingredientPrefab);
     }
 }

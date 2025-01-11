@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class IngredientHolder : MonoBehaviour
 {
-    // Holds the ingredient for the prefab
+    // Holds the ingredientBeingHeld for the prefab
     public IngredientSO ingredient;
 
     internal void TurnOff()

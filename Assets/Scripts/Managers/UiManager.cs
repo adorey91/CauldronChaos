@@ -30,20 +30,12 @@ public class UiManager : MonoBehaviour
     // I havent decided if this is a good way to deal with opening and closing logic.
     private void OnEnable()
     {
-        Actions.ToggleRecipeBook += ToggleRecipeBook;
+        Actions.OnToggleRecipeBook += ToggleRecipeBook;
     }
 
     private void OnDisable()
     {
-        Actions.ToggleRecipeBook -= ToggleRecipeBook;
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) && GameManager.instance.gameState == GameManager.GameState.Gameplay)
-        {
-            ToggleRecipeBook();
-        }
+        Actions.OnToggleRecipeBook -= ToggleRecipeBook;
     }
 
     // Toggles the current active canvas

@@ -7,6 +7,19 @@ using UnityEngine.Events;
 
 public static class Actions
 {
-    public static Action <IngredientSO> AddIngredient;
-    public static Action ToggleRecipeBook;
+    // Interaction Actions
+    public static Action OnInteract;
+    public static Action OnPickup;
+    public static Action OnToggleRecipeBook;
+    public static Action OnRemovePotion;
+    public static Action OnRemoveIngredient;
+
+
+    // Shop Actions
+    public static Action OnStartDay;
+
+
+    // Menu Actions
+    public static Action OnPause;
+
 }

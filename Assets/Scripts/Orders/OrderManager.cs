@@ -8,15 +8,14 @@ public class OrderManager : MonoBehaviour
 {
     [Header("Order Variables")]
     [SerializeField] private RecipeManager recipeManager;
-    [SerializeField] private int maxOrders = 5;
-    private RecipeSO[] availableRecipes;
+    [SerializeField] private int maxOrders = 4;
+    private RecipeSO[] _availableRecipes;
+
+    [Header("Order UI")]
+    [SerializeField] private OrderManagerUi orderManagerUi;
 
     [Header("Customer Prefab")]
     [SerializeField] GameObject[] customerPrefab;
-
-    [Header("UI Variables")]
-    [SerializeField] private GameObject orderUiHolder;
-    [SerializeField] private GameObject orderUiPrefab;
 
     [Header("Active Customers")]
     private List<CustomerOrder> _activeOrders = new();
@@ -24,54 +23,51 @@ public class OrderManager : MonoBehaviour
     // Timer for the day - sets 5 minute timer
     [Header("Day Timer Settings")]
     [SerializeField] private int minutesPerDay = 5;
-    private CustomTimer dayTimer;
     [SerializeField] private TextMeshProUGUI dayTimerText;
+    private CustomTimer _dayTimer;
+    private bool _startCustomer = false;
 
-    // Customer Order Timer
+    // Customer Order Timer - this time is in seconds
     [Header("Customer Timer Settings")]
-    [Tooltip("Time in seconds for a new customer to appear")] 
     [SerializeField] private int newCustomerTime = 6;
-    private CustomTimer newCustomerTimer;
-
-    // used for testing, will be removed later
-    [Header("Testing Only")]
-    [SerializeField] private PotionOutputTest[] potion;
-    bool finished;
-    int potionIndex = 0;
-    bool startCustomer = false;
-
+    private CustomTimer _newCustomerTimer;
 
     private void Start()
     {
-        dayTimer = new CustomTimer(minutesPerDay, true);
-        newCustomerTimer = new CustomTimer(newCustomerTime, false);
-        availableRecipes = recipeManager.FindAvailableRecipes();
+        recipeManager = FindObjectOfType<RecipeManager>();
+        _dayTimer = new CustomTimer(minutesPerDay, true);
+        _newCustomerTimer = new CustomTimer(newCustomerTime, false);
+        _availableRecipes = recipeManager.FindAvailableRecipes();
         _activeOrders.Clear();
     }
 
-    // All input.getkeys are testing imputs. They will be removed later.
+    private void OnEnable()
+    {
+        Actions.OnStartDay += StartDay;
+    }
+
+    private void OnDisable()
+    {
+        Actions.OnStartDay -= StartDay;
+    }
+
+    // All input.getkeys are testing inputs. They will be removed later.
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            // starts the "work day" timer
-            dayTimer.StartTimer();
-
-            // starts the customer timer
-            startCustomer = true;
-            Debug.Log("Customer Started");
-            GenerateOrder();
-            newCustomerTimer.StartTimer();
+            StartDay();
         }
 
-        if (dayTimer.UpdateTimer())
+
+        if (_dayTimer.UpdateTimer())
         {
             Debug.Log("Day is over");
-            startCustomer = false;
+            _startCustomer = false;
         }
         else
         {
-            float remainingTime = dayTimer.GetRemainingTime();
+            float remainingTime = _dayTimer.GetRemainingTime();
             // Convert remaining time into minutes and seconds
             int minutes = Mathf.FloorToInt(remainingTime / 60);
             int seconds = Mathf.FloorToInt(remainingTime % 60);
@@ -79,51 +75,35 @@ public class OrderManager : MonoBehaviour
             dayTimerText.text = $"{minutes:00}:{seconds:00}";
         }
 
-        if(startCustomer)
+        if (_startCustomer)
         {
             if (_activeOrders.Count < maxOrders)
             {
-                if (newCustomerTimer.UpdateTimer())
+                if (_newCustomerTimer.UpdateTimer())
                 {
                     GenerateOrder();
-                    newCustomerTimer.ResetTimer();
+                    _newCustomerTimer.ResetTimer();
                 }
             }
         }
+    }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            potionIndex = 0;
-            finished = true;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            potionIndex = 1;
-            finished = true;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            potionIndex = 2;
-            finished = true;
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            potionIndex = 3;
-            finished = true;
-        }
+    private void StartDay()
+    {
+        // starts the "work day" timer
+        _dayTimer.StartTimer();
 
-        if (finished)
-        {
-            FinishOrder(potion[potionIndex]);
-            finished = false;
-        }
+        // starts the customer timer
+        _startCustomer = true;
+        GenerateOrder();
+        _newCustomerTimer.StartTimer();
     }
 
     // Generate a random order for a customer
     private void GenerateOrder()
     {
         // If there are no recipes, do nothing
-        if (availableRecipes.Length == 0) return;
+        if (_availableRecipes.Length == 0) return;
 
         GameObject customerObject = Instantiate(customerPrefab[Random.Range(0, customerPrefab.Length)]);
         Customer customer = customerObject.GetComponent<Customer>();
@@ -131,30 +111,27 @@ public class OrderManager : MonoBehaviour
 
         if (customer.customerName == "EvilMage")
         {
-            assignedOrder = availableRecipes[0];
+            assignedOrder = _availableRecipes[0];
         }
         else
         {
-            int randomIndex = Random.Range(0, availableRecipes.Length);
-            assignedOrder = availableRecipes[randomIndex];
+            int randomIndex = Random.Range(0, _availableRecipes.Length);
+            assignedOrder = _availableRecipes[randomIndex];
         }
 
-        GameObject orderUi = Instantiate(orderUiPrefab, orderUiHolder.transform);
-        orderUi.GetComponent<Image>().sprite = assignedOrder.potionIcon;
-        orderUi.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = assignedOrder.recipeName;
+        orderManagerUi.GenerateOrderUI(assignedOrder);
 
         // Add the order to the active orders list
         _activeOrders.Add(new CustomerOrder
         {
             Customer = customer,
-            OrderUi = orderUi,
+            OrderUi = orderManagerUi.GetOrderUI(),
             Recipe = assignedOrder
         });
     }
 
 
-    //private void FinishOrder(PotionOutput recipe)
-    private void FinishOrder(PotionOutputTest recipe)
+    internal void FinishOrder(PotionOutput recipe)
     {
         // If there are no active orders, do nothing
         if (_activeOrders.Count == 0)
@@ -168,9 +145,9 @@ public class OrderManager : MonoBehaviour
         {
             if (order.Recipe == recipe.recipeGiven)
             {
-                order.Customer.OrderComplete(recipe);
                 Destroy(order.Customer.gameObject);
-                Destroy(order.OrderUi);
+                order.Customer.OrderComplete(recipe);
+                orderManagerUi.RemoveOrderUI(order.OrderUi);
 
                 _activeOrders.Remove(order);
                 return;

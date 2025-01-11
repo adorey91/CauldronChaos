@@ -58,12 +58,24 @@ public class InputManager : MonoBehaviour
     //function that reads the interact input
     public void InteractInput(InputAction.CallbackContext input)
     {
-        InteractAction?.Invoke(input);
+        //interactInput = input;
+        if(input.performed)
+            Actions.OnInteract?.Invoke();
     }
 
     //function that reads the interact input
     public void PickupInput(InputAction.CallbackContext input)
     {
-        PickupAction?.Invoke(input);
+        //pickupInput = input;
+
+        if (input.performed)
+            Actions.OnPickup?.Invoke();
+    }
+
+
+    public void PauseInput(InputAction.CallbackContext input)
+    {
+        if (input.performed)
+            Actions.OnPause?.Invoke();
     }
 }
