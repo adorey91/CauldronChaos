@@ -16,10 +16,9 @@ public class GraphicsManager : MonoBehaviour
     private bool _isFullScreen = true;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         _resolutions = Screen.resolutions;
-
         resolutionDropdown.ClearOptions();
         _currentRefreshRate = (float)Screen.currentResolution.refreshRateRatio.value;
 
@@ -27,6 +26,12 @@ public class GraphicsManager : MonoBehaviour
         {
             if (_resolutions[i].refreshRateRatio.value == _currentRefreshRate)
                 _filteredResolutions.Add(_resolutions[i]);
+        }
+
+        if (_filteredResolutions.Count == 0)
+        {
+            Debug.LogError("No resolutions found matching the current refresh rate.");
+            return;
         }
 
         _filteredResolutions.Sort((a, b) =>
@@ -49,16 +54,33 @@ public class GraphicsManager : MonoBehaviour
         }
 
         resolutionDropdown.AddOptions(options);
-        resolutionDropdown.value = _currentResolutionIndex = 0;
-        resolutionDropdown.RefreshShownValue();
-        SetResolution(_currentResolutionIndex);
+
+        // Ensure we have a valid index
+        if (_filteredResolutions.Count > 0)
+        {
+            resolutionDropdown.value = _currentResolutionIndex = Mathf.Clamp(_currentResolutionIndex, 0, _filteredResolutions.Count - 1);
+            resolutionDropdown.RefreshShownValue();
+            SetResolution(_currentResolutionIndex);
+        }
+        else
+        {
+            Debug.LogError("No valid resolutions available to set.");
+        }
     }
+
 
     public void SetResolution(int resolutionIndex)
     {
+        if (resolutionIndex < 0 || resolutionIndex >= _filteredResolutions.Count)
+        {
+            Debug.LogError($"Invalid resolution index: {resolutionIndex}");
+            return;
+        }
+
         Resolution resolution = _filteredResolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, _isFullScreen);
     }
+
 
     public void SetWindowed(bool value)
     {
