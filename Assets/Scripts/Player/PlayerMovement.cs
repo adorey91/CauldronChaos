@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -11,6 +12,20 @@ public class PlayerMovement : MonoBehaviour
     [Header("Object References")]
     [SerializeField] private Rigidbody playerRB;
 
+    Vector2 moveDir = Vector2.zero;
+
+    //Called when object is enabled
+    private void OnEnable()
+    {
+        InputManager.instance.MoveAction += GetMove;
+    }
+
+    //Called when object is disabled
+    private void OnDisable()
+    {
+        InputManager.instance.MoveAction -= GetMove;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,9 +35,6 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        //get movement input from input manager
-        Vector2 moveDir = InputManager.instance.GetMoveInput().ReadValue<Vector2>().normalized;
-
         //translate Vector2 to Vector3
         Vector3 movement = new Vector3(moveDir.x, 0, moveDir.y);
 
@@ -39,5 +51,11 @@ public class PlayerMovement : MonoBehaviour
 
         //apply movement
         playerRB.MovePosition(playerRB.position + movement);
+    }
+
+    private void GetMove(InputAction.CallbackContext input)
+    {
+        moveDir = input.ReadValue<Vector2>();
+        //Debug.Log("Get Move being called");
     }
 }
