@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,8 +8,8 @@ using UnityEngine.UI;
 public class RecipeBookUI : MonoBehaviour
 {
     [SerializeField] private RecipeManager recipeManager;
-    [SerializeField] private GameObject leftPageHolder;
-    [SerializeField] private GameObject rightPageHolder;
+    [SerializeField] private GameObject recipeUiLeft;
+    [SerializeField] private GameObject recipeUiRight;
 
     private RecipeSO[] availableRecipes;
 
@@ -16,18 +17,12 @@ public class RecipeBookUI : MonoBehaviour
     [SerializeField] private GameObject previousPage;
     [SerializeField] private GameObject nextPage;
 
-    [Header("Page Prefabs")]
-    [SerializeField] private TextMeshProUGUI recipeTitle;
-    [SerializeField] private GameObject recipeUiPrefab;
-    [SerializeField] private GameObject ingredientStepPrefab;
-
     private int _pageNumber = 0;
     private int _recipeNumber = 0;
 
     // Recipe UI Components
-    private GameObject _newRecipeUI;
-    private GameObject _newIngredientUI;
-
+    [SerializeField] private RecipeUI _recipeUiLeft;
+    [SerializeField] private RecipeUI _recipeUiRight;
 
     private void Start()
     {
@@ -36,7 +31,7 @@ public class RecipeBookUI : MonoBehaviour
         if (_pageNumber == 0)
             previousPage.SetActive(false);
 
-        if (availableRecipes.Length < 4)
+        if (availableRecipes.Length - 1 < 2)
             nextPage.SetActive(false);
 
         SetRecipes();
@@ -45,25 +40,16 @@ public class RecipeBookUI : MonoBehaviour
     // this will need to be reworked as currently it will only fill the right side.
     public void SetRecipes()
     {
-
         _recipeNumber = 0;
-        for (int i = 0; i < 4; i++)
-        {
+
+        for (int i = 0; i < 2; i++)
+         {
             if (i > availableRecipes.Length - 1) return;
-            // Instantiate new recipe UI
-            _newRecipeUI = Instantiate(recipeUiPrefab, rightPageHolder.transform);
 
-            Image imageComponent = _newRecipeUI.transform.GetChild(0).GetComponent<Image>();
-            if (imageComponent != null)
-                imageComponent.sprite = availableRecipes[_recipeNumber].potionIcon;
+            if (i == 0)
+                FillLeftPage();
             else
-                Debug.LogError("Image component not found in the children of _newRecipeUI!");
-
-
-            //_ingredientHolderBottom = _newRecipeUI.transform.Find("IngredientsHolderBottom").gameObject;
-            //_ingredientHolderTop = _newRecipeUI.transform.Find("IngredientsHolderTop").gameObject;
-
-            CreateIngredientUI();
+                FillRightPage();
 
             _recipeNumber++;
         }
@@ -71,25 +57,50 @@ public class RecipeBookUI : MonoBehaviour
 
     private void FillRightPage()
     {
+        recipeUiRight.SetActive(true);
+        _recipeUiRight.recipeName.text = availableRecipes[_recipeNumber].recipeName;
+        _recipeUiRight.potionIcon.sprite = availableRecipes[_recipeNumber].potionIcon;
 
+        CreateIngredientUI(_recipeUiRight);
     }
 
     private void FillLeftPage()
     {
-
+        recipeUiLeft.SetActive(true);
+        _recipeUiLeft.recipeName.text = availableRecipes[_recipeNumber].recipeName;
+        _recipeUiLeft.potionIcon.sprite = availableRecipes[_recipeNumber].potionIcon;
+        CreateIngredientUI(_recipeUiLeft);
     }
 
 
-    private void CreateIngredientUI()
+    private void CreateIngredientUI(RecipeUI side)
     {
-        //for (int recipeStep = 0; recipeStep < availableRecipes[_recipeNumber].steps.Length; recipeStep++)
-        //{
-        //    if (recipeStep < 3)
-        //        _newIngredientUI = Instantiate(ingredientStepPrefab, _ingredientHolderTop.transform);
-        //    else
-        //        _newIngredientUI = Instantiate(ingredientStepPrefab, _ingredientHolderBottom.transform);
+        int totalSteps = availableRecipes[_recipeNumber].steps.Length;
 
-        //    _newIngredientUI.GetComponent<Image>().sprite = availableRecipes[_recipeNumber].steps[recipeStep].ingredient.icon;
-        //}
+        // Loop through all UI elements
+        for (int i = 0; i < side.recipeStepUI.Length; i++)
+        {
+            // If the current index is within the number of steps, activate and update text
+            if (i < totalSteps)
+            {
+                side.recipeStepUI[i].SetActive(true);
+                side.recipeStepUI[i].GetComponentInChildren<TextMeshProUGUI>().text = $"{i + 1}";
+            }
+            // Otherwise, deactivate the UI element
+            else
+            {
+                side.recipeStepUI[i].SetActive(false);
+            }
+        }
+
     }
 }
+
+[Serializable]
+public class RecipeUI
+{
+    public TextMeshProUGUI recipeName;
+    public Image potionIcon;
+    public GameObject[] recipeStepUI;
+}
+
