@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class UiManager : MonoBehaviour
 {
@@ -21,6 +23,19 @@ public class UiManager : MonoBehaviour
 
     [Header("Recipe UI")]
     [SerializeField] private GameObject recipeBookUI;
+
+    [Header("Event System")]
+    [SerializeField] private EventSystem eventSystem;
+
+    [Header("Ui First Selected")]
+    [SerializeField] private GameObject menuFirstSelect;
+    [SerializeField] private GameObject pauseFirstSelect;
+    [SerializeField] private GameObject settingsFirstSelect;
+    [SerializeField] private GameObject audioFirstSelect;
+    [SerializeField] private GameObject videoFirstSelect;
+    [SerializeField] private GameObject controlsFirstSelect;
+    [SerializeField] private GameObject endOfDayFirstSelect;
+
 
     private void Start()
     {
@@ -48,6 +63,8 @@ public class UiManager : MonoBehaviour
         gameOver.enabled = false;
         endOfDay.enabled = false;
 
+        // Clears selected button
+        eventSystem.SetSelectedGameObject(null);
         // Makes sure that any settings panels open are closed
         SetActiveSettings(null);
 
@@ -68,11 +85,24 @@ public class UiManager : MonoBehaviour
 
     // State UI Changes. Made internal as they don't need to be accessed in the inspector
     #region State_UI_Changes
-    internal void MainMenu() => SetActiveUI(mainMenu);
+    internal void MainMenu()
+    {
+        SetActiveUI(mainMenu);
+        SetFirstSelect(menuFirstSelect);
+    }
     internal void Gameplay() => SetActiveUI(gameplay);
-    internal void EndOfDay() => SetActiveUI(endOfDay);
+    internal void EndOfDay()
+    {
+        SetActiveUI(endOfDay);
+        SetFirstSelect(endOfDayFirstSelect);
+    }
     internal void GameOver() => SetActiveUI(gameOver);
-    internal void Pause() => SetActiveUI(pause);
+    internal void Pause()
+    {
+        SetActiveUI(pause);
+        SetFirstSelect(pauseFirstSelect);
+    }
+
     internal void Settings()
     {
         SetActiveUI(settings);
@@ -82,10 +112,29 @@ public class UiManager : MonoBehaviour
 
     // Settings UI Changes. Made public so they can be accessed in the inspector.
     #region Settings_UI
-    public void OpenSettings() => SetActiveSettings(settingsPanel);
-    public void OpenAudio() => SetActiveSettings(audioPanel);
-    public void OpenVideo() => SetActiveSettings(videoPanel);
-    public void OpenControls() => SetActiveSettings(controlsPanel);
+    public void OpenSettings()
+    {
+        SetActiveSettings(settingsPanel);
+        SetFirstSelect(settingsFirstSelect);
+
+    }
+
+    public void OpenAudio()
+    {
+        SetActiveSettings(audioPanel);
+        SetFirstSelect(audioFirstSelect);
+    }
+
+    public void OpenVideo()
+    {
+        SetActiveSettings(videoPanel);
+        SetFirstSelect(videoFirstSelect);
+    }
+    public void OpenControls()
+    {
+        SetActiveSettings(controlsPanel);
+        SetFirstSelect(controlsFirstSelect);
+    }
     #endregion
 
     public void ToggleRecipeBook()
@@ -100,5 +149,22 @@ public class UiManager : MonoBehaviour
             Time.timeScale = 0;
             recipeBookUI.SetActive(true);
         }
+    }
+
+    private IEnumerator DelayedSetFirstSelect(GameObject firstSelect)
+    {
+        // Ensure the canvas and hierarchy are updated before selection
+        yield return new WaitForEndOfFrame();
+
+        eventSystem.SetSelectedGameObject(firstSelect); // Set the new selection
+    }
+
+    private void SetFirstSelect(GameObject firstSelect)
+    {
+        eventSystem.SetSelectedGameObject(null); // Clear current selection
+        Canvas.ForceUpdateCanvases();
+        if (Gamepad.all.Count == 0) return;
+
+        StartCoroutine(DelayedSetFirstSelect(firstSelect));
     }
 }

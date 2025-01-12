@@ -8,6 +8,10 @@ public class OpenSign : MonoBehaviour, IInteractable
 {
     [SerializeField] private Material openMaterial;
     [SerializeField] private TextMeshProUGUI signText;
+
+    [Header("Dropped Item Holder")]
+    [SerializeField] private GameObject droppedItems;
+
     private bool _isOpen;
 
     public void Start()
@@ -34,6 +38,7 @@ public class OpenSign : MonoBehaviour, IInteractable
 
     private void OpenSignBoard()
     {
+        CleanUpDroppedItems();
         _isOpen = true;
         Actions.OnStartDay?.Invoke();
         signText.text = "Open";
@@ -44,7 +49,21 @@ public class OpenSign : MonoBehaviour, IInteractable
     {
         //Actions.OnEndDay?.Invoke();
         _isOpen = false;
+        CleanUpDroppedItems();
         signText.text = "Closed";
         GetComponent<MeshRenderer>().material = openMaterial;
+    }
+
+    private bool CleanUpDroppedItems()
+    {
+        if (droppedItems.transform.childCount > 0)
+        {
+            foreach (Transform child in droppedItems.transform)
+            {
+                Destroy(child.gameObject);
+            }
+            return true;
+        }
+        return false;
     }
 }
