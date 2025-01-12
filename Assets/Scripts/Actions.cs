@@ -14,10 +14,8 @@ public static class Actions
     public static Action OnRemovePotion;
     public static Action OnRemoveIngredient;
 
-
     // Shop Actions
     public static Action OnStartDay;
-
 
     // Menu Actions
     public static Action OnPause;

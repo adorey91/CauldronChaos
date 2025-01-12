@@ -8,6 +8,7 @@ public class OrderManager : MonoBehaviour
 {
     [Header("Order Variables")]
     [SerializeField] private RecipeManager recipeManager;
+    [SerializeField] private OrderCounter orderCounter;
     [SerializeField] private int maxOrders = 4;
     private RecipeSO[] _availableRecipes;
 
@@ -16,6 +17,7 @@ public class OrderManager : MonoBehaviour
 
     [Header("Customer Prefab")]
     [SerializeField] GameObject[] customerPrefab;
+    [SerializeField] private Transform customerSpawnPoint;
 
     [Header("Active Customers")]
     private List<CustomerOrder> _activeOrders = new();
@@ -32,9 +34,11 @@ public class OrderManager : MonoBehaviour
     [SerializeField] private int newCustomerTime = 6;
     private CustomTimer _newCustomerTimer;
 
+
     private void Start()
     {
         recipeManager = FindObjectOfType<RecipeManager>();
+        orderCounter = FindObjectOfType<OrderCounter>();
         _dayTimer = new CustomTimer(minutesPerDay, true);
         _newCustomerTimer = new CustomTimer(newCustomerTime, false);
         _availableRecipes = recipeManager.FindAvailableRecipes();
@@ -105,7 +109,7 @@ public class OrderManager : MonoBehaviour
         // If there are no recipes, do nothing
         if (_availableRecipes.Length == 0) return;
 
-        GameObject customerObject = Instantiate(customerPrefab[Random.Range(0, customerPrefab.Length)]);
+        GameObject customerObject = Instantiate(customerPrefab[Random.Range(0, customerPrefab.Length)], orderCounter.GetNextPosition(), Quaternion.identity, orderCounter.ParentPosition());
         Customer customer = customerObject.GetComponent<Customer>();
         RecipeSO assignedOrder;
 
@@ -133,29 +137,32 @@ public class OrderManager : MonoBehaviour
 
     internal void FinishOrder(PotionOutput recipe)
     {
-        // If there are no active orders, do nothing
         if (_activeOrders.Count == 0)
         {
             Debug.Log("No customers to serve");
             return;
         }
 
-        //Check if the recipe matches any of the current orders
         foreach (var order in _activeOrders)
         {
             if (order.Recipe == recipe.recipeGiven)
             {
+                Vector3 customerPosition = order.Customer.transform.position;
+
                 Destroy(order.Customer.gameObject);
                 order.Customer.OrderComplete(recipe);
                 orderManagerUi.RemoveOrderUI(order.OrderUi);
 
                 _activeOrders.Remove(order);
+
+                // Free the customer's position in the queue
+                orderCounter.FreePosition(customerPosition);
+
                 return;
             }
-            else
-            {
-                Debug.Log("No customer found with that order");
-            }
         }
+
+        Debug.Log("No customer found with that order");
     }
+
 }

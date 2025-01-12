@@ -1654,7 +1654,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1251253641806279726}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d43be2fcb3962944dad2e5370b4a980f, type: 3}
+  m_Script: {fileID: 11500000, guid: 74788f6ff29eb1740aa685551edeb05b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   allRecipes:
@@ -2981,6 +2981,7 @@ MonoBehaviour:
   - {fileID: 2940790004814374856, guid: 14a909fa08c962c458ca4bcfa34c49f7, type: 3}
   - {fileID: 2940790004814374856, guid: 1f06fbd778f6ca645bcb61cb7c86c058, type: 3}
   - {fileID: 2940790004814374856, guid: 1b8d353341287c648a28df1acc3515d5, type: 3}
+  customerSpawnPoint: {fileID: 0}
   minutesPerDay: 5
   dayTimerText: {fileID: 3486698487269760343}
   newCustomerTime: 6
