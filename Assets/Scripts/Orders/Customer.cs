@@ -23,6 +23,8 @@ public class Customer : MonoBehaviour
         {
             HandleFailure();
         }
+
+        Actions.OnCustomerServed?.Invoke(potionGiven.isPotionGood);
     }
 
     private void HandleFailure()

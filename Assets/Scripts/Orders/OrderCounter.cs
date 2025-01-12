@@ -11,7 +11,6 @@ public class OrderCounter : MonoBehaviour, IInteractable
     [SerializeField] private int maxCustomers = 5;
     [SerializeField] private float positionSize = 1;
     List<Vector3> waitingQueuePosition = new();
-    private int current = 0;
     private bool[] positionOccupied;
 
     private void Start()
@@ -26,6 +25,16 @@ public class OrderCounter : MonoBehaviour, IInteractable
             waitingQueuePosition.Add(firstPosition.position + new Vector3(-i, 0, 0) * positionSize);
             positionOccupied[i] = false; // All positions are initially empty
         }
+    }
+
+    private void OnEnable()
+    {
+        Actions.OnEndDay += ResetCounter;
+    }
+
+    private void OnDisable()
+    {
+        Actions.OnEndDay -= ResetCounter;
     }
 
 
@@ -66,6 +75,14 @@ public class OrderCounter : MonoBehaviour, IInteractable
         }
 
         Debug.LogWarning("Tried to free a position that is not part of the queue.");
+    }
+
+    private void ResetCounter()
+    {
+        for (int i = 0; i < maxCustomers; i++)
+        {
+            positionOccupied[i] = false; // All positions are initially empty
+        }
     }
 
     public Transform ParentPosition()

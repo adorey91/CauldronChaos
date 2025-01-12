@@ -16,6 +16,9 @@ public static class Actions
 
     // Shop Actions
     public static Action OnStartDay;
+    public static Action OnEndDay;
+    public static Action<bool> OnCustomerServed;
+    public static Action OnNoCustomerServed;
 
     // Menu Actions
     public static Action OnPause;

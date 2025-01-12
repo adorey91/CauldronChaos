@@ -22,7 +22,5 @@ public class OrderManagerUi : MonoBehaviour
     internal void RemoveOrderUI(GameObject orderUi)
     {
         Destroy(orderUi);
-        Debug.Log("Order UI removed.");
     }
-
 }

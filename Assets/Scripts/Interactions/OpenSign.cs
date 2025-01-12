@@ -16,6 +16,16 @@ public class OpenSign : MonoBehaviour, IInteractable
         signText.text = "Closed";
     }
 
+    private void OnEnable()
+    {
+        Actions.OnEndDay += CloseSignBoard;
+    }
+
+    private void OnDisable()
+    {
+        Actions.OnEndDay -= CloseSignBoard;
+    }
+
     public void Interact(InteractionDetector player)
     {
         if(!_isOpen)
@@ -25,7 +35,6 @@ public class OpenSign : MonoBehaviour, IInteractable
     private void OpenSignBoard()
     {
         _isOpen = true;
-        Debug.Log("Interacting with Open Sign");
         Actions.OnStartDay?.Invoke();
         signText.text = "Open";
         GetComponent<MeshRenderer>().material = openMaterial;

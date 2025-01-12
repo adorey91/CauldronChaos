@@ -39,11 +39,13 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         Actions.OnPause += EscapeState;
+        Actions.OnEndDay += () => SetState(GameState.EndOfDay);
     }
 
     private void OnDisable()
     {
         Actions.OnPause -= EscapeState;
+        Actions.OnEndDay -= () => SetState(GameState.EndOfDay);
     }
 
     public void LoadState(string state)

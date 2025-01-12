@@ -58,15 +58,17 @@ public class OrderManager : MonoBehaviour
     // All input.getkeys are testing inputs. They will be removed later.
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            StartDay();
-        }
+        //if(Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    StartDay();
+        //}
 
 
         if (_dayTimer.UpdateTimer())
         {
             Debug.Log("Day is over");
+            Actions.OnEndDay?.Invoke();
+            RemoveAllOrders();
             _startCustomer = false;
         }
         else
@@ -101,6 +103,11 @@ public class OrderManager : MonoBehaviour
         _startCustomer = true;
         GenerateOrder();
         _newCustomerTimer.StartTimer();
+    }
+
+    private void EndDay()
+    {
+        RemoveAllOrders();
     }
 
     // Generate a random order for a customer
@@ -162,7 +169,19 @@ public class OrderManager : MonoBehaviour
             }
         }
 
+        Actions.OnNoCustomerServed?.Invoke();
         Debug.Log("No customer found with that order");
     }
 
+
+    private void RemoveAllOrders()
+    {
+        foreach (var order in _activeOrders)
+        {
+            Destroy(order.Customer.gameObject);
+            orderManagerUi.RemoveOrderUI(order.OrderUi);
+        }
+
+        _activeOrders.Clear();
+    }
 }
