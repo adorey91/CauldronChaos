@@ -17,8 +17,14 @@ public class InteractionDetector : MonoBehaviour
     [Header("Holder for dropped items")]
     [SerializeField] private GameObject droppedItems;
 
+    private AbovePlayerUI _abovePlayerUI;
     private IInteractable _interactablesInRange;
     private IPickupable _pickupablesInRange;
+
+    private void Start()
+    {
+        _abovePlayerUI = GetComponentInChildren<AbovePlayerUI>();
+    }
 
     private void OnEnable()
     {
@@ -179,16 +185,22 @@ public class InteractionDetector : MonoBehaviour
         GameObject interactableObj = other.transform.parent.gameObject;
 
         if (interactableObj.TryGetComponent(out IInteractable interactable))
+        {
             _interactablesInRange = interactable;
+            _abovePlayerUI.SetInteraction();
+        }
 
         if (interactableObj.TryGetComponent(out IPickupable pickUp))
+        {
             _pickupablesInRange = pickUp;
+            _abovePlayerUI.SetPickup();
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         GameObject interactableObj = other.transform.parent.gameObject;
-
+        _abovePlayerUI.DisableSprite();
         if (interactableObj.TryGetComponent(out IInteractable interactable))
         {
             if (_interactablesInRange == interactable)

@@ -12,6 +12,7 @@ public class PotionOutput : MonoBehaviour, IPickupable
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        _collider = GetComponent<Collider>();
     }
 
     public void Pickup(InteractionDetector player)
@@ -23,9 +24,13 @@ public class PotionOutput : MonoBehaviour, IPickupable
 
     public void Drop(Transform newParent)
     {
+        if (newParent == null)
+            transform.parent = null;
+        else
+            transform.parent = newParent;
+
         _rb.isKinematic = false;
         _collider.enabled = true;
-        transform.parent = newParent;
     }
 
     public bool AlreadyActive()

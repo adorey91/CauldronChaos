@@ -22,7 +22,7 @@ public class OrderCounter : MonoBehaviour, IInteractable
 
         for (int i = 0; i < maxCustomers; i++)
         {
-            waitingQueuePosition.Add(firstPosition.position + new Vector3(-i, 0, 0) * positionSize);
+            waitingQueuePosition.Add(firstPosition.position + new Vector3(i, 0, 0) * positionSize);
             positionOccupied[i] = false; // All positions are initially empty
         }
     }
