@@ -78,4 +78,28 @@ public class InputManager : MonoBehaviour
         if (input.performed)
             Actions.OnPause?.Invoke();
     }
+
+    public void StirClockwiseInput(InputAction.CallbackContext input)
+    {
+        if (input.performed)
+            Actions.OnStirClockwise?.Invoke();
+    }
+
+    public void StirCounterClockwiseInput(InputAction.CallbackContext input)
+    {
+        if (input.performed)
+            Actions.OnStirCounterClockwise?.Invoke();
+    }
+
+    public void TurnNextPage(InputAction.CallbackContext input)
+    {
+        if(input.performed)
+            Actions.NextPage?.Invoke();
+    }
+
+    public void TurnPreviousPage(InputAction.CallbackContext input)
+    {
+        if (input.performed)
+            Actions.PreviousPage?.Invoke();
+    }
 }

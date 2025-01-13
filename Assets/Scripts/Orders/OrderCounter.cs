@@ -48,6 +48,11 @@ public class OrderCounter : MonoBehaviour, IInteractable
         Actions.OnRemovePotion?.Invoke();
     }
 
+    public bool CanBeInteractedWith(InteractionDetector player)
+    {
+        return player.HasPotion();
+    }
+
     public Vector3 GetNextPosition()
     {
         for (int i = 0; i < waitingQueuePosition.Count; i++)

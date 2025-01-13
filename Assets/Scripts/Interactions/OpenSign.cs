@@ -36,6 +36,13 @@ public class OpenSign : MonoBehaviour, IInteractable
             OpenSignBoard();
     }
 
+    public bool CanBeInteractedWith(InteractionDetector player)
+    {
+        if(_isOpen) return false;
+
+        return true;
+    }
+
     private void OpenSignBoard()
     {
         CleanUpDroppedItems();

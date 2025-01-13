@@ -8,4 +8,9 @@ public class BookInteraction : MonoBehaviour, IInteractable
     {
         Actions.OnToggleRecipeBook?.Invoke();
     }
+
+    public bool CanBeInteractedWith(InteractionDetector player)
+    {
+        return true;
+    }
 }

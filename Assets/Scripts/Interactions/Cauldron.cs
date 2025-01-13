@@ -21,12 +21,26 @@ public class Cauldron : MonoBehaviour, IInteractable
     private RecipeStepSO _nextStep;
     private int _currentStepIndex;
     private bool _isRecipeGood;
+    private int _stirCounter;
 
     public void Start()
     {
         _recipeManager = FindObjectOfType<RecipeManager>();
         _craftableRecipes = _recipeManager.FindAvailableRecipes();
         badPotion = _recipeManager.SetBadPotion();
+        _currentStepIndex = 0;
+    }
+
+    private void OnEnable()
+    {
+        Actions.OnStirClockwise += StirClockwise;
+        Actions.OnStirCounterClockwise += StirCounterClockwise;
+    }
+
+    private void OnDisable()
+    {
+        Actions.OnStirClockwise -= StirClockwise;
+        Actions.OnStirCounterClockwise -= StirCounterClockwise;
     }
 
     public void Interact(InteractionDetector player)
@@ -35,8 +49,8 @@ public class Cauldron : MonoBehaviour, IInteractable
 
         IngredientSO ingredient = player.GetIngredient();
 
-            Actions.OnRemoveIngredient?.Invoke();
-        if (_addedIngredients.Count == 0)
+        Actions.OnRemoveIngredient?.Invoke();
+        if (_currentStepIndex == 0)
         {
             StartNewRecipe(ingredient, player);
             return;
@@ -45,12 +59,15 @@ public class Cauldron : MonoBehaviour, IInteractable
         {
             // If the next step is not null, process the next step else handle the incorrect step
             if (_nextStep != null)
-                ProcessNextStep(ingredient, player);
+                AdvanceToNextStep(ingredient, player);
             else
                 HandleIncorrectStep(ingredient, player);
         }
+    }
 
-        
+    public bool CanBeInteractedWith(InteractionDetector player)
+    {
+        return player.HasIngredient() && !player.HasPotion();
     }
 
     private void StartNewRecipe(IngredientSO ingredient, InteractionDetector player)
@@ -58,7 +75,7 @@ public class Cauldron : MonoBehaviour, IInteractable
         // Check if the ingredientBeingHeld is the first step in any recipe
         foreach (RecipeSO recipe in _craftableRecipes)
         {
-            if (recipe.steps[0].ingredient == ingredient)
+            if (recipe.steps[_currentStepIndex].ingredient == ingredient)
             {
                 _addedIngredients.Add(ingredient);
                 _currentRecipe = recipe;
@@ -81,7 +98,7 @@ public class Cauldron : MonoBehaviour, IInteractable
         _addedIngredients.Add(ingredient);
     }
 
-    private void ProcessNextStep(IngredientSO ingredient, InteractionDetector player)
+    private void AdvanceToNextStep(IngredientSO ingredient, InteractionDetector player)
     {
 
         _isRecipeGood = true;
@@ -151,5 +168,50 @@ public class Cauldron : MonoBehaviour, IInteractable
         _currentStepIndex = 0;
         _currentRecipe = null;
         _nextStep = null;
+    }
+
+    private void StirClockwise()
+    {
+        Debug.Log("Stirring clockwise");
+        if (_nextStep == null)
+        {
+            _isRecipeGood = false;
+            _currentStepIndex++;
+            return;
+        }
+
+        if (_nextStep.stepType == RecipeStepSO.StepType.StirClockwise)
+        {
+            _currentStepIndex++;
+            _nextStep = _currentRecipe.steps[_currentStepIndex];
+
+        }
+        else
+        {
+            _nextStep = null;
+            HandleIncorrectStep(null, null);
+        }
+    }
+
+    private void StirCounterClockwise()
+    {
+        Debug.Log("Stirring counter clockwise");
+        if (_nextStep == null)
+        {
+            _isRecipeGood = false;
+            _currentStepIndex++;
+            return;
+        }
+        if (_nextStep.stepType == RecipeStepSO.StepType.StirCounterClockwise)
+        {
+            _currentStepIndex++;
+            _nextStep = _currentRecipe.steps[_currentStepIndex];
+        }
+        else
+        {
+            _nextStep = null;
+            HandleIncorrectStep(null, null);
+        }
+
     }
 }
