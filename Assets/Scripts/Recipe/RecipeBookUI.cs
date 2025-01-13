@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -85,6 +86,9 @@ public class RecipeBookUI : MonoBehaviour
             {
                 side.recipeStepUI[i].SetActive(true);
                 side.recipeStepUI[i].GetComponentInChildren<TextMeshProUGUI>().text = $"{i + 1}";
+                IngredientSO stepIngredient = availableRecipes[_recipeNumber].steps[i].ingredient;
+                side.recipeStepUI[i].GetComponent<Image>().sprite = stepIngredient.icon;
+
             }
             // Otherwise, deactivate the UI element
             else

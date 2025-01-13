@@ -14,7 +14,7 @@ public class OrderManagerUi : MonoBehaviour
     internal void GenerateOrderUI(RecipeSO assignedOrder)
     {
         orderUi = Instantiate(orderUiPrefab, orderUiHolder.transform);
-        orderUi.GetComponent<Image>().sprite = assignedOrder.potionIcon;
+        orderUi.transform.GetChild(0).GetComponent<Image>().sprite = assignedOrder.potionIcon;
     }
 
     internal GameObject GetOrderUI() => orderUi;

@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 
 public class OpenSign : MonoBehaviour, IInteractable
-{
+{ 
     [SerializeField] private Material openMaterial;
     [SerializeField] private TextMeshProUGUI signText;
 

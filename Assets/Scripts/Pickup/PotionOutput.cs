@@ -6,22 +6,25 @@ public class PotionOutput : MonoBehaviour, IPickupable
 {
     public bool isPotionGood;
     public RecipeSO recipeGiven;
-    private Rigidbody rb;
+    private Rigidbody _rb;
+    private Collider _collider;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        _rb = GetComponent<Rigidbody>();
     }
 
     public void Pickup(InteractionDetector player)
     {
-        rb.isKinematic = true;
+        _rb.isKinematic = true;
+        _collider.enabled = false;
         player.PickUpPotion(this.gameObject);
     }
 
     public void Drop(Transform newParent)
     {
-        rb.isKinematic = false;
+        _rb.isKinematic = false;
+        _collider.enabled = true;
         transform.parent = newParent;
     }
 
