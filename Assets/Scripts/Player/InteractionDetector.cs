@@ -95,6 +95,7 @@ public class InteractionDetector : MonoBehaviour
     {
         ingredientGO = Instantiate(ingredient, handPosition);
         ingredientGO.GetComponent<Rigidbody>().isKinematic = true;
+        ingredientGO.GetComponent<Collider>().enabled = false;
         ingredientInHand = ingredientGO.GetComponent<IngredientHolder>().ingredient;
 
     }
@@ -108,7 +109,6 @@ public class InteractionDetector : MonoBehaviour
         ingredientGO = ingredient;
         ingredientGO.transform.SetParent(handPosition);
         ingredient.transform.position = handPosition.position;
-        ingredientGO.GetComponent<Rigidbody>().isKinematic = true;
         ingredientInHand = ingredientGO.GetComponent<IngredientHolder>().ingredient;
     }
 

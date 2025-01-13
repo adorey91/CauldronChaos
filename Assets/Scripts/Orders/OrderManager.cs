@@ -27,6 +27,14 @@ public class OrderManager : MonoBehaviour
     [SerializeField] private int minutesPerDay = 5;
     [SerializeField] private TextMeshProUGUI dayTimerText;
     private CustomTimer _dayTimer;
+    [SerializeField] private GameObject timerHand;
+    [SerializeField] private RectTransform timerHandRect;
+
+    private float minutesToDegrees;
+    private float _minAngle = 90;
+    private float _maxAngle = -90;
+    [SerializeField] private int daysToPlay = 5;
+
     private bool _startCustomer = false;
 
     // Customer Order Timer - this time is in seconds
@@ -74,11 +82,17 @@ public class OrderManager : MonoBehaviour
         else
         {
             float remainingTime = _dayTimer.GetRemainingTime();
+            float timePercentage = remainingTime / (minutesPerDay * 60);
+
             // Convert remaining time into minutes and seconds
             int minutes = Mathf.FloorToInt(remainingTime / 60);
             int seconds = Mathf.FloorToInt(remainingTime % 60);
 
             dayTimerText.text = $"{minutes:00}:{seconds:00}";
+
+            float rotationAngle = Mathf.Lerp(_minAngle, _maxAngle, timePercentage);
+            timerHandRect.rotation = Quaternion.RotateTowards(timerHandRect.rotation, Quaternion.Euler(0, 0, rotationAngle), Time.deltaTime * 2);
+
         }
 
         if (_startCustomer)

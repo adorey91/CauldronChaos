@@ -2,13 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CrateHolder : MonoBehaviour, IInteractable
+public class CrateHolder : MonoBehaviour, IPickupable
 {
    public GameObject ingredientPrefab;
 
-    public void Interact(InteractionDetector player)
+    public bool AlreadyActive()
     {
-        if(player.HasIngredient() || player.HasPotion()) return;
+        return false;
+    }
+
+    public void Drop(Transform newParent)
+    {
+        return;
+    }
+    
+    public void Pickup(InteractionDetector player)
+    {
+        if (player.HasIngredient() || player.HasPotion()) return;
 
         player.AddIngredient(ingredientPrefab);
     }

@@ -6,6 +6,14 @@ public class IngredientHolder : MonoBehaviour, IPickupable
 {
     // Holds the ingredientBeingHeld for the prefab
     public IngredientSO ingredient;
+    private Rigidbody _rb;
+    private Collider _collider;
+
+    private void Start()
+    {
+        _rb = GetComponent<Rigidbody>();
+        _collider = GetComponent<Collider>();
+    }
 
     public bool AlreadyActive()
     {
@@ -14,13 +22,15 @@ public class IngredientHolder : MonoBehaviour, IPickupable
 
     public void Pickup(InteractionDetector player)
     {
-        GetComponent<Rigidbody>().isKinematic = true;
+        _rb.isKinematic = true;
+        _collider.enabled = false;
         player.PickUpIngredient(this.gameObject);
     }
 
     public void Drop(Transform newParent)
     {
         transform.parent = newParent;
-        GetComponent<Rigidbody>().isKinematic = false;
+        _collider.enabled = true;
+        _rb.isKinematic = false;
     }
 }
