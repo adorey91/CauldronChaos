@@ -23,10 +23,14 @@ public class ScoreManager : MonoBehaviour
 
     private int _score = 0;
     private int _people = 0;
-    private int _currentDay = 0;
+    private int _currentDay;
 
     private int _totalScore = 0;
     private int _totalPeople = 0;
+
+    // Previous totals
+    private int _previousScore = 0;
+    private int _previousPeopleCount = 0;
 
     private void Start()
     {
@@ -43,7 +47,6 @@ public class ScoreManager : MonoBehaviour
     {
         Actions.OnCustomerServed += UpdateScore;
         Actions.OnNoCustomerServed += UpdateNoPersonServed;
-        Actions.OnStartDay += RestartDay;
         Actions.OnEndDay += UpdateEODText;
     }
 
@@ -51,7 +54,6 @@ public class ScoreManager : MonoBehaviour
     {
         Actions.OnCustomerServed -= UpdateScore;
         Actions.OnNoCustomerServed -= UpdateNoPersonServed;
-        Actions.OnStartDay -= RestartDay;
         Actions.OnEndDay -= UpdateEODText;
     }
 
@@ -61,7 +63,7 @@ public class ScoreManager : MonoBehaviour
             _score += goodPotionScore;
         else
             _score += badPotionScore;
-         
+
         _people++;
         _totalScore += _score;
         _totalPeople += _people;
@@ -78,21 +80,34 @@ public class ScoreManager : MonoBehaviour
 
     private void UpdateEODText()
     {
+        bool increaseDayCount;
+        if (_totalScore <= 0)
+        {
+            _totalScore = _previousScore;
+            _totalPeople = _previousPeopleCount;
+            increaseDayCount = false;
+        }
+        else
+            increaseDayCount = true;
+
+
+
         eodTitle.text = $"End of Day {_currentDay}";
         peopleServedEOD.text = $"People Served: {_people}";
+
         eodScoreText.text = $"Score: {_score}\nTotal Score: {_totalScore}";
 
         _people = 0;
         _score = 0;
 
-        _currentDay++;
+        if (increaseDayCount)
+            _currentDay++;
     }
 
-    private void RestartDay()
+    public void RestartDay()
     {
         dayText.text = $"Day: {_currentDay}/{daysToPlay}";
         scoreText.text = $"Score: {_score}";
         peopleServedText.text = $"People Served: {_people}";
     }
-
 }

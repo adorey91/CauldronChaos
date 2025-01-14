@@ -6,9 +6,11 @@ using UnityEngine;
 [Serializable]
 public class CustomTimer
 {
+    // duration is measured in seconds
     public float duration;
     public float elapsedTime;
     public bool isRunning;
+    public float timeRemaining;
 
     public CustomTimer(float newDuration, bool isInMinutes)
     {
@@ -42,7 +44,8 @@ public class CustomTimer
         if (!isRunning)
             return 0;
 
-        return Mathf.Max(duration - elapsedTime, 0);
+        timeRemaining = Mathf.Max(duration - elapsedTime, 0);
+        return timeRemaining;
     }
 
     public void ResetTimer()

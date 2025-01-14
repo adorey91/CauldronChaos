@@ -28,10 +28,12 @@ public class OrderManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dayTimerText;
     private CustomTimer _dayTimer;
     [SerializeField] private RectTransform timerHandRect;
+    bool timerStarted = false;
+    float rotationSpeed;
+    float secondsToDegrees = 180f / 60f;
 
-    private float minutesToDegrees;
-    private float _minAngle = 90;
-    private float _maxAngle = -90;
+    private Quaternion _minAngle = Quaternion.Euler(0, 0, 90);
+    private Quaternion _maxAngle = Quaternion.Euler(0, 0, -90);
 
     private bool _startCustomer = false;
 
@@ -49,6 +51,8 @@ public class OrderManager : MonoBehaviour
         _newCustomerTimer = new CustomTimer(newCustomerTime, false);
         _availableRecipes = recipeManager.FindAvailableRecipes();
         _activeOrders.Clear();
+
+        timerHandRect.localRotation = _minAngle;
     }
 
     private void OnEnable()
@@ -68,13 +72,14 @@ public class OrderManager : MonoBehaviour
         {
             Debug.Log("Day is over");
             Actions.OnEndDay?.Invoke();
-            EndDay();
+            timerStarted = false;
             _startCustomer = false;
+            EndDay();
         }
-        else
+
+        if (timerStarted)
         {
             float remainingTime = _dayTimer.GetRemainingTime();
-            float timePercentage = remainingTime / (minutesPerDay * 60);
 
             // Convert remaining time into minutes and seconds
             int minutes = Mathf.FloorToInt(remainingTime / 60);
@@ -82,8 +87,10 @@ public class OrderManager : MonoBehaviour
 
             dayTimerText.text = $"{minutes:00}:{seconds:00}";
 
-            float rotationAngle = Mathf.Lerp(_minAngle, _maxAngle, timePercentage);
-            timerHandRect.rotation = Quaternion.RotateTowards(timerHandRect.rotation, Quaternion.Euler(0, 0, rotationAngle), Time.deltaTime * 2);
+            float rotationAngle = remainingTime * secondsToDegrees;
+
+            // This works but it seems backwards? Rotate towards should be from -> to but this is to -> from. Will need to investigate
+            timerHandRect.rotation = Quaternion.RotateTowards(_maxAngle, _minAngle, rotationAngle);
 
         }
 
@@ -104,7 +111,7 @@ public class OrderManager : MonoBehaviour
     {
         // starts the "work day" timer
         _dayTimer.StartTimer();
-
+        timerStarted = true;
         // starts the customer timer
         _startCustomer = true;
         GenerateOrder();
@@ -113,8 +120,9 @@ public class OrderManager : MonoBehaviour
 
     private void EndDay()
     {
+        timerStarted = false;
         RemoveAllOrders();
-        timerHandRect.transform.rotation = Quaternion.Euler(0, 0, _minAngle);
+        timerHandRect.transform.rotation = _minAngle;
     }
 
     // Generate a random order for a customer
