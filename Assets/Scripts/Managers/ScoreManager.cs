@@ -59,13 +59,20 @@ public class ScoreManager : MonoBehaviour
 
     private void UpdateScore(bool wasPotionGood)
     {
+        int _addToTotalScore;
         if (wasPotionGood)
+        {
             _score += goodPotionScore;
+            _addToTotalScore = goodPotionScore;
+        }
         else
+        {
             _score += badPotionScore;
+            _addToTotalScore = badPotionScore;
+        }
 
         _people++;
-        _totalScore += _score;
+        _totalScore += _addToTotalScore;
         _totalPeople += _people;
 
         scoreText.text = "Score: " + _score;
