@@ -100,8 +100,6 @@ public class AbovePlayerUI : MonoBehaviour
             _abovePlayerSprite.sprite = keyboardSprite;
             _abovePlayerText.text = keyboardPickupText;
         }
-
-        _abovePlayerSprite.preserveAspect = true;
     }
     #endregion
 
@@ -143,7 +141,11 @@ public class AbovePlayerUI : MonoBehaviour
 
     private void SetWidth(float width)
     {
-        if (_abovePlayerRectTransform == null) return;
+
+        if (width == 0.5f)
+            _abovePlayerSprite.preserveAspect = true;
+        else
+            _abovePlayerSprite.preserveAspect = false;
 
         _abovePlayerRectTransform.sizeDelta = new Vector2(width, 0.5f);
     }

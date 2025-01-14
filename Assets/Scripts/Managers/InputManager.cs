@@ -16,6 +16,7 @@ public class InputManager : MonoBehaviour
 
 
     //function that checks if instance exists and spawns one if it does not
+    // this is spawning a new input manager when quitting play
     public static InputManager instance
     {
         get
@@ -45,8 +46,8 @@ public class InputManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        //add to don't destroy on load
-        DontDestroyOnLoad(this);
+        // This isnt needed as it's now nested under the game manager.
+        //DontDestroyOnLoad(this);
     }
 
     //function that reads the move input

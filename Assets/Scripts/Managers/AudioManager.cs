@@ -61,8 +61,8 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        //add to don't destroy on load
-        DontDestroyOnLoad(this);
+        // This isnt needed as it's now nested under the game manager.
+        //DontDestroyOnLoad(this);
     }
 
     // Start is called before the first frame update
