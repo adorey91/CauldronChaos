@@ -10,7 +10,7 @@ public class SFXManager : MonoBehaviour
     [SerializeField] private List<AudioSFXPlayer> sfx_Players;
 
     //Function that finds the target SFX player and makes it play specified audio-clip
-    public void PlaySFX(SFX_Type targetSFX, bool oneShot)
+    public void PlaySFX(SFX_Type targetSFX, AudioClip clip, bool oneShot)
     {
         for (int i = 0; i < sfx_Players.Count; i++)
         {
@@ -23,11 +23,11 @@ public class SFXManager : MonoBehaviour
                 if (oneShot)
                 {
                     //Debug.Log("Playing SFX");
-                    sfx_Players[i].PlayOneShot();
+                    sfx_Players[i].PlayOneShot(clip);
                 }
                 else
                 {
-                    sfx_Players[i].Play();
+                    sfx_Players[i].Play(clip);
                 }
 
                 return;
@@ -35,8 +35,8 @@ public class SFXManager : MonoBehaviour
         }
     }
 
-    public void PlayMenuSFX()
+    public void PlayMenuSFX(AudioClip clip)
     {
-        PlaySFX(SFX_Type.UISounds, true);
+        PlaySFX(SFX_Type.UISounds, clip, true);
     }
 }
