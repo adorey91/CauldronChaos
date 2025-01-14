@@ -127,6 +127,8 @@ public class Cauldron : MonoBehaviour, IInteractable
         else
         {
             _nextStep = null;
+
+            _currentStepIndex++;
             HandleIncorrectStep(ingredient, player);
         }
     }
@@ -134,7 +136,9 @@ public class Cauldron : MonoBehaviour, IInteractable
     private void HandleIncorrectStep(IngredientSO ingredient, InteractionDetector player)
     {
         _isRecipeGood = false;
-        _addedIngredients.Add(ingredient);
+
+        if(ingredient != null)
+            _addedIngredients.Add(ingredient);
 
         if (ingredient.ingredientName == "Bottle")
             CompleteRecipe(player);
