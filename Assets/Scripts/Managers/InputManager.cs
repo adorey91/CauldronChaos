@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,10 +9,11 @@ public class InputManager : MonoBehaviour
     //static variable holding an instance of the InputManager;
     private static InputManager _instance;
 
-    //input variables
-    private InputAction.CallbackContext moveInput;
-    private InputAction.CallbackContext interactInput;
-    private InputAction.CallbackContext pickupInput;
+    //input actions
+    public event Action<InputAction.CallbackContext> MoveAction;
+    public event Action<InputAction.CallbackContext> InteractAction;
+    public event Action<InputAction.CallbackContext> PickupAction;
+
 
     //function that checks if instance exists and spawns one if it does not
     public static InputManager instance
@@ -50,37 +52,30 @@ public class InputManager : MonoBehaviour
     //function that reads the move input
     public void MoveInput(InputAction.CallbackContext input)
     {
-        moveInput = input;
+        MoveAction?.Invoke(input);
     }
 
     //function that reads the interact input
     public void InteractInput(InputAction.CallbackContext input)
     {
-        interactInput = input;
+        //interactInput = input;
+        if(input.performed)
+            Actions.OnInteract?.Invoke();
     }
 
     //function that reads the interact input
     public void PickupInput(InputAction.CallbackContext input)
     {
-        pickupInput = input;
+        //pickupInput = input;
+
+        if (input.performed)
+            Actions.OnPickup?.Invoke();
     }
 
-    //function that returns the input for movement
-    public InputAction.CallbackContext GetMoveInput()
+
+    public void PauseInput(InputAction.CallbackContext input)
     {
-        return moveInput;
+        if (input.performed)
+            Actions.OnPause?.Invoke();
     }
-
-    //function that returns the input for interact
-    public InputAction.CallbackContext GetInteractInput()
-    {
-        return interactInput;
-    }
-
-    //function that returns the input for pickup
-    public bool GetPickupInput()
-    {
-        return pickupInput.performed;
-    }
-
 }
