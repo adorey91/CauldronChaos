@@ -17,8 +17,14 @@ public class InteractionDetector : MonoBehaviour
     [Header("Holder for dropped items")]
     [SerializeField] private GameObject droppedItems;
 
+    private AbovePlayerUI _abovePlayerUI;
     private IInteractable _interactablesInRange;
     private IPickupable _pickupablesInRange;
+
+    private void Start()
+    {
+        _abovePlayerUI = GetComponentInChildren<AbovePlayerUI>();
+    }
 
     private void OnEnable()
     {
@@ -58,14 +64,14 @@ public class InteractionDetector : MonoBehaviour
             {
                 pickupable.Drop(droppedItems.transform);
 
-                if(childObj == ingredientGO || childObj == potionInHand)
+                if (childObj == ingredientGO || childObj == potionInHand)
                 {
-                    if(childObj == ingredientGO)
+                    if (childObj == ingredientGO)
                     {
                         ingredientGO = null;
                         ingredientInHand = null;
                     }
-                    else if(childObj == potionInHand)
+                    else if (childObj == potionInHand)
                     {
                         potionInHand = null;
                     }
@@ -121,6 +127,8 @@ public class InteractionDetector : MonoBehaviour
         if (ingredientInHand == null) return null;
 
         ingredientGO.SetActive(false);
+        _abovePlayerUI.DisableSprite();
+        _abovePlayerUI.SetStirring();
 
         return ingredientInHand;
     }
@@ -150,6 +158,7 @@ public class InteractionDetector : MonoBehaviour
         if (potionInHand == null) return null;
 
         potionInHand.SetActive(false);
+        _abovePlayerUI.DisableSprite();
         return potionInHand;
     }
 
@@ -179,16 +188,29 @@ public class InteractionDetector : MonoBehaviour
         GameObject interactableObj = other.transform.parent.gameObject;
 
         if (interactableObj.TryGetComponent(out IInteractable interactable))
+        {
             _interactablesInRange = interactable;
 
+            if (_interactablesInRange.CanBeInteractedWith(this))
+                _abovePlayerUI.SetInteraction();
+            else
+                _abovePlayerUI.SetStirring();
+        }
+
         if (interactableObj.TryGetComponent(out IPickupable pickUp))
+        {
             _pickupablesInRange = pickUp;
+
+            if (!HasIngredient() && !HasPotion())
+                _abovePlayerUI.SetPickup();
+        }
     }
 
-    private void OnTriggerExit(Collider other)
+       private void OnTriggerExit(Collider other)
     {
         GameObject interactableObj = other.transform.parent.gameObject;
-
+        _abovePlayerUI.DisableSprite();
+        _abovePlayerUI.DisableStirring();
         if (interactableObj.TryGetComponent(out IInteractable interactable))
         {
             if (_interactablesInRange == interactable)
@@ -208,11 +230,11 @@ public class InteractionDetector : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         Destroy(pickup);
 
-        if(pickup == potionInHand)
+        if (pickup == potionInHand)
         {
             potionInHand = null;
         }
-        if(pickup == ingredientGO)
+        if (pickup == ingredientGO)
         {
             ingredientGO = null;
             ingredientInHand = null;

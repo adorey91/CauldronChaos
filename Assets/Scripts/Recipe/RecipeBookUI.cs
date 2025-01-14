@@ -19,7 +19,6 @@ public class RecipeBookUI : MonoBehaviour
     [SerializeField] private GameObject nextPage;
 
     private int _pageNumber = 0;
-    private int _recipeNumber = 0;
 
     // Recipe UI Components
     [SerializeField] private RecipeUI _recipeUiLeft;
@@ -38,65 +37,113 @@ public class RecipeBookUI : MonoBehaviour
         SetRecipes();
     }
 
-    // this will need to be reworked as currently it will only fill the right side.
+    private void OnEnable()
+    {
+        Actions.NextPage += NextPage;
+        Actions.PreviousPage += PreviousPage;
+    }
+
+    private void OnDisable()
+    {
+        Actions.NextPage -= NextPage;
+        Actions.PreviousPage -= PreviousPage;
+    }
+
     public void SetRecipes()
     {
-        _recipeNumber = 0;
+        ClearPage(); // Clear current UI elements
 
-        for (int i = 0; i < 2; i++)
-         {
-            if (i > availableRecipes.Length - 1) return;
+        int firstRecipeIndex = _pageNumber * 2; // First recipe on the current screen
+        int secondRecipeIndex = firstRecipeIndex + 1; // Second recipe on the current screen
 
-            if (i == 0)
-                FillLeftPage();
-            else
-                FillRightPage();
-
-            _recipeNumber++;
+        // Fill left page if a recipe exists
+        if (firstRecipeIndex < availableRecipes.Length)
+        {
+            FillLeftPage(firstRecipeIndex);
         }
+
+        // Fill right page if a recipe exists
+        if (secondRecipeIndex < availableRecipes.Length)
+        {
+            FillRightPage(secondRecipeIndex);
+        }
+
+        UpdatePageButtons();
     }
 
-    private void FillRightPage()
-    {
-        recipeUiRight.SetActive(true);
-        _recipeUiRight.recipeName.text = availableRecipes[_recipeNumber].recipeName;
-        _recipeUiRight.potionIcon.sprite = availableRecipes[_recipeNumber].potionIcon;
 
-        CreateIngredientUI(_recipeUiRight);
-    }
-
-    private void FillLeftPage()
+    private void FillLeftPage(int recipeIndex)
     {
         recipeUiLeft.SetActive(true);
-        _recipeUiLeft.recipeName.text = availableRecipes[_recipeNumber].recipeName;
-        _recipeUiLeft.potionIcon.sprite = availableRecipes[_recipeNumber].potionIcon;
-        CreateIngredientUI(_recipeUiLeft);
+        _recipeUiLeft.recipeName.text = availableRecipes[recipeIndex].recipeName;
+        _recipeUiLeft.potionIcon.sprite = availableRecipes[recipeIndex].potionIcon;
+        CreateIngredientUI(_recipeUiLeft, recipeIndex);
     }
 
-
-    private void CreateIngredientUI(RecipeUI side)
+    private void FillRightPage(int recipeIndex)
     {
-        int totalSteps = availableRecipes[_recipeNumber].steps.Length;
+        recipeUiRight.SetActive(true);
+        _recipeUiRight.recipeName.text = availableRecipes[recipeIndex].recipeName;
+        _recipeUiRight.potionIcon.sprite = availableRecipes[recipeIndex].potionIcon;
+        CreateIngredientUI(_recipeUiRight, recipeIndex);
+    }
 
-        // Loop through all UI elements
-        for (int i = 0; i < side.recipeStepUI.Length; i++)
+    private void ClearPage()
+    {
+        recipeUiRight.SetActive(false);
+        recipeUiLeft.SetActive(false);
+    }
+
+    private void CreateIngredientUI(RecipeUI recipeUI, int recipeIndex)
+    {
+        int totalSteps = availableRecipes[recipeIndex].steps.Length;
+
+        for (int i = 0; i < recipeUI.recipeStepUI.Length; i++)
         {
-            // If the current index is within the number of steps, activate and update text
             if (i < totalSteps)
             {
-                side.recipeStepUI[i].SetActive(true);
-                side.recipeStepUI[i].GetComponentInChildren<TextMeshProUGUI>().text = $"{i + 1}";
-                IngredientSO stepIngredient = availableRecipes[_recipeNumber].steps[i].ingredient;
-                side.recipeStepUI[i].GetComponent<Image>().sprite = stepIngredient.icon;
-
+                recipeUI.recipeStepUI[i].SetActive(true);
+                var stepSprite = availableRecipes[recipeIndex].steps[i].instructionSprite;
+                var stepImage = recipeUI.recipeStepUI[i].GetComponent<Image>();
+                stepImage.sprite = stepSprite;
+                stepImage.preserveAspect = true;
             }
-            // Otherwise, deactivate the UI element
             else
             {
-                side.recipeStepUI[i].SetActive(false);
+                recipeUI.recipeStepUI[i].SetActive(false);
             }
         }
+    }
 
+    #region Navigation
+    public void NextPage()
+    {
+        if ((_pageNumber + 1) * 2 < availableRecipes.Length)
+        {
+            _pageNumber++;
+            SetRecipes();
+        }
+    }
+
+    public void PreviousPage()
+    {
+        if (_pageNumber > 0)
+        {
+            _pageNumber--;
+            SetRecipes();
+        }
+    }
+
+    private void UpdatePageButtons()
+    {
+        previousPage.SetActive(_pageNumber > 0);
+        nextPage.SetActive((_pageNumber + 1) * 2 < availableRecipes.Length);
+    }
+    #endregion
+
+    private IEnumerator PageDelay()
+    {
+        yield return new WaitForSeconds(0.4f);
     }
 }
 

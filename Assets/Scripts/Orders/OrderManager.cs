@@ -27,13 +27,11 @@ public class OrderManager : MonoBehaviour
     [SerializeField] private int minutesPerDay = 5;
     [SerializeField] private TextMeshProUGUI dayTimerText;
     private CustomTimer _dayTimer;
-    [SerializeField] private GameObject timerHand;
     [SerializeField] private RectTransform timerHandRect;
 
     private float minutesToDegrees;
     private float _minAngle = 90;
     private float _maxAngle = -90;
-    [SerializeField] private int daysToPlay = 5;
 
     private bool _startCustomer = false;
 
@@ -66,17 +64,11 @@ public class OrderManager : MonoBehaviour
     // All input.getkeys are testing inputs. They will be removed later.
     private void Update()
     {
-        //if(Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    StartDay();
-        //}
-
-
         if (_dayTimer.UpdateTimer())
         {
             Debug.Log("Day is over");
             Actions.OnEndDay?.Invoke();
-            RemoveAllOrders();
+            EndDay();
             _startCustomer = false;
         }
         else
@@ -122,6 +114,7 @@ public class OrderManager : MonoBehaviour
     private void EndDay()
     {
         RemoveAllOrders();
+        timerHandRect.transform.rotation = Quaternion.Euler(0, 0, _minAngle);
     }
 
     // Generate a random order for a customer
@@ -130,7 +123,7 @@ public class OrderManager : MonoBehaviour
         // If there are no recipes, do nothing
         if (_availableRecipes.Length == 0) return;
 
-        GameObject customerObject = Instantiate(customerPrefab[Random.Range(0, customerPrefab.Length)], orderCounter.GetNextPosition(), Quaternion.identity, orderCounter.ParentPosition());
+        GameObject customerObject = Instantiate(customerPrefab[Random.Range(0, customerPrefab.Length)], orderCounter.GetNextPosition(), transform.rotation * Quaternion.Euler(0, 180f, 0), orderCounter.ParentPosition());
         Customer customer = customerObject.GetComponent<Customer>();
         RecipeSO assignedOrder;
 

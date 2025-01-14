@@ -25,9 +25,12 @@ public class ScoreManager : MonoBehaviour
     private int _people = 0;
     private int _currentDay = 0;
 
+    private int _totalScore = 0;
+    private int _totalPeople = 0;
+
     private void Start()
     {
-        _currentDay = 0;
+        _currentDay = 1;
         _score = 0;
         _people = 0;
 
@@ -60,6 +63,8 @@ public class ScoreManager : MonoBehaviour
             _score += badPotionScore;
          
         _people++;
+        _totalScore += _score;
+        _totalPeople += _people;
 
         scoreText.text = "Score: " + _score;
         peopleServedText.text = "People Served: " + _people;
@@ -75,15 +80,16 @@ public class ScoreManager : MonoBehaviour
     {
         eodTitle.text = $"End of Day {_currentDay}";
         peopleServedEOD.text = $"People Served: {_people}";
-        eodScoreText.text = $"Score: {_score}";
+        eodScoreText.text = $"Score: {_score}\nTotal Score: {_totalScore}";
+
+        _people = 0;
+        _score = 0;
+
+        _currentDay++;
     }
 
     private void RestartDay()
     {
-        _currentDay++;
-        _score = 0;
-        _people = 0;
-
         dayText.text = $"Day: {_currentDay}/{daysToPlay}";
         scoreText.text = $"Score: {_score}";
         peopleServedText.text = $"People Served: {_people}";
