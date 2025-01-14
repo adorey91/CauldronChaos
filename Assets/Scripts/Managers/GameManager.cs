@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 
     public enum GameState { MainMenu, Gameplay, EndOfDay, Pause, Settings, GameOver }
     public GameState gameState;
+    private GameState currentState;
     private GameState _previousState;
     private GameState _newState;
 
@@ -29,7 +30,22 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        SetState(GameState.MainMenu);
+        SetState(GameState.Gameplay);
+        //SetState(GameState.MainMenu);
+        //currentState = gameState;
+    }
+
+
+    private void OnEnable()
+    {
+        Actions.OnPause += EscapeState;
+        Actions.OnEndDay += () => SetState(GameState.EndOfDay);
+    }
+
+    private void OnDisable()
+    {
+        Actions.OnPause -= EscapeState;
+        Actions.OnEndDay -= () => SetState(GameState.EndOfDay);
     }
 
     public void LoadState(string state)
@@ -48,7 +64,7 @@ public class GameManager : MonoBehaviour
     }
 
     // this should be called when hitting the pause button. 
-    public void EscapeState()
+    private void EscapeState()
     {
         switch (gameState)
         {

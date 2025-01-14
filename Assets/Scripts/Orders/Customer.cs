@@ -13,8 +13,7 @@ public class Customer : MonoBehaviour
         this.order = order;
     }
 
-    //public void OrderComplete(PotionOutput potionGiven)
-    public void OrderComplete(PotionOutputTest potionGiven)
+    public void OrderComplete(PotionOutput potionGiven)
     {
         if (potionGiven.isPotionGood)
         {
@@ -24,6 +23,8 @@ public class Customer : MonoBehaviour
         {
             HandleFailure();
         }
+
+        Actions.OnCustomerServed?.Invoke(potionGiven.isPotionGood);
     }
 
     private void HandleFailure()

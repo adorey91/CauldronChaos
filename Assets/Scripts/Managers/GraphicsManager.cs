@@ -8,28 +8,23 @@ public class GraphicsManager : MonoBehaviour
 {
     [SerializeField] private TMP_Dropdown resolutionDropdown;
 
-    private Resolution[] _resolutions;
-    private List<Resolution> _filteredResolutions = new();
+    private List<Resolution> _resolutionsList = new();
 
-    private float _currentRefreshRate;
     private int _currentResolutionIndex;
     private bool _isFullScreen = true;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        _resolutions = Screen.resolutions;
-
-        resolutionDropdown.ClearOptions();
-        _currentRefreshRate = (float)Screen.currentResolution.refreshRateRatio.value;
-
-        for (int i = 0; i < _resolutions.Length; i++)
+        for (int i = 0; i < Screen.resolutions.Length; i++)
         {
-            if (_resolutions[i].refreshRateRatio.value == _currentRefreshRate)
-                _filteredResolutions.Add(_resolutions[i]);
+            _resolutionsList.Add(Screen.resolutions[i]);
         }
+        resolutionDropdown.ClearOptions();
 
-        _filteredResolutions.Sort((a, b) =>
+       
+
+        _resolutionsList.Sort((a, b) =>
         {
             if (a.width != b.width)
                 return b.width.CompareTo(a.width);
@@ -38,27 +33,44 @@ public class GraphicsManager : MonoBehaviour
         });
 
         List<string> options = new List<string>();
-        for (int i = 0; i < _filteredResolutions.Count; i++)
+        for (int i = 0; i < _resolutionsList.Count; i++)
         {
-            string resolutionOption = _filteredResolutions[i].width + "x" + _filteredResolutions[i].height + " " + _filteredResolutions[i].refreshRateRatio.value.ToString("0.##") + " Hz";
+            string resolutionOption = _resolutionsList[i].width + "x" + _resolutionsList[i].height + " ";
             options.Add(resolutionOption);
-            if (_filteredResolutions[i].width == Screen.width && _filteredResolutions[i].height == Screen.height && (float)_filteredResolutions[i].refreshRateRatio.value == _currentRefreshRate)
+            if (_resolutionsList[i].width == Screen.width && _resolutionsList[i].height == Screen.height)
             {
                 _currentResolutionIndex = i;
             }
         }
 
         resolutionDropdown.AddOptions(options);
-        resolutionDropdown.value = _currentResolutionIndex = 0;
-        resolutionDropdown.RefreshShownValue();
-        SetResolution(_currentResolutionIndex);
+
+        // Ensure we have a valid index
+        if (_resolutionsList.Count > 0)
+        {
+            resolutionDropdown.value = _currentResolutionIndex = Mathf.Clamp(_currentResolutionIndex, 0, _resolutionsList.Count - 1);
+            resolutionDropdown.RefreshShownValue();
+            SetResolution(_currentResolutionIndex);
+        }
+        else
+        {
+            Debug.LogError("No valid resolutions available to set.");
+        }
     }
+
 
     public void SetResolution(int resolutionIndex)
     {
-        Resolution resolution = _filteredResolutions[resolutionIndex];
+        if (resolutionIndex < 0 || resolutionIndex >= _resolutionsList.Count)
+        {
+            Debug.LogError($"Invalid resolution index: {resolutionIndex}");
+            return;
+        }
+
+        Resolution resolution = _resolutionsList[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, _isFullScreen);
     }
+
 
     public void SetWindowed(bool value)
     {

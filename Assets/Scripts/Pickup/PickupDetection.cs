@@ -15,7 +15,7 @@ public class PickupDetection : MonoBehaviour
         //if component exists add to list
         if (pickup != null)
         {
-            //Debug.Log("Pickup detected");
+            //Debug.Log("Pickup_Drop detected");
             pickupObjects.Add(pickup);
         }
     }
@@ -29,7 +29,7 @@ public class PickupDetection : MonoBehaviour
         //if component exists remove to list
         if (pickup != null)
         {
-            //Debug.Log("Pickup no longer detected");
+            //Debug.Log("Pickup_Drop no longer detected");
             pickupObjects.Remove(pickup);
         }
     }

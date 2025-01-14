@@ -158,6 +158,86 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 679e510d-7029-4073-9093-066d1e4e1497
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5769185560601970}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: PauseInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 09e48c3e-395a-44af-ad65-2ae0d53066d8
+    m_ActionName: Player/Pause[/Keyboard/escape,/XInputControllerWindows/start]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5769185560601970}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: StirClockwiseInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 659ed6e1-5ae7-4fbd-a7a6-e8900ebaab52
+    m_ActionName: Player/StirClockwise[/Keyboard/e,/XInputControllerWindows/rightTrigger]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5769185560601970}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: StirCounterClockwiseInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ebef7ccd-11fb-43cc-98f4-d9fd9320b0a0
+    m_ActionName: Player/StirCounterClockwise[/Keyboard/q,/XInputControllerWindows/leftTrigger]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5769185560601970}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: TurnPreviousPage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a316ca22-ca9a-41a8-ba14-c312fe36b393
+    m_ActionName: Player/PreviousPage[/XInputControllerWindows/rightShoulder]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5769185560601970}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: TurnNextPage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: b7b41fea-2e99-4bbf-a76e-a53c285e4c2a
+    m_ActionName: Player/NextPage
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
