@@ -10200,6 +10200,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3843896144210445743, guid: 2799942a5de093f46a85f6f5ded04166, type: 3}
+      propertyPath: sfx_Players.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3843896144210445743, guid: 2799942a5de093f46a85f6f5ded04166, type: 3}
+      propertyPath: sfx_Players.Array.data[3]
+      value: 
+      objectReference: {fileID: 1429137500}
+    - target: {fileID: 3843896144210445743, guid: 2799942a5de093f46a85f6f5ded04166, type: 3}
+      propertyPath: sfx_Players.Array.data[4]
+      value: 
+      objectReference: {fileID: 1659008415}
     - target: {fileID: 7427524997861789097, guid: 2799942a5de093f46a85f6f5ded04166, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 2
@@ -10727,6 +10739,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fc4d84024dde4bc4a88ae2a72af66913, type: 3}
   m_PrefabInstance: {fileID: 1425002917}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1429137500 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8022159044085575242, guid: 2799942a5de093f46a85f6f5ded04166, type: 3}
+  m_PrefabInstance: {fileID: 1392076909}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e68965b5cba1684aaacefb66a3bf40f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1429899361
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12627,6 +12650,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b775e4d62665c144d900129ff0dbec28, type: 3}
   m_PrefabInstance: {fileID: 1654256542}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1659008415 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1320365031426538030, guid: 2799942a5de093f46a85f6f5ded04166, type: 3}
+  m_PrefabInstance: {fileID: 1392076909}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e68965b5cba1684aaacefb66a3bf40f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1685654532
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16656,6 +16690,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1353163748795567340, guid: 7ce4f7651a1f047449c653277d1cc9ae, type: 3}
   m_PrefabInstance: {fileID: 4356574227339288806}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &543450652189345452 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3275504426634709544, guid: 7ce4f7651a1f047449c653277d1cc9ae, type: 3}
+  m_PrefabInstance: {fileID: 4356574227339288806}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 953697c0e7782b748887310ece8ca880, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &543450652189345453 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1379544504974567125, guid: 7ce4f7651a1f047449c653277d1cc9ae, type: 3}
+  m_PrefabInstance: {fileID: 4356574227339288806}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 953697c0e7782b748887310ece8ca880, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &543450652365990093
 Transform:
   m_ObjectHideFlags: 0
@@ -16979,6 +17035,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cauldron
       objectReference: {fileID: 0}
+    - target: {fileID: 7651719252592166061, guid: 7ce4f7651a1f047449c653277d1cc9ae, type: 3}
+      propertyPath: FinishPotionSounds
+      value: 
+      objectReference: {fileID: 543450652189345452}
+    - target: {fileID: 7651719252592166061, guid: 7ce4f7651a1f047449c653277d1cc9ae, type: 3}
+      propertyPath: addIngredientSounds
+      value: 
+      objectReference: {fileID: 543450652189345453}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

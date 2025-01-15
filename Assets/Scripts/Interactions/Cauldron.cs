@@ -157,6 +157,10 @@ public class Cauldron : MonoBehaviour, IInteractable
         {
             Debug.Log("Good potion");
             completedPotion = Instantiate(_currentRecipe.potionPrefab, player.GetHandPosition());
+
+            //calling audiomanager for sound
+            AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ItemInteraction, FinishPotionSounds.PickAudioClip(), true);
+            Debug.Log("Playing sound");
         }
         else
         {
