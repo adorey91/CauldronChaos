@@ -23,6 +23,11 @@ public class Cauldron : MonoBehaviour, IInteractable
     private bool _isRecipeGood;
     private int _stirCounter;
 
+    //sound libraries and clips
+    [Header("Sounds")]
+    [SerializeField] private SFXLibrary addIngredientSounds;
+    [SerializeField] private SFXLibrary FinishPotionSounds;
+
     public void Start()
     {
         _recipeManager = FindObjectOfType<RecipeManager>();
