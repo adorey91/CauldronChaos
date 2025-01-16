@@ -132,5 +132,4 @@ public class GameManager : MonoBehaviour
         Debug.Log("Quitting Game");
         Application.Quit();
     }
-
 }
