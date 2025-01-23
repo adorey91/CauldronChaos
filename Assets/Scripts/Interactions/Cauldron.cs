@@ -23,6 +23,11 @@ public class Cauldron : MonoBehaviour, IInteractable
     private bool _isRecipeGood;
     private int _stirCounter;
 
+    //sound libraries and clips
+    [Header("Sounds")]
+    [SerializeField] private SFXLibrary addIngredientSounds;
+    [SerializeField] private SFXLibrary FinishPotionSounds;
+
     public void Start()
     {
         _recipeManager = FindObjectOfType<RecipeManager>();
@@ -152,6 +157,10 @@ public class Cauldron : MonoBehaviour, IInteractable
         {
             Debug.Log("Good potion");
             completedPotion = Instantiate(_currentRecipe.potionPrefab, player.GetHandPosition());
+
+            //calling audiomanager for sound
+            AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ItemInteraction, FinishPotionSounds.PickAudioClip(), true);
+            Debug.Log("Playing sound");
         }
         else
         {

@@ -4,8 +4,10 @@ using UnityEngine;
 
 public enum SFX_Type
 {
-    Pickup,
-    Drop,
+    PlayerSounds,
+    ShopSounds,
+    StationSounds,
+    ItemInteraction,
     UISounds
 }
 
