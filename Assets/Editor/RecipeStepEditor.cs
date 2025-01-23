@@ -5,16 +5,18 @@ public class RecipeStepEditor : Editor
 {
     SerializedProperty stepType;
     SerializedProperty stirAmount;
-    SerializedProperty ingredient1; // this will need to be renamed
-    SerializedProperty sprite;
+    SerializedProperty stirSprite;
+    SerializedProperty ingredient; // this will need to be renamed
+    SerializedProperty ingredientSprite;
 
     private void OnEnable()
     {
         // Cache serialized properties
         stepType = serializedObject.FindProperty("stepType");
-        ingredient1 = serializedObject.FindProperty("ingredient1");
-        sprite = serializedObject.FindProperty("sprite");
         stirAmount = serializedObject.FindProperty("stirAmount");
+        stirSprite = serializedObject.FindProperty("stirSprite");
+        ingredient = serializedObject.FindProperty("ingredient");
+        ingredientSprite = serializedObject.FindProperty("ingredientSprite");
     }
 
     public override void OnInspectorGUI()
@@ -29,13 +31,14 @@ public class RecipeStepEditor : Editor
         if (stepType.enumValueIndex == (int)RecipeStepSO.StepType.AddIngredient)
         {
             // Show ingredient type
-            EditorGUILayout.PropertyField(ingredient1);
-            EditorGUILayout.PropertyField(sprite);
+            EditorGUILayout.PropertyField(ingredient);
+            EditorGUILayout.PropertyField(ingredientSprite);
         }
         else if (stepType.enumValueIndex == (int)RecipeStepSO.StepType.StirClockwise || stepType.enumValueIndex == (int)RecipeStepSO.StepType.StirCounterClockwise)
         {
             // Show stir amount
             EditorGUILayout.PropertyField(stirAmount);
+            EditorGUILayout.PropertyField(stirSprite);
         }
 
         // Apply changes to the serialized object

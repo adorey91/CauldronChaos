@@ -17,8 +17,8 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI eodScoreText;
 
     [Header("Score Amounts")]
-    [SerializeField] private int goodPotionScore = 10;
-    [SerializeField] private int badPotionScore = 5;
+    [SerializeField] private int tipMultiplier = 2;
+    [SerializeField] private int regularScore = 5;
     [SerializeField] private int noOrderServedScore = -8;
 
     private int _score = 0;
@@ -57,18 +57,19 @@ public class ScoreManager : MonoBehaviour
         Actions.OnEndDay -= UpdateEODText;
     }
 
-    private void UpdateScore(bool wasPotionGood)
+    private void UpdateScore(bool wasGivenOnTime)
     {
         int _addToTotalScore;
-        if (wasPotionGood)
+        if (wasGivenOnTime)
         {
-            _score += goodPotionScore;
-            _addToTotalScore = goodPotionScore;
+            int addedScore = regularScore * tipMultiplier;
+            _score += addedScore;
+            _addToTotalScore = addedScore;
         }
         else
         {
-            _score += badPotionScore;
-            _addToTotalScore = badPotionScore;
+            _score += regularScore;
+            _addToTotalScore = regularScore;
         }
 
         _people++;

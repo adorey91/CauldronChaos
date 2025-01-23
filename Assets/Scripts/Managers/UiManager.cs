@@ -1,170 +1,111 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 
 public class UiManager : MonoBehaviour
 {
+    [Header("Settings")]
+    [SerializeField] private SettingsManager settingsManager;
+
     [Header("Ui Canvas")]
     [SerializeField] private Canvas mainMenu;
     [SerializeField] private Canvas gameplay;
+    [SerializeField] private Canvas intro;
+    [SerializeField] private Canvas levelSelect;
     [SerializeField] private Canvas endOfDay;
     [SerializeField] private Canvas settings;
     [SerializeField] private Canvas gameOver;
     [SerializeField] private Canvas pause;
 
-    [Header("Settings")]
-    [SerializeField] private GameObject settingsPanel;
-    [SerializeField] private GameObject audioPanel;
-    [SerializeField] private GameObject videoPanel;
-    [SerializeField] private GameObject controlsPanel;
-
-    [Header("Recipe UI")]
-    [SerializeField] private GameObject recipeBookUI;
-
-    [Header("Event System")]
-    [SerializeField] private EventSystem eventSystem;
-
-    [Header("Ui First Selected")]
-    [SerializeField] private GameObject menuFirstSelect;
-    [SerializeField] private GameObject pauseFirstSelect;
-    [SerializeField] private GameObject settingsFirstSelect;
-    [SerializeField] private GameObject audioFirstSelect;
-    [SerializeField] private GameObject videoFirstSelect;
-    [SerializeField] private GameObject controlsFirstSelect;
-    [SerializeField] private GameObject endOfDayFirstSelect;
-
-
-    private void Start()
-    {
-        recipeBookUI.SetActive(false);
-    }
-
+    
     // I havent decided if this is a good way to deal with opening and closing logic.
     private void OnEnable()
     {
-        Actions.OnToggleRecipeBook += ToggleRecipeBook;
+        Actions.OnStateChange += UpdateUIForGameState;
     }
 
     private void OnDisable()
     {
-        Actions.OnToggleRecipeBook -= ToggleRecipeBook;
+        Actions.OnStateChange -= UpdateUIForGameState;
+    }
+
+    private void UpdateUIForGameState(GameManager.GameState state)
+    {
+        switch (state)
+        {
+            case GameManager.GameState.MainMenu: MainMenu(); break;
+            case GameManager.GameState.LevelSelect: LevelSelect(); break;
+            case GameManager.GameState.Intro: Intro(); break;
+            case GameManager.GameState.Gameplay: Gameplay(); break;
+            case GameManager.GameState.EndOfDay: EndOfDay(); break;
+            case GameManager.GameState.Pause: Pause(); break;
+            case GameManager.GameState.Settings: Settings(); break;
+            case GameManager.GameState.GameOver: GameOver(); break;
+        }
     }
 
     // Toggles the current active canvas
     private void SetActiveUI(Canvas canvas)
     {
         mainMenu.enabled = false;
+        intro.enabled = false;
+        levelSelect.enabled = false;
         gameplay.enabled = false;
         pause.enabled = false;
         settings.enabled = false;
         gameOver.enabled = false;
         endOfDay.enabled = false;
 
-        // Clears selected button
-        eventSystem.SetSelectedGameObject(null);
-        // Makes sure that any settings panels open are closed
-        SetActiveSettings(null);
-
         canvas.enabled = true;
     }
 
-    // Toggles current active settings
-    private void SetActiveSettings(GameObject panel)
-    {
-        settingsPanel.SetActive(false);
-        audioPanel.SetActive(false);
-        videoPanel.SetActive(false);
-        controlsPanel.SetActive(false);
 
-        if (panel != null)
-            panel.SetActive(true);
-    }
-
-    // State UI Changes. Made internal as they don't need to be accessed in the inspector
+    // State UI Changes.
     #region State_UI_Changes
-    internal void MainMenu()
+    private void MainMenu()
     {
         SetActiveUI(mainMenu);
-        SetFirstSelect(menuFirstSelect);
+        Actions.OnFirstSelect("Menu");
     }
-    internal void Gameplay() => SetActiveUI(gameplay);
-    internal void EndOfDay()
+
+    private void Intro()
+    {
+        SetActiveUI(intro);
+        Actions.OnFirstSelect("Menu");
+    }
+
+    private void LevelSelect()
+    {
+        SetActiveUI(levelSelect);
+        Actions.OnFirstSelect("Menu");
+    }
+
+
+    private void Gameplay()
+    {
+        SetActiveUI(gameplay);
+        Actions.OnFirstSelect("Menu");
+    }
+
+    private void EndOfDay()
     {
         SetActiveUI(endOfDay);
-        SetFirstSelect(endOfDayFirstSelect);
+        Actions.OnFirstSelect("Menu");
     }
-    internal void GameOver() => SetActiveUI(gameOver);
-    internal void Pause()
+    private void GameOver()
+    {
+        SetActiveUI(gameOver);
+        Actions.OnFirstSelect("Menu");
+    }
+
+    private void Pause()
     {
         SetActiveUI(pause);
-        SetFirstSelect(pauseFirstSelect);
+        Actions.OnFirstSelect("Menu");
     }
 
-    internal void Settings()
+    private void Settings()
     {
         SetActiveUI(settings);
-        SetActiveSettings(settingsPanel);
+        settingsManager.OpenSettings();
     }
     #endregion
-
-    // Settings UI Changes. Made public so they can be accessed in the inspector.
-    #region Settings_UI
-    public void OpenSettings()
-    {
-        SetActiveSettings(settingsPanel);
-        SetFirstSelect(settingsFirstSelect);
-
-    }
-
-    public void OpenAudio()
-    {
-        SetActiveSettings(audioPanel);
-        SetFirstSelect(audioFirstSelect);
-    }
-
-    public void OpenVideo()
-    {
-        SetActiveSettings(videoPanel);
-        SetFirstSelect(videoFirstSelect);
-    }
-    public void OpenControls()
-    {
-        SetActiveSettings(controlsPanel);
-        SetFirstSelect(controlsFirstSelect);
-    }
-    #endregion
-
-    public void ToggleRecipeBook()
-    {
-        if (recipeBookUI.activeSelf)
-        {
-            Time.timeScale = 1;
-            recipeBookUI.SetActive(false);
-        }
-        else
-        {
-            Time.timeScale = 0;
-            recipeBookUI.SetActive(true);
-        }
-    }
-
-    private IEnumerator DelayedSetFirstSelect(GameObject firstSelect)
-    {
-        // Ensure the canvas and hierarchy are updated before selection
-        yield return new WaitForEndOfFrame();
-
-        eventSystem.SetSelectedGameObject(firstSelect); // Set the new selection
-    }
-
-    private void SetFirstSelect(GameObject firstSelect)
-    {
-        eventSystem.SetSelectedGameObject(null); // Clear current selection
-        Canvas.ForceUpdateCanvases();
-        if (Gamepad.all.Count == 0) return;
-
-        StartCoroutine(DelayedSetFirstSelect(firstSelect));
-    }
 }

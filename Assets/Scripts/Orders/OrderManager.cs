@@ -72,6 +72,7 @@ public class OrderManager : MonoBehaviour
         {
             Debug.Log("Day is over");
             Actions.OnEndDay?.Invoke();
+            Actions.OnForceStateChange("EndOfDay");
             timerStarted = false;
             _startCustomer = false;
             EndDay();
@@ -167,7 +168,7 @@ public class OrderManager : MonoBehaviour
 
         foreach (var order in _activeOrders)
         {
-            if (order.Recipe == recipe.recipeGiven)
+            if (order.Recipe == recipe.potionInside)
             {
                 Vector3 customerPosition = order.Customer.transform.position;
 

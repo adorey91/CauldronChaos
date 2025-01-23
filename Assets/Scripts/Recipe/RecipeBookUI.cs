@@ -103,7 +103,7 @@ public class RecipeBookUI : MonoBehaviour
             if (i < totalSteps)
             {
                 recipeUI.recipeStepUI[i].SetActive(true);
-                var stepSprite = availableRecipes[recipeIndex].steps[i].instructionSprite;
+                var stepSprite = availableRecipes[recipeIndex].steps[i].ingredientSprite;
                 var stepImage = recipeUI.recipeStepUI[i].GetComponent<Image>();
                 stepImage.sprite = stepSprite;
                 stepImage.preserveAspect = true;

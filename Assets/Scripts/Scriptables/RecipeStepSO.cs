@@ -9,13 +9,10 @@ public class RecipeStepSO : ScriptableObject
     public StepType stepType;
     
     // shows if using stir
-    public Sprite instructionSprite;
-    
+    public Sprite stirSprite;
     public int stirAmount; // Optional, used if the step is stirring
-    public IngredientSO ingredient; // Optional, used if the step is adding an ingredientBeingHeld
 
     // Ingredient
-    public enum IngredientType { bottle, mushroom, eye}
-    public IngredientType ingredient1;
-    public Sprite sprite;
+    public IngredientSO ingredient;
+    public Sprite ingredientSprite;
 }

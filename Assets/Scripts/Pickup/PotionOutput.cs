@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class PotionOutput : MonoBehaviour, IPickupable
 {
-    public bool isPotionGood;
-    public RecipeSO recipeGiven;
+    public RecipeSO potionInside;
     private Rigidbody _rb;
     private Collider _collider;
 
