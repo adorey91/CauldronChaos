@@ -36,6 +36,7 @@ Transform:
   - {fileID: 5540948705014897379}
   - {fileID: 5553907178384609048}
   - {fileID: 4069624946647862603}
+  - {fileID: 5712740330540788573}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5461173424016646132
@@ -52,6 +53,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 8
   rotationSpeed: 720
+  castPos: {fileID: 5712740330540788573}
+  playerRadius: 0.5
+  collisionsLayers:
+    serializedVersion: 2
+    m_Bits: 1
   playerRB: {fileID: 7643185493547467135}
 --- !u!114 &9058191268705570446
 MonoBehaviour:
@@ -92,8 +98,8 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
+  m_Constraints: 116
+  m_CollisionDetection: 1
 --- !u!136 &6014174613540277996
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -565,6 +571,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 4.01
+--- !u!1 &3847411474595135280
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5712740330540788573}
+  m_Layer: 0
+  m_Name: CollisionDetectionOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5712740330540788573
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3847411474595135280}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.9, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6248754792270158461}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3879231702754787444
 GameObject:
   m_ObjectHideFlags: 0
@@ -721,7 +758,8 @@ MonoBehaviour:
   gamepadPickup: {fileID: 21300000, guid: f609c9b3b1675f947a865ec558b5ad90, type: 3}
   gamepadInteract: {fileID: 21300000, guid: cde7469096582e04897fae80dfc34fbe, type: 3}
   gamepadClockwise: {fileID: 21300000, guid: 0ae60af4bd5e539409acc10ec4300105, type: 3}
-  gamepadCounterClockwise: {fileID: 21300000, guid: d29819659aa175a459d7c519a30d70aa, type: 3}
+  gamepadCounterClockwise: {fileID: 21300000, guid: d29819659aa175a459d7c519a30d70aa,
+    type: 3}
   clockwiseImage: {fileID: 3313453745156464389}
   counterClockwiseImage: {fileID: 7801863511506588923}
   _abovePlayerGO: {fileID: 1942453732512842073}
