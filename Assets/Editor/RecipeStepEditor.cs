@@ -24,13 +24,13 @@ public class RecipeStepEditor : Editor
         // Update serialized object
         serializedObject.Update();
 
-        // Show step type and allow selection
+        // Show step ingredient and allow selection
         EditorGUILayout.PropertyField(stepType);
 
-        // Conditionally show other fields based on step type
+        // Conditionally show other fields based on step ingredient
         if (stepType.enumValueIndex == (int)RecipeStepSO.StepType.AddIngredient)
         {
-            // Show ingredient type
+            // Show ingredient ingredient
             EditorGUILayout.PropertyField(ingredient);
             EditorGUILayout.PropertyField(ingredientSprite);
         }

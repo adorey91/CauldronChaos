@@ -4,5 +4,12 @@ using UnityEngine;
 
 public class ChallengeManager : MonoBehaviour
 {
-   
+    public int currentChallengeIndex = 0;
+
+
+
+    public void TurnOnChallenge(int challengeIndex)
+    {
+
+    }
 }

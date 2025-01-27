@@ -337,7 +337,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2aeb5048fe502af4391d2d6130fc2652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ingredient: {fileID: 11400000, guid: 9f6595b33c3a97d428878d57f29fcc9a, type: 2}
+  recipeStepIngredient: {fileID: 11400000, guid: 610915c10d0751b44b86fdcd1393864f,
+    type: 2}
 --- !u!54 &2071458878986324294
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -362,6 +363,6 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1

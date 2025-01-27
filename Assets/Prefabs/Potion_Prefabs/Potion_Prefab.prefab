@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2368319799368350287}
   - component: {fileID: 673819675195865954}
   - component: {fileID: 6996077545047624858}
+  - component: {fileID: 4882632093064161872}
   m_Layer: 0
   m_Name: Potion_Prefab
   m_TagString: Untagged
@@ -95,13 +96,26 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 232629980984179058}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6575f28d0449666458b7c76d0ac6d6ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPotionGood: 0
-  recipeGiven: {fileID: 0}
+  potionInside: {fileID: 0}
+--- !u!114 &4882632093064161872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 232629980984179058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aeb5048fe502af4391d2d6130fc2652, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recipeStepIngredient: {fileID: 11400000, guid: 610915c10d0751b44b86fdcd1393864f,
+    type: 2}
 --- !u!1 &1955220575334945324
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,7 +390,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1efb9c23f4b6bdc438c5c2ce11a80a6e, type: 2}
+  - {fileID: 2100000, guid: 103ad2bd6108cbb4e8669b28af16675f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

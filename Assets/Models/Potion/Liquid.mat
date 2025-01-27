@@ -8,7 +8,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Liquid
-  m_Shader: {fileID: -6465566751694194690, guid: 41cbfd0612a43044f8d9011b0a649ca9, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 41cbfd0612a43044f8d9011b0a649ca9,
+    type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -95,7 +96,7 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _Fill: 0.607
+    - _Fill: 0.631
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
