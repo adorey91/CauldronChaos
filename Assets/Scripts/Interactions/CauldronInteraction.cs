@@ -80,8 +80,9 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
         // grabs the ingredient from the recipe step that's holding it.
         ingredient = curStep.ingredient;
         player.PutIngredientInCauldron(ingredientInsertPoint);
-        // Play a sound
         
+        // Play a sound here
+        //AudioManager.instance.sfxManager.playSFX()
 
         if (curStepIndex == 0)
         {
@@ -183,7 +184,9 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
         // Blowing up animation thing
         Debug.Log("Incorrect step");
 
-        // Play a sound
+        // Play a sound here
+        //AudioManager.instance.sfxManager.playSFX()
+
         incorrectStepParticles.Play();
 
         ResetValues();
@@ -215,6 +218,9 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     {
         yield return new WaitForSeconds(0.5f);
         SetPotionOutput();
+
+        // Play a sound here
+        //AudioManager.instance.sfxManager.playSFX()
 
         Vector3 startPosition = ingredientInsertPoint.position;
         Vector3 randomDireciton = new Vector3(Random.Range(-1f, 1f), 1f, Random.Range(-1f, 1f)).normalized;
