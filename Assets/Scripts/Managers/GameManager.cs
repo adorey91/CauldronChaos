@@ -1,21 +1,16 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public enum GameState { MainMenu, Gameplay, EndOfDay, Pause, Settings, GameOver }
+    public enum GameState { MainMenu, Intro, LevelSelect, Gameplay, EndOfDay, Pause, Settings, GameOver }
     public GameState gameState;
     private GameState currentState;
     private GameState _previousState;
     private GameState _newState;
 
-    [Header("Managers")]
-    [SerializeField] private UiManager uiManager;
 
     private void Awake()
     {
@@ -39,15 +34,16 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         Actions.OnPause += EscapeState;
-        Actions.OnEndDay += () => SetState(GameState.EndOfDay);
+        Actions.OnForceStateChange += LoadState;
     }
 
     private void OnDisable()
     {
         Actions.OnPause -= EscapeState;
-        Actions.OnEndDay -= () => SetState(GameState.EndOfDay);
+        Actions.OnForceStateChange -= LoadState;
     }
 
+    // This should be used for buttons
     public void LoadState(string state)
     {
         if (state == "previousState")
@@ -63,16 +59,6 @@ public class GameManager : MonoBehaviour
         SetState(_newState);
     }
 
-    // this should be called when hitting the pause button. 
-    private void EscapeState()
-    {
-        switch (gameState)
-        {
-            case GameState.Pause: SetState(GameState.Gameplay); break;
-            case GameState.Gameplay: SetState(GameState.Pause); break;
-        }
-    }
-
 
     private void SetState(GameState state)
     {
@@ -81,50 +67,18 @@ public class GameManager : MonoBehaviour
 
         gameState = state;
 
+        Actions.OnStateChange?.Invoke(gameState);
+    }
+
+
+    // this should be called when hitting the pause button. 
+    private void EscapeState()
+    {
         switch (gameState)
         {
-            case GameState.MainMenu: MainMenu(); break;
-            case GameState.Gameplay: Gameplay(); break;
-            case GameState.EndOfDay: EndOfDay(); break;
-            case GameState.Pause: Pause(); break;
-            case GameState.Settings: Settings(); break;
-            case GameState.GameOver: GameOver(); break;
+            case GameState.Pause: SetState(GameState.Gameplay); break;
+            case GameState.Gameplay: SetState(GameState.Pause); break;
         }
-    }
-
-    private void MainMenu()
-    {
-        Time.timeScale = 0;
-        uiManager.MainMenu();
-    }
-
-    private void Gameplay()
-    {
-        Time.timeScale = 1;
-        uiManager.Gameplay();
-    }
-
-    private void EndOfDay()
-    {
-        Time.timeScale = 0;
-        uiManager.EndOfDay();
-    }
-
-    private void Pause()
-    {
-        Time.timeScale = 0;
-        uiManager.Pause();
-    }
-
-    private void Settings()
-    {
-        uiManager.Settings();
-    }
-
-    private void GameOver()
-    {
-        Time.timeScale = 0;
-        uiManager.GameOver();
     }
 
     public void QuitGame()

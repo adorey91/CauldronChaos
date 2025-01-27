@@ -51,8 +51,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0.5}
+  m_Size: {x: 1, y: 1, z: 0.501276}
+  m_Center: {x: 0, y: 0, z: 0.749362}
 --- !u!1 &4787625826397713547
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,4 +173,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f159ea61a31e54a4891aa9761009ffff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ingredientPrefab: {fileID: 6429869540098028704, guid: 8066bd2877328af4cb4a54c396506d76, type: 3}
+  ingredient: 0
+  crateTopMushroom: {fileID: 0}
+  crateTopEyeOfBasilisk: {fileID: 0}
+  crateTopMandrakeRoot: {fileID: 0}
+  crateTopRabbitFoot: {fileID: 0}
+  crateTopTrollBone: {fileID: 0}
+  ingredientPrefab: {fileID: 6429869540098028704, guid: 8066bd2877328af4cb4a54c396506d76,
+    type: 3}

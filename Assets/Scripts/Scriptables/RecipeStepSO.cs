@@ -5,9 +5,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Step", menuName = "Recipe/Recipe Step")]
 public class RecipeStepSO : ScriptableObject
 {
-    public enum StepType { AddIngredient , StirClockwise, StirCounterClockwise }
+    public enum StepType { Nothing, AddIngredient , StirClockwise, StirCounterClockwise }
     public StepType stepType;
-    public Sprite instructionSprite;
-    public IngredientSO ingredient; // Optional, used if the step is adding an ingredientBeingHeld
+    
+    // shows if using stir
+    public Sprite stirSprite;
     public int stirAmount; // Optional, used if the step is stirring
+
+    // Ingredient
+    public IngredientSO ingredient;
+    public Sprite ingredientSprite;
 }
