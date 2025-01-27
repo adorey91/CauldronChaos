@@ -116,7 +116,7 @@ public class InteractionDetector : MonoBehaviour
         _stepInHand = null;
     }
   
-    public RecipeStepSO GetRecipeStepIngredient()
+    public RecipeStepSO GetRecipeStep()
     {
         if (ingredientStepGO == null) return null;
         return _stepInHand;
