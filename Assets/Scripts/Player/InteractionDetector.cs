@@ -18,14 +18,8 @@ public class InteractionDetector : MonoBehaviour
     [Header("Holder for dropped items")]
     [SerializeField] private GameObject droppedItems;
 
-    private AbovePlayerUI _abovePlayerUI;
     private IInteractable _interactablesInRange;
     private IPickupable _pickupablesInRange;
-
-    private void Start()
-    {
-        _abovePlayerUI = GetComponentInChildren<AbovePlayerUI>();
-    }
 
     private void OnEnable()
     {
@@ -145,7 +139,6 @@ public class InteractionDetector : MonoBehaviour
         if (potionInHand == null) return null;
 
         potionInHand.SetActive(false);
-        _abovePlayerUI.DisableSprite();
         return potionInHand;
     }
 
@@ -190,17 +183,13 @@ public class InteractionDetector : MonoBehaviour
         if (interactableObj.TryGetComponent(out IPickupable pickUp))
         {
             _pickupablesInRange = pickUp;
-
-            if (!HasPotion())
-                _abovePlayerUI.SetPickup();
         }
     }
 
        private void OnTriggerExit(Collider other)
     {
         GameObject interactableObj = other.transform.parent.gameObject;
-        _abovePlayerUI.DisableSprite();
-        _abovePlayerUI.DisableStirring();
+     
         if (interactableObj.TryGetComponent(out IInteractable interactable))
         {
             if (_interactablesInRange == interactable)

@@ -14,21 +14,21 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     // List of ingredients added to the cauldron
     private List<RecipeStepSO.Ingredient> addedIngredients = new List<RecipeStepSO.Ingredient>();
 
+    // Particles for incorrect step
+    private ParticleSystem incorrectStepParticles;
+
     // Recipe variables
     private RecipeSO curRecipe;
     private RecipeStepSO curStep;
     private RecipeStepSO nextStep;
     private RecipeStepSO.Ingredient ingredient;
     private GameObject ingredientGO;
-    private int curStepIndex;
     private Renderer curPotionRend;
-
+    private int curStepIndex;
+    
+    
+    [Header("Potion Insert Spot")]
     [SerializeField] private Transform ingredientInsertPoint;
-
-    //sound libraries and clips
-    [Header("Sounds")]
-    [SerializeField] private SFXLibrary addIngredientSounds;
-    [SerializeField] private SFXLibrary FinishPotionSounds;
 
     [Header("Potion Throwing")]
     [SerializeField] private float throwStrength = 5f; // strength of the throw
@@ -36,16 +36,20 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     [SerializeField] private float throwDuration = 1f; // time to reach target
 
     [Header("Spoon Rotation")]
-    [SerializeField] private Transform spoon;
     [Tooltip("Lower the number the slower it goes")]
     [SerializeField] private float spoonRotationSpeed = 0.6f;
+    [SerializeField] private Transform spoon;
 
-    [Header("Incorrect Step Particle System")]
-    [SerializeField] private ParticleSystem incorrectStepParticles;
-
+    //sound libraries and clips
+    [Header("Sounds")]
+    [SerializeField] private SFXLibrary addIngredientSounds;
+    [SerializeField] private SFXLibrary FinishPotionSounds;
+    [SerializeField] private SFXLibrary incorrectStepSounds;
+   
 
     public void Start()
     {
+        incorrectStepParticles = GetComponentInChildren<ParticleSystem>();
         recipeManager = FindObjectOfType<RecipeManager>();
         craftableRecipes = recipeManager.FindAvailableRecipes();
         ResetValues();
@@ -76,7 +80,8 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
         // grabs the ingredient from the recipe step that's holding it.
         ingredient = curStep.ingredient;
         player.PutIngredientInCauldron(ingredientInsertPoint);
-
+        // Play a sound
+        
 
         if (curStepIndex == 0)
         {

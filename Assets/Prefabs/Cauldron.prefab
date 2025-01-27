@@ -293,14 +293,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ingredientInsertPoint: {fileID: 5672755786491921061}
-  addIngredientSounds: {fileID: 1379544504974567125}
-  FinishPotionSounds: {fileID: 3275504426634709544}
-  throwStrength: 5
+  throwStrength: 3
   throwHeight: 2
   throwDuration: 1
-  incorrectStepParticles: {fileID: 3235966700370101072}
+  spoonRotationSpeed: 0.6
   spoon: {fileID: 6645876033106466930}
-  spoonRotationSpeed: 1
+  addIngredientSounds: {fileID: 1379544504974567125}
+  FinishPotionSounds: {fileID: 3275504426634709544}
+  incorrectStepSounds: {fileID: 0}
 --- !u!114 &1379544504974567125
 MonoBehaviour:
   m_ObjectHideFlags: 0

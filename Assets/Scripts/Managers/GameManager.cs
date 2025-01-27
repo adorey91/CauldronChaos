@@ -7,7 +7,6 @@ public class GameManager : MonoBehaviour
 
     public enum GameState { MainMenu, Intro, LevelSelect, Gameplay, EndOfDay, Pause, Settings, GameOver }
     public GameState gameState;
-    private GameState currentState;
     private GameState _previousState;
     private GameState _newState;
 
@@ -27,7 +26,6 @@ public class GameManager : MonoBehaviour
     {
         //SetState(GameState.Gameplay);
         SetState(GameState.MainMenu);
-        currentState = gameState;
     }
 
 
