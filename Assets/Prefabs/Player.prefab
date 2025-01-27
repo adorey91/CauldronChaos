@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 9058191268705570446}
   - component: {fileID: 7643185493547467135}
   - component: {fileID: 6014174613540277996}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,8 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba4e1e30115e34743b57b409c84d9a15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 8
-  rotationSpeed: 720
+  moveSpeed: 6
+  rotationSpeed: 1250
   castPos: {fileID: 5712740330540788573}
   playerRadius: 0.5
   collisionsLayers:
@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 6197823115914228470}
   - component: {fileID: 259157322200394695}
   - component: {fileID: 7801863511506588923}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Image_StirringCounterClockwise
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -210,7 +210,7 @@ GameObject:
   - component: {fileID: 6271158442362220069}
   - component: {fileID: 3072554838120423900}
   - component: {fileID: 8463917364967868274}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Image_InteractionPickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -286,7 +286,7 @@ GameObject:
   - component: {fileID: 6470735799603036163}
   - component: {fileID: 5258709390429487260}
   - component: {fileID: 1558480230892200236}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -420,7 +420,7 @@ GameObject:
   - component: {fileID: 5540948705014897379}
   - component: {fileID: 6410272942242089880}
   - component: {fileID: 4943296655789654444}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Apprentice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -506,7 +506,7 @@ GameObject:
   - component: {fileID: 1359578171896779272}
   - component: {fileID: 4015886412683382620}
   - component: {fileID: 3313453745156464389}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Image_StirringClockwise
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -580,7 +580,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5712740330540788573}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CollisionDetectionOrigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -611,7 +611,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5553907178384609048}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlayerHands
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -646,7 +646,7 @@ GameObject:
   - component: {fileID: 4484351226247132919}
   - component: {fileID: 5820166972214746975}
   - component: {fileID: 612491627432967335}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -774,7 +774,7 @@ GameObject:
   - component: {fileID: 1457059189793417340}
   - component: {fileID: 1432206111481937701}
   - component: {fileID: 1761586760552049577}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -857,7 +857,7 @@ GameObject:
   - component: {fileID: 2492083439520262474}
   - component: {fileID: 2137488821267432953}
   - component: {fileID: 26041272192047710}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -991,7 +991,7 @@ GameObject:
   - component: {fileID: 8676475651588346722}
   - component: {fileID: 4742252249269849507}
   - component: {fileID: 2385477585994487995}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ApprenticeHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1075,7 +1075,7 @@ GameObject:
   - component: {fileID: 3405215512312677909}
   - component: {fileID: 6484198233573196996}
   - component: {fileID: 7796784706144182620}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1158,7 +1158,7 @@ GameObject:
   - component: {fileID: 2286280570342535637}
   - component: {fileID: 2151932997033827302}
   - component: {fileID: 564419325698296596}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1292,7 +1292,7 @@ GameObject:
   - component: {fileID: 3042439363133616583}
   - component: {fileID: 4614537322396432990}
   - component: {fileID: 2143428721506895849}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
