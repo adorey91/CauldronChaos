@@ -19864,6 +19864,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f159ea61a31e54a4891aa9761009ffff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ingredient: 0
+  crateTopMushroom: {fileID: 0}
+  crateTopEyeOfBasilisk: {fileID: 0}
+  crateTopMandrakeRoot: {fileID: 0}
+  crateTopRabbitFoot: {fileID: 0}
+  crateTopTrollBone: {fileID: 0}
   ingredientPrefab: {fileID: 6145939951746634609, guid: d87753468cc598e499f935b567ac6d01,
     type: 3}
 --- !u!65 &3469287837680273887
