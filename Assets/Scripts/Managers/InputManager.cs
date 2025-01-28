@@ -65,7 +65,6 @@ public class InputManager : MonoBehaviour
     {
         playerControls = GetComponent<PlayerInput>();
 
-        MoveInputAction =  playerControls.actions.FindAction("Move");
         MoveInputAction = playerControls.actions.FindAction("Move");
         PauseInputAction = playerControls.actions.FindAction("Pause");
         NextPageInputAction = playerControls.actions.FindAction("NextPage");
@@ -79,19 +78,22 @@ public class InputManager : MonoBehaviour
     //function that reads the move input
     public void MoveInput(InputAction.CallbackContext input)
     {
-        MoveAction?.Invoke(input);
+        if (Time.timeScale != 0)
+            MoveAction?.Invoke(input);
     }
 
     //function that reads the interact input
     public void InteractInput(InputAction.CallbackContext input)
     {
-        InteractAction?.Invoke(input);
+        if (Time.timeScale != 0)
+            InteractAction?.Invoke(input);
     }
 
     //function that reads the interact input
     public void PickupInput(InputAction.CallbackContext input)
     {
-        PickupAction?.Invoke(input);
+        if (Time.timeScale != 0)
+            PickupAction?.Invoke(input);
     }
 
 
@@ -102,12 +104,14 @@ public class InputManager : MonoBehaviour
 
     public void StirClockwiseInput(InputAction.CallbackContext input)
     {
-        StirClockwiseAction?.Invoke(input);
+        if (Time.timeScale != 0)
+            StirClockwiseAction?.Invoke(input);
     }
 
     public void StirCounterClockwiseInput(InputAction.CallbackContext input)
     {
-        StirCounterClockwiseAction?.Invoke(input);
+        if (Time.timeScale != 0)
+            StirCounterClockwiseAction?.Invoke(input);
     }
 
     public void TurnNextPage(InputAction.CallbackContext input)

@@ -1,4 +1,7 @@
+using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class UiManager : MonoBehaviour
 {
@@ -15,8 +18,30 @@ public class UiManager : MonoBehaviour
     [SerializeField] private Canvas gameOver;
     [SerializeField] private Canvas pause;
 
-    
-    // I havent decided if this is a good way to deal with opening and closing logic.
+    [Header("Day Start Overlay")]
+    [SerializeField] private GameObject dayStartPanel;
+    [SerializeField] private TextMeshProUGUI dayStartText;
+    [SerializeField] private int secondsToStart;
+    private bool newDay;
+    private int timer;
+
+
+    // used for testing
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            newDay = true;
+        }
+
+        if (newDay)
+        {
+            dayStartPanel.SetActive(true);
+            StartCoroutine(DayStartTimer());
+        }
+    }
+
+
     private void OnEnable()
     {
         Actions.OnStateChange += UpdateUIForGameState;
@@ -74,6 +99,7 @@ public class UiManager : MonoBehaviour
 
     private void LevelSelect()
     {
+        newDay = true;
         SetActiveUI(levelSelect);
         Actions.OnFirstSelect("Menu");
     }
@@ -82,7 +108,16 @@ public class UiManager : MonoBehaviour
     private void Gameplay()
     {
         SetActiveUI(gameplay);
+
+        if (newDay)
+        {
+            dayStartPanel.SetActive(true);
+            StartCoroutine(DayStartTimer());
+        }
+
+
         Actions.OnFirstSelect("Menu");
+        Time.timeScale = 1;
     }
 
     private void EndOfDay()
@@ -100,6 +135,7 @@ public class UiManager : MonoBehaviour
     {
         SetActiveUI(pause);
         Actions.OnFirstSelect("Menu");
+        Time.timeScale = 0;
     }
 
     private void Settings()
@@ -108,4 +144,22 @@ public class UiManager : MonoBehaviour
         settingsManager.OpenSettings();
     }
     #endregion
+
+    private IEnumerator DayStartTimer()
+    {
+        timer = secondsToStart;
+
+        dayStartText.text = $"Day Starts in... {timer}";
+
+        float normalizedTime = 0;
+        while (normalizedTime <= secondsToStart)
+        {
+
+            dayStartText.text = $"Day Starts in... {normalizedTime}";
+            normalizedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        newDay = false;
+    }
 }

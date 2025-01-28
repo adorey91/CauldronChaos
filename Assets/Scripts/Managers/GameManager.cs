@@ -33,11 +33,13 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         Actions.OnForceStateChange += LoadState;
+        InputManager.instance.PauseAction += EscapeState;
     }
 
     private void OnDisable()
     {
         Actions.OnForceStateChange -= LoadState;
+        InputManager.instance.PauseAction -= EscapeState;
     }
 
     // This should be used for buttons
@@ -86,5 +88,4 @@ public class GameManager : MonoBehaviour
         Debug.Log("Quitting Game");
         Application.Quit();
     }
-
 }

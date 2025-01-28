@@ -177,7 +177,6 @@ public class InteractionDetector : MonoBehaviour
         if (interactableObj.TryGetComponent(out IInteractable interactable))
         {
             _interactablesInRange = interactable;
-            Debug.Log("Interactable in range");
         }
 
         if (interactableObj.TryGetComponent(out IPickupable pickUp))
