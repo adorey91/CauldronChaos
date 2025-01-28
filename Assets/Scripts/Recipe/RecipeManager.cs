@@ -11,9 +11,17 @@ public class RecipeManager : MonoBehaviour
     [SerializeField] private RecipeSO[] allRecipes;
     [SerializeField] private int numberOfRecipes;
 
-    [Header("Bad Potion Prefab")]
-    [SerializeField] private GameObject badPotion;
+    [SerializeField] private GameObject recipeBook;
 
+    private void OnEnable()
+    {
+        Actions.OnToggleRecipeBook += ToggleRecipeBook;   
+    }
+
+    private void OnDisable()
+    {
+        Actions.OnToggleRecipeBook -= ToggleRecipeBook;
+    }
 
     public RecipeSO[] FindAvailableRecipes()
     {
@@ -26,8 +34,6 @@ public class RecipeManager : MonoBehaviour
 
         return availableRecipes;
     }
-
-    public GameObject SetBadPotion() => badPotion;
 
     internal RecipeSO GetRandomRecipe()
     {
@@ -44,4 +50,21 @@ public class RecipeManager : MonoBehaviour
         return null;
     }
 
+    private void ToggleRecipeBook()
+    {
+        if (recipeBook.activeSelf)
+        {
+            recipeBook.SetActive(false);
+            InputManager.instance.MoveInputAction.Enable();
+            InputManager.instance.NextPageInputAction.Disable();
+            InputManager.instance.PreviousPageInputAction.Disable();
+        }
+        else
+        {
+            recipeBook.SetActive(true);
+            InputManager.instance.MoveInputAction.Disable();
+            InputManager.instance.NextPageInputAction.Enable();
+            InputManager.instance.PreviousPageInputAction.Enable();
+        }
+    }
 }

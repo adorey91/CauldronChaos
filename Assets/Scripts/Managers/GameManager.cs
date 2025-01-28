@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -7,7 +8,6 @@ public class GameManager : MonoBehaviour
 
     public enum GameState { MainMenu, Intro, LevelSelect, Gameplay, EndOfDay, Pause, Settings, GameOver }
     public GameState gameState;
-    private GameState currentState;
     private GameState _previousState;
     private GameState _newState;
 
@@ -27,20 +27,19 @@ public class GameManager : MonoBehaviour
     {
         SetState(GameState.Gameplay);
         //SetState(GameState.MainMenu);
-        //currentState = gameState;
     }
 
 
     private void OnEnable()
     {
-        Actions.OnPause += EscapeState;
         Actions.OnForceStateChange += LoadState;
+        InputManager.instance.PauseAction += EscapeState;
     }
 
     private void OnDisable()
     {
-        Actions.OnPause -= EscapeState;
         Actions.OnForceStateChange -= LoadState;
+        InputManager.instance.PauseAction -= EscapeState;
     }
 
     // This should be used for buttons
@@ -72,12 +71,15 @@ public class GameManager : MonoBehaviour
 
 
     // this should be called when hitting the pause button. 
-    private void EscapeState()
+    private void EscapeState(InputAction.CallbackContext input)
     {
-        switch (gameState)
+        if(input.performed && (gameState == GameState.Gameplay || gameState == GameState.Pause))
         {
-            case GameState.Pause: SetState(GameState.Gameplay); break;
-            case GameState.Gameplay: SetState(GameState.Pause); break;
+            switch (gameState)
+            {
+                case GameState.Pause: SetState(GameState.Gameplay); break;
+                case GameState.Gameplay: SetState(GameState.Pause); break;
+            }
         }
     }
 
@@ -86,5 +88,4 @@ public class GameManager : MonoBehaviour
         Debug.Log("Quitting Game");
         Application.Quit();
     }
-
 }

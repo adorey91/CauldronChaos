@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CrateHolder : MonoBehaviour, IPickupable
+public class CrateHolder : MonoBehaviour, IInteractable
 {
-    public enum IngredientObject { Mushroom, EyeOfBasilisk, MandrakeRoot, RabbitFoot, TrollBone }
+    public enum IngredientObject { Mushroom, EyeOfBasilisk, MandrakeRoot, RabbitFoot, TrollBone, Bottle }
     [SerializeField] private IngredientObject ingredient;
 
     [Header("Crate Topper Objects")]
@@ -21,21 +21,11 @@ public class CrateHolder : MonoBehaviour, IPickupable
         // 
     }
 
-
-    public bool AlreadyActive()
+    public void Interact(InteractionDetector player)
     {
-        return false;
-    }
+        GameObject newIngredient;
+        newIngredient = Instantiate(ingredientPrefab);
 
-    public void Drop(Transform newParent)
-    {
-        return;
-    }
-    
-    public void Pickup(InteractionDetector player)
-    {
-        if (player.HasIngredient() || player.HasPotion()) return;
-
-        player.AddIngredient(ingredientPrefab);
+        player.PickUpIngredient(newIngredient);
     }
 }

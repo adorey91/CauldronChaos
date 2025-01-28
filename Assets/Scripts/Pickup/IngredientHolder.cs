@@ -5,7 +5,7 @@ using UnityEngine;
 public class IngredientHolder : MonoBehaviour, IPickupable
 {
     // Holds the ingredientBeingHeld for the prefab
-    public IngredientSO ingredient;
+    public RecipeStepSO recipeStepIngredient;
     private Rigidbody _rb;
     private Collider _collider;
 

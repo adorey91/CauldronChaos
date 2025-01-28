@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class RecipeBookUI : MonoBehaviour
@@ -39,14 +40,14 @@ public class RecipeBookUI : MonoBehaviour
 
     private void OnEnable()
     {
-        Actions.NextPage += NextPage;
-        Actions.PreviousPage += PreviousPage;
+        InputManager.instance.NextPageAction += NextPage;
+        InputManager.instance.PreviousPageAction += PreviousPage;
     }
 
     private void OnDisable()
     {
-        Actions.NextPage -= NextPage;
-        Actions.PreviousPage -= PreviousPage;
+        InputManager.instance.NextPageAction -= NextPage;
+        InputManager.instance.PreviousPageAction -= PreviousPage;
     }
 
     public void SetRecipes()
@@ -116,21 +117,30 @@ public class RecipeBookUI : MonoBehaviour
     }
 
     #region Navigation
-    public void NextPage()
+    public void NextPage(InputAction.CallbackContext input)
     {
-        if ((_pageNumber + 1) * 2 < availableRecipes.Length)
+        if(input.performed)
         {
-            _pageNumber++;
-            SetRecipes();
+
+            Debug.Log("nextpage");
+            if ((_pageNumber + 1) * 2 < availableRecipes.Length)
+            {
+                _pageNumber++;
+                SetRecipes();
+            }
         }
     }
 
-    public void PreviousPage()
+    public void PreviousPage(InputAction.CallbackContext input)
     {
-        if (_pageNumber > 0)
+        if(input.performed)
         {
-            _pageNumber--;
-            SetRecipes();
+            Debug.Log("Previous Page");
+            if (_pageNumber > 0)
+            {
+                _pageNumber--;
+                SetRecipes();
+            }
         }
     }
 

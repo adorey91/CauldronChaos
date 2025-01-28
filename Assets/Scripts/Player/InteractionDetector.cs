@@ -1,8 +1,10 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InteractionDetector : MonoBehaviour
 {
@@ -10,72 +12,70 @@ public class InteractionDetector : MonoBehaviour
     [SerializeField] private Transform handPosition;
 
     // Ingredient/ Potion / Crate Variables
-    private IngredientSO ingredientInHand;
+    private RecipeStepSO _stepInHand;
     private GameObject potionInHand;
-    private GameObject ingredientGO;
+    private GameObject ingredientStepGO;
 
     [Header("Holder for dropped items")]
     [SerializeField] private GameObject droppedItems;
 
-    private AbovePlayerUI _abovePlayerUI;
     private IInteractable _interactablesInRange;
     private IPickupable _pickupablesInRange;
 
-    private void Start()
-    {
-        _abovePlayerUI = GetComponentInChildren<AbovePlayerUI>();
-    }
-
     private void OnEnable()
     {
-        Actions.OnInteract += Interact;
-        Actions.OnPickup += Pickup_Drop;
+        InputManager.instance.InteractAction += Interact;
+        InputManager.instance.PickupAction += Pickup_Drop;
         Actions.OnRemovePotion += RemovePotion;
-        Actions.OnRemoveIngredient += RemoveIngredient;
     }
     private void OnDisable()
     {
-        Actions.OnInteract -= Interact;
-        Actions.OnPickup -= Pickup_Drop;
+        InputManager.instance.InteractAction -= Interact;
+        InputManager.instance.PickupAction -= Pickup_Drop;
         Actions.OnRemovePotion -= RemovePotion;
-        Actions.OnRemoveIngredient -= RemoveIngredient;
     }
 
-    private void Interact()
+    private void Interact(InputAction.CallbackContext input)
     {
-        if (_interactablesInRange == null) return;
-
-        _interactablesInRange.Interact(this);
-    }
-
-    private void Pickup_Drop()
-    {
-        if (_pickupablesInRange == null) return;
-
-        if (handPosition.childCount == 0)
+        if(input.performed)
         {
-            _pickupablesInRange.Pickup(this);
+            if (_interactablesInRange == null) return;
+
+            _interactablesInRange.Interact(this);
         }
-        else
+    }
+
+    private void Pickup_Drop(InputAction.CallbackContext input)
+    {
+        if(input.performed)
         {
-            GameObject childObj = handPosition.GetChild(0).gameObject;
+            if (_pickupablesInRange == null) return;
 
-            if (childObj.TryGetComponent(out IPickupable pickupable))
+            if (handPosition.childCount == 0)
             {
-                pickupable.Drop(droppedItems.transform);
+                _pickupablesInRange.Pickup(this);
+            }
+            else
+            {
+                GameObject childObj = handPosition.GetChild(0).gameObject;
 
-                if (childObj == ingredientGO || childObj == potionInHand)
+                if (childObj.TryGetComponent(out IPickupable pickupable))
                 {
-                    if (childObj == ingredientGO)
+                    pickupable.Drop(droppedItems.transform);
+
+                    if (childObj == ingredientStepGO || childObj == potionInHand)
                     {
-                        ingredientGO = null;
-                        ingredientInHand = null;
+                        if (childObj == ingredientStepGO)
+                        {
+                            ingredientStepGO = null;
+                            _stepInHand = null;
+                        }
+                        else if (childObj == potionInHand)
+                        {
+                            potionInHand = null;
+                        }
+                        return;
                     }
-                    else if (childObj == potionInHand)
-                    {
-                        potionInHand = null;
-                    }
-                    return;
                 }
             }
         }
@@ -83,65 +83,53 @@ public class InteractionDetector : MonoBehaviour
 
 
     #region Ingredient
-    public bool HasIngredient()
+   // pick up ingredient from crate
+   public void PickUpIngredient(GameObject ingredient)
     {
-        if (ingredientGO == null)
+        if (ingredientStepGO != null) return;
+
+        ingredientStepGO = ingredient;
+        ingredientStepGO.GetComponent<Rigidbody>().isKinematic = true;
+        ingredientStepGO.transform.SetParent(handPosition);
+        ingredientStepGO.transform.position = handPosition.position;
+        
+        if(ingredientStepGO.TryGetComponent(out IngredientHolder ingredientHolder))
         {
-            return false;
+            _stepInHand = ingredientHolder.recipeStepIngredient;
         }
-        return true;
     }
 
-
-    /// <summary>
-    /// Add ingredient to hand position from crate
-    /// </summary>
-    /// <param name="ingredient"></param>
-    public void AddIngredient(GameObject ingredient)
+    // drop ingredient into cauldron - new parent is inside the cauldron. We'd like the ingredient to look like its jumping into the cauldron
+    public void PutIngredientInCauldron(Transform newParent)
     {
-        ingredientGO = Instantiate(ingredient, handPosition);
-        ingredientGO.GetComponent<Rigidbody>().isKinematic = true;
-        ingredientGO.GetComponent<Collider>().enabled = false;
-        ingredientInHand = ingredientGO.GetComponent<IngredientHolder>().ingredient;
+        ingredientStepGO.transform.DOJump(
+            endValue: newParent.position, 
+            jumpPower: 1f, 
+            numJumps: 1, 
+            duration: 0.5f).SetEase(Ease.InOutSine);
 
+        ingredientStepGO.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InOutSine);
+        ingredientStepGO.transform.SetParent(null);
+        ingredientStepGO.GetComponent<Rigidbody>().isKinematic = false;
+
+
+        ingredientStepGO = null;
+        _stepInHand = null;
     }
-
-    /// <summary>
-    /// Picks up ingredient and sets it to hand position
-    /// </summary>
-    /// <param name="ingredient"></param>
-    public void PickUpIngredient(GameObject ingredient)
+  
+    public RecipeStepSO GetRecipeStep()
     {
-        ingredientGO = ingredient;
-        ingredientGO.transform.SetParent(handPosition);
-        ingredient.transform.position = handPosition.position;
-        ingredientInHand = ingredientGO.GetComponent<IngredientHolder>().ingredient;
+        if (ingredientStepGO == null) return null;
+        return _stepInHand;
     }
 
-    /// <summary>
-    /// Returns IngredientSO from hand, sets gameobject to inactive
-    /// </summary>
-    /// <returns></returns>
-    public IngredientSO GetIngredient()
+    internal GameObject GetGameObject()
     {
-        if (ingredientInHand == null) return null;
+        if (ingredientStepGO == null) return null;
 
-        ingredientGO.SetActive(false);
-        _abovePlayerUI.DisableSprite();
-        _abovePlayerUI.SetStirring();
-
-        return ingredientInHand;
+        return ingredientStepGO;
     }
 
-    /// <summary>
-    /// Removes ingredient from scene after a delay
-    /// </summary>
-    private void RemoveIngredient()
-    {
-        if (ingredientGO == null) return;
-
-        StartCoroutine(DestroyPickup(ingredientGO));
-    }
 
     #endregion
 
@@ -158,7 +146,6 @@ public class InteractionDetector : MonoBehaviour
         if (potionInHand == null) return null;
 
         potionInHand.SetActive(false);
-        _abovePlayerUI.DisableSprite();
         return potionInHand;
     }
 
@@ -190,31 +177,25 @@ public class InteractionDetector : MonoBehaviour
         if (interactableObj.TryGetComponent(out IInteractable interactable))
         {
             _interactablesInRange = interactable;
-
-            if (_interactablesInRange.CanBeInteractedWith(this))
-                _abovePlayerUI.SetInteraction();
-            else
-                _abovePlayerUI.SetStirring();
         }
 
         if (interactableObj.TryGetComponent(out IPickupable pickUp))
         {
             _pickupablesInRange = pickUp;
-
-            if (!HasIngredient() && !HasPotion())
-                _abovePlayerUI.SetPickup();
         }
     }
 
        private void OnTriggerExit(Collider other)
     {
         GameObject interactableObj = other.transform.parent.gameObject;
-        _abovePlayerUI.DisableSprite();
-        _abovePlayerUI.DisableStirring();
+     
         if (interactableObj.TryGetComponent(out IInteractable interactable))
         {
             if (_interactablesInRange == interactable)
                 _interactablesInRange = null;
+
+            //InputManager.instance.stirC.Disable();
+            //InputManager.instance.stirCC.Disable();
         }
 
         if (interactableObj.TryGetComponent(out IPickupable pickUp))
@@ -234,10 +215,10 @@ public class InteractionDetector : MonoBehaviour
         {
             potionInHand = null;
         }
-        if (pickup == ingredientGO)
+        if (pickup == ingredientStepGO)
         {
-            ingredientGO = null;
-            ingredientInHand = null;
+            ingredientStepGO = null;
+            _stepInHand = null;
         }
     }
 }

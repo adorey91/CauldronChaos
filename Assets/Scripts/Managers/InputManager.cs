@@ -13,6 +13,17 @@ public class InputManager : MonoBehaviour
     public event Action<InputAction.CallbackContext> MoveAction;
     public event Action<InputAction.CallbackContext> InteractAction;
     public event Action<InputAction.CallbackContext> PickupAction;
+    public event Action<InputAction.CallbackContext> StirClockwiseAction;
+    public event Action<InputAction.CallbackContext> StirCounterClockwiseAction;
+    public event Action<InputAction.CallbackContext> PauseAction;
+    public event Action<InputAction.CallbackContext> NextPageAction;
+    public event Action<InputAction.CallbackContext> PreviousPageAction;
+
+    private PlayerInput playerControls;
+    internal InputAction MoveInputAction;
+    internal InputAction PauseInputAction;
+    internal InputAction NextPageInputAction;
+    internal InputAction PreviousPageInputAction;
 
 
     //function that checks if instance exists and spawns one if it does not
@@ -50,57 +61,66 @@ public class InputManager : MonoBehaviour
         //DontDestroyOnLoad(this);
     }
 
+    private void Start()
+    {
+        playerControls = GetComponent<PlayerInput>();
+
+        MoveInputAction = playerControls.actions.FindAction("Move");
+        PauseInputAction = playerControls.actions.FindAction("Pause");
+        NextPageInputAction = playerControls.actions.FindAction("NextPage");
+        PreviousPageInputAction = playerControls.actions.FindAction("PreviousPage");
+
+        PreviousPageInputAction.Disable();
+        NextPageInputAction.Disable();
+    }
+
+
     //function that reads the move input
     public void MoveInput(InputAction.CallbackContext input)
     {
-        MoveAction?.Invoke(input);
+        if (Time.timeScale != 0)
+            MoveAction?.Invoke(input);
     }
 
     //function that reads the interact input
     public void InteractInput(InputAction.CallbackContext input)
     {
-        //interactInput = input;
-        if(input.performed)
-            Actions.OnInteract?.Invoke();
+        if (Time.timeScale != 0)
+            InteractAction?.Invoke(input);
     }
 
     //function that reads the interact input
     public void PickupInput(InputAction.CallbackContext input)
     {
-        //pickupInput = input;
-
-        if (input.performed)
-            Actions.OnPickup?.Invoke();
+        if (Time.timeScale != 0)
+            PickupAction?.Invoke(input);
     }
 
 
     public void PauseInput(InputAction.CallbackContext input)
     {
-        if (input.performed)
-            Actions.OnPause?.Invoke();
+        PauseAction?.Invoke(input);
     }
 
     public void StirClockwiseInput(InputAction.CallbackContext input)
     {
-        if (input.performed)
-            Actions.OnStirClockwise?.Invoke();
+        if (Time.timeScale != 0)
+            StirClockwiseAction?.Invoke(input);
     }
 
     public void StirCounterClockwiseInput(InputAction.CallbackContext input)
     {
-        if (input.performed)
-            Actions.OnStirCounterClockwise?.Invoke();
+        if (Time.timeScale != 0)
+            StirCounterClockwiseAction?.Invoke(input);
     }
 
     public void TurnNextPage(InputAction.CallbackContext input)
     {
-        if(input.performed)
-            Actions.NextPage?.Invoke();
+        NextPageAction?.Invoke(input);
     }
 
     public void TurnPreviousPage(InputAction.CallbackContext input)
     {
-        if (input.performed)
-            Actions.PreviousPage?.Invoke();
+        PreviousPageAction?.Invoke(input);
     }
 }

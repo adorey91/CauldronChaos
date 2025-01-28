@@ -27,22 +27,25 @@ public class LevelManager : MonoBehaviour
         fadeAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
     }
 
-    //public void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.Space))
-    //    {
-    //        LoadScene("SampleScene");
-    //    }
-    //}
-
+    
     public void LoadScene(string sceneName)
     {
         Fade("FadeOut", () =>
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
 
+            switch (sceneName)
+            {
+                case "MainMenu": Actions.OnForceStateChange("MainMenu"); break;
+                case "Intro": Actions.OnForceStateChange("Intro"); break;
+                case "LevelSelect": Actions.OnForceStateChange("LevelSelect"); break;
+                case string name when name.StartsWith("Day"): Actions.OnForceStateChange("Gameplay"); break;
+                case "GameOver": Actions.OnForceStateChange("GameOver"); break;
+            }
+
             loadingScreen.enabled = true;
             loadingText.text = "Loading...";
+
             StartCoroutine(LoadAsync(sceneName));
         });
     }
@@ -101,7 +104,7 @@ public class LevelManager : MonoBehaviour
             // Check for any button press on the gamepad
             if (gamepad != null)
             {
-                if(gamepad.allControls.OfType<ButtonControl>().Any(button => button.wasPressedThisFrame))
+                if (gamepad.allControls.OfType<ButtonControl>().Any(button => button.wasPressedThisFrame))
                 {
                     Debug.Log("A button was pressed.");
                     yield break; // Exit the loop and the coroutine
@@ -114,9 +117,9 @@ public class LevelManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        
-            Fade("FadeIn");
-            SceneManager.sceneLoaded -= OnSceneLoaded;
+
+        Fade("FadeIn");
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     public void Fade(string fadeDir, System.Action callback = null)
