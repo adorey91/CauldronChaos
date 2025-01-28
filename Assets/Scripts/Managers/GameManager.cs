@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -24,20 +25,18 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        //SetState(GameState.Gameplay);
-        SetState(GameState.MainMenu);
+        SetState(GameState.Gameplay);
+        //SetState(GameState.MainMenu);
     }
 
 
     private void OnEnable()
     {
-        Actions.OnPause += EscapeState;
         Actions.OnForceStateChange += LoadState;
     }
 
     private void OnDisable()
     {
-        Actions.OnPause -= EscapeState;
         Actions.OnForceStateChange -= LoadState;
     }
 
@@ -70,12 +69,15 @@ public class GameManager : MonoBehaviour
 
 
     // this should be called when hitting the pause button. 
-    private void EscapeState()
+    private void EscapeState(InputAction.CallbackContext input)
     {
-        switch (gameState)
+        if(input.performed && (gameState == GameState.Gameplay || gameState == GameState.Pause))
         {
-            case GameState.Pause: SetState(GameState.Gameplay); break;
-            case GameState.Gameplay: SetState(GameState.Pause); break;
+            switch (gameState)
+            {
+                case GameState.Pause: SetState(GameState.Gameplay); break;
+                case GameState.Gameplay: SetState(GameState.Pause); break;
+            }
         }
     }
 

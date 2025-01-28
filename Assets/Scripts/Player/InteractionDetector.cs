@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InteractionDetector : MonoBehaviour
 {
@@ -23,52 +24,58 @@ public class InteractionDetector : MonoBehaviour
 
     private void OnEnable()
     {
-        Actions.OnInteract += Interact;
-        Actions.OnPickup += Pickup_Drop;
+        InputManager.instance.InteractAction += Interact;
+        InputManager.instance.PickupAction += Pickup_Drop;
         Actions.OnRemovePotion += RemovePotion;
     }
     private void OnDisable()
     {
-        Actions.OnInteract -= Interact;
-        Actions.OnPickup -= Pickup_Drop;
+        InputManager.instance.InteractAction -= Interact;
+        InputManager.instance.PickupAction -= Pickup_Drop;
         Actions.OnRemovePotion -= RemovePotion;
     }
 
-    private void Interact()
+    private void Interact(InputAction.CallbackContext input)
     {
-        if (_interactablesInRange == null) return;
+        if(input.performed)
+        {
+            if (_interactablesInRange == null) return;
 
-        _interactablesInRange.Interact(this);
+            _interactablesInRange.Interact(this);
+        }
     }
 
-    private void Pickup_Drop()
+    private void Pickup_Drop(InputAction.CallbackContext input)
     {
-        if (_pickupablesInRange == null) return;
-
-        if (handPosition.childCount == 0)
+        if(input.performed)
         {
-            _pickupablesInRange.Pickup(this);
-        }
-        else
-        {
-            GameObject childObj = handPosition.GetChild(0).gameObject;
+            if (_pickupablesInRange == null) return;
 
-            if (childObj.TryGetComponent(out IPickupable pickupable))
+            if (handPosition.childCount == 0)
             {
-                pickupable.Drop(droppedItems.transform);
+                _pickupablesInRange.Pickup(this);
+            }
+            else
+            {
+                GameObject childObj = handPosition.GetChild(0).gameObject;
 
-                if (childObj == ingredientStepGO || childObj == potionInHand)
+                if (childObj.TryGetComponent(out IPickupable pickupable))
                 {
-                    if (childObj == ingredientStepGO)
+                    pickupable.Drop(droppedItems.transform);
+
+                    if (childObj == ingredientStepGO || childObj == potionInHand)
                     {
-                        ingredientStepGO = null;
-                        _stepInHand = null;
+                        if (childObj == ingredientStepGO)
+                        {
+                            ingredientStepGO = null;
+                            _stepInHand = null;
+                        }
+                        else if (childObj == potionInHand)
+                        {
+                            potionInHand = null;
+                        }
+                        return;
                     }
-                    else if (childObj == potionInHand)
-                    {
-                        potionInHand = null;
-                    }
-                    return;
                 }
             }
         }
@@ -170,14 +177,7 @@ public class InteractionDetector : MonoBehaviour
         if (interactableObj.TryGetComponent(out IInteractable interactable))
         {
             _interactablesInRange = interactable;
-
-
-            // if player has something that goes in the cauldron, let it interact with it
-            // if not then show the stirring icon
-            //if (_interactablesInRange.CanBeInteractedWith(this))
-            //    _abovePlayerUI.SetInteraction();
-            //else
-            //    _abovePlayerUI.SetStirring();
+            Debug.Log("Interactable in range");
         }
 
         if (interactableObj.TryGetComponent(out IPickupable pickUp))
@@ -194,6 +194,9 @@ public class InteractionDetector : MonoBehaviour
         {
             if (_interactablesInRange == interactable)
                 _interactablesInRange = null;
+
+            //InputManager.instance.stirC.Disable();
+            //InputManager.instance.stirCC.Disable();
         }
 
         if (interactableObj.TryGetComponent(out IPickupable pickUp))

@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CauldronInteraction : MonoBehaviour, IInteractable
 {
@@ -25,6 +26,8 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     private GameObject ingredientGO;
     private Renderer curPotionRend;
     private int curStepIndex;
+
+    private bool canInteract;
     
     
     [Header("Potion Insert Spot")]
@@ -58,14 +61,14 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     #region Events
     private void OnEnable()
     {
-        Actions.OnStirClockwise += StirClockwise;
-        Actions.OnStirCounterClockwise += StirCounterClockwise;
+        InputManager.instance.StirClockwiseAction += StirClockwise;
+        InputManager.instance.StirCounterClockwiseAction += StirCounterClockwise;
     }
 
     private void OnDisable()
     {
-        Actions.OnStirClockwise -= StirClockwise;
-        Actions.OnStirCounterClockwise -= StirCounterClockwise;
+        InputManager.instance.StirClockwiseAction -= StirClockwise;
+        InputManager.instance.StirCounterClockwiseAction -= StirCounterClockwise;
     }
     #endregion
 
@@ -80,9 +83,9 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
         // grabs the ingredient from the recipe step that's holding it.
         ingredient = curStep.ingredient;
         player.PutIngredientInCauldron(ingredientInsertPoint);
-        
+
         // Play a sound here
-        //AudioManager.instance.sfxManager.playSFX()
+        //AudioManager.instance.sfxManager.playSFX();
 
         if (curStepIndex == 0)
         {
@@ -193,23 +196,6 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     }
     #endregion
 
-    // Sets the fill amount & color of the potion
-    void SetPotionOutput()
-    {
-        if (curPotionRend == null) return;
-        if (curRecipe == null) return;
-
-        // Create a new MaterialPropertyBlock and get the renderer
-        MaterialPropertyBlock block = new MaterialPropertyBlock();
-        curPotionRend.GetPropertyBlock(block);
-
-        // Set the fill amount
-        block.SetFloat("_Fill", 0.6f);
-        block.SetColor("_TopColor", curRecipe.potionColor);
-
-        // Apply the property block back to the renderer
-        curPotionRend.SetPropertyBlock(block);
-    }
 
     /// <summary>
     /// Throws the potion from the cauldron, gives the thought the potion is being scooped out
@@ -230,51 +216,77 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
         ingredientGO.transform.DOJump(targetPositon, throwHeight, 1, throwDuration).SetEase(Ease.OutQuad).OnComplete(() => ResetValues());
     }
 
-
-    private void StirClockwise()
+    // Sets the fill amount & color of the potion
+    private void SetPotionOutput()
     {
-        spoon.DORotate(new Vector3(0, -360, 0), spoonRotationSpeed, RotateMode.FastBeyond360);
-        if (nextStep == null)
-        {
-            HandleIncorrectStep();
-            return;
-        }
+        if (curPotionRend == null) return;
+        if (curRecipe == null) return;
 
-        if (nextStep.stepType == RecipeStepSO.StepType.StirClockwise)
+        // Create a new MaterialPropertyBlock and get the renderer
+        MaterialPropertyBlock block = new MaterialPropertyBlock();
+        curPotionRend.GetPropertyBlock(block);
+
+        // Set the fill amount
+        block.SetFloat("_Fill", 0.6f);
+        block.SetColor("_TopColor", curRecipe.potionColor); // name might change afterwards
+        block.SetColor("_SideColor", curRecipe.potionColor); // might be deleted
+
+        // Apply the property block back to the renderer
+        curPotionRend.SetPropertyBlock(block);
+    }
+
+    #region Stirring Actions
+    private void StirClockwise(InputAction.CallbackContext input)
+    {
+        if(input.performed)
         {
-            Debug.Log("Stirring clockwise");
-            curStepIndex++;
-            nextStep = curRecipe.steps[curStepIndex];
-            return;
-        }
-        else
-        {
-            HandleIncorrectStep();
+            if (!canInteract) return;
+
+            spoon.DORotate(new Vector3(0, -360, 0), spoonRotationSpeed, RotateMode.FastBeyond360);
+            if (nextStep == null)
+            {
+                HandleIncorrectStep();
+                return;
+            }
+
+            if (nextStep.stepType == RecipeStepSO.StepType.StirClockwise)
+            {
+                Debug.Log("Stirring clockwise");
+                curStepIndex++;
+                nextStep = curRecipe.steps[curStepIndex];
+                return;
+            }
+            else
+                HandleIncorrectStep();
         }
     }
 
-    private void StirCounterClockwise()
+    private void StirCounterClockwise(InputAction.CallbackContext input)
     {
-        spoon.DORotate(new Vector3(0, 360, 0), spoonRotationSpeed, RotateMode.FastBeyond360);
+        if(input.performed)
+        {
+            if (!canInteract) return;
 
-        if (nextStep == null)
-        {
-            HandleIncorrectStep();
-            return;
-        }
+            spoon.DORotate(new Vector3(0, 360, 0), spoonRotationSpeed, RotateMode.FastBeyond360);
 
-        if (nextStep.stepType == RecipeStepSO.StepType.StirCounterClockwise)
-        {
-            Debug.Log("Stirring counter clockwise");
-            curStepIndex++;
-            nextStep = curRecipe.steps[curStepIndex];
-        }
-        else
-        {
-            HandleIncorrectStep();
+            if (nextStep == null)
+            {
+                HandleIncorrectStep();
+                return;
+            }
+
+            if (nextStep.stepType == RecipeStepSO.StepType.StirCounterClockwise)
+            {
+                Debug.Log("Stirring counter clockwise");
+                curStepIndex++;
+                nextStep = curRecipe.steps[curStepIndex];
+            }
+            else
+                HandleIncorrectStep();
         }
     }
-
+    #endregion
+   
     /// <summary>
     /// Resets curStep, curRecipe, nextStep & clears the list of added ingredients
     /// </summary>
@@ -285,5 +297,16 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
         curRecipe = null;
         curStep = null;
         nextStep = null;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+            canInteract = true;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        canInteract = false;
     }
 }

@@ -345,11 +345,33 @@
                 },
                 {
                     "name": "",
+                    "id": "f9823cc4-362b-4924-9821-3b286942a8d9",
+                    "path": "<Keyboard>/numpad7",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PreviousPage",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "49ef199d-a083-4a60-9f9b-767f89189873",
                     "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
+                    "action": "NextPage",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7bbcb352-bc30-40ce-b6bf-61450bb40085",
+                    "path": "<Keyboard>/numpad9",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "NextPage",
                     "isComposite": false,
                     "isPartOfComposite": false
