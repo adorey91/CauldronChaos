@@ -16,6 +16,6 @@ public class RecipeSO : ScriptableObject
     public RecipeStepSO[] steps;
 
     [Header("Potion / Output")]
-    public GameObject potionPrefab;
     public Sprite potionIcon;
+    public Color potionColor;
 }

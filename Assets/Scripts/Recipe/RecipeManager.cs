@@ -11,10 +11,6 @@ public class RecipeManager : MonoBehaviour
     [SerializeField] private RecipeSO[] allRecipes;
     [SerializeField] private int numberOfRecipes;
 
-    [Header("Bad Potion Prefab")]
-    [SerializeField] private GameObject badPotion;
-
-
     public RecipeSO[] FindAvailableRecipes()
     {
         RecipeSO[] availableRecipes = new RecipeSO[numberOfRecipes];
@@ -26,8 +22,6 @@ public class RecipeManager : MonoBehaviour
 
         return availableRecipes;
     }
-
-    public GameObject SetBadPotion() => badPotion;
 
     internal RecipeSO GetRandomRecipe()
     {
@@ -43,5 +37,4 @@ public class RecipeManager : MonoBehaviour
         }
         return null;
     }
-
 }
