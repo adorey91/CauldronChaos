@@ -228,8 +228,7 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
 
         // Set the fill amount
         block.SetFloat("_Fill", 0.6f);
-        block.SetColor("_TopColor", curRecipe.potionColor); // name might change afterwards
-        block.SetColor("_SideColor", curRecipe.potionColor); // might be deleted
+        block.SetColor("_Color", curRecipe.potionColor); 
 
         // Apply the property block back to the renderer
         curPotionRend.SetPropertyBlock(block);
