@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9955730c230844b4994e755982e1c60a, type: 3}
-  m_Name: Potion of Gumption
+  m_Name: Potion of Sentience
   m_EditorClassIdentifier: 
-  recipeName: Potion of Gumption
+  recipeName: Potion of Stamina
   weight: 1
   steps:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 97e7804a0ec3fb94aba85a91aef9dbf8, type: 2}
+  - {fileID: 11400000, guid: c7a2d2150ba7e0a49bd93c6a194ee33a, type: 2}
   potionIcon: {fileID: 0}
   potionColor: {r: 0, g: 0, b: 0, a: 0}

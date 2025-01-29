@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 673819675195865954}
   - component: {fileID: 6996077545047624858}
   - component: {fileID: 4882632093064161872}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Potion_Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +128,7 @@ GameObject:
   - component: {fileID: 3700922920867343164}
   - component: {fileID: 4956964372629776814}
   - component: {fileID: 2584692512498601129}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bottle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -234,7 +234,7 @@ GameObject:
   - component: {fileID: 1463188245877652268}
   - component: {fileID: 68288435674010767}
   - component: {fileID: 610863681267563120}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cork
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -340,7 +340,8 @@ GameObject:
   - component: {fileID: 8581827169888680931}
   - component: {fileID: 7561190872824759389}
   - component: {fileID: 305689249100298247}
-  m_Layer: 0
+  - component: {fileID: 8051639062756722526}
+  m_Layer: 6
   m_Name: BottleInner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -434,6 +435,21 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 5885090576153703262, guid: 8ae2d62ccd280a646974c2fb83a393aa, type: 3}
+--- !u!114 &8051639062756722526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4948029764408668152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 582772a4b346c324eb37a3d471c028c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxWobble: 0.01
+  WobbleSpeed: 1
+  Recovery: 1
 --- !u!1 &7104233210140413935
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,7 +460,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1036762211439874778}
   - component: {fileID: 6435653212232558605}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Interaction
   m_TagString: Crate
   m_Icon: {fileID: 0}

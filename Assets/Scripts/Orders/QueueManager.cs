@@ -32,17 +32,17 @@ public class QueueManager : MonoBehaviour
     }
 
     //used for testing
-    //private void Update()
-    //{
-    //    if(Input.GetKeyDown(KeyCode.S))
-    //        SpawnNewCustomer();
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+            SpawnNewCustomer();
 
-    //    if(Input.GetKeyDown(KeyCode.R))
-    //    {
-    //        int randomIndex = Random.Range(0, customers.Count);
-    //        RemoveCustomer(customers[randomIndex]);
-    //    }
-    //}
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            int randomIndex = Random.Range(0, customers.Count);
+            RemoveCustomer(customers[randomIndex]);
+        }
+    }
 
 
     // Add a new customer to the end of the queue

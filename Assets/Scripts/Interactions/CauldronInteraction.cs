@@ -31,8 +31,9 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
 
     private bool potionCompleted;
     private int potionIndex;
-    
-    
+    [SerializeField] private Transform cauldronFill;
+    private Transform cauldronBegin;
+
     [Header("Potion Insert Spot")]
     [SerializeField] private Transform ingredientInsertPoint;
 
@@ -51,10 +52,11 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     [SerializeField] private SFXLibrary addIngredientSounds;
     [SerializeField] private SFXLibrary FinishPotionSounds;
     [SerializeField] private SFXLibrary incorrectStepSounds;
-   
+
 
     public void Start()
     {
+        cauldronBegin = cauldronFill;
         incorrectStepParticles = GetComponentInChildren<ParticleSystem>();
         recipeManager = FindObjectOfType<RecipeManager>();
         craftableRecipes = recipeManager.FindAvailableRecipes();
@@ -208,7 +210,6 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     {
         yield return new WaitForSeconds(0.5f);
         SetPotionOutput();
-
         // Play a sound here
         //AudioManager.instance.sfxManager.playSFX()
 
@@ -216,7 +217,8 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
         Vector3 randomDireciton = new Vector3(Random.Range(-1f, 1f), 1f, Random.Range(-1f, 1f)).normalized;
 
         Vector3 targetPositon = startPosition + (randomDireciton * throwStrength);
-        ingredientGO.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutSine);
+        cauldronFill.DOMove(cauldronFill.position - new Vector3(0, 0.1f, 0), 0.5f);
+        ingredientGO.transform.DOScale(new Vector3(1.1f,1.1f,1.1f), 0.8f).SetEase(Ease.InOutSine);
         ingredientGO.transform.DOJump(targetPositon, throwHeight, 1, throwDuration).SetEase(Ease.OutQuad).OnComplete(() => CountPotions());
     }
 
@@ -232,7 +234,7 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
 
         // Set the fill amount
         block.SetFloat("_Fill", 0.6f);
-        block.SetColor("_Color", curRecipe.potionColor); 
+        block.SetColor("_Color", curRecipe.potionColor);
 
         // Apply the property block back to the renderer
         curPotionRend.SetPropertyBlock(block);
@@ -241,7 +243,7 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     #region Stirring Actions
     private void StirClockwise(InputAction.CallbackContext input)
     {
-        if(input.performed)
+        if (input.performed)
         {
             if (!canInteract) return;
 
@@ -266,7 +268,7 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
 
     private void StirCounterClockwise(InputAction.CallbackContext input)
     {
-        if(input.performed)
+        if (input.performed)
         {
             if (!canInteract) return;
 
@@ -292,7 +294,7 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
 
     private void CountPotions()
     {
-        if(ingredient == RecipeStepSO.Ingredient.Bottle && curStepIndex == 0)
+        if (ingredient == RecipeStepSO.Ingredient.Bottle && curStepIndex == 0)
         {
             ResetValues();
             return;
@@ -307,9 +309,10 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
         else
         {
             potionIndex++;
-
+            Debug.Log(potionIndex);
             if (potionIndex == 3)
             {
+                cauldronFill.DOMove(cauldronBegin.position, 0.5f);
                 potionCompleted = false;
                 potionIndex = 0;
                 ResetValues();

@@ -1,9 +1,7 @@
 using DG.Tweening;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
 public class InteractionDetector : MonoBehaviour
@@ -15,7 +13,7 @@ public class InteractionDetector : MonoBehaviour
     private RecipeStepSO _stepInHand;
     private GameObject potionInHand;
     private GameObject ingredientStepGO;
-
+    [SerializeField] private Image currentPickup;
     [Header("Holder for dropped items")]
     [SerializeField] private GameObject droppedItems;
 
@@ -54,6 +52,8 @@ public class InteractionDetector : MonoBehaviour
             if (handPosition.childCount == 0)
             {
                 _pickupablesInRange.Pickup(this);
+
+                currentPickup.enabled = true;
             }
             else
             {
@@ -74,6 +74,8 @@ public class InteractionDetector : MonoBehaviour
                         {
                             potionInHand = null;
                         }
+
+                        currentPickup.enabled = false;
                         return;
                     }
                 }
@@ -88,6 +90,7 @@ public class InteractionDetector : MonoBehaviour
     {
         if (ingredientStepGO != null) return;
 
+
         ingredientStepGO = ingredient;
         ingredientStepGO.GetComponent<Rigidbody>().isKinematic = true;
         ingredientStepGO.transform.SetParent(handPosition);
@@ -96,6 +99,8 @@ public class InteractionDetector : MonoBehaviour
         if(ingredientStepGO.TryGetComponent(out IngredientHolder ingredientHolder))
         {
             _stepInHand = ingredientHolder.recipeStepIngredient;
+            currentPickup.enabled = true;
+            currentPickup.sprite = _stepInHand.ingredientSprite;
         }
     }
 
@@ -108,13 +113,14 @@ public class InteractionDetector : MonoBehaviour
             numJumps: 1, 
             duration: 0.5f).SetEase(Ease.InOutSine);
 
-        ingredientStepGO.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InOutSine);
+        ingredientStepGO.transform.DOScale(Vector3.zero, 0.8f).SetEase(Ease.InOutSine);
         ingredientStepGO.transform.SetParent(null);
         ingredientStepGO.GetComponent<Rigidbody>().isKinematic = false;
 
 
         ingredientStepGO = null;
         _stepInHand = null;
+        currentPickup.enabled = false;
     }
   
     public RecipeStepSO GetRecipeStep()
@@ -138,6 +144,8 @@ public class InteractionDetector : MonoBehaviour
     public void AddPotion(GameObject potion)
     {
         potionInHand = potion;
+        currentPickup.enabled = true;
+        currentPickup.sprite = potion.GetComponent<PotionOutput>().potionInside.potionIcon;
         potionInHand.GetComponent<Rigidbody>().isKinematic = true;
     }
 
@@ -164,6 +172,7 @@ public class InteractionDetector : MonoBehaviour
         potionInHand.transform.SetParent(handPosition);
         potionInHand.transform.position = handPosition.position;
         potionInHand.GetComponent<Rigidbody>().isKinematic = true;
+        currentPickup.sprite = potionInHand.GetComponent<PotionOutput>().potionInside.potionIcon;
 
     }
     #endregion

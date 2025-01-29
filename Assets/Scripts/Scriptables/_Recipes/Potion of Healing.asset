@@ -16,8 +16,7 @@ MonoBehaviour:
   weight: 1
   steps:
   - {fileID: 11400000, guid: 1263d1af773c1934389a86be3ac2a831, type: 2}
+  - {fileID: 11400000, guid: 813f59d3c94cb8848ad40c58817a6559, type: 2}
   - {fileID: 11400000, guid: 610915c10d0751b44b86fdcd1393864f, type: 2}
-  potionPrefab: {fileID: 7427740466204531523, guid: 231a0a25a35fd404ab5add0a2ae9d51c,
-    type: 3}
   potionIcon: {fileID: 21300000, guid: d89aeb79680c981499ba66f54f302349, type: 3}
   potionColor: {r: 1, g: 0, b: 0, a: 1}
