@@ -25,6 +25,7 @@ public class UiManager : MonoBehaviour
     private bool newDay;
     private int timer;
 
+    private Coroutine dayStartCoroutine;
 
     // used for testing
     private void Update()
@@ -37,7 +38,8 @@ public class UiManager : MonoBehaviour
         if (newDay)
         {
             dayStartPanel.SetActive(true);
-            StartCoroutine(DayStartTimer());
+            newDay = false;
+            StartDayCountdown();
         }
     }
 
@@ -145,21 +147,26 @@ public class UiManager : MonoBehaviour
     }
     #endregion
 
+
+    private void StartDayCountdown()
+    {
+        if(dayStartCoroutine != null)
+            StopCoroutine(dayStartCoroutine);
+        else
+            dayStartCoroutine = StartCoroutine(DayStartTimer());
+    }
     private IEnumerator DayStartTimer()
     {
-        timer = secondsToStart;
+        int timer = secondsToStart; // Initialize timer with total seconds
 
-        dayStartText.text = $"Day Starts in... {timer}";
-
-        float normalizedTime = 0;
-        while (normalizedTime <= secondsToStart)
+        while (timer > -1) // Loop until timer reaches -1
         {
-
-            dayStartText.text = $"Day Starts in... {normalizedTime}";
-            normalizedTime += Time.deltaTime;
-            yield return null;
+            dayStartText.text = $"Day Starts in... {timer}"; // Update text with current timer value
+            timer--; // Decrement timer by 1
+            yield return new WaitForSeconds(1f); // Wait for 1 second before continuing
         }
 
-        newDay = false;
+        dayStartPanel.SetActive(false); // Disable the day start panel
+        Actions.OnStartDay?.Invoke(); // Invoke the StartDay action
     }
 }

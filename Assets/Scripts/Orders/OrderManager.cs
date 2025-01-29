@@ -129,75 +129,75 @@ public class OrderManager : MonoBehaviour
     // Generate a random order for a customer
     private void GenerateOrder()
     {
-        // If there are no recipes, do nothing
-        if (_availableRecipes.Length == 0) return;
+        //// If there are no recipes, do nothing
+        //if (_availableRecipes.Length == 0) return;
 
-        GameObject customerObject = Instantiate(customerPrefab[Random.Range(0, customerPrefab.Length)], orderCounter.GetNextPosition(), transform.rotation * Quaternion.Euler(0, 180f, 0), orderCounter.ParentPosition());
-        Customer customer = customerObject.GetComponent<Customer>();
-        RecipeSO assignedOrder;
+        //GameObject customerObject = Instantiate(customerPrefab[Random.Range(0, customerPrefab.Length)], orderCounter.GetNextPosition(), transform.rotation * Quaternion.Euler(0, 180f, 0), orderCounter.ParentPosition());
+        //Customer customer = customerObject.GetComponent<Customer>();
+        //RecipeSO assignedOrder;
 
-        if (customer.customerName == "EvilMage")
-        {
-            assignedOrder = _availableRecipes[0];
-        }
-        else
-        {
-            int randomIndex = Random.Range(0, _availableRecipes.Length);
-            assignedOrder = _availableRecipes[randomIndex];
-        }
+        //if (customer.customerName == "EvilMage")
+        //{
+        //    assignedOrder = _availableRecipes[0];
+        //}
+        //else
+        //{
+        //    int randomIndex = Random.Range(0, _availableRecipes.Length);
+        //    assignedOrder = _availableRecipes[randomIndex];
+        //}
 
-        orderManagerUi.GenerateOrderUI(assignedOrder);
+        //orderManagerUi.GenerateOrderUI(assignedOrder);
 
-        // Add the order to the active orders list
-        _activeOrders.Add(new CustomerOrder
-        {
-            Customer = customer,
-            OrderUi = orderManagerUi.GetOrderUI(),
-            Recipe = assignedOrder
-        });
+        //// Add the order to the active orders list
+        //_activeOrders.Add(new CustomerOrder
+        //{
+        //    Customer = customer,
+        //    OrderUi = orderManagerUi.GetOrderUI(),
+        //    Recipe = assignedOrder
+        //});
     }
 
 
     internal void FinishOrder(PotionOutput recipe)
     {
-        if (_activeOrders.Count == 0)
-        {
-            Debug.Log("No customers to serve");
-            return;
-        }
+        //if (_activeOrders.Count == 0)
+        //{
+        //    Debug.Log("No customers to serve");
+        //    return;
+        //}
 
-        foreach (var order in _activeOrders)
-        {
-            if (order.Recipe == recipe.potionInside)
-            {
-                Vector3 customerPosition = order.Customer.transform.position;
+        //foreach (var order in _activeOrders)
+        //{
+        //    if (order.Recipe == recipe.potionInside)
+        //    {
+        //        Vector3 customerPosition = order.Customer.transform.position;
 
-                Destroy(order.Customer.gameObject);
-                order.Customer.OrderComplete(recipe);
-                orderManagerUi.RemoveOrderUI(order.OrderUi);
+        //        Destroy(order.Customer.gameObject);
+        //        order.Customer.OrderComplete(recipe);
+        //        orderManagerUi.RemoveOrderUI(order.OrderUi);
 
-                _activeOrders.Remove(order);
+        //        _activeOrders.Remove(order);
 
-                // Free the customer's position in the queue
-                orderCounter.FreePosition(customerPosition);
+        //        // Free the customer's position in the queue
+        //        orderCounter.FreePosition(customerPosition);
 
-                return;
-            }
-        }
+        //        return;
+        //    }
+        //}
 
-        Actions.OnNoCustomerServed?.Invoke();
-        Debug.Log("No customer found with that order");
+        //Actions.OnNoCustomerServed?.Invoke();
+        //Debug.Log("No customer found with that order");
     }
 
 
     private void RemoveAllOrders()
     {
-        foreach (var order in _activeOrders)
-        {
-            Destroy(order.Customer.gameObject);
-            orderManagerUi.RemoveOrderUI(order.OrderUi);
-        }
+        //foreach (var order in _activeOrders)
+        //{
+        //    Destroy(order.Customer.gameObject);
+        //    orderManagerUi.RemoveOrderUI(order.OrderUi);
+        //}
 
-        _activeOrders.Clear();
+        //_activeOrders.Clear();
     }
 }

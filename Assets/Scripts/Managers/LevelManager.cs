@@ -1,10 +1,10 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
-using UnityEngine.UI;
-using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem;
-using System.Collections;
+using UnityEngine.InputSystem.Controls;
 using System.Linq;
 
 public class LevelManager : MonoBehaviour
@@ -27,7 +27,6 @@ public class LevelManager : MonoBehaviour
         fadeAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
     }
 
-    
     public void LoadScene(string sceneName)
     {
         Fade("FadeOut", () =>

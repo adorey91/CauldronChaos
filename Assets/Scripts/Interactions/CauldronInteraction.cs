@@ -28,6 +28,9 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     private int curStepIndex;
 
     private bool canInteract;
+
+    private bool potionCompleted;
+    private int potionIndex;
     
     
     [Header("Potion Insert Spot")]
@@ -176,6 +179,7 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
 
         ingredientGO.GetComponent<IngredientHolder>().enabled = false;
         ingredientGO.GetComponent<PotionOutput>().enabled = true;
+        ingredientGO.GetComponent<PotionOutput>().potionInside = curRecipe;
 
         // Instantiate the completed potion prefab
         StartCoroutine(ThrowFromCauldron());
@@ -213,7 +217,7 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
 
         Vector3 targetPositon = startPosition + (randomDireciton * throwStrength);
         ingredientGO.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutSine);
-        ingredientGO.transform.DOJump(targetPositon, throwHeight, 1, throwDuration).SetEase(Ease.OutQuad).OnComplete(() => ResetValues());
+        ingredientGO.transform.DOJump(targetPositon, throwHeight, 1, throwDuration).SetEase(Ease.OutQuad).OnComplete(() => CountPotions());
     }
 
     // Sets the fill amount & color of the potion
@@ -285,7 +289,34 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
         }
     }
     #endregion
-   
+
+    private void CountPotions()
+    {
+        if(ingredient == RecipeStepSO.Ingredient.Bottle && curStepIndex == 0)
+        {
+            ResetValues();
+            return;
+        }
+
+        if (!potionCompleted)
+        {
+            potionIndex++;
+            potionCompleted = true;
+            return;
+        }
+        else
+        {
+            potionIndex++;
+
+            if (potionIndex == 3)
+            {
+                potionCompleted = false;
+                potionIndex = 0;
+                ResetValues();
+            }
+        }
+    }
+
     /// <summary>
     /// Resets curStep, curRecipe, nextStep & clears the list of added ingredients
     /// </summary>

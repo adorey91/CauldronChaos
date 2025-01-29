@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1116665444753867206}
   - component: {fileID: 8051633004611209933}
   - component: {fileID: 1993444779945991669}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cork
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,7 +116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1861551827073324}
   - component: {fileID: 264437719789755314}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Interaction
   m_TagString: Crate
   m_Icon: {fileID: 0}
@@ -171,7 +171,7 @@ GameObject:
   - component: {fileID: 5575150929136816134}
   - component: {fileID: 6900239095656285448}
   - component: {fileID: 4282422121392336113}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bottle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,7 +277,7 @@ GameObject:
   - component: {fileID: 2106228932966885891}
   - component: {fileID: 2878313959565191351}
   - component: {fileID: 2071458878986324294}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bottle_Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}

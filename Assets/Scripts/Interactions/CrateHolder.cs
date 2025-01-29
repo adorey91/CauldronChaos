@@ -23,6 +23,15 @@ public class CrateHolder : MonoBehaviour, IInteractable
 
     public void Interact(InteractionDetector player)
     {
+        if (player.HasPotion()) return;
+        if(player.GetRecipeStep()) return;
+
+        if(ingredientPrefab == null)
+        {
+            Debug.LogError("No ingredient prefab assigned to " + gameObject.name);
+            return;
+        }
+
         GameObject newIngredient;
         newIngredient = Instantiate(ingredientPrefab);
 
