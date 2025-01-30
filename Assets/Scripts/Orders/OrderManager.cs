@@ -8,19 +8,7 @@ public class OrderManager : MonoBehaviour
 {
     [Header("Order Variables")]
     [SerializeField] private RecipeManager recipeManager;
-    [SerializeField] private OrderCounter orderCounter;
-    [SerializeField] private int maxOrders = 4;
     private RecipeSO[] _availableRecipes;
-
-    [Header("Order UI")]
-    [SerializeField] private OrderManagerUi orderManagerUi;
-
-    [Header("Customer Prefab")]
-    [SerializeField] GameObject[] customerPrefab;
-    [SerializeField] private Transform customerSpawnPoint;
-
-    [Header("Active Customers")]
-    private List<CustomerOrder> _activeOrders = new();
 
     // Timer for the day - sets 5 minute timer
     [Header("Day Timer Settings")]
@@ -46,11 +34,9 @@ public class OrderManager : MonoBehaviour
     private void Start()
     {
         recipeManager = FindObjectOfType<RecipeManager>();
-        orderCounter = FindObjectOfType<OrderCounter>();
         _dayTimer = new CustomTimer(minutesPerDay, true);
         _newCustomerTimer = new CustomTimer(newCustomerTime, false);
         _availableRecipes = recipeManager.FindAvailableRecipes();
-        _activeOrders.Clear();
 
         timerHandRect.localRotation = _minAngle;
     }
@@ -95,17 +81,17 @@ public class OrderManager : MonoBehaviour
 
         }
 
-        if (_startCustomer)
-        {
-            if (_activeOrders.Count < maxOrders)
-            {
-                if (_newCustomerTimer.UpdateTimer())
-                {
-                    GenerateOrder();
-                    _newCustomerTimer.ResetTimer();
-                }
-            }
-        }
+        //if (_startCustomer)
+        //{
+        //    if (_activeOrders.Count < maxOrders)
+        //    {
+        //        if (_newCustomerTimer.UpdateTimer())
+        //        {
+        //            GenerateOrder();
+        //            _newCustomerTimer.ResetTimer();
+        //        }
+        //    }
+        //}
     }
 
     private void StartDay()
@@ -115,46 +101,34 @@ public class OrderManager : MonoBehaviour
         timerStarted = true;
         // starts the customer timer
         _startCustomer = true;
-        GenerateOrder();
         _newCustomerTimer.StartTimer();
     }
 
     private void EndDay()
     {
         timerStarted = false;
-        RemoveAllOrders();
         timerHandRect.transform.rotation = _minAngle;
     }
 
     // Generate a random order for a customer
-    private void GenerateOrder()
+    internal RecipeSO GiveOrder(string name)
     {
-        //// If there are no recipes, do nothing
-        //if (_availableRecipes.Length == 0) return;
+        // If there are no available recipes, return
+        if (_availableRecipes.Length == 0) return null;
 
-        //GameObject customerObject = Instantiate(customerPrefab[Random.Range(0, customerPrefab.Length)], orderCounter.GetNextPosition(), transform.rotation * Quaternion.Euler(0, 180f, 0), orderCounter.ParentPosition());
-        //Customer customer = customerObject.GetComponent<Customer>();
-        //RecipeSO assignedOrder;
+        RecipeSO assignedOrder;
 
-        //if (customer.customerName == "EvilMage")
-        //{
-        //    assignedOrder = _availableRecipes[0];
-        //}
-        //else
-        //{
-        //    int randomIndex = Random.Range(0, _availableRecipes.Length);
-        //    assignedOrder = _availableRecipes[randomIndex];
-        //}
+        if(name == "EvilMage")
+        {
+            assignedOrder = _availableRecipes[0];
+        }
+        else
+        {
+            int randomIndex = Random.Range(0, _availableRecipes.Length);
+            assignedOrder = _availableRecipes[randomIndex];
+        }
 
-        //orderManagerUi.GenerateOrderUI(assignedOrder);
-
-        //// Add the order to the active orders list
-        //_activeOrders.Add(new CustomerOrder
-        //{
-        //    Customer = customer,
-        //    OrderUi = orderManagerUi.GetOrderUI(),
-        //    Recipe = assignedOrder
-        //});
+        return assignedOrder;
     }
 
 
@@ -188,16 +162,4 @@ public class OrderManager : MonoBehaviour
         //Actions.OnNoCustomerServed?.Invoke();
         //Debug.Log("No customer found with that order");
     }
-
-
-    private void RemoveAllOrders()
-    {
-        //foreach (var order in _activeOrders)
-        //{
-        //    Destroy(order.Customer.gameObject);
-        //    orderManagerUi.RemoveOrderUI(order.OrderUi);
-        //}
-
-        //_activeOrders.Clear();
-    }
-}
+} 

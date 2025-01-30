@@ -130,6 +130,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   requestedOrder: {fileID: 0}
   customerName: 
+  orderUiPrefab: {fileID: 6402695683748899613, guid: 5f38278dd2ddd4b4faeb7fff945b6fde,
+    type: 3}
   moveSpeed: 3
 --- !u!1 &7335650812654629374
 GameObject:

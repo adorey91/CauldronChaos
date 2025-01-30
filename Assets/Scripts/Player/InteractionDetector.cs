@@ -203,7 +203,7 @@ public class InteractionDetector : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
         Destroy(pickup);
-
+        currentPickup.enabled = false;
         if (pickup == potionInHand)
             potionInHand = null;
         if (pickup == ingredientStepGO)
