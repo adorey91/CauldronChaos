@@ -27,8 +27,8 @@ public class CustomerBehaviour : MonoBehaviour
 
     private void Update()
     {
-        //if(tipTimer.UpdateTimer())
-        //    giveTip = false;
+        if (tipTimer.UpdateTimer())
+            giveTip = false;
 
         if (!leavingQueue)
             MoveToTarget();
@@ -41,8 +41,8 @@ public class CustomerBehaviour : MonoBehaviour
         //Debug.Log("Customer assigned order: " + order.recipeName);
         this.requestedOrder = order;
         orderUiParent = parent;
-        //tipTimer = new CustomTimer(2, true);
-        //giveTip = true;
+        tipTimer = new CustomTimer(2, true);
+        giveTip = true;
     }
 
     private void DisplayOrderUI()
@@ -63,6 +63,8 @@ public class CustomerBehaviour : MonoBehaviour
             orderIcon.sprite = requestedOrder.potionIcon;
         else
             orderIcon.enabled = false;
+        
+        tipTimer.StartTimer();
     }
 
     internal RecipeSO HasOrder()
@@ -70,7 +72,7 @@ public class CustomerBehaviour : MonoBehaviour
         return requestedOrder;
     }
 
-    internal void OrderComplete(PotionOutput potionGiven)
+    internal void OrderComplete()
     {
         if (giveTip == true)
         {

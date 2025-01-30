@@ -110,16 +110,10 @@ public class InteractionDetector : MonoBehaviour
     }
 
     // drop ingredient into cauldron - new parent is inside the cauldron. We'd like the ingredient to look like its jumping into the cauldron
-    public void PutIngredientInCauldron(Transform newParent)
+    public void PutIngredientInCauldron()
     {
         // if there is no ingredient in hand, return
         if (ingredientStepGO == null) return;
-
-        // ingredient jumps into the cauldron, slowly gets small and the parent is removed
-        ingredientStepGO.transform.DOJump(newParent.position, 1f, 1, 0.5f).SetEase(Ease.InOutSine);
-        ingredientStepGO.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InOutSine);
-        ingredientStepGO.transform.SetParent(null);
-        ingredientStepGO.GetComponent<Rigidbody>().isKinematic = false;
 
         ingredientStepGO = null;
         currentPickup.enabled = false;

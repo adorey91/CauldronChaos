@@ -14,6 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeName: Potion of Anti-Perspirant
   weight: 1
-  steps: []
-  potionPrefab: {fileID: 0}
+  points: 50
+  steps:
+  - {fileID: 11400000, guid: a23d695515e326b4095b01e42e44051d, type: 2}
+  - {fileID: 11400000, guid: 0ac84d26587e92d419335d287def4e69, type: 2}
+  - {fileID: 11400000, guid: da2b2a4236fd59343b6ba41fb266de9e, type: 2}
+  - {fileID: 11400000, guid: 610915c10d0751b44b86fdcd1393864f, type: 2}
   potionIcon: {fileID: 0}
+  potionColor: {r: 0.23529412, g: 0.7058824, b: 0.29411766, a: 1}

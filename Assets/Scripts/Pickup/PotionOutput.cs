@@ -16,6 +16,7 @@ public class PotionOutput : MonoBehaviour, IPickupable
 
     public void Pickup(InteractionDetector player)
     {
+        if (_rb == null) return;
         _rb.isKinematic = true;
         _collider.enabled = false;
         player.PickUpPotion(this.gameObject);
