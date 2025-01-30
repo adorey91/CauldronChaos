@@ -12008,6 +12008,11 @@ PrefabInstance:
       propertyPath: sfx_Players.Array.data[4]
       value: 
       objectReference: {fileID: 1659008415}
+    - target: {fileID: 5950320428320779712, guid: 2799942a5de093f46a85f6f5ded04166,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7427524997861789097, guid: 2799942a5de093f46a85f6f5ded04166,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size

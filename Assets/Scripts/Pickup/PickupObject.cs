@@ -5,12 +5,12 @@ using UnityEngine.UIElements;
 
 public class PickupObject : MonoBehaviour
 {
-    private bool isHeld = false; //bool tracking if the pickup is held
+    [SerializeField] private bool isHeld = false; //bool tracking if the pickup is held
     private Transform targetPos = null; //transform tarcking the target position of the pickup
     private Rigidbody rb; //rigidbody component of the pickup
 
     // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
@@ -28,14 +28,20 @@ public class PickupObject : MonoBehaviour
     //Function that picks up the pickup
     public void PickUp(Transform targetPos)
     {
+        //Debug.Log("Calling pickup");
+
         //setting held to true and removing gravity
         isHeld = true;
         rb.useGravity = false;
+
+        //Debug.Log(targetPos);
 
         //setting target position & parenting
         this.targetPos = targetPos;
         transform.position = targetPos.position;
         transform.parent = targetPos;
+
+        //Debug.Log(targetPos);
     }
 
     //Function that drops the pickup

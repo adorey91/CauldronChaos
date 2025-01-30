@@ -6,14 +6,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.VFX;
 
-public class CauldronInteraction : MonoBehaviour, IInteractable
+public class CauldronInteraction : MonoBehaviour
 {
     // Reference to the RecipeManager script
     private RecipeManager recipeManager;
 
     // Holds all the recipes that can be crafted in this Cauldron
     private RecipeSO[] craftableRecipes;
-    private List<RecipeSO> possibleRecipes = new();
 
     // Particles for incorrect step
     private VisualEffect incorrectStep;
@@ -45,7 +44,6 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     [Tooltip("Lower the number the slower it goes")]
     [SerializeField] private float spoonRotationSpeed = 0.6f;
     [SerializeField] private Transform spoon;
-    private bool tryStir;
 
     //sound libraries and clips
     [Header("Sounds")]
@@ -77,18 +75,13 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     }
     //#endregion
 
-    public void Interact(InteractionDetector player)
+    public void AddIngredient(IngredientHolder ingredientHolder, GameObject ingredientObject)
     {
-        if (player.GetIngredientObject() == null) return;
-
-        ingredientGO = player.GetIngredientObject();
-        IngredientHolder ingredientHolder = ingredientGO.GetComponent<IngredientHolder>();
+        ingredientGO = ingredientObject;
 
         curStep = ingredientHolder.recipeStepIngredient;
 
         // grabs the ingredient from the recipe step that's holding it.
-        player.PutIngredientInCauldron();
-
         ingredientGO.transform.SetParent(null);
         ingredientGO.transform.DOJump(ingredientInsertPoint.position, 1f, 1, 0.5f).SetEase(Ease.InOutSine);
         ingredientGO.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InOutSine).OnComplete(DestroyGO);
@@ -104,7 +97,13 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
         }
         else
         {
-            AdvanceToNextStep();
+            if (nextStep != null)
+            {
+                AdvanceToNextStep();
+                return;
+            }
+            else
+                HandleIncorrectStep();
         }
     }
 
@@ -125,27 +124,21 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
         {
             if (recipe.steps[curStepIndex] == curStep)
             {
-                possibleRecipes.Add(recipe);
+                curRecipe = recipe;
+
                 if (recipe.steps[curStepIndex].ingredient == RecipeStepSO.Ingredient.Bottle)
                 {
-                    curRecipe = recipe;
                     CompleteRecipe();
                     return;
                 }
 
-
+                curStepIndex++;
+                nextStep = curRecipe.steps[curStepIndex];
+                return;
             }
         }
-        curStepIndex++;
 
-        if (possibleRecipes.Count == 1)
-        {
-            nextStep = curStep;
-            possibleRecipes.Clear();
-        }
-
-        if (possibleRecipes.Count == 0)
-            HandleIncorrectStep();
+        HandleIncorrectStep();
     }
 
 
@@ -154,84 +147,23 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     /// </summary>
     private void AdvanceToNextStep()
     {
-        // if next step has nothing & you try to stir, handle incorrect step
-        if (nextStep == null && tryStir) return;
-
-        
-        // then check each recipe in the list of possible recipes to see if the next step is equal to your current ingredient
-        if (nextStep == null)
+        if (nextStep == curStep)
         {
-            foreach (RecipeSO recipe in possibleRecipes)
+            if (curStepIndex < curRecipe.steps.Length)
             {
-                if (recipe.steps[curStepIndex] == curStep)
+                if (curStep.ingredient == RecipeStepSO.Ingredient.Bottle)
                 {
-                    curRecipe = recipe;
-                    curStepIndex++;
-                    nextStep = curRecipe.steps[curStepIndex];
-                    possibleRecipes.Clear();
-                    break;
+                    CompleteRecipe();
+                    return;
                 }
+
+                curStepIndex++;
+                nextStep = curRecipe.steps[curStepIndex];
+                return;
             }
         }
-
-
-        // if its one of those then do what its suppose to and increment the currentstep index
-
-        // if not handle incorrect step
-
-
-        //if (nextStep == null)
-        //{
-        //    if (tryStir)
-        //    {
-        //        HandleIncorrectStep();
-        //        return;
-        //    }
-        //    foreach (RecipeSO recipe in possibleRecipes)
-        //    {
-        //        if (recipe.steps[curStepIndex] == curStep)
-        //        {
-        //            curRecipe = recipe;
-        //            nextStep = curStep;
-        //            possibleRecipes.Clear();
-        //            break;
-        //        }
-        //    }
-        //}
-
-
-        //if (nextStep == curStep)
-        //{
-        //    if (curStepIndex < curRecipe.steps.Length)
-        //    {
-        //        if (curStep.ingredient == RecipeStepSO.Ingredient.Bottle)
-        //        {
-        //            CompleteRecipe();
-        //            return;
-        //        }
-
-        //        if (tryStir)
-        //        {
-        //            if (curStirAmount == nextStep.stirAmount)
-        //            {
-        //                curStepIndex++;
-        //                curStirAmount = 1;
-        //            }
-        //            else
-        //            {
-        //                curStirAmount++;
-        //            }
-        //            tryStir = false;
-        //        }
-
-
-        //        curStepIndex++;
-        //        nextStep = curRecipe.steps[curStepIndex];
-        //        return;
-        //    }
-        //}
-        //else
-        //    HandleIncorrectStep();
+        else
+            HandleIncorrectStep();
     }
 
     /// <summary>
@@ -265,7 +197,7 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
 
         // Play a sound here
         //AudioManager.instance.sfxManager.playSFX()
-        tryStir = false;
+
         incorrectStep.Play();
 
         ResetValues();
@@ -321,30 +253,27 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
             if (!canInteract) return;
 
             spoon.DORotate(new Vector3(0, -360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
+            if (nextStep == null)
+            {
+                HandleIncorrectStep();
+                return;
+            }
 
-            tryStir = true;
-            AdvanceToNextStep();
-            //if (nextStep == null)
-            //{
-            //    HandleIncorrectStep();
-            //    return;
-            //}
+            if (nextStep.stepType == RecipeStepSO.StepType.StirClockwise)
+            {
+                if (curStirAmount == nextStep.stirAmount)
+                {
+                    curStepIndex++;
+                    curStirAmount = 1;
+                }
+                else
+                    curStirAmount++;
 
-            //if (nextStep.stepType == RecipeStepSO.StepType.StirClockwise)
-            //{
-            //    if (curStirAmount == nextStep.stirAmount)
-            //    {
-            //        curStepIndex++;
-            //        curStirAmount = 1;
-            //    }
-            //    else
-            //        curStirAmount++;
-
-            //    nextStep = curRecipe.steps[curStepIndex];
-            //    return;
-            //}
-            //else
-            //    HandleIncorrectStep();
+                nextStep = curRecipe.steps[curStepIndex];
+                return;
+            }
+            else
+                HandleIncorrectStep();
         }
     }
 
@@ -356,8 +285,26 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
 
             spoon.DORotate(new Vector3(0, 360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
 
-            tryStir = true;
-            AdvanceToNextStep();
+            if (nextStep == null)
+            {
+                HandleIncorrectStep();
+                return;
+            }
+
+            if (nextStep.stepType == RecipeStepSO.StepType.StirCounterClockwise)
+            {
+                if (curStirAmount == nextStep.stirAmount)
+                {
+                    curStepIndex++;
+                    curStirAmount = 1;
+                }
+                else
+                    curStirAmount++;
+
+                nextStep = curRecipe.steps[curStepIndex];
+            }
+            else
+                HandleIncorrectStep();
         }
     }
     #endregion

@@ -65,8 +65,9 @@ GameObject:
   - component: {fileID: 8262505795210902399}
   - component: {fileID: 2906746606538226128}
   - component: {fileID: 8524172349497348387}
-  - component: {fileID: 2414540390315184296}
   - component: {fileID: 2161535328669547640}
+  - component: {fileID: 6804982169878460699}
+  - component: {fileID: 1495495444279982200}
   m_Layer: 6
   m_Name: Mushroom
   m_TagString: Untagged
@@ -162,20 +163,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 7682724294687611154, guid: ab765457990075248b7e00cdeeef6f8c, type: 3}
---- !u!114 &2414540390315184296
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6429869540098028704}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2aeb5048fe502af4391d2d6130fc2652, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  recipeStepIngredient: {fileID: 11400000, guid: 1263d1af773c1934389a86be3ac2a831,
-    type: 2}
 --- !u!54 &2161535328669547640
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -199,7 +186,33 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &6804982169878460699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6429869540098028704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dbec579e7684134f867f00dbcdb7fa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recipeStepIngredient: {fileID: 11400000, guid: 1263d1af773c1934389a86be3ac2a831,
+    type: 2}
+--- !u!114 &1495495444279982200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6429869540098028704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2365aa82508257248828513cc11c57a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

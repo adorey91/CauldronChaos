@@ -2,15 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BookInteraction : Interactable
+public class Bucket : Interactable
 {
-    //Function that broadcasts the action to toggle the recipe book being on
     public override void Interact()
     {
-        Actions.OnToggleRecipeBook?.Invoke();
+        Debug.Log("Bucket interacted with");
     }
 
-    //Unimplemented crate interact method
     public override void Interact(PickupBehaviour pickup)
     {
         throw new System.NotImplementedException();
