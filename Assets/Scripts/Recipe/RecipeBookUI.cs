@@ -40,14 +40,14 @@ public class RecipeBookUI : MonoBehaviour
 
     private void OnEnable()
     {
-        InputManager.instance.NextPageAction += NextPage;
-        InputManager.instance.PreviousPageAction += PreviousPage;
+        InputManager.NextPageAction += NextPage;
+        InputManager.PreviousPageAction += PreviousPage;
     }
 
     private void OnDisable()
     {
-        InputManager.instance.NextPageAction -= NextPage;
-        InputManager.instance.PreviousPageAction -= PreviousPage;
+        InputManager.NextPageAction -= NextPage;
+        InputManager.PreviousPageAction -= PreviousPage;
     }
 
     public void SetRecipes()

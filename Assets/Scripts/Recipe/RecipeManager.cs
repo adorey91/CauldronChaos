@@ -62,7 +62,7 @@ public class RecipeManager : MonoBehaviour
         else
         {
             recipeBook.SetActive(true);
-            InputManager.instance.MoveInputAction.Disable();
+            //InputManager.instance.MoveInputAction.Disable();
             InputManager.instance.NextPageInputAction.Enable();
             InputManager.instance.PreviousPageInputAction.Enable();
         }

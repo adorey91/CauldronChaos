@@ -23,8 +23,8 @@ public class CrateHolder : MonoBehaviour, IInteractable
 
     public void Interact(InteractionDetector player)
     {
-        if (player.HasPotion()) return;
-        if(player.GetRecipeStep()) return;
+        if (player.HasPotion) return;
+        if (player.HasIngredient) return;
 
         if(ingredientPrefab == null)
         {

@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,9 +13,6 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     // Holds all the recipes that can be crafted in this Cauldron
     private RecipeSO[] craftableRecipes;
 
-    // List of ingredients added to the cauldron
-    private List<RecipeStepSO.Ingredient> addedIngredients = new List<RecipeStepSO.Ingredient>();
-
     // Particles for incorrect step
     private ParticleSystem incorrectStepParticles;
 
@@ -22,7 +20,6 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     private RecipeSO curRecipe;
     private RecipeStepSO curStep;
     private RecipeStepSO nextStep;
-    private RecipeStepSO.Ingredient ingredient;
     private GameObject ingredientGO;
     private Renderer curPotionRend;
     private int curStepIndex;
@@ -32,7 +29,7 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     private bool potionCompleted;
     private int potionIndex;
     [SerializeField] private Transform cauldronFill;
-    private Transform cauldronBegin;
+    private Vector3 cauldronStartingPosition;
 
     [Header("Potion Insert Spot")]
     [SerializeField] private Transform ingredientInsertPoint;
@@ -54,39 +51,41 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     [SerializeField] private SFXLibrary incorrectStepSounds;
 
 
+
+
     public void Start()
     {
-        cauldronBegin = cauldronFill;
+        cauldronStartingPosition = cauldronFill.transform.position;
         incorrectStepParticles = GetComponentInChildren<ParticleSystem>();
         recipeManager = FindObjectOfType<RecipeManager>();
         craftableRecipes = recipeManager.FindAvailableRecipes();
         ResetValues();
     }
 
-    #region Events
+    //#region Events
     private void OnEnable()
     {
-        InputManager.instance.StirClockwiseAction += StirClockwise;
-        InputManager.instance.StirCounterClockwiseAction += StirCounterClockwise;
+        InputManager.StirClockwiseAction += StirClockwise;
+        InputManager.StirCounterClockwiseAction += StirCounterClockwise;
     }
 
     private void OnDisable()
     {
-        InputManager.instance.StirClockwiseAction -= StirClockwise;
-        InputManager.instance.StirCounterClockwiseAction -= StirCounterClockwise;
+        InputManager.StirClockwiseAction -= StirClockwise;
+        InputManager.StirCounterClockwiseAction -= StirCounterClockwise;
     }
-    #endregion
+    //#endregion
 
     public void Interact(InteractionDetector player)
     {
-        if (player.GetRecipeStep() == null) return;
+        if (player.GetIngredientObject() == null) return;
 
-        curStep = player.GetRecipeStep();
-        ingredientGO = player.GetGameObject();
+        ingredientGO = player.GetIngredientObject();
+        IngredientHolder ingredientHolder = ingredientGO.GetComponent<IngredientHolder>();
 
+        curStep = ingredientHolder.recipeStepIngredient;
 
         // grabs the ingredient from the recipe step that's holding it.
-        ingredient = curStep.ingredient;
         player.PutIngredientInCauldron(ingredientInsertPoint);
 
         // Play a sound here
@@ -94,7 +93,7 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
 
         if (curStepIndex == 0)
         {
-            StartNewRecipe(player);
+            StartNewRecipe();
             return;
         }
         else
@@ -113,7 +112,7 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     /// <summary>
     /// Starts a new recipe, checks if the recipe step is the first step in the list of available recipes, if its not then it handles the incorrect step
     /// </summary>
-    private void StartNewRecipe(InteractionDetector player)
+    private void StartNewRecipe()
     {
         foreach (RecipeSO recipe in craftableRecipes)
         {
@@ -121,7 +120,7 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
             {
                 curRecipe = recipe;
 
-                if (ingredient == RecipeStepSO.Ingredient.Bottle)
+                if (recipe.steps[curStepIndex].ingredient == RecipeStepSO.Ingredient.Bottle)
                 {
                     CompleteRecipe();
                     return;
@@ -129,8 +128,6 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
 
                 curStepIndex++;
                 nextStep = curRecipe.steps[curStepIndex];
-
-                addedIngredients.Add(ingredient);
                 return;
             }
         }
@@ -144,13 +141,11 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     /// </summary>
     private void AdvanceToNextStep()
     {
-        if (nextStep.ingredient == ingredient)
+        if (nextStep == curStep)
         {
-            addedIngredients.Add(ingredient);
-
             if (curStepIndex < curRecipe.steps.Length)
             {
-                if (ingredient == RecipeStepSO.Ingredient.Bottle)
+                if (curStep.ingredient == RecipeStepSO.Ingredient.Bottle)
                 {
                     CompleteRecipe();
                     return;
@@ -210,16 +205,19 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     {
         yield return new WaitForSeconds(0.5f);
         SetPotionOutput();
+
         // Play a sound here
         //AudioManager.instance.sfxManager.playSFX()
 
+        // Throw the potion from the cauldron in a random direction
         Vector3 startPosition = ingredientInsertPoint.position;
         Vector3 randomDireciton = new Vector3(Random.Range(-1f, 1f), 1f, Random.Range(-1f, 1f)).normalized;
-
         Vector3 targetPositon = startPosition + (randomDireciton * throwStrength);
-        cauldronFill.DOMove(cauldronFill.position - new Vector3(0, 0.1f, 0), 0.5f);
-        ingredientGO.transform.DOScale(new Vector3(1.1f,1.1f,1.1f), 0.8f).SetEase(Ease.InOutSine);
-        ingredientGO.transform.DOJump(targetPositon, throwHeight, 1, throwDuration).SetEase(Ease.OutQuad).OnComplete(() => CountPotions());
+
+        CountPotions();
+        ingredientGO.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 1f).SetEase(Ease.InOutSine);
+        ingredientGO.transform.DOJump(targetPositon, throwHeight, 1, throwDuration).SetEase(Ease.OutQuad);
+
     }
 
     // Sets the fill amount & color of the potion
@@ -229,7 +227,7 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
         if (curRecipe == null) return;
 
         // Create a new MaterialPropertyBlock and get the renderer
-        MaterialPropertyBlock block = new MaterialPropertyBlock();
+        MaterialPropertyBlock block = new();
         curPotionRend.GetPropertyBlock(block);
 
         // Set the fill amount
@@ -247,7 +245,7 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
         {
             if (!canInteract) return;
 
-            spoon.DORotate(new Vector3(0, -360, 0), spoonRotationSpeed, RotateMode.FastBeyond360);
+            spoon.DORotate(new Vector3(0, -360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
             if (nextStep == null)
             {
                 HandleIncorrectStep();
@@ -256,7 +254,6 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
 
             if (nextStep.stepType == RecipeStepSO.StepType.StirClockwise)
             {
-                Debug.Log("Stirring clockwise");
                 curStepIndex++;
                 nextStep = curRecipe.steps[curStepIndex];
                 return;
@@ -272,7 +269,7 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
         {
             if (!canInteract) return;
 
-            spoon.DORotate(new Vector3(0, 360, 0), spoonRotationSpeed, RotateMode.FastBeyond360);
+            spoon.DORotate(new Vector3(0, 360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
 
             if (nextStep == null)
             {
@@ -282,7 +279,6 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
 
             if (nextStep.stepType == RecipeStepSO.StepType.StirCounterClockwise)
             {
-                Debug.Log("Stirring counter clockwise");
                 curStepIndex++;
                 nextStep = curRecipe.steps[curStepIndex];
             }
@@ -294,12 +290,20 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
 
     private void CountPotions()
     {
-        if (ingredient == RecipeStepSO.Ingredient.Bottle && curStepIndex == 0)
+        // If the first step is a bottle, reset the values
+        if (curStep.ingredient == RecipeStepSO.Ingredient.Bottle && curStepIndex == 0)
         {
             ResetValues();
             return;
         }
 
+        // Decreases the fill amount of the cauldron
+        cauldronFill.DOMove(cauldronFill.position - new Vector3(0, 0.11f, 0), 0.8f).OnComplete(CheckPotionCount);
+    }
+
+    // Checks if the potion is completed or if there are more potions to be made
+    private void CheckPotionCount()
+    {
         if (!potionCompleted)
         {
             potionIndex++;
@@ -309,12 +313,8 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
         else
         {
             potionIndex++;
-            Debug.Log(potionIndex);
             if (potionIndex == 3)
             {
-                cauldronFill.DOMove(cauldronBegin.position, 0.5f);
-                potionCompleted = false;
-                potionIndex = 0;
                 ResetValues();
             }
         }
@@ -325,14 +325,17 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     /// </summary>
     private void ResetValues()
     {
-        addedIngredients.Clear();
+        cauldronFill.DOMove(cauldronStartingPosition, 1f);
+        potionCompleted = false;
+        potionIndex = 0;
         curStepIndex = 0;
         curRecipe = null;
         curStep = null;
         nextStep = null;
     }
 
-    private void OnTriggerEnter(Collider other)
+    // using this to check if the player is in range to stir the cauldron
+    private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
             canInteract = true;

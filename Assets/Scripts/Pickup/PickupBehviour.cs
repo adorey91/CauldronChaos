@@ -12,12 +12,12 @@ public class PickupBehviour : MonoBehaviour
 
     private void OnEnable()
     {
-        InputManager.instance.PickupAction += Pickup;
+        InputManager.PickupAction += Pickup;
     }
 
     private void OnDisable()
     {
-        InputManager.instance.PickupAction -= Pickup;
+        InputManager.PickupAction -= Pickup;
     }
 
     // Update is called once per frame

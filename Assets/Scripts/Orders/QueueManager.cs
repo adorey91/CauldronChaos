@@ -7,6 +7,7 @@ public class QueueManager : MonoBehaviour
     [SerializeField] private List<GameObject> customers = new List<GameObject>();
     [SerializeField] private Transform firstPos;
     [SerializeField] private Transform entryPoint; // Spawn point for new customers
+    [SerializeField] private Transform exitPoint; // Spawn point for new customers
     [SerializeField] private List<GameObject> customerPrefabs; // List of possible customer prefabs
     [SerializeField] private int maxCustomers = 5;
     private Vector3[] queuePositions = new Vector3[5]; //queue positions
@@ -58,7 +59,7 @@ public class QueueManager : MonoBehaviour
         if (customers.Contains(customer))
         {
             customers.Remove(customer);
-            customer.GetComponent<CustomerBehaviour>().LeaveQueue(entryPoint.position, () =>
+            customer.GetComponent<CustomerBehaviour>().LeaveQueue(exitPoint.position, () =>
             {
                 Destroy(customer);
                 SpawnNewCustomer();

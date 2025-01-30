@@ -10,14 +10,14 @@ public class InputManager : MonoBehaviour
     private static InputManager _instance;
 
     //input actions
-    public event Action<InputAction.CallbackContext> MoveAction;
-    public event Action<InputAction.CallbackContext> InteractAction;
-    public event Action<InputAction.CallbackContext> PickupAction;
-    public event Action<InputAction.CallbackContext> StirClockwiseAction;
-    public event Action<InputAction.CallbackContext> StirCounterClockwiseAction;
-    public event Action<InputAction.CallbackContext> PauseAction;
-    public event Action<InputAction.CallbackContext> NextPageAction;
-    public event Action<InputAction.CallbackContext> PreviousPageAction;
+    public static Action<InputAction.CallbackContext> MoveAction;
+    public static Action<InputAction.CallbackContext> InteractAction;
+    public static Action<InputAction.CallbackContext> PickupAction;
+    public static Action<InputAction.CallbackContext> StirClockwiseAction;
+    public static Action<InputAction.CallbackContext> StirCounterClockwiseAction;
+    public static Action<InputAction.CallbackContext> PauseAction;
+    public static Action<InputAction.CallbackContext> NextPageAction;
+    public static Action<InputAction.CallbackContext> PreviousPageAction;
 
     private PlayerInput playerControls;
     internal InputAction MoveInputAction;
@@ -78,7 +78,7 @@ public class InputManager : MonoBehaviour
     //function that reads the move input
     public void MoveInput(InputAction.CallbackContext input)
     {
-        if (Time.timeScale != 0)
+        //if (Time.timeScale != 0)
             MoveAction?.Invoke(input);
     }
 

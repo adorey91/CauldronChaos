@@ -22,13 +22,13 @@ public class PlayerMovement : MonoBehaviour
     //Called when object is enabled
     private void OnEnable()
     {
-        InputManager.instance.MoveAction += GetMove;
+        InputManager.MoveAction += GetMove;
     }
 
     //Called when object is disabled
     private void OnDisable()
     {
-        InputManager.instance.MoveAction -= GetMove;
+        InputManager.MoveAction -= GetMove;
     }
 
     // Update is called once per frame
@@ -58,7 +58,6 @@ public class PlayerMovement : MonoBehaviour
     private void GetMove(InputAction.CallbackContext input)
     {
         moveDir = input.ReadValue<Vector2>();
-        //Debug.Log("Get Move being called");
     }
 
     //Function that tries to detect any collisions and modify the move to account for them
