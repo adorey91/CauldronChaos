@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 2337797644279124671}
   - component: {fileID: 4482620317544593492}
   - component: {fileID: 3968397687864584453}
-  - component: {fileID: 5857909628333242293}
   - component: {fileID: 8359349773208293746}
+  - component: {fileID: 2543913778952842565}
   m_Layer: 6
   m_Name: Eye_of_Basilisk
   m_TagString: Untagged
@@ -114,20 +114,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &5857909628333242293
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1589310688748638498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2aeb5048fe502af4391d2d6130fc2652, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  recipeStepIngredient: {fileID: 11400000, guid: 0ac84d26587e92d419335d287def4e69,
-    type: 2}
 --- !u!135 &8359349773208293746
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -149,6 +135,20 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.23403068
   m_Center: {x: -0.000000014901161, y: 0.23403068, z: 0}
+--- !u!114 &2543913778952842565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589310688748638498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dbec579e7684134f867f00dbcdb7fa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recipeStepIngredient: {fileID: 11400000, guid: 0ac84d26587e92d419335d287def4e69,
+    type: 2}
 --- !u!1 &1779145839040358372
 GameObject:
   m_ObjectHideFlags: 0

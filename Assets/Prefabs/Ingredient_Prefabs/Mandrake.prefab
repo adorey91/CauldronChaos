@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1993949880440651007}
   - component: {fileID: 8069316920501685512}
   - component: {fileID: 3896916314995809668}
-  - component: {fileID: 7748858124207822383}
+  - component: {fileID: 7058697954932732215}
   m_Layer: 6
   m_Name: Mandrake
   m_TagString: Untagged
@@ -137,7 +137,7 @@ CapsuleCollider:
   m_Height: 0.8490778
   m_Direction: 2
   m_Center: {x: 0.00076675415, y: 0.08112198, z: 0}
---- !u!114 &7748858124207822383
+--- !u!114 &7058697954932732215
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4247430468868494256}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2aeb5048fe502af4391d2d6130fc2652, type: 3}
+  m_Script: {fileID: 11500000, guid: 6dbec579e7684134f867f00dbcdb7fa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   recipeStepIngredient: {fileID: 11400000, guid: 97e7804a0ec3fb94aba85a91aef9dbf8,

@@ -275,8 +275,8 @@ GameObject:
   m_Component:
   - component: {fileID: 720886855728218194}
   - component: {fileID: 2106228932966885891}
-  - component: {fileID: 2878313959565191351}
   - component: {fileID: 2071458878986324294}
+  - component: {fileID: 1327769251292818620}
   m_Layer: 6
   m_Name: Bottle_Prefab
   m_TagString: Untagged
@@ -325,20 +325,6 @@ CapsuleCollider:
   m_Height: 0.6366621
   m_Direction: 1
   m_Center: {x: -0.002752453, y: 0.30374795, z: -0.00000011920929}
---- !u!114 &2878313959565191351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6145939951746634609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2aeb5048fe502af4391d2d6130fc2652, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  recipeStepIngredient: {fileID: 11400000, guid: 610915c10d0751b44b86fdcd1393864f,
-    type: 2}
 --- !u!54 &2071458878986324294
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -366,3 +352,17 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &1327769251292818620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6145939951746634609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dbec579e7684134f867f00dbcdb7fa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recipeStepIngredient: {fileID: 11400000, guid: 610915c10d0751b44b86fdcd1393864f,
+    type: 2}

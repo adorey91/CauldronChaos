@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 3394502010630230906}
   - component: {fileID: 5960949580181018408}
   - component: {fileID: 8669957698060456420}
-  - component: {fileID: 6073584921219098040}
   - component: {fileID: 670165231551600326}
   - component: {fileID: 1643581298711982421}
+  - component: {fileID: 9041480638779905340}
   m_Layer: 6
   m_Name: Rabbit_Foot
   m_TagString: Untagged
@@ -87,20 +87,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6073584921219098040
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1434587993371374756}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2aeb5048fe502af4391d2d6130fc2652, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  recipeStepIngredient: {fileID: 11400000, guid: a23d695515e326b4095b01e42e44051d,
-    type: 2}
 --- !u!136 &670165231551600326
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -151,6 +137,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &9041480638779905340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1434587993371374756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dbec579e7684134f867f00dbcdb7fa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recipeStepIngredient: {fileID: 11400000, guid: a23d695515e326b4095b01e42e44051d,
+    type: 2}
 --- !u!1 &3353341840672888303
 GameObject:
   m_ObjectHideFlags: 0
