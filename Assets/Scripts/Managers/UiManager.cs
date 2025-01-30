@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -26,6 +27,16 @@ public class UiManager : MonoBehaviour
     private int timer;
 
     private Coroutine dayStartCoroutine;
+
+    [Header("Order UI Holder")]
+    public GameObject orderUiHolder;
+    public static GameObject uiHolder;
+
+
+    private void Start()
+    {
+        uiHolder = orderUiHolder;
+    }
 
     // used for testing
     private void Update()

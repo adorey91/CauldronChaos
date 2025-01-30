@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,6 +26,11 @@ public class CustomerBehaviour : MonoBehaviour
 
     private GameObject orderUiInstance;
 
+    private void Start()
+    {
+        tipTimer = new CustomTimer(2, true);
+    }
+
     private void Update()
     {
         if (tipTimer.UpdateTimer())
@@ -41,7 +47,6 @@ public class CustomerBehaviour : MonoBehaviour
         //Debug.Log("Customer assigned order: " + order.recipeName);
         this.requestedOrder = order;
         orderUiParent = parent;
-        tipTimer = new CustomTimer(2, true);
         giveTip = true;
     }
 
@@ -51,7 +56,9 @@ public class CustomerBehaviour : MonoBehaviour
         // Find the Image component in the instantiated object, not globally
 
         Transform child = orderUiInstance.transform.GetChild(0);
+        Transform text = orderUiInstance.transform.GetChild(1); // this is for testing only
         orderIcon = child.GetComponent<Image>();
+        TextMeshProUGUI order = text.GetComponent<TextMeshProUGUI>();
 
         if (orderIcon == null)
         {
@@ -60,9 +67,16 @@ public class CustomerBehaviour : MonoBehaviour
         }
 
         if (requestedOrder.potionIcon != null)
+        {
+            order.enabled = false;
             orderIcon.sprite = requestedOrder.potionIcon;
+        }
         else
+        {
+            order.enabled = true;
+            order.text = requestedOrder.recipeName;
             orderIcon.enabled = false;
+        }
         
         tipTimer.StartTimer();
     }
@@ -77,12 +91,12 @@ public class CustomerBehaviour : MonoBehaviour
         if (giveTip == true)
         {
             Debug.Log("Customer is happy");
-            Actions.OnCustomerServed?.Invoke(true);
+            Actions.OnCustomerServed?.Invoke(true, requestedOrder.points);
         }
         else
         {
             Debug.Log("Customer is okay");
-            Actions.OnCustomerServed?.Invoke(false);
+            Actions.OnCustomerServed?.Invoke(false, requestedOrder.points);
         }
     }
     #endregion

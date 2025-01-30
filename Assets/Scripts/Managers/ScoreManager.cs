@@ -29,7 +29,6 @@ public class ScoreManager : MonoBehaviour
 
     [Header("Score Amounts")]
     [SerializeField] private int tipMultiplier = 2;
-    [SerializeField] private int regularScore = 5;
     [SerializeField] private int noOrderServedScore = -8;
 
     [Header("Score Needed Per Day")]
@@ -110,7 +109,7 @@ public class ScoreManager : MonoBehaviour
     }
 
 
-    private void UpdateScore(bool wasGivenOnTime)
+    private void UpdateScore(bool wasGivenOnTime, int regularScore)
     {
         int _addToTotalScore;
         if (wasGivenOnTime)
