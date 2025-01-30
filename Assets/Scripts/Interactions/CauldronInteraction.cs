@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.VFX;
 
-public class CauldronInteraction : MonoBehaviour, IInteractable
+public class CauldronInteraction : MonoBehaviour
 {
     // Reference to the RecipeManager script
     private RecipeManager recipeManager;
@@ -75,21 +75,16 @@ public class CauldronInteraction : MonoBehaviour, IInteractable
     }
     //#endregion
 
-    public void Interact(InteractionDetector player)
+    private void OnTriggerEnter(Collider other)
     {
-        if (player.GetIngredientObject() == null) return;
-
-        ingredientGO = player.GetIngredientObject();
-        IngredientHolder ingredientHolder = ingredientGO.GetComponent<IngredientHolder>();
+        IngredientHolder ingredientHolder = other.GetComponent<IngredientHolder>();
 
         curStep = ingredientHolder.recipeStepIngredient;
 
         // grabs the ingredient from the recipe step that's holding it.
-        player.PutIngredientInCauldron();
-
-            ingredientGO.transform.SetParent(null);
-            ingredientGO.transform.DOJump(ingredientInsertPoint.position, 1f, 1, 0.5f).SetEase(Ease.InOutSine);
-            ingredientGO.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InOutSine).OnComplete(DestroyGO);
+        ingredientGO.transform.SetParent(null);
+        ingredientGO.transform.DOJump(ingredientInsertPoint.position, 1f, 1, 0.5f).SetEase(Ease.InOutSine);
+        ingredientGO.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InOutSine).OnComplete(DestroyGO);
 
 
         // Play a sound here
