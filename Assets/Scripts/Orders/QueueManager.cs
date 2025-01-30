@@ -1,17 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class QueueManager : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> customers = new List<GameObject>();
+    [Header("Customer Queue Variables")]
+    [SerializeField] private List<GameObject> customers = new();
+    [SerializeField] private List<GameObject> customerPrefabs; // List of possible customer prefabs
+    [SerializeField] private int maxCustomers = 5;
+
+    [Header("Customer Queue Positions")]
     [SerializeField] private Transform firstPos;
     [SerializeField] private Transform entryPoint; // Spawn point for new customers
     [SerializeField] private Transform exitPoint; // Spawn point for new customers
-    [SerializeField] private List<GameObject> customerPrefabs; // List of possible customer prefabs
-    [SerializeField] private int maxCustomers = 5;
     private Vector3[] queuePositions = new Vector3[5]; //queue positions
 
+    [Header("Order Manager")]
+    [SerializeField] private OrderManager orderManager;
+
+    [Header("Order Holder")]
+    [SerializeField] private GameObject orderHolder;
+
+
+    public static Action <RecipeSO> OnCheckCustomers;
 
     public void Start()
     {
@@ -25,27 +37,39 @@ public class QueueManager : MonoBehaviour
     private void OnEnable()
     {
         Actions.OnEndDay += RemoveAllCustomers;
+        OnCheckCustomers += CheckCustomerRecipes;
     }
 
     private void OnDisable()
     {
         Actions.OnEndDay -= RemoveAllCustomers;
+        OnCheckCustomers -= CheckCustomerRecipes;
     }
 
-    //used for testing
+
+    // using for testing only
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.S))
             SpawnNewCustomer();
+    }
 
-        if (Input.GetKeyDown(KeyCode.R))
+    private void CheckCustomerRecipes(RecipeSO sO)
+    {
+        for(int i = 0; i < customers.Count; i++)
         {
-            int randomIndex = Random.Range(0, customers.Count);
-            RemoveCustomer(customers[randomIndex]);
+            if (customers[i].GetComponent<CustomerBehaviour>().requestedOrder == sO)
+            {
+                RemoveCustomer(customers[i]);
+                return;
+            }
         }
+
+        Debug.Log("No customers with that recipe");
     }
 
 
+    #region Customer Queue Methods
     // Add a new customer to the end of the queue
     public void AddCustomer(GameObject customer)
     {
@@ -56,7 +80,7 @@ public class QueueManager : MonoBehaviour
     // Remove a customer and spawn a new one
     public void RemoveCustomer(GameObject customer)
     {
-        if (customers.Contains(customer))
+        if (customers.Contains(customer) && customer.GetComponent<CustomerBehaviour>().hasJoinedQueue)
         {
             customers.Remove(customer);
             customer.GetComponent<CustomerBehaviour>().LeaveQueue(exitPoint.position, () =>
@@ -73,8 +97,13 @@ public class QueueManager : MonoBehaviour
     {
         if (customerPrefabs.Count > 0 && customers.Count < maxCustomers)
         {
-            int randomIndex = Random.Range(0, customerPrefabs.Count);
+            int randomIndex = UnityEngine.Random.Range(0, customerPrefabs.Count);
             GameObject newCustomer = Instantiate(customerPrefabs[randomIndex], entryPoint.position, Quaternion.identity);
+
+            CustomerBehaviour _newCustomBehav = newCustomer.GetComponent<CustomerBehaviour>();
+
+            _newCustomBehav.AssignOrder(orderManager.GiveOrder(_newCustomBehav.customerName), orderHolder.transform);
+
             AddCustomer(newCustomer);
         }
     }
@@ -87,6 +116,7 @@ public class QueueManager : MonoBehaviour
             customers[i].GetComponent<CustomerBehaviour>().SetTarget(queuePositions[i]);
         }
     }
+    #endregion
 
     private void RemoveAllCustomers()
     {
@@ -94,6 +124,8 @@ public class QueueManager : MonoBehaviour
         {
             Destroy(customer);
         }
+      
+        
         customers.Clear();
     }
 }

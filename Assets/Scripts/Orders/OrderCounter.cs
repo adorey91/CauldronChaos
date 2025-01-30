@@ -45,7 +45,8 @@ public class OrderCounter : MonoBehaviour, IInteractable
 
         PotionOutput output = player.GetPotion().GetComponent<PotionOutput>();
 
-        _orderManager.FinishOrder(output);
+        QueueManager.OnCheckCustomers?.Invoke(output.potionInside);
+
         Actions.OnRemovePotion?.Invoke();
     }
 
