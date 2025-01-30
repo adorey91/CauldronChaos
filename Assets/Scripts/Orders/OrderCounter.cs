@@ -37,15 +37,10 @@ public class OrderCounter : MonoBehaviour
         Actions.OnEndDay -= ResetCounter;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void FillOrder(PotionOutput output)
     {
-        PotionOutput output = other.GetComponent<PotionOutput>();
-        if (output != null)
-        {
-            QueueManager.OnCheckCustomers?.Invoke(output.potionInside);
-
-            Actions.OnRemovePotion?.Invoke();
-        }
+        QueueManager.OnCheckCustomers?.Invoke(output.potionInside);
+        Actions.OnRemovePotion?.Invoke();
     }
 
     private void ResetCounter()

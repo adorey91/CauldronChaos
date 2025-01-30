@@ -75,9 +75,9 @@ public class CauldronInteraction : MonoBehaviour
     }
     //#endregion
 
-    private void OnTriggerEnter(Collider other)
+    public void AddIngredient(IngredientHolder ingredientHolder, GameObject ingredientObject)
     {
-        IngredientHolder ingredientHolder = other.GetComponent<IngredientHolder>();
+        ingredientGO = ingredientObject;
 
         curStep = ingredientHolder.recipeStepIngredient;
 
