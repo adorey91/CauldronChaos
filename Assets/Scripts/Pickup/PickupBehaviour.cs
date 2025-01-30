@@ -58,28 +58,30 @@ public class PickupBehaviour : MonoBehaviour
             {
                 //try to get held item from pickup detector
                 heldObject = pickupVolume.GetPickup();
-            }  
 
-            //if item is in detection range
-            if (heldObject != null)
-            {
-                heldObject.PickUp(pickupHolder);
-            }
+                //if item is in detection range
+                if (heldObject != null)
+                {
+                    heldObject.PickUp(pickupHolder);
 
-            //try to get interactable component of the held object
-            Interactable interactable = heldObject.GetComponent<Interactable>();
-            if (interactable != null)
-            {
-                //add interactable as being held
-                interactionBehaviour.UpdateHeldInteractable(interactable);
-            }
+                    //try to get interactable component of the held object
+                    Interactable interactable = heldObject.GetComponent<Interactable>();
+                    if (interactable != null)
+                    {
+                        //add interactable as being held
+                        interactionBehaviour.UpdateHeldInteractable(interactable);
+                    }
+                }
+            }      
         }
     }
 
     //Mutator method that manually sets the held object
     public void SetHeldObject(PickupObject targetObject)
     {
+        //Debug.Log("In set held object");
         heldObject = targetObject;
+        heldObject.PickUp(pickupHolder);
     }
 
     //Accessor method that returns if the player is holding something
@@ -93,5 +95,10 @@ public class PickupBehaviour : MonoBehaviour
         {
             return false;
         }
+    }
+
+    public Transform GetHolderLocation()
+    {
+        return pickupHolder;
     }
 }

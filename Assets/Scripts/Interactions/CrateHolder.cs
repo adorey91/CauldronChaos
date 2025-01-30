@@ -38,7 +38,7 @@ public class CrateHolder : Interactable
         }
 
         GameObject newIngredient;
-        newIngredient = Instantiate(ingredientPrefab); //spawning new ingredient
+        newIngredient = Instantiate(ingredientPrefab, playerPickup.GetHolderLocation()); //spawning new ingredient
         playerPickup.SetHeldObject(newIngredient.GetComponent<PickupObject>()); //adding manually to player's held slot
     }
 }

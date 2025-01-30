@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 670165231551600326}
   - component: {fileID: 1643581298711982421}
   - component: {fileID: 9041480638779905340}
+  - component: {fileID: -3744715623997846322}
   m_Layer: 6
   m_Name: Rabbit_Foot
   m_TagString: Untagged
@@ -151,6 +152,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeStepIngredient: {fileID: 11400000, guid: a23d695515e326b4095b01e42e44051d,
     type: 2}
+--- !u!114 &-3744715623997846322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1434587993371374756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2365aa82508257248828513cc11c57a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3353341840672888303
 GameObject:
   m_ObjectHideFlags: 0

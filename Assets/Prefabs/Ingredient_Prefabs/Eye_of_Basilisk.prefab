@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3968397687864584453}
   - component: {fileID: 8359349773208293746}
   - component: {fileID: 2543913778952842565}
+  - component: {fileID: -2830861367294610075}
   m_Layer: 6
   m_Name: Eye_of_Basilisk
   m_TagString: Untagged
@@ -149,6 +150,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeStepIngredient: {fileID: 11400000, guid: 0ac84d26587e92d419335d287def4e69,
     type: 2}
+--- !u!114 &-2830861367294610075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589310688748638498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2365aa82508257248828513cc11c57a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1779145839040358372
 GameObject:
   m_ObjectHideFlags: 0

@@ -123,6 +123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickupVolume: {fileID: 7527979815400052537}
+  interactionVolume: {fileID: 750985275758200532}
   pickupHolder: {fileID: 5553907178384609048}
   interactionBehaviour: {fileID: 3779714029601140633}
 --- !u!114 &3779714029601140633
