@@ -14,6 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeName: Potion of Expedited Growth
   weight: 1
-  steps: []
-  potionPrefab: {fileID: 0}
+  points: 120
+  steps:
+  - {fileID: 11400000, guid: 11e2bae846f4c604f86f9a6b84af9011, type: 2}
+  - {fileID: 11400000, guid: 8a1c7ec587d59a345aa1fc8c6530f7bf, type: 2}
+  - {fileID: 11400000, guid: 1263d1af773c1934389a86be3ac2a831, type: 2}
+  - {fileID: 11400000, guid: a23d695515e326b4095b01e42e44051d, type: 2}
+  - {fileID: 11400000, guid: c7a2d2150ba7e0a49bd93c6a194ee33a, type: 2}
+  - {fileID: 11400000, guid: 610915c10d0751b44b86fdcd1393864f, type: 2}
   potionIcon: {fileID: 0}
+  potionColor: {r: 1, g: 0.88235295, b: 0.09803922, a: 1}

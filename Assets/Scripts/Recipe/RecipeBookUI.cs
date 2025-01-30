@@ -104,8 +104,24 @@ public class RecipeBookUI : MonoBehaviour
             if (i < totalSteps)
             {
                 recipeUI.recipeStepUI[i].SetActive(true);
-                var stepSprite = availableRecipes[recipeIndex].steps[i].ingredientSprite;
+                TextMeshProUGUI stirText = recipeUI.recipeStepUI[i].GetComponentInChildren<TextMeshProUGUI>();
+
+                Sprite stepSprite;
+
+                if (availableRecipes[recipeIndex].steps[i].stepType == RecipeStepSO.StepType.AddIngredient)
+                {
+                    stepSprite = availableRecipes[recipeIndex].steps[i].ingredientSprite;
+                    stirText.enabled = false;
+                }
+                else
+                {
+                    stepSprite = availableRecipes[recipeIndex].steps[i].stirSprite;
+                    stirText.enabled = true;
+                    stirText.text = $"{availableRecipes[recipeIndex].steps[i].stirAmount}";
+                }
+
                 var stepImage = recipeUI.recipeStepUI[i].GetComponent<Image>();
+
                 stepImage.sprite = stepSprite;
                 stepImage.preserveAspect = true;
             }
@@ -119,10 +135,8 @@ public class RecipeBookUI : MonoBehaviour
     #region Navigation
     public void NextPage(InputAction.CallbackContext input)
     {
-        if(input.performed)
+        if (input.performed)
         {
-
-            Debug.Log("nextpage");
             if ((_pageNumber + 1) * 2 < availableRecipes.Length)
             {
                 _pageNumber++;
@@ -133,9 +147,28 @@ public class RecipeBookUI : MonoBehaviour
 
     public void PreviousPage(InputAction.CallbackContext input)
     {
-        if(input.performed)
+        if (input.performed)
         {
-            Debug.Log("Previous Page");
+            if (_pageNumber > 0)
+            {
+                _pageNumber--;
+                SetRecipes();
+            }
+        }
+    }
+
+    public void ButtonNavigation(bool isNext)
+    {
+        if(isNext)
+        {
+            if ((_pageNumber + 1) * 2 < availableRecipes.Length)
+            {
+                _pageNumber++;
+                SetRecipes();
+            }
+        }
+        else
+        {
             if (_pageNumber > 0)
             {
                 _pageNumber--;

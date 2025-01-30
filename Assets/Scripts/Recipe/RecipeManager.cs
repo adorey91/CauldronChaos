@@ -13,6 +13,8 @@ public class RecipeManager : MonoBehaviour
 
     [SerializeField] private GameObject recipeBook;
 
+    [SerializeField] private bool useAllRecipes;
+
     private void OnEnable()
     {
         Actions.OnToggleRecipeBook += ToggleRecipeBook;   
@@ -27,10 +29,18 @@ public class RecipeManager : MonoBehaviour
     {
         RecipeSO[] availableRecipes = new RecipeSO[numberOfRecipes];
 
-        for(int i = 0; i < numberOfRecipes; i++)
+        if (useAllRecipes)
         {
-            availableRecipes[i] = allRecipes[i];
+            availableRecipes = allRecipes;
         }
+        else
+        {
+            for(int i = 0; i < numberOfRecipes; i++)
+            {
+                availableRecipes[i] = allRecipes[i];
+            }
+        }
+           
 
         return availableRecipes;
     }
@@ -50,7 +60,7 @@ public class RecipeManager : MonoBehaviour
         return null;
     }
 
-    private void ToggleRecipeBook()
+    public void ToggleRecipeBook()
     {
         if (recipeBook.activeSelf)
         {

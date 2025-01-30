@@ -14,6 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeName: Potion of Stamina
   weight: 1
-  steps: []
-  potionPrefab: {fileID: 0}
+  points: 80
+  steps:
+  - {fileID: 11400000, guid: a23d695515e326b4095b01e42e44051d, type: 2}
+  - {fileID: 11400000, guid: 5d35020653116b74ab6c6d4dcc6c87e6, type: 2}
+  - {fileID: 11400000, guid: 1263d1af773c1934389a86be3ac2a831, type: 2}
+  - {fileID: 11400000, guid: 813f59d3c94cb8848ad40c58817a6559, type: 2}
+  - {fileID: 11400000, guid: 610915c10d0751b44b86fdcd1393864f, type: 2}
   potionIcon: {fileID: 0}
+  potionColor: {r: 0.6627451, g: 0.6627451, b: 0.6627451, a: 1}

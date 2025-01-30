@@ -11,6 +11,17 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private int daysToPlay = 5;
 
+    [Header("Day Timer")]
+    [SerializeField] private int minutesPerDay = 5;
+    [SerializeField] private TextMeshProUGUI dayTimerText;
+    [SerializeField] private RectTransform timerHand;
+    private CustomTimer dayTimer;
+    private bool timerStarted;
+    private float rotationSpeed;
+    private float secondsToDegrees = 180f / 60f;
+    private Quaternion _minAngle = Quaternion.Euler(0, 0, 90);
+    private Quaternion _maxAngle = Quaternion.Euler(0, 0, -90);
+
     [Header("EOD UI")]
     [SerializeField] private TextMeshProUGUI eodTitle;
     [SerializeField] private TextMeshProUGUI peopleServedEOD;
@@ -21,19 +32,19 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private int regularScore = 5;
     [SerializeField] private int noOrderServedScore = -8;
 
+    [Header("Score Needed Per Day")]
+    [SerializeField] private int[] scoreDay;
+
+    // keeps track of current day / day score
     private int _score = 0;
     private int _people = 0;
     private int _currentDay;
 
-    private int _totalScore = 0;
-    private int _totalPeople = 0;
-
-    // Previous totals
-    private int _previousScore = 0;
-    private int _previousPeopleCount = 0;
 
     private void Start()
     {
+        dayTimer = new CustomTimer(minutesPerDay, true);
+
         _currentDay = 1;
         _score = 0;
         _people = 0;
@@ -47,6 +58,7 @@ public class ScoreManager : MonoBehaviour
     {
         Actions.OnCustomerServed += UpdateScore;
         Actions.OnNoCustomerServed += UpdateNoPersonServed;
+        Actions.OnStartDay += StartDay;
         Actions.OnEndDay += UpdateEODText;
     }
 
@@ -54,8 +66,49 @@ public class ScoreManager : MonoBehaviour
     {
         Actions.OnCustomerServed -= UpdateScore;
         Actions.OnNoCustomerServed -= UpdateNoPersonServed;
+        Actions.OnStartDay -= StartDay;
         Actions.OnEndDay -= UpdateEODText;
     }
+
+    private void Update()
+    {
+        if (timerStarted)
+        {
+            SetTimerRotation();
+
+            if (dayTimer.UpdateTimer())
+            {
+                Actions.OnEndDay?.Invoke();
+                Actions.OnForceStateChange("EndOfDay");
+
+                timerStarted = false;
+                timerHand.transform.rotation = _minAngle;
+            }
+        }
+    }
+
+    private void StartDay()
+    {
+        timerStarted = true;
+        dayTimer.StartTimer();
+    }
+
+    private void SetTimerRotation()
+    {
+        float remainingTime = dayTimer.GetRemainingTime();
+
+        // Convert remaining time into minutes and seconds
+        int minutes = Mathf.FloorToInt(remainingTime / 60);
+        int seconds = Mathf.FloorToInt(remainingTime % 60);
+
+        dayTimerText.text = $"{minutes:00}:{seconds:00}";
+
+        float rotationAngle = remainingTime * secondsToDegrees;
+
+        // This works but it seems backwards? Rotate towards should be from -> to but this is to -> from. Will need to investigate
+        timerHand.rotation = Quaternion.RotateTowards(_maxAngle, _minAngle, rotationAngle);
+    }
+
 
     private void UpdateScore(bool wasGivenOnTime)
     {
@@ -73,8 +126,6 @@ public class ScoreManager : MonoBehaviour
         }
 
         _people++;
-        _totalScore += _addToTotalScore;
-        _totalPeople += _people;
 
         scoreText.text = "Score: " + _score;
         peopleServedText.text = "People Served: " + _people;
@@ -89,21 +140,26 @@ public class ScoreManager : MonoBehaviour
     private void UpdateEODText()
     {
         bool increaseDayCount;
-        if (_totalScore <= 0)
+
+        if (_score < scoreDay[_currentDay - 1])
         {
-            _totalScore = _previousScore;
-            _totalPeople = _previousPeopleCount;
             increaseDayCount = false;
         }
         else
+        {
             increaseDayCount = true;
-
-
+            SaveLoad.SaveInfo(_currentDay, _score, _people);
+        }
 
         eodTitle.text = $"End of Day {_currentDay}";
         peopleServedEOD.text = $"People Served: {_people}";
 
-        eodScoreText.text = $"Score: {_score}\nTotal Score: {_totalScore}";
+        if (!increaseDayCount)
+            eodScoreText.fontMaterial.color = Color.red;
+        else
+            eodScoreText.fontMaterial.color = Color.green;
+
+        eodScoreText.text = $"Score: {_score}";
 
         _people = 0;
         _score = 0;
