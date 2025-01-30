@@ -6,7 +6,7 @@ public class PickupDetection : MonoBehaviour
 {
     private List<PickupObject> pickupObjects = new List<PickupObject>(); //list of objects in the pickup floor
 
-    //function that is called when a collider enters the trigger volume
+    //Function that is called when a collider enters the trigger volume
     private void OnTriggerEnter(Collider other)
     {
         //try to get pickup component
@@ -20,7 +20,7 @@ public class PickupDetection : MonoBehaviour
         }
     }
 
-    //function that is called when a collider ecits the trigger volume
+    //Function that is called when a collider exits the trigger volume
     private void OnTriggerExit(Collider other)
     {
         //try to get pickup component
@@ -34,7 +34,7 @@ public class PickupDetection : MonoBehaviour
         }
     }
 
-    //function that returns the first stored pickup in the pickup
+    //Function that returns the first stored pickup in the pickup
     public PickupObject GetPickup()
     {
         //declare return value
@@ -51,7 +51,7 @@ public class PickupDetection : MonoBehaviour
         return pickup;
     }
 
-    //function that adds a pickup to the list of pickups
+    //Function that adds a pickup to the list of pickups
     public void AddPickupToList(PickupObject pickup)
     {
         pickupObjects.Add(pickup);
