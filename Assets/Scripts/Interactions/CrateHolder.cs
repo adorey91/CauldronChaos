@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CrateHolder : MonoBehaviour, IInteractable
+public class CrateHolder : Interactable
 {
     public enum IngredientObject { Mushroom, EyeOfBasilisk, MandrakeRoot, RabbitFoot, TrollBone, Bottle }
     [SerializeField] private IngredientObject ingredient;
@@ -21,11 +21,16 @@ public class CrateHolder : MonoBehaviour, IInteractable
         // 
     }
 
-    public void Interact(InteractionDetector player)
+    //Unimplemented regular interact function
+    public override void Interact()
     {
-        if (player.HasPotion) return;
-        if (player.HasIngredient) return;
+        throw new System.NotImplementedException();
+    }
 
+    //Function that holds interact functionality for the ingedient crate
+    public override void Interact(PickupBehaviour playerPickup)
+    {
+        //Exit function  if no ingredient is selected
         if(ingredientPrefab == null)
         {
             Debug.LogError("No ingredient prefab assigned to " + gameObject.name);
@@ -33,8 +38,7 @@ public class CrateHolder : MonoBehaviour, IInteractable
         }
 
         GameObject newIngredient;
-        newIngredient = Instantiate(ingredientPrefab);
-
-        player.PickUpIngredient(newIngredient);
+        newIngredient = Instantiate(ingredientPrefab); //spawning new ingredient
+        playerPickup.SetHeldObject(newIngredient.GetComponent<PickupObject>()); //adding manually to player's held slot
     }
 }

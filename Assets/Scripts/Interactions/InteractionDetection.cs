@@ -39,7 +39,23 @@ public class InteractionDetection : MonoBehaviour
         for (int i=0; i<interactables.Count; i++)
         {
             //if does not require being picked up for use return
-            if (!interactables[i].MustBePickedUp())
+            if (!interactables[i].MustBePickedUp() && !interactables[i].IsCrate())
+            {
+                return interactables[i];
+            }
+        }
+
+        return null; //return null if nothing was found
+    }
+
+    //Function that searched through the interactables and returns the first crate
+    public Interactable GetCrate()
+    {
+        //loop through interactables list
+        for (int i = 0; i < interactables.Count; i++)
+        {
+            //if does not require being picked up for use return
+            if (interactables[i].IsCrate())
             {
                 return interactables[i];
             }

@@ -8,4 +8,9 @@ public class Bucket : Interactable
     {
         Debug.Log("Bucket interacted with");
     }
+
+    public override void Interact(PickupBehaviour pickup)
+    {
+        throw new System.NotImplementedException();
+    }
 }
