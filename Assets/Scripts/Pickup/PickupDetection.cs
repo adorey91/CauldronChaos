@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PickupDetection : MonoBehaviour
 {
-    [SerializeField] private List<PickupObject> pickupObjects = new List<PickupObject>(); //list of objects in the pickup floor
+    private List<PickupObject> pickupObjects = new List<PickupObject>(); //list of objects in the pickup floor
 
     //Function that is called when a collider enters the trigger volume
     private void OnTriggerEnter(Collider other)
