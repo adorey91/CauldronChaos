@@ -32,12 +32,14 @@ public class PickupBehaviour : MonoBehaviour
     {
         if (input.performed)
         {
+            //Debug.Log("Input Activated");
+
             //player is holding something
             if (heldObject != null)
             {
                 heldObject.Drop(); //return object to normal physics
 
-                pickupVolume.AddPickupToList(heldObject); //adds the pickup back to pickup detection list
+                //pickupVolume.AddPickupToList(heldObject); //adds the pickup back to pickup detection list
 
                 //check if held item is an interactable
                 if (interactionBehaviour.GetHeldInteractable() != null)
@@ -83,8 +85,9 @@ public class PickupBehaviour : MonoBehaviour
     //Mutator method that manually sets the held object
     public void SetHeldObject(PickupObject targetObject)
     {
-        //Debug.Log("In set held object");
+        Debug.Log("In set held object");
         heldObject = targetObject;
+        pickupVolume.RemovePickupFromList(heldObject);
         heldObject.PickUp(pickupHolder);
     }
 
