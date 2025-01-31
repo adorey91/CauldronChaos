@@ -85,7 +85,7 @@ public class PickupBehaviour : MonoBehaviour
     //Mutator method that manually sets the held object
     public void SetHeldObject(PickupObject targetObject)
     {
-        Debug.Log("In set held object");
+        //Debug.Log("In set held object");
         heldObject = targetObject;
         pickupVolume.RemovePickupFromList(heldObject);
         heldObject.PickUp(pickupHolder);

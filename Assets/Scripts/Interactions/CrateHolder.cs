@@ -16,7 +16,7 @@ public class CrateHolder : Interactable
     //Function that holds interact functionality for the ingedient crate
     public override void Interact(PickupBehaviour playerPickup)
     {
-        Debug.Log("Create Interact called");
+        //Debug.Log("Create Interact called");
 
         //Exit function  if no ingredient is selected
         if(ingredientPrefab == null)
