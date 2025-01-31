@@ -70,7 +70,7 @@ GameObject:
   - component: {fileID: 1495495444279982200}
   m_Layer: 6
   m_Name: Mushroom
-  m_TagString: Untagged
+  m_TagString: Ingredient
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -216,3 +216,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2365aa82508257248828513cc11c57a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isHeld: 0

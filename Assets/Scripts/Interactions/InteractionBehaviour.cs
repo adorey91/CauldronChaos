@@ -26,6 +26,7 @@ public class InteractionBehaviour : MonoBehaviour
     {
         if (input.performed)
         {
+            Debug.Log("Interacting");
             //use held interactable if available
             if (heldInteractable != null)
             {

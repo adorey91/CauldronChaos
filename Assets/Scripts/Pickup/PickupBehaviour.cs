@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PickupBehaviour : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class PickupBehaviour : MonoBehaviour
     [SerializeField] private Transform pickupHolder; //transform holding the held location of the pickup
     [SerializeField] private InteractionBehaviour interactionBehaviour; //component containing behaviour for object interactions
     private PickupObject heldObject = null; //reference to object in hand
+
+    [SerializeField] private Image pickupUIHolder;
 
     //Function that runs when Gameobject script is attached to is enabled
     private void OnEnable()
@@ -33,6 +36,7 @@ public class PickupBehaviour : MonoBehaviour
             if (heldObject != null)
             {
                 heldObject.Drop(); //return object to normal physics
+
                 pickupVolume.AddPickupToList(heldObject); //adds the pickup back to pickup detection list
 
                 //check if held item is an interactable
@@ -51,7 +55,7 @@ public class PickupBehaviour : MonoBehaviour
             if (crate != null)
             {
                 //if crate is detected grab from crate using alternate interact
-                crate.Interact(this); 
+                crate.Interact(this);
             }
             //pick-up off the ground
             else
@@ -72,7 +76,7 @@ public class PickupBehaviour : MonoBehaviour
                         interactionBehaviour.UpdateHeldInteractable(interactable);
                     }
                 }
-            }      
+            }
         }
     }
 
