@@ -90,15 +90,9 @@ public class CustomerBehaviour : MonoBehaviour
     internal void OrderComplete()
     {
         if (giveTip == true)
-        {
-            Debug.Log("Customer is happy");
             Actions.OnCustomerServed?.Invoke(true, requestedOrder.points);
-        }
         else
-        {
-            Debug.Log("Customer is okay");
             Actions.OnCustomerServed?.Invoke(false, requestedOrder.points);
-        }
     }
     #endregion
 

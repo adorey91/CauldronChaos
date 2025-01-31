@@ -22,13 +22,14 @@ public class SaveSO : ScriptableObject
             peopleServed[i] = 0;
         }
 
-        unlockedDays = 0;
+        unlockedDays = 1;
     }
 
-    internal void SaveDayInfo(int day, int score, int people)
+    internal void SaveDayInfo(int day, int score, int people, int daysUnlcoked)
     {
         saveExists = true;
         scoreDay[day] = score;
         peopleServed[day] = people;
+        unlockedDays = daysUnlcoked;
     }
 }

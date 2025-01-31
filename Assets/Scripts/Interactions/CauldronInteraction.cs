@@ -89,8 +89,7 @@ public class CauldronInteraction : MonoBehaviour
         // grabs the ingredient from the recipe step that's holding it.
         ingredientGO.transform.SetParent(null);
         ingredientGO.transform.DOJump(ingredientInsertPoint.position, 1f, 1, 0.5f).SetEase(Ease.InOutSine);
-        ingredientGO.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InOutSine).OnComplete(DestroyGO);
-
+        ingredientGO.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InOutSine).OnComplete(SetInactive);
 
         // Play a sound here
         //AudioManager.instance.sfxManager.playSFX();
@@ -112,11 +111,11 @@ public class CauldronInteraction : MonoBehaviour
         }
     }
 
-    private void DestroyGO()
+    private void SetInactive()
     {
         if (curStep.ingredient == RecipeStepSO.Ingredient.Bottle) return;
-
-        Destroy(ingredientGO);
+        ingredientGO.GetComponent<Rigidbody>().isKinematic = true;
+        ingredientGO.transform.position = new Vector3(-100, -100, -100);
     }
 
     #region Recipe Steps

@@ -13,19 +13,26 @@ public class MenuVirtualCamera : MonoBehaviour
     [SerializeField] Transform cauldronTarget;
 
     public static Action OnResetCamera;
+    public static Action OnMainMenuCamera;
 
     private void OnEnable()
     {
         SaveLoad.OnSaveExist += MoveMainMenuCamera;
         OnResetCamera += ResetCamera;
+        OnMainMenuCamera += TurnOnCameraBrain;
     }
 
     private void OnDisable()
     {
         SaveLoad.OnSaveExist -= MoveMainMenuCamera;
         OnResetCamera -= ResetCamera;
+        OnMainMenuCamera -= TurnOnCameraBrain;
     }
 
+    private void TurnOnCameraBrain()
+    {
+        cameraBrain.enabled = true;
+    }
 
     private void MoveMainMenuCamera(bool saveExists)
     {

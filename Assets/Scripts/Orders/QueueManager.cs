@@ -32,14 +32,6 @@ public class QueueManager : MonoBehaviour
 
     public void Start()
     {
-        orderHolder = UiManager.uiHolder;
-
-        if (orderHolder == null)
-        {
-            orderHolder = GameObject.Find("OrderUI_Holder");
-        }
-
-
         newCustomerTimer = new CustomTimer(newCustomerTime, true);
 
         queuePositions[0] = firstPos.position;

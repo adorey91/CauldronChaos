@@ -17,43 +17,19 @@ public class UiManager : MonoBehaviour
     [SerializeField] private Canvas levelSelect;
     [SerializeField] private Canvas endOfDay;
     [SerializeField] private Canvas settings;
-    [SerializeField] private Canvas gameOver;
     [SerializeField] private Canvas pause;
 
     [Header("Day Start Overlay")]
     [SerializeField] private GameObject dayStartPanel;
     [SerializeField] private TextMeshProUGUI dayStartText;
     [SerializeField] private int secondsToStart;
-    private bool newDay;
 
     private Coroutine dayStartCoroutine;
-
-    [Header("Order UI Holder")]
-    public GameObject orderUiHolder;
-    public static GameObject uiHolder;
 
     [Header("MainMenu Selection Animations")]
     [SerializeField] private GameObject menuCamera;
     [SerializeField] private GameObject gameCamera;
  
-
-    private void Start()
-    {
-        uiHolder = orderUiHolder;
-    }
-
-    // used for testing
-    private void Update()
-    {
-        if (newDay)
-        {
-            dayStartPanel.SetActive(true);
-            newDay = false;
-            StartDayCountdown();
-        }
-    }
-
-
     private void OnEnable()
     {
         Actions.OnStateChange += UpdateUIForGameState;
@@ -78,7 +54,6 @@ public class UiManager : MonoBehaviour
             case GameManager.GameState.EndOfDay: EndOfDay(); break;
             case GameManager.GameState.Pause: Pause(); break;
             case GameManager.GameState.Settings: Settings(); break;
-            case GameManager.GameState.GameOver: GameOver(); break;
         }
     }
 
@@ -91,7 +66,6 @@ public class UiManager : MonoBehaviour
         gameplay.enabled = false;
         pause.enabled = false;
         settings.enabled = false;
-        gameOver.enabled = false;
         endOfDay.enabled = false;
 
         canvas.enabled = true;
@@ -102,32 +76,31 @@ public class UiManager : MonoBehaviour
     #region State_UI_Changes
     private void MainMenu()
     {
-
+        MenuVirtualCamera.OnMainMenuCamera?.Invoke();
         SetActiveUI(mainMenu);
         Actions.OnFirstSelect("Menu");
     }
 
-   
-
     private void CameraReached(string waypoint)
     {
-        switch (waypoint)
+        if(waypoint == "Door")
         {
-            case "Door":
-                SetActiveUI(intro);
-                break;
-            case "Calendar":
-                LevelSelect();
-                break;
+            SetActiveUI(intro);
+            Actions.OnFirstSelect("Intro");
+            return;
+        }
+
+        if (waypoint == "Calendar")
+        {
+            LevelSelect();
         }
     }
 
 
     private void LevelSelect()
     {
-        newDay = true;
         SetActiveUI(levelSelect);
-        Actions.OnFirstSelect("Menu");
+        Actions.OnFirstSelect("LevelSelect");
     }
 
 
@@ -136,20 +109,13 @@ public class UiManager : MonoBehaviour
         MenuVirtualCamera.OnResetCamera?.Invoke();
 
         SetActiveUI(gameplay);
-
-        Actions.OnFirstSelect("Menu");
         Time.timeScale = 1;
     }
 
     private void EndOfDay()
     {
         SetActiveUI(endOfDay);
-        Actions.OnFirstSelect("Menu");
-    }
-    private void GameOver()
-    {
-        SetActiveUI(gameOver);
-        Actions.OnFirstSelect("Menu");
+        Actions.OnFirstSelect("EndOfDay");
     }
 
     private void Pause()
@@ -163,12 +129,14 @@ public class UiManager : MonoBehaviour
     {
         SetActiveUI(settings);
         settingsManager.OpenSettings();
+
     }
     #endregion
 
 
     private void StartDayCountdown()
     {
+        Debug.Log("Start Day Countdown");
         dayStartPanel.SetActive(true);
         if (dayStartCoroutine != null)
             StopCoroutine(dayStartCoroutine);
@@ -179,11 +147,11 @@ public class UiManager : MonoBehaviour
     {
         int timer = secondsToStart; // Initialize timer with total seconds
 
-        while (timer > -1) // Loop until timer reaches -1
+        while (timer > 0) // Loop until timer reaches -1
         {
             dayStartText.text = $"Day Starts in... {timer}"; // Update text with current timer value
             timer--; // Decrement timer by 1
-            yield return new WaitForSeconds(1f); // Wait for 1 second before continuing
+            yield return new WaitForSeconds(1); // Wait for 1 second
         }
 
         dayStartPanel.SetActive(false); // Disable the day start panel

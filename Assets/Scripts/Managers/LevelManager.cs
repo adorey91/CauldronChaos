@@ -28,10 +28,29 @@ public class LevelManager : MonoBehaviour
     private Action fadeCallback;
     public static Action startTimer;
 
+    private SaveLoad saveLoad;
+
 
     public void Start()
     {
+        saveLoad = FindObjectOfType<SaveLoad>();
         fadeAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+        UpdateButtons();
+    }
+
+    public void UpdateButtons()
+    {
+        for (int i = 0; i < levelButtons.Length; i++)
+        {
+            if (i < saveLoad.CheckUnlockedDays())
+            {
+                levelButtons[i].interactable = true;
+            }
+            else
+            {
+                levelButtons[i].interactable = false;
+            }
+        }
     }
 
     public void LoadScene(string sceneName)
@@ -46,7 +65,10 @@ public class LevelManager : MonoBehaviour
             {
                 case "MainMenu": Actions.OnForceStateChange("MainMenu"); break;
                 case "Intro": Actions.OnForceStateChange("Intro"); break;
-                case "LevelSelect": Actions.OnForceStateChange("LevelSelect"); break;
+                case "LevelSelect":
+                    UpdateButtons();
+                    Actions.OnForceStateChange("LevelSelect"); 
+                    break;
                 case string name when name.StartsWith("Day"): Actions.OnForceStateChange("Gameplay"); break;
                 case "GameOver": Actions.OnForceStateChange("GameOver"); break;
             }
@@ -128,16 +150,7 @@ public class LevelManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
 
         // Fade in and delay the day start countdown until after fading is complete
-        Fade("FadeIn", () =>
-        {
-            if (scene.name.StartsWith("Day"))
-            {
-                fadeCallback = () =>
-                {
-                    startTimer?.Invoke();
-                };
-            }
-        });
+        Fade("FadeIn");
     }
 
 
@@ -154,4 +167,15 @@ public class LevelManager : MonoBehaviour
         fadeCallback = null; // Clear the callback to prevent accidental reuse
     }
 
+    
+    public void OnFadeInComplete()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+
+
+        if (currentScene.name.StartsWith("Day"))
+        {
+            startTimer?.Invoke();
+        }
+    }
 }

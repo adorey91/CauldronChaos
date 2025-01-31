@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public enum GameState { MainMenu, Intro, LevelSelect, Gameplay, EndOfDay, Pause, Settings, GameOver }
+    public enum GameState { MainMenu, Intro, LevelSelect, Gameplay, EndOfDay, Pause, Settings}
     public GameState gameState;
     private GameState _previousState;
     private GameState _newState;

@@ -147,16 +147,16 @@ public class ScoreManager : MonoBehaviour
         else
         {
             increaseDayCount = true;
-            SaveLoad.SaveInfo(_currentDay, _score, _people);
         }
+        SaveLoad.SaveInfo((_currentDay - 1), _score, _people, increaseDayCount);
 
         eodTitle.text = $"End of Day {_currentDay}";
         peopleServedEOD.text = $"People Served: {_people}";
 
         if (!increaseDayCount)
-            eodScoreText.fontMaterial.color = Color.red;
+            eodScoreText.color = Color.red;
         else
-            eodScoreText.fontMaterial.color = Color.green;
+            eodScoreText.color = Color.green;
 
         eodScoreText.text = $"Score: {_score}";
 

@@ -10,10 +10,13 @@ public class ControllerSelect : MonoBehaviour
     [SerializeField] private GameObject menuFirstSelect;
     [SerializeField] private GameObject pauseFirstSelect;
     [SerializeField] private GameObject settingsFirstSelect;
+    [SerializeField] private GameObject levelSelectFirstSelect;
     [SerializeField] private GameObject audioFirstSelect;
     [SerializeField] private GameObject videoFirstSelect;
     [SerializeField] private GameObject controlsFirstSelect;
     [SerializeField] private GameObject endOfDayFirstSelect;
+    [SerializeField] private GameObject introFirstSelect;
+    [SerializeField] private GameObject deleteFileFirstSelect;
 
     [SerializeField] private EventSystem eventSystem;
 
@@ -35,6 +38,11 @@ public class ControllerSelect : MonoBehaviour
         return Gamepad.all.Count > 0;
     }
 
+    public void SetControllerFirstSelect()
+    {
+        SetFirstSelect("DeleteFile");
+    }
+
     private void SetFirstSelect(string menu)
     {
         eventSystem.SetSelectedGameObject(null);
@@ -46,11 +54,13 @@ public class ControllerSelect : MonoBehaviour
         {
             case "Menu": _firstSelected = menuFirstSelect; break;
             case "Pause": _firstSelected = pauseFirstSelect; break;
+            case "LevelSelect": _firstSelected = levelSelectFirstSelect; break;
             case "Settings": _firstSelected = settingsFirstSelect; break;
             case "Audio": _firstSelected = audioFirstSelect; break;
             case "Video": _firstSelected = videoFirstSelect; break;
             case "Controls": _firstSelected = controlsFirstSelect; break;
             case "EndOfDay": _firstSelected = endOfDayFirstSelect; break;
+                case "DeleteFile": _firstSelected = deleteFileFirstSelect; break;
             default: Debug.LogWarning("First Select is not set for: " + menu); break;
         }
 
