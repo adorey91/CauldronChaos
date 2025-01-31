@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -81,7 +82,6 @@ public class CauldronInteraction : MonoBehaviour
 
     public void AddIngredient(IngredientHolder ingredientHolder, GameObject ingredientObject)
     {
-        Debug.Log("Adding ingredient");
         ingredientGO = ingredientObject;
 
         curStep = ingredientHolder.recipeStepIngredient;
@@ -164,49 +164,60 @@ public class CauldronInteraction : MonoBehaviour
     /// </summary>
     private void AdvanceToNextStep()
     {
-        if (tryStirring && nextStep == null)
+        if (nextStep == null)
+        {
+            CheckPossibleRecipes();
+        }
+
+        if (nextStep == null)
         {
             HandleIncorrectStep();
             return;
         }
 
-        if (nextStep == null)
+        switch (nextStep.stepType)
         {
-            CheckPossibleRecipes();
-        }
-        else
-        {
-            if (nextStep == curStep)
-            {
-                if (curStep.ingredient == RecipeStepSO.Ingredient.Bottle)
+            case RecipeStepSO.StepType.StirClockwise:
+            case RecipeStepSO.StepType.StirCounterClockwise:
+                if (!tryStirring)
                 {
-                    CompleteRecipe();
+                    HandleIncorrectStep();
                     return;
                 }
 
-                if (tryStirring)
+                if (curStirAmount >= nextStep.stirAmount)
                 {
-                    if (curStirAmount == nextStep.stirAmount)
-                    {
-                        curStepIndex++;
-                        curStirAmount = 1;
-                    }
-                    else
-                    {
-                        curStirAmount++;
-                    }
+                    curStepIndex++;
+                    curStirAmount = 1;
+                    tryStirring = false;
+
+                    nextStep = curRecipe.steps[curStepIndex];
+                }
+                else
+                {
+                    curStirAmount++;
                     tryStirring = false;
                 }
-
-
-                curStepIndex++;
-                nextStep = curRecipe.steps[curStepIndex];
                 return;
-            }
-            else
-                HandleIncorrectStep();
+
+            case RecipeStepSO.StepType.AddIngredient:
+                if (nextStep.ingredient == curStep.ingredient)
+                {
+                    curStepIndex++;
+
+                    if (curStepIndex < curRecipe.steps.Length)
+                        nextStep = curRecipe.steps[curStepIndex];
+                    else
+                        CompleteRecipe();
+                }
+                else
+                {
+                    HandleIncorrectStep();
+                }
+                return;
         }
     }
+
 
     private void CheckPossibleRecipes()
     {
@@ -263,6 +274,7 @@ public class CauldronInteraction : MonoBehaviour
 
         // Instantiate the completed potion prefab
         StartCoroutine(ThrowFromCauldron());
+
     }
 
     // Handles the incorrect step
@@ -299,7 +311,7 @@ public class CauldronInteraction : MonoBehaviour
 
         CountPotions();
         ingredientGO.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 1f).SetEase(Ease.InOutSine);
-        ingredientGO.transform.DOJump(targetPositon, throwHeight, 1, throwDuration).SetEase(Ease.OutQuad);
+        ingredientGO.transform.DOJump(targetPositon, throwHeight, 1, throwDuration);
 
     }
 
@@ -328,6 +340,7 @@ public class CauldronInteraction : MonoBehaviour
         {
             if (!canInteract) return;
 
+            tryStirring = true;
             spoon.DORotate(new Vector3(0, -360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
             AdvanceToNextStep();
         }
@@ -339,6 +352,7 @@ public class CauldronInteraction : MonoBehaviour
         {
             if (!canInteract) return;
 
+            tryStirring = true;
             spoon.DORotate(new Vector3(0, 360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
             AdvanceToNextStep();
         }
@@ -348,7 +362,7 @@ public class CauldronInteraction : MonoBehaviour
     private void CountPotions()
     {
         // If the first step is a bottle, reset the values
-        if (curStep.ingredient == RecipeStepSO.Ingredient.Bottle && curStepIndex == 0)
+        if (curRecipe != null && curRecipe.steps.Length == 1 && curRecipe.steps[0].ingredient == RecipeStepSO.Ingredient.Bottle)
         {
             ResetValues();
             return;

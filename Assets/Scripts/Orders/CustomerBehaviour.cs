@@ -9,6 +9,7 @@ public class CustomerBehaviour : MonoBehaviour
     [Header("Order Details")]
     public RecipeSO requestedOrder;
     public string customerName;
+    public Transform customerHands;
     private CustomTimer tipTimer;
     private bool giveTip;
 

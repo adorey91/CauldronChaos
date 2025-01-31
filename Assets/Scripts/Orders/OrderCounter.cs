@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class OrderCounter : MonoBehaviour
 {
-    private OrderManager _orderManager;
-
     [SerializeField] private GameObject startingPosition;
     private Transform firstPosition;
     [SerializeField] private int maxCustomers = 5;
@@ -15,7 +13,6 @@ public class OrderCounter : MonoBehaviour
 
     private void Start()
     {
-        _orderManager = FindObjectOfType<OrderManager>();
         firstPosition = startingPosition.transform;
 
         positionOccupied = new bool[maxCustomers];
@@ -37,10 +34,9 @@ public class OrderCounter : MonoBehaviour
         Actions.OnEndDay -= ResetCounter;
     }
 
-    public void FillOrder(PotionOutput output)
+    public void FillOrder(PotionOutput potion)
     {
-        QueueManager.OnCheckCustomers?.Invoke(output.potionInside);
-        Actions.OnRemovePotion?.Invoke();
+        QueueManager.OnCheckCustomers?.Invoke(potion);
     }
 
     private void ResetCounter()
@@ -54,5 +50,19 @@ public class OrderCounter : MonoBehaviour
     public Transform ParentPosition()
     {
         return firstPosition;
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.TryGetComponent<PickupObject>(out PickupObject pickUp))
+        {
+            if (pickUp.isHeld) return;
+            if (other.TryGetComponent<PotionOutput>(out PotionOutput potion))
+            {
+                if (potion.givenToCustomer) return;
+
+                FillOrder(potion);
+            }
+        }
     }
 }

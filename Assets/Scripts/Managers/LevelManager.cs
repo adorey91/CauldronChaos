@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using System.Linq;
+using System;
 
 public class LevelManager : MonoBehaviour
 {
@@ -18,8 +19,14 @@ public class LevelManager : MonoBehaviour
     [Header("Scene Fade")]
     public Animator fadeAnimator;
 
+    [Header("LevelButtons")]
+    public Button[] levelButtons;
+
+    public static bool isLoaded = false;
+
     // Callback function to be invoked adter fade animation completes
-    private System.Action fadeCallback;
+    private Action fadeCallback;
+    public static Action startTimer;
 
 
     public void Start()
@@ -29,6 +36,8 @@ public class LevelManager : MonoBehaviour
 
     public void LoadScene(string sceneName)
     {
+        isLoaded = false;
+
         Fade("FadeOut", () =>
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -116,10 +125,21 @@ public class LevelManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-
-        Fade("FadeIn");
         SceneManager.sceneLoaded -= OnSceneLoaded;
+
+        // Fade in and delay the day start countdown until after fading is complete
+        Fade("FadeIn", () =>
+        {
+            if (scene.name.StartsWith("Day"))
+            {
+                fadeCallback = () =>
+                {
+                    startTimer?.Invoke();
+                };
+            }
+        });
     }
+
 
     public void Fade(string fadeDir, System.Action callback = null)
     {
@@ -129,7 +149,9 @@ public class LevelManager : MonoBehaviour
 
     public void FadeAnimationComplete()
     {
-        // Invoke the callback if it's not null
+        // Ensure the callback is executed only after fade-in is complete
         fadeCallback?.Invoke();
+        fadeCallback = null; // Clear the callback to prevent accidental reuse
     }
+
 }

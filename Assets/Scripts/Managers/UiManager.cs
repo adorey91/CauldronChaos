@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using TMPro;
@@ -24,7 +25,6 @@ public class UiManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dayStartText;
     [SerializeField] private int secondsToStart;
     private bool newDay;
-    private int timer;
 
     private Coroutine dayStartCoroutine;
 
@@ -32,6 +32,10 @@ public class UiManager : MonoBehaviour
     public GameObject orderUiHolder;
     public static GameObject uiHolder;
 
+    [Header("MainMenu Selection Animations")]
+    [SerializeField] private GameObject menuCamera;
+    [SerializeField] private GameObject gameCamera;
+ 
 
     private void Start()
     {
@@ -41,11 +45,6 @@ public class UiManager : MonoBehaviour
     // used for testing
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            newDay = true;
-        }
-
         if (newDay)
         {
             dayStartPanel.SetActive(true);
@@ -58,11 +57,15 @@ public class UiManager : MonoBehaviour
     private void OnEnable()
     {
         Actions.OnStateChange += UpdateUIForGameState;
+        CameraMenuCollider.ReachedWaypoint += CameraReached;
+        LevelManager.startTimer += StartDayCountdown;
     }
 
     private void OnDisable()
     {
         Actions.OnStateChange -= UpdateUIForGameState;
+        CameraMenuCollider.ReachedWaypoint -= CameraReached;
+        LevelManager.startTimer -= StartDayCountdown;
     }
 
     private void UpdateUIForGameState(GameManager.GameState state)
@@ -70,9 +73,8 @@ public class UiManager : MonoBehaviour
         switch (state)
         {
             case GameManager.GameState.MainMenu: MainMenu(); break;
-            case GameManager.GameState.LevelSelect: LevelSelect(); break;
-            case GameManager.GameState.Intro: Intro(); break;
             case GameManager.GameState.Gameplay: Gameplay(); break;
+            case GameManager.GameState.LevelSelect: LevelSelect(); break;
             case GameManager.GameState.EndOfDay: EndOfDay(); break;
             case GameManager.GameState.Pause: Pause(); break;
             case GameManager.GameState.Settings: Settings(); break;
@@ -100,15 +102,26 @@ public class UiManager : MonoBehaviour
     #region State_UI_Changes
     private void MainMenu()
     {
+
         SetActiveUI(mainMenu);
         Actions.OnFirstSelect("Menu");
     }
 
-    private void Intro()
+   
+
+    private void CameraReached(string waypoint)
     {
-        SetActiveUI(intro);
-        Actions.OnFirstSelect("Menu");
+        switch (waypoint)
+        {
+            case "Door":
+                SetActiveUI(intro);
+                break;
+            case "Calendar":
+                LevelSelect();
+                break;
+        }
     }
+
 
     private void LevelSelect()
     {
@@ -120,14 +133,9 @@ public class UiManager : MonoBehaviour
 
     private void Gameplay()
     {
+        MenuVirtualCamera.OnResetCamera?.Invoke();
+
         SetActiveUI(gameplay);
-
-        if (newDay)
-        {
-            dayStartPanel.SetActive(true);
-            StartCoroutine(DayStartTimer());
-        }
-
 
         Actions.OnFirstSelect("Menu");
         Time.timeScale = 1;
@@ -161,7 +169,8 @@ public class UiManager : MonoBehaviour
 
     private void StartDayCountdown()
     {
-        if(dayStartCoroutine != null)
+        dayStartPanel.SetActive(true);
+        if (dayStartCoroutine != null)
             StopCoroutine(dayStartCoroutine);
         else
             dayStartCoroutine = StartCoroutine(DayStartTimer());

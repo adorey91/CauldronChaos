@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &755270792256598601
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4387224234127605941}
+  m_Layer: 0
+  m_Name: HoldingPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4387224234127605941
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 755270792256598601}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.616, z: 0.501}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5395508729411979116}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3074144205062314793
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,6 +161,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   requestedOrder: {fileID: 0}
   customerName: 
+  customerHands: {fileID: 4387224234127605941}
   orderUiPrefab: {fileID: 6402695683748899613, guid: 5f38278dd2ddd4b4faeb7fff945b6fde,
     type: 3}
   moveSpeed: 3
@@ -250,6 +282,7 @@ Transform:
   - {fileID: 1866235347716622318}
   - {fileID: 8470798982952031964}
   - {fileID: 910920713449055779}
+  - {fileID: 4387224234127605941}
   m_Father: {fileID: 2079494219999610102}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8708126933602107014

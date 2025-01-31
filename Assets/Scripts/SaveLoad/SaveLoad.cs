@@ -9,6 +9,7 @@ public class SaveLoad : MonoBehaviour
     [SerializeField] private SaveSO saveFile;
 
     public static Action <int, int, int> SaveInfo;
+    public static Action<bool> OnSaveExist;
 
     private void OnEnable()
     {
@@ -29,5 +30,17 @@ public class SaveLoad : MonoBehaviour
     public void SaveInformation(int day, int score, int people)
     {
         saveFile.SaveDayInfo(day, score, people);
+    }
+
+    public void CheckForSave()
+    {
+        if (saveFile.saveExists)
+        {
+            OnSaveExist?.Invoke(true);
+        }
+        else
+        {
+            OnSaveExist?.Invoke(false);
+        }
     }
 }
