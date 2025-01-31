@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrderCounter : MonoBehaviour, IInteractable
+public class OrderCounter : MonoBehaviour
 {
     private OrderManager _orderManager;
 
@@ -37,16 +37,9 @@ public class OrderCounter : MonoBehaviour, IInteractable
         Actions.OnEndDay -= ResetCounter;
     }
 
-
-    public void Interact(InteractionDetector player)
+    public void FillOrder(PotionOutput output)
     {
-        if (!player.HasPotion) return;
-        if (player.HasIngredient) return;
-
-        PotionOutput output = player.GetPotion().GetComponent<PotionOutput>();
-
         QueueManager.OnCheckCustomers?.Invoke(output.potionInside);
-
         Actions.OnRemovePotion?.Invoke();
     }
 

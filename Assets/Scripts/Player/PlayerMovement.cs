@@ -16,8 +16,15 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Object References")]
     [SerializeField] private Rigidbody playerRB;
+    private Animator playerAnimation;
 
     Vector2 moveDir = Vector2.zero;
+
+
+    private void Start()
+    {
+        playerAnimation = GetComponentInChildren<Animator>();
+    }
 
     //Called when object is enabled
     private void OnEnable()
@@ -42,6 +49,11 @@ public class PlayerMovement : MonoBehaviour
         {
             Quaternion toRotation = Quaternion.LookRotation(movement, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.fixedDeltaTime);
+            playerAnimation.SetBool("isMoving", true);
+        }
+        else
+        {
+            playerAnimation.SetBool("isMoving", false);
         }
 
         //apply multipliers

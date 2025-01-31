@@ -15,12 +15,12 @@ public static class Actions
     // Shop Actions
     public static Action OnStartDay;
     public static Action OnEndDay;
-    public static Action<bool> OnCustomerServed;
+    public static Action<bool, int> OnCustomerServed;
     public static Action OnNoCustomerServed;
 
     // Menu Actions
     public static Action<string> OnForceStateChange;
-    public static Action <GameManager.GameState> OnStateChange; // used for UI changes
-    public static Action <string> OnFirstSelect;
+    public static Action<GameManager.GameState> OnStateChange; // used for UI changes
+    public static Action<string> OnFirstSelect;
 
 }

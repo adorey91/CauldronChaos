@@ -6,9 +6,12 @@ using System;
 public class QueueManager : MonoBehaviour
 {
     [Header("Customer Queue Variables")]
-    [SerializeField] private List<GameObject> customers = new();
     [SerializeField] private List<GameObject> customerPrefabs; // List of possible customer prefabs
     [SerializeField] private int maxCustomers = 5;
+    [SerializeField] private int newCustomerTime = 6;
+    private CustomTimer newCustomerTimer;
+    private List<GameObject> customers = new();
+    private bool startCustomers = false;
 
     [Header("Customer Queue Positions")]
     [SerializeField] private Transform firstPos;
@@ -27,6 +30,16 @@ public class QueueManager : MonoBehaviour
 
     public void Start()
     {
+        orderHolder = UiManager.uiHolder;
+
+        if(orderHolder == null)
+        {
+            orderHolder = GameObject.Find("OrderUI_Holder");
+        }
+
+
+        newCustomerTimer = new CustomTimer(newCustomerTime, true);
+
         queuePositions[0] = firstPos.position;
         for (int i = 1; i < 5; i++)
         {
@@ -37,6 +50,7 @@ public class QueueManager : MonoBehaviour
     private void OnEnable()
     {
         Actions.OnEndDay += RemoveAllCustomers;
+        Actions.OnStartDay += StartCustomers;
         OnCheckCustomers += CheckCustomerRecipes;
     }
 
@@ -50,8 +64,23 @@ public class QueueManager : MonoBehaviour
     // using for testing only
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S))
-            SpawnNewCustomer();
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            Actions.OnStartDay?.Invoke();
+
+        if(startCustomers == true)
+        {
+            if(newCustomerTimer.UpdateTimer())
+            {
+                SpawnNewCustomer();
+                newCustomerTimer.ResetTimer();
+            }
+        }
+    }
+
+    private void StartCustomers()
+    {
+        startCustomers = true;
+        SpawnNewCustomer();
     }
 
     private void CheckCustomerRecipes(RecipeSO sO)
@@ -60,11 +89,11 @@ public class QueueManager : MonoBehaviour
         {
             if (customers[i].GetComponent<CustomerBehaviour>().requestedOrder == sO)
             {
+                customers[i].GetComponent<CustomerBehaviour>().OrderComplete();
                 RemoveCustomer(customers[i]);
                 return;
             }
         }
-
         Debug.Log("No customers with that recipe");
     }
 

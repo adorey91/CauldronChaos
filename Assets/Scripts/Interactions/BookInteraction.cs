@@ -2,16 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BookInteraction : MonoBehaviour, IInteractable
+public class BookInteraction : Interactable
 {
-    public void Interact(InteractionDetector player)
+    //Function that broadcasts the action to toggle the recipe book being on
+    public override void Interact()
     {
-
         Actions.OnToggleRecipeBook?.Invoke();
     }
 
-    public bool CanBeInteractedWith(InteractionDetector player)
+    //Unimplemented crate interact method
+    public override void Interact(PickupBehaviour pickup)
     {
-        return true;
+        throw new System.NotImplementedException();
     }
 }

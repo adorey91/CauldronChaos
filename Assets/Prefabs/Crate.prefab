@@ -173,11 +173,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f159ea61a31e54a4891aa9761009ffff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ingredient: 0
-  crateTopMushroom: {fileID: 0}
-  crateTopEyeOfBasilisk: {fileID: 0}
-  crateTopMandrakeRoot: {fileID: 0}
-  crateTopRabbitFoot: {fileID: 0}
-  crateTopTrollBone: {fileID: 0}
-  ingredientPrefab: {fileID: 6429869540098028704, guid: 8066bd2877328af4cb4a54c396506d76,
-    type: 3}
+  mustBePickedUp: 0
+  isCrate: 0
+  ingredientPrefab: {fileID: 0}
