@@ -29,7 +29,15 @@ public class UiManager : MonoBehaviour
     [Header("MainMenu Selection Animations")]
     [SerializeField] private GameObject menuCamera;
     [SerializeField] private GameObject gameCamera;
- 
+
+    private ScoreManager scoreManager;
+
+
+    private void Start()
+    {
+        scoreManager = FindObjectOfType<ScoreManager>();
+    }
+
     private void OnEnable()
     {
         Actions.OnStateChange += UpdateUIForGameState;
@@ -58,7 +66,7 @@ public class UiManager : MonoBehaviour
     }
 
     // Toggles the current active canvas
-    private void SetActiveUI(Canvas canvas)
+    public void SetActiveUI(Canvas canvas)
     {
         mainMenu.enabled = false;
         intro.enabled = false;
@@ -76,7 +84,7 @@ public class UiManager : MonoBehaviour
     #region State_UI_Changes
     private void MainMenu()
     {
-        MenuVirtualCamera.OnMainMenuCamera?.Invoke();
+        MenuVirtualCamera.TurnCameraBrainOn?.Invoke();
         SetActiveUI(mainMenu);
         Actions.OnFirstSelect("Menu");
     }
@@ -87,6 +95,7 @@ public class UiManager : MonoBehaviour
         {
             SetActiveUI(intro);
             Actions.OnFirstSelect("Intro");
+            scoreManager.SetCurrentDay(1);
             return;
         }
 
@@ -101,6 +110,7 @@ public class UiManager : MonoBehaviour
     {
         SetActiveUI(levelSelect);
         Actions.OnFirstSelect("LevelSelect");
+        MenuVirtualCamera.OnResetCamera?.Invoke();
     }
 
 

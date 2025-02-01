@@ -86,10 +86,17 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
+    public void SetCurrentDay(int day)
+    {
+        _currentDay = day;
+    }
+
+
     private void StartDay()
     {
         timerStarted = true;
         dayTimer.StartTimer();
+        Debug.Log("Day Started " + _currentDay );
     }
 
     private void SetTimerRotation()
@@ -148,7 +155,7 @@ public class ScoreManager : MonoBehaviour
         {
             increaseDayCount = true;
         }
-        SaveLoad.SaveInfo((_currentDay - 1), _score, _people, increaseDayCount);
+        SaveLoad.SaveInfo(_currentDay, _score, _people, increaseDayCount);
 
         eodTitle.text = $"End of Day {_currentDay}";
         peopleServedEOD.text = $"People Served: {_people}";
@@ -162,9 +169,6 @@ public class ScoreManager : MonoBehaviour
 
         _people = 0;
         _score = 0;
-
-        if (increaseDayCount)
-            _currentDay++;
     }
 
     public void RestartDay()

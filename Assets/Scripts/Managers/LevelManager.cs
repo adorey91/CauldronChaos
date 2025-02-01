@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using System.Linq;
 using System;
+using UnityEngine.EventSystems;
 
 public class LevelManager : MonoBehaviour
 {
@@ -17,23 +18,25 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI loadingText;
 
     [Header("Scene Fade")]
-    public Animator fadeAnimator;
+    private Animator fadeAnimator;
 
     [Header("LevelButtons")]
-    public Button[] levelButtons;
+    [SerializeField] private Button[] levelButtons;
 
-    public static bool isLoaded = false;
+    [Header("Save")]
+    [SerializeField] private SaveLoad saveLoad;
+
+    [Header("Event System")]
+    [SerializeField] private EventSystem eventSystem;
 
     // Callback function to be invoked adter fade animation completes
     private Action fadeCallback;
     public static Action startTimer;
 
-    private SaveLoad saveLoad;
-
 
     public void Start()
     {
-        saveLoad = FindObjectOfType<SaveLoad>();
+        fadeAnimator = GetComponent<Animator>();
         fadeAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
         UpdateButtons();
     }
@@ -42,9 +45,14 @@ public class LevelManager : MonoBehaviour
     {
         for (int i = 0; i < levelButtons.Length; i++)
         {
+            TextMeshProUGUI buttonText = levelButtons[i].GetComponentInChildren<TextMeshProUGUI>();
+
             if (i < saveLoad.CheckUnlockedDays())
             {
                 levelButtons[i].interactable = true;
+                if (saveLoad.CheckScore(i) == 0) return;
+
+                buttonText.text = $"Day {i + 1}\nScore: {saveLoad.CheckScore(i)}";
             }
             else
             {
@@ -55,7 +63,8 @@ public class LevelManager : MonoBehaviour
 
     public void LoadScene(string sceneName)
     {
-        isLoaded = false;
+        eventSystem.SetSelectedGameObject(null);
+        Debug.Log($"LoadScene called: {sceneName}");
 
         Fade("FadeOut", () =>
         {
@@ -106,10 +115,13 @@ public class LevelManager : MonoBehaviour
             yield return null;
         }
 
-        loadingText.text = "Press Any Key To Continue";
+        if(sceneName != "LevelSelect" && sceneName != "MainMenu")
+        {
+            loadingText.text = "Press Any Key To Continue";
 
-        // Wait for any key press
-        yield return WaitForAnyKeyPress();
+            // Wait for any key press
+            yield return WaitForAnyKeyPress();
+        }
 
         loadingScreen.enabled = false;
         // Activate the scene after the player presses the button
@@ -154,14 +166,16 @@ public class LevelManager : MonoBehaviour
     }
 
 
-    public void Fade(string fadeDir, System.Action callback = null)
+    public void Fade(string fadeDir, Action callback = null)
     {
+        Debug.Log($"Fade triggered: {fadeDir}");
         fadeCallback = callback;
         fadeAnimator.SetTrigger(fadeDir);
     }
 
     public void FadeAnimationComplete()
     {
+        Debug.Log("Fade Animation Complete");
         // Ensure the callback is executed only after fade-in is complete
         fadeCallback?.Invoke();
         fadeCallback = null; // Clear the callback to prevent accidental reuse
@@ -171,7 +185,6 @@ public class LevelManager : MonoBehaviour
     public void OnFadeInComplete()
     {
         Scene currentScene = SceneManager.GetActiveScene();
-
 
         if (currentScene.name.StartsWith("Day"))
         {

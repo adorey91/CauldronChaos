@@ -13,6 +13,14 @@ public class SaveLoad : MonoBehaviour
 
     private int unlockedDays;
 
+    private void Start()
+    {
+        if(saveFile == null)
+        {
+            saveFile = ScriptableObject.CreateInstance<SaveSO>();
+        }
+    }
+
     private void OnEnable()
     {
         SaveInfo += SaveInformation;
@@ -22,7 +30,6 @@ public class SaveLoad : MonoBehaviour
     {
         SaveInfo -= SaveInformation;
     }
-
 
     public void DeleteSave()
     {
@@ -41,6 +48,11 @@ public class SaveLoad : MonoBehaviour
     public int CheckUnlockedDays()
     {
         return saveFile.unlockedDays;
+    }
+
+    public int CheckScore(int day)
+    {
+        return saveFile.scoreDay[day];
     }
 
     public void CheckForSave()

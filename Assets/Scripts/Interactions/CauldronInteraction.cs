@@ -66,7 +66,7 @@ public class CauldronInteraction : MonoBehaviour
         ResetValues();
     }
 
-    //#region Events
+    #region Events
     private void OnEnable()
     {
         InputManager.StirClockwiseAction += StirClockwise;
@@ -78,7 +78,7 @@ public class CauldronInteraction : MonoBehaviour
         InputManager.StirClockwiseAction -= StirClockwise;
         InputManager.StirCounterClockwiseAction -= StirCounterClockwise;
     }
-    //#endregion
+    #endregion
 
     public void AddIngredient(IngredientHolder ingredientHolder, GameObject ingredientObject)
     {

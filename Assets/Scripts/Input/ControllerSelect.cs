@@ -58,9 +58,10 @@ public class ControllerSelect : MonoBehaviour
             case "Settings": _firstSelected = settingsFirstSelect; break;
             case "Audio": _firstSelected = audioFirstSelect; break;
             case "Video": _firstSelected = videoFirstSelect; break;
+            case "Intro": _firstSelected = introFirstSelect; break;
             case "Controls": _firstSelected = controlsFirstSelect; break;
             case "EndOfDay": _firstSelected = endOfDayFirstSelect; break;
-                case "DeleteFile": _firstSelected = deleteFileFirstSelect; break;
+            case "DeleteFile": _firstSelected = deleteFileFirstSelect; break;
             default: Debug.LogWarning("First Select is not set for: " + menu); break;
         }
 
