@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -26,7 +27,11 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         //SetState(GameState.Gameplay);
-        SetState(GameState.MainMenu);
+
+        if(SceneManager.GetActiveScene().name == "MainMenu")
+            SetState(GameState.MainMenu);
+        else
+            SetState(GameState.Gameplay);
     }
 
 
