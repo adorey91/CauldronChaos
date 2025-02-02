@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// This manager will need to be reworked later as I think this should only handle the recipes and telling the cauldron / recipe book which recipes they can use
@@ -11,7 +12,7 @@ public class RecipeManager : MonoBehaviour
     [SerializeField] private RecipeSO[] allRecipes;
     [SerializeField] private int numberOfRecipes;
 
-    [SerializeField] private GameObject recipeBook;
+    [SerializeField] private GameObject recipeBookUi;
 
     [SerializeField] private bool useAllRecipes;
 
@@ -62,17 +63,25 @@ public class RecipeManager : MonoBehaviour
 
     public void ToggleRecipeBook()
     {
-        if (recipeBook.activeSelf)
+        if (recipeBookUi.activeSelf)
         {
-            recipeBook.SetActive(false);
+           Cursor.lockState = CursorLockMode.Locked;
+
+            recipeBookUi.SetActive(false);
             InputManager.instance.MoveInputAction.Enable();
             InputManager.instance.NextPageInputAction.Disable();
             InputManager.instance.PreviousPageInputAction.Disable();
         }
         else
         {
-            recipeBook.SetActive(true);
-            //InputManager.instance.MoveInputAction.Disable();
+            if (Gamepad.current != null)
+                Cursor.lockState = CursorLockMode.Locked;
+            else
+                Cursor.lockState = CursorLockMode.Confined;
+
+
+            recipeBookUi.SetActive(true);
+            InputManager.instance.MoveInputAction.Disable();
             InputManager.instance.NextPageInputAction.Enable();
             InputManager.instance.PreviousPageInputAction.Enable();
         }

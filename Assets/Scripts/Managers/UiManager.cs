@@ -36,6 +36,11 @@ public class UiManager : MonoBehaviour
     private void Start()
     {
         scoreManager = FindObjectOfType<ScoreManager>();
+       
+        if(Gamepad.current != null)
+            Cursor.lockState = CursorLockMode.Locked;
+        else
+            Cursor.lockState = CursorLockMode.Confined;
     }
 
     private void OnEnable()
@@ -108,6 +113,11 @@ public class UiManager : MonoBehaviour
 
     private void LevelSelect()
     {
+        if (Gamepad.current != null)
+            Cursor.lockState = CursorLockMode.Locked;
+        else
+            Cursor.lockState = CursorLockMode.Confined;
+
         SetActiveUI(levelSelect);
         Actions.OnFirstSelect("LevelSelect");
         MenuVirtualCamera.OnResetCamera?.Invoke();
@@ -120,12 +130,19 @@ public class UiManager : MonoBehaviour
 
         SetActiveUI(gameplay);
         Time.timeScale = 1;
+
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void EndOfDay()
     {
         SetActiveUI(endOfDay);
         Actions.OnFirstSelect("EndOfDay");
+
+        if (Gamepad.current != null)
+            Cursor.lockState = CursorLockMode.Locked;
+        else
+            Cursor.lockState = CursorLockMode.Confined;
     }
 
     private void Pause()
@@ -133,6 +150,11 @@ public class UiManager : MonoBehaviour
         SetActiveUI(pause);
         Actions.OnFirstSelect("Menu");
         Time.timeScale = 0;
+
+        if (Gamepad.current != null)
+            Cursor.lockState = CursorLockMode.Locked;
+        else
+            Cursor.lockState = CursorLockMode.Confined;
     }
 
     private void Settings()
