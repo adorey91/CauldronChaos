@@ -21,6 +21,8 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private Button audioBack;
     [SerializeField] private Button videoBack;
     [SerializeField] private Button controlsBack;
+    [SerializeField] private Button deleteYes;
+    [SerializeField] private Button deleteNo;
 
      private void Start()
     {
@@ -36,6 +38,8 @@ public class SettingsManager : MonoBehaviour
         audioBack.onClick.AddListener(OpenSettings);
         videoBack.onClick.AddListener(OpenSettings);
         controlsBack.onClick.AddListener(OpenSettings);
+        deleteYes.onClick.AddListener(OpenSettings);
+        deleteNo.onClick.AddListener(OpenSettings);
     }
 
 

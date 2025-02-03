@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class PickupObject : MonoBehaviour
 {
-    [SerializeField] private bool isHeld = false; //bool tracking if the pickup is held
+    public bool isHeld = false; //bool tracking if the pickup is held
     private Transform targetPos = null; //transform tarcking the target position of the pickup
     private Rigidbody rb; //rigidbody component of the pickup
 
@@ -19,7 +19,7 @@ public class PickupObject : MonoBehaviour
     private void Update()
     {
         //moves pickup towards the target position if the positions do not match
-        if(isHeld && rb.position != targetPos.position)
+        if (isHeld && rb.position != targetPos.position)
         {
             rb.MovePosition(targetPos.position);
         }

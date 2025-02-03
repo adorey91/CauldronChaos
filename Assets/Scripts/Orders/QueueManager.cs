@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
+using DG.Tweening;
 
 public class QueueManager : MonoBehaviour
 {
@@ -26,18 +28,10 @@ public class QueueManager : MonoBehaviour
     [SerializeField] private GameObject orderHolder;
 
 
-    public static Action <RecipeSO> OnCheckCustomers;
+    public static Action<PotionOutput> OnCheckCustomers;
 
     public void Start()
     {
-        orderHolder = UiManager.uiHolder;
-
-        if(orderHolder == null)
-        {
-            orderHolder = GameObject.Find("OrderUI_Holder");
-        }
-
-
         newCustomerTimer = new CustomTimer(newCustomerTime, true);
 
         queuePositions[0] = firstPos.position;
@@ -67,9 +61,9 @@ public class QueueManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
             Actions.OnStartDay?.Invoke();
 
-        if(startCustomers == true)
+        if (startCustomers == true)
         {
-            if(newCustomerTimer.UpdateTimer())
+            if (newCustomerTimer.UpdateTimer())
             {
                 SpawnNewCustomer();
                 newCustomerTimer.ResetTimer();
@@ -83,20 +77,35 @@ public class QueueManager : MonoBehaviour
         SpawnNewCustomer();
     }
 
-    private void CheckCustomerRecipes(RecipeSO sO)
+    private void CheckCustomerRecipes(PotionOutput potionOutput)
     {
-        for(int i = 0; i < customers.Count; i++)
+        RecipeSO sO = potionOutput.potionInside;
+        GameObject potionObj = potionOutput.gameObject;
+
+        for (int i = 0; i < customers.Count; i++)
         {
             if (customers[i].GetComponent<CustomerBehaviour>().requestedOrder == sO)
             {
-                customers[i].GetComponent<CustomerBehaviour>().OrderComplete();
-                RemoveCustomer(customers[i]);
+                potionOutput.givenToCustomer = true;
+                potionObj.GetComponent<Rigidbody>().isKinematic = true;
+
+                CustomerBehaviour servingCustomer = customers[i].GetComponent<CustomerBehaviour>();
+
+                potionObj.transform.SetParent(servingCustomer.customerHands);
+                potionObj.transform.DOJump(servingCustomer.customerHands.position, 1, 1, 0.3f).OnComplete(() => FinishOrder(servingCustomer, potionObj));
                 return;
             }
         }
+
         Debug.Log("No customers with that recipe");
+        potionObj.transform.DOScale(Vector3.zero, 1).OnComplete(() => Destroy(potionObj));
     }
 
+    private void FinishOrder(CustomerBehaviour servingCustomer, GameObject obj)
+    {
+        servingCustomer.OrderComplete();
+        RemoveCustomer(servingCustomer.gameObject);
+    }
 
     #region Customer Queue Methods
     // Add a new customer to the end of the queue
@@ -153,8 +162,8 @@ public class QueueManager : MonoBehaviour
         {
             Destroy(customer);
         }
-      
-        
+
+
         customers.Clear();
     }
 }

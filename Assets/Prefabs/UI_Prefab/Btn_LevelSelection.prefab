@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8284238835207843048}
   - component: {fileID: 7425839841108751484}
   - component: {fileID: 3366724433988752219}
+  - component: {fileID: 318711883439628376}
   m_Layer: 0
   m_Name: Btn_LevelSelection
   m_TagString: Untagged
@@ -121,6 +122,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &318711883439628376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554563386701119602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2add2d16620012146a49087406c73a68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8110147024225277126
 GameObject:
   m_ObjectHideFlags: 0

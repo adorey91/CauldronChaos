@@ -1,12 +1,13 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public enum GameState { MainMenu, Intro, LevelSelect, Gameplay, EndOfDay, Pause, Settings, GameOver }
+    public enum GameState { MainMenu, Intro, LevelSelect, Gameplay, EndOfDay, Pause, Settings}
     public GameState gameState;
     private GameState _previousState;
     private GameState _newState;
@@ -26,7 +27,11 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         //SetState(GameState.Gameplay);
-        SetState(GameState.MainMenu);
+
+        if(SceneManager.GetActiveScene().name == "MainMenu")
+            SetState(GameState.MainMenu);
+        else
+            SetState(GameState.Gameplay);
     }
 
 

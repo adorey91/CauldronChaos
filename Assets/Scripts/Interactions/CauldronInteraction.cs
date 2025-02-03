@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -65,7 +66,7 @@ public class CauldronInteraction : MonoBehaviour
         ResetValues();
     }
 
-    //#region Events
+    #region Events
     private void OnEnable()
     {
         InputManager.StirClockwiseAction += StirClockwise;
@@ -77,11 +78,10 @@ public class CauldronInteraction : MonoBehaviour
         InputManager.StirClockwiseAction -= StirClockwise;
         InputManager.StirCounterClockwiseAction -= StirCounterClockwise;
     }
-    //#endregion
+    #endregion
 
     public void AddIngredient(IngredientHolder ingredientHolder, GameObject ingredientObject)
     {
-        Debug.Log("Adding ingredient");
         ingredientGO = ingredientObject;
 
         curStep = ingredientHolder.recipeStepIngredient;
@@ -89,8 +89,7 @@ public class CauldronInteraction : MonoBehaviour
         // grabs the ingredient from the recipe step that's holding it.
         ingredientGO.transform.SetParent(null);
         ingredientGO.transform.DOJump(ingredientInsertPoint.position, 1f, 1, 0.5f).SetEase(Ease.InOutSine);
-        ingredientGO.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InOutSine).OnComplete(DestroyGO);
-
+        ingredientGO.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InOutSine).OnComplete(SetInactive);
 
         // Play a sound here
         //AudioManager.instance.sfxManager.playSFX();
@@ -112,11 +111,11 @@ public class CauldronInteraction : MonoBehaviour
         }
     }
 
-    private void DestroyGO()
+    private void SetInactive()
     {
         if (curStep.ingredient == RecipeStepSO.Ingredient.Bottle) return;
-
-        Destroy(ingredientGO);
+        ingredientGO.GetComponent<Rigidbody>().isKinematic = true;
+        ingredientGO.transform.position = new Vector3(-100, -100, -100);
     }
 
     #region Recipe Steps
@@ -164,49 +163,60 @@ public class CauldronInteraction : MonoBehaviour
     /// </summary>
     private void AdvanceToNextStep()
     {
-        if (tryStirring && nextStep == null)
+        if (nextStep == null)
+        {
+            CheckPossibleRecipes();
+        }
+
+        if (nextStep == null)
         {
             HandleIncorrectStep();
             return;
         }
 
-        if (nextStep == null)
+        switch (nextStep.stepType)
         {
-            CheckPossibleRecipes();
-        }
-        else
-        {
-            if (nextStep == curStep)
-            {
-                if (curStep.ingredient == RecipeStepSO.Ingredient.Bottle)
+            case RecipeStepSO.StepType.StirClockwise:
+            case RecipeStepSO.StepType.StirCounterClockwise:
+                if (!tryStirring)
                 {
-                    CompleteRecipe();
+                    HandleIncorrectStep();
                     return;
                 }
 
-                if (tryStirring)
+                if (curStirAmount >= nextStep.stirAmount)
                 {
-                    if (curStirAmount == nextStep.stirAmount)
-                    {
-                        curStepIndex++;
-                        curStirAmount = 1;
-                    }
-                    else
-                    {
-                        curStirAmount++;
-                    }
+                    curStepIndex++;
+                    curStirAmount = 1;
+                    tryStirring = false;
+
+                    nextStep = curRecipe.steps[curStepIndex];
+                }
+                else
+                {
+                    curStirAmount++;
                     tryStirring = false;
                 }
-
-
-                curStepIndex++;
-                nextStep = curRecipe.steps[curStepIndex];
                 return;
-            }
-            else
-                HandleIncorrectStep();
+
+            case RecipeStepSO.StepType.AddIngredient:
+                if (nextStep.ingredient == curStep.ingredient)
+                {
+                    curStepIndex++;
+
+                    if (curStepIndex < curRecipe.steps.Length)
+                        nextStep = curRecipe.steps[curStepIndex];
+                    else
+                        CompleteRecipe();
+                }
+                else
+                {
+                    HandleIncorrectStep();
+                }
+                return;
         }
     }
+
 
     private void CheckPossibleRecipes()
     {
@@ -263,6 +273,7 @@ public class CauldronInteraction : MonoBehaviour
 
         // Instantiate the completed potion prefab
         StartCoroutine(ThrowFromCauldron());
+
     }
 
     // Handles the incorrect step
@@ -299,7 +310,7 @@ public class CauldronInteraction : MonoBehaviour
 
         CountPotions();
         ingredientGO.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 1f).SetEase(Ease.InOutSine);
-        ingredientGO.transform.DOJump(targetPositon, throwHeight, 1, throwDuration).SetEase(Ease.OutQuad);
+        ingredientGO.transform.DOJump(targetPositon, throwHeight, 1, throwDuration);
 
     }
 
@@ -328,6 +339,7 @@ public class CauldronInteraction : MonoBehaviour
         {
             if (!canInteract) return;
 
+            tryStirring = true;
             spoon.DORotate(new Vector3(0, -360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
             AdvanceToNextStep();
         }
@@ -339,6 +351,7 @@ public class CauldronInteraction : MonoBehaviour
         {
             if (!canInteract) return;
 
+            tryStirring = true;
             spoon.DORotate(new Vector3(0, 360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
             AdvanceToNextStep();
         }
@@ -348,7 +361,7 @@ public class CauldronInteraction : MonoBehaviour
     private void CountPotions()
     {
         // If the first step is a bottle, reset the values
-        if (curStep.ingredient == RecipeStepSO.Ingredient.Bottle && curStepIndex == 0)
+        if (curRecipe != null && curRecipe.steps.Length == 1 && curRecipe.steps[0].ingredient == RecipeStepSO.Ingredient.Bottle)
         {
             ResetValues();
             return;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InteractionDetection : MonoBehaviour
 {
-    private List<Interactable> interactables = new List<Interactable>(); //list of interactables within the interactable space
+    [SerializeField] private List<Interactable> interactables = new List<Interactable>(); //list of interactables within the interactable space
 
     //Function that is called when collider enters the trigger volume
     private void OnTriggerEnter(Collider other)

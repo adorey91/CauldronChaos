@@ -8,6 +8,8 @@ TagManager:
   - CustomerStartingPosition
   - OrderHolderUi
   - Ingredient
+  - Calendar
+  - Door
   layers:
   - Default
   - TransparentFX
@@ -17,7 +19,7 @@ TagManager:
   - UI
   - Ingredients
   - Player
-  - 
+  - Interactions
   - 
   - 
   - 

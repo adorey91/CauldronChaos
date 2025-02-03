@@ -12,9 +12,10 @@ public class CauldronTrigger : MonoBehaviour
     {
         //try to get ingredient component of collider
         IngredientHolder ingredientHolder = other.GetComponent<IngredientHolder>();
-        if (ingredientHolder != null)
+        if (ingredientHolder != null && !ingredientHolder.AddedToCauldron())
         {
             //calls cauldron functionality for adding an ingredient
+            ingredientHolder.AddToCauldron();
             cauldron.AddIngredient(ingredientHolder, ingredientHolder.gameObject);
         }
     }
