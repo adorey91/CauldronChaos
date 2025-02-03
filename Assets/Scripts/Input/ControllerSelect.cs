@@ -73,6 +73,7 @@ public class ControllerSelect : MonoBehaviour
             case "LevelSelect": _firstSelected = levelSelectFirstSelect; break;
             case "Settings": _firstSelected = settingsFirstSelect; break;
             case "Audio": _firstSelected = audioFirstSelect; break;
+            case "Gameplay": _firstSelected = null; break;
             case "Video": _firstSelected = videoFirstSelect; break;
             case "Intro": _firstSelected = introFirstSelect; break;
             case "Controls": _firstSelected = controlsFirstSelect; break;

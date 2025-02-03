@@ -71,12 +71,14 @@ public class CauldronInteraction : MonoBehaviour
     {
         InputManager.StirClockwiseAction += StirClockwise;
         InputManager.StirCounterClockwiseAction += StirCounterClockwise;
+        Actions.OnResetValues += ResetValues;
     }
 
     private void OnDisable()
     {
         InputManager.StirClockwiseAction -= StirClockwise;
         InputManager.StirCounterClockwiseAction -= StirCounterClockwise;
+        Actions.OnResetValues -= ResetValues;
     }
     #endregion
 
@@ -133,13 +135,12 @@ public class CauldronInteraction : MonoBehaviour
                 possibleRecipes.Add(recipe);
             }
         }
-
+        
         if (possibleRecipes.Count == 0)
         {
             HandleIncorrectStep();
             return;
         }
-        curStepIndex++;
 
         if (possibleRecipes.Count == 1)
         {
@@ -152,7 +153,7 @@ public class CauldronInteraction : MonoBehaviour
                 return;
             }
 
-
+            curStepIndex++;
             nextStep = curRecipe.steps[curStepIndex]; // Set the next step
         }
     }
@@ -166,13 +167,10 @@ public class CauldronInteraction : MonoBehaviour
         if (nextStep == null)
         {
             CheckPossibleRecipes();
+
+            if(nextStep == null) return;
         }
 
-        if (nextStep == null)
-        {
-            HandleIncorrectStep();
-            return;
-        }
 
         switch (nextStep.stepType)
         {
@@ -218,39 +216,63 @@ public class CauldronInteraction : MonoBehaviour
     }
 
 
+
     private void CheckPossibleRecipes()
     {
         List<RecipeSO> validRecipes = new();
+
+        Debug.Log($"Checking for step {curStepIndex}: {curStep.ingredient}");
+
 
         foreach (RecipeSO recipe in possibleRecipes)
         {
             RecipeStepSO expectedStep = recipe.steps[curStepIndex];
 
+            Debug.Log($"Checking recipe {recipe.name} - Step {curStepIndex}: {expectedStep.ingredient}");
+
             if (expectedStep.stepType == RecipeStepSO.StepType.AddIngredient)
             {
-                if (!tryStirring && expectedStep.ingredient == curStep.ingredient)
+                if (expectedStep.ingredient == curStep.ingredient)
+                {
                     validRecipes.Add(recipe);
+                    curStepIndex++;
+                    break;
+                }
             }
-            else
+            
+            if(expectedStep.stepType == RecipeStepSO.StepType.StirClockwise || expectedStep.stepType == RecipeStepSO.StepType.StirCounterClockwise)
             {
                 if (tryStirring && expectedStep.stepType == curStep.stepType)
-                    validRecipes.Add(recipe);
+                {
+                    Debug.Log("try stirring");
+                    if(expectedStep.stirAmount > curStirAmount)
+                    {
+                        validRecipes.Add(recipe);
+                        break;
+                    }    
+
+                }    
             }
         }
 
-        possibleRecipes = validRecipes;
+        Debug.Log($"Valid recipes after check: {validRecipes.Count}");
 
-        if (possibleRecipes.Count == 0)
+        if (validRecipes.Count > 1)
         {
-            HandleIncorrectStep();
+            possibleRecipes = validRecipes;
             return;
         }
 
-        if (possibleRecipes.Count == 1)
+        if (validRecipes.Count == 1)
         {
-            curRecipe = possibleRecipes[0];
+            curRecipe = validRecipes[0];
+        }
+        else
+        {
+            HandleIncorrectStep();
         }
     }
+
 
     /// <summary>
     /// Completes the recipe, sets the fill amount of the potion and throws it from the cauldron
@@ -395,6 +417,7 @@ public class CauldronInteraction : MonoBehaviour
     /// </summary>
     private void ResetValues()
     {
+        possibleRecipes.Clear();
         cauldronFill.DOMove(cauldronStartingPosition, 1f);
         potionCompleted = false;
         potionIndex = 0;
