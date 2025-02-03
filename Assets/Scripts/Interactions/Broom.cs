@@ -27,6 +27,7 @@ public class Broom : Interactable
     private void SwingFunc()
     {
         Collider[] colliders = Physics.OverlapSphere(impactPoint.position, forceRadius); //get any colliders in the area
+        //Debug.Log(colliders.Length);
 
         //loop through and apply force to nearby rigid bodies
         foreach (Collider collider in colliders)
@@ -42,7 +43,9 @@ public class Broom : Interactable
     //Coroutine that preforms an animation through code an applies force for "cleaning"
     private IEnumerator SwingAnim()
     {
-        Vector3 rotation;
+        float rotation = 0f;//current rotated angle
+        float lastRotation = 0f;//last rotated angle
+        float requiredRotation;//rotation required to reach current rotations
         float timer = 0f;
         float inTime = swingTime * swingRatio; //calculating swing in time
         float outTime = swingTime * (1 - swingRatio); //calculation swing out time
@@ -50,32 +53,43 @@ public class Broom : Interactable
         //swing in
         while (timer < inTime)
         {
-            rotation = Vector3.right * Mathf.Lerp(0, swingAngle, Mathf.Pow(timer/inTime, 2)); //calculate angle in swing along exponential curve
-            transform.parent.eulerAngles = rotation; //apply rotation
+            lastRotation = rotation;
+            rotation = Mathf.Lerp(0, swingAngle, Mathf.Pow(timer/inTime, 2)); //calculate angle in swing along exponential curve
+            requiredRotation = rotation - lastRotation; //calculate required roation to reach current angle
+            Debug.Log(rotation);
+
+            transform.parent.RotateAround(transform.parent.position, transform.parent.right, requiredRotation); //apply rotations
 
             yield return null;
             timer += Time.deltaTime; //increment timer
         }
 
         //snap to correct value
-        transform.parent.eulerAngles = new Vector3(swingAngle, 0, 0);
+        //transform.parent.localEulerAngles = transform.parent.forward * swingAngle;
 
         //apply swing functionality
         SwingFunc();
 
-        timer = 0f; //reset timer
+        //resetting varaibles
+        timer = 0f; 
+        rotation = 0f;
+        lastRotation = 0f;
 
         //swing out
         while (timer < outTime)
         {
-            rotation = Vector3.right * Mathf.SmoothStep(swingAngle, 0, timer/outTime); //calculate angle out of swing with damping
-            transform.parent.eulerAngles = rotation; //apply rotation
+            lastRotation = rotation;
+            rotation = -Mathf.SmoothStep(swingAngle, 0, timer/outTime); //calculate angle out of swing with damping
+            requiredRotation = rotation - lastRotation; //calculate required roation to reach current angle
+            Debug.Log(rotation);
+
+            transform.parent.RotateAround(transform.parent.position, transform.parent.right, requiredRotation); //apply rotations
 
             yield return null;
             timer += Time.deltaTime; //increment timer
         }
 
         //snap to correct value
-        transform.parent.eulerAngles = new Vector3(0, 0, 0);
+        //transform.parent.RotateAround;
     }
 }
