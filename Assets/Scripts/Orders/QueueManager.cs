@@ -46,21 +46,21 @@ public class QueueManager : MonoBehaviour
         Actions.OnEndDay += RemoveAllCustomers;
         Actions.OnStartDay += StartCustomers;
         OnCheckCustomers += CheckCustomerRecipes;
+        Actions.OnResetValues += RemoveAllCustomers;
     }
 
     private void OnDisable()
     {
         Actions.OnEndDay -= RemoveAllCustomers;
+        Actions.OnStartDay -= StartCustomers;
         OnCheckCustomers -= CheckCustomerRecipes;
+        Actions.OnResetValues -= RemoveAllCustomers;
     }
 
 
     // using for testing only
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            Actions.OnStartDay?.Invoke();
-
         if (startCustomers == true)
         {
             if (newCustomerTimer.UpdateTimer())
@@ -165,5 +165,6 @@ public class QueueManager : MonoBehaviour
 
 
         customers.Clear();
+        startCustomers = false;
     }
 }

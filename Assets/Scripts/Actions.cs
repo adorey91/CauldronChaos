@@ -23,4 +23,6 @@ public static class Actions
     public static Action<GameManager.GameState> OnStateChange; // used for UI changes
     public static Action<string> OnFirstSelect;
 
+    public static Action OnResetValues;
+
 }

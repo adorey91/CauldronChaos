@@ -59,6 +59,7 @@ public class ScoreManager : MonoBehaviour
         Actions.OnNoCustomerServed += UpdateNoPersonServed;
         Actions.OnStartDay += StartDay;
         Actions.OnEndDay += UpdateEODText;
+        Actions.OnResetValues += ResetValues;
     }
 
     private void OnDisable()
@@ -67,6 +68,7 @@ public class ScoreManager : MonoBehaviour
         Actions.OnNoCustomerServed -= UpdateNoPersonServed;
         Actions.OnStartDay -= StartDay;
         Actions.OnEndDay -= UpdateEODText;
+        Actions.OnResetValues -= ResetValues;
     }
 
     private void Update()
@@ -96,7 +98,7 @@ public class ScoreManager : MonoBehaviour
     {
         timerStarted = true;
         dayTimer.StartTimer();
-        Debug.Log("Day Started " + _currentDay );
+        Debug.Log("Day Started " + _currentDay);
     }
 
     private void SetTimerRotation()
@@ -147,7 +149,7 @@ public class ScoreManager : MonoBehaviour
     {
         bool increaseDayCount;
 
-        if (_score < scoreDay[_currentDay - 1])
+        if (_score < scoreDay[_currentDay])
         {
             increaseDayCount = false;
         }
@@ -155,7 +157,7 @@ public class ScoreManager : MonoBehaviour
         {
             increaseDayCount = true;
         }
-        SaveLoad.SaveInfo(_currentDay, _score, _people, increaseDayCount);
+        SaveLoad.SaveInfo(_currentDay + 1, _score, _people, increaseDayCount);
 
         eodTitle.text = $"End of Day {_currentDay}";
         peopleServedEOD.text = $"People Served: {_people}";
@@ -171,8 +173,11 @@ public class ScoreManager : MonoBehaviour
         _score = 0;
     }
 
-    public void RestartDay()
+    public void ResetValues()
     {
+        dayTimerText.text = null;
+        timerStarted = false;
+        dayTimer = new CustomTimer(minutesPerDay, true);
         dayText.text = $"Day: {_currentDay}/{daysToPlay}";
         scoreText.text = $"Score: {_score}";
         peopleServedText.text = $"People Served: {_people}";

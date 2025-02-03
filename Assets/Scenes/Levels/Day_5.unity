@@ -238,6 +238,7 @@ GameObject:
   - component: {fileID: 8300673}
   - component: {fileID: 8300672}
   - component: {fileID: 8300671}
+  - component: {fileID: 8300676}
   m_Layer: 0
   m_Name: CounterPiece (11)
   m_TagString: Untagged
@@ -316,8 +317,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mustBePickedUp: 0
-  isCrate: 0
-  ingredientPrefab: {fileID: 232629980984179058, guid: 3b72e527b01d2d24fa35b5ba8840f703,
+  isCrate: 1
+  ingredientPrefab: {fileID: 232629980984179058, guid: d87753468cc598e499f935b567ac6d01,
     type: 3}
 --- !u!23 &8300674
 MeshRenderer:
@@ -369,6 +370,22 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8300669}
   m_Mesh: {fileID: -4134462517785884784, guid: fd0b573d416f59b4eb8ab3156ebb9190, type: 3}
+--- !u!114 &8300676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8300669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f159ea61a31e54a4891aa9761009ffff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mustBePickedUp: 0
+  isCrate: 1
+  ingredientPrefab: {fileID: 232629980984179058, guid: d87753468cc598e499f935b567ac6d01,
+    type: 3}
 --- !u!1 &10297254
 GameObject:
   m_ObjectHideFlags: 0

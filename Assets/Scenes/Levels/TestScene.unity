@@ -316,8 +316,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mustBePickedUp: 0
-  isCrate: 0
-  ingredientPrefab: {fileID: 232629980984179058, guid: 3b72e527b01d2d24fa35b5ba8840f703,
+  isCrate: 1
+  ingredientPrefab: {fileID: 232629980984179058, guid: d87753468cc598e499f935b567ac6d01,
     type: 3}
 --- !u!23 &8300674
 MeshRenderer:
@@ -8677,7 +8677,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 19338638cf98d88428e9b837e62eff60, type: 2}
   numberOfRecipes: 2
   recipeBookUi: {fileID: 1707193633}
-  useAllRecipes: 1
+  useAllRecipes: 0
 --- !u!4 &428993684
 Transform:
   m_ObjectHideFlags: 0
