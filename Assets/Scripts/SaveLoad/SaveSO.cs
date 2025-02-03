@@ -25,8 +25,8 @@ public class SaveSO : ScriptableObject
     internal void SaveDayInfo(int day, int score, int people, int daysUnlcoked)
     {
         saveExists = true;
-        scoreDay[day] = score;
-        peopleServed[day] = people;
+        scoreDay[day - 1] = score;
+        peopleServed[day - 1] = people;
         unlockedDays = daysUnlcoked;
     }
 }

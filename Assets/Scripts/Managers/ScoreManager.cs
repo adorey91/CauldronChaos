@@ -135,7 +135,7 @@ public class ScoreManager : MonoBehaviour
 
         _people++;
 
-        scoreText.text = "Score: " + _score;
+        scoreText.text = $"Score: {_score} / {scoreDay[_currentDay]}";
         peopleServedText.text = "People Served: " + _people;
     }
 
@@ -157,17 +157,22 @@ public class ScoreManager : MonoBehaviour
         {
             increaseDayCount = true;
         }
-        SaveLoad.SaveInfo(_currentDay + 1, _score, _people, increaseDayCount);
+        SaveLoad.SaveInfo(_currentDay, _score, _people, increaseDayCount);
 
         eodTitle.text = $"End of Day {_currentDay}";
         peopleServedEOD.text = $"People Served: {_people}";
 
         if (!increaseDayCount)
+        {
             eodScoreText.color = Color.red;
+            eodScoreText.text = $"Score: {_score}\nTry Level Again";
+        }
         else
+        {
             eodScoreText.color = Color.green;
+            eodScoreText.text = $"Score: {_score}";
+        }
 
-        eodScoreText.text = $"Score: {_score}";
 
         _people = 0;
         _score = 0;
@@ -175,6 +180,7 @@ public class ScoreManager : MonoBehaviour
 
     public void ResetValues()
     {
+        Debug.Log("Resetting Time");
         dayTimerText.text = null;
         timerStarted = false;
         dayTimer = new CustomTimer(minutesPerDay, true);

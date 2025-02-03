@@ -15,6 +15,7 @@ public class RecipeManager : MonoBehaviour
     [SerializeField] private GameObject recipeBookUi;
 
     [SerializeField] private bool useAllRecipes;
+    [SerializeField] private GameObject closeButton;
 
     private void OnEnable()
     {
@@ -63,6 +64,7 @@ public class RecipeManager : MonoBehaviour
 
     public void ToggleRecipeBook()
     {
+
         if (recipeBookUi.activeSelf)
         {
            Cursor.lockState = CursorLockMode.Locked;
@@ -79,8 +81,8 @@ public class RecipeManager : MonoBehaviour
             else
                 Cursor.lockState = CursorLockMode.Confined;
 
-
             recipeBookUi.SetActive(true);
+            ControllerSelect.SelectRecipeButton(closeButton);
             InputManager.instance.MoveInputAction.Disable();
             InputManager.instance.NextPageInputAction.Enable();
             InputManager.instance.PreviousPageInputAction.Enable();

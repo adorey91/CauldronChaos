@@ -52,10 +52,11 @@ public class UiManager : MonoBehaviour
                 dayStartPanel.SetActive(false); // Disable the day start panel
                 dayTimer.ResetTimer();
                 Actions.OnStartDay?.Invoke(); // Invoke the StartDay action
+                timerStarted = false;
             }
             else
             {
-                int remaining = (int)dayTimer.GetRemainingTime();
+                int remaining = Mathf.FloorToInt(dayTimer.GetRemainingTime());
                 dayStartText.text = $"Day Starts In:\n{remaining}";
             }
         }
@@ -135,9 +136,9 @@ public class UiManager : MonoBehaviour
 
     private void LevelSelect()
     {
-        if (Gamepad.current != null)
-            Cursor.lockState = CursorLockMode.Locked;
-        else
+        //if (Gamepad.current != null)
+        //    Cursor.lockState = CursorLockMode.Locked;
+        //else
             Cursor.lockState = CursorLockMode.Confined;
 
         Actions.OnResetValues?.Invoke();
@@ -162,21 +163,21 @@ public class UiManager : MonoBehaviour
         SetActiveUI(endOfDay);
         Actions.OnFirstSelect("EndOfDay");
 
-        if (Gamepad.current != null)
-            Cursor.lockState = CursorLockMode.Locked;
-        else
+        //if (Gamepad.current != null)
+        //    Cursor.lockState = CursorLockMode.Locked;
+        //else
             Cursor.lockState = CursorLockMode.Confined;
     }
 
     private void Pause()
     {
         SetActiveUI(pause);
-        Actions.OnFirstSelect("Menu");
+        Actions.OnFirstSelect("Pause");
         Time.timeScale = 0;
 
-        if (Gamepad.current != null)
-            Cursor.lockState = CursorLockMode.Locked;
-        else
+        //if (Gamepad.current != null)
+        //    Cursor.lockState = CursorLockMode.Locked;
+        //else
             Cursor.lockState = CursorLockMode.Confined;
     }
 
@@ -193,6 +194,7 @@ public class UiManager : MonoBehaviour
     {
         Debug.Log("Start Day Countdown");
 
+        Actions.OnFirstSelect("Gameplay");
         dayStartPanel.SetActive(true);
         dayTimer.StartTimer();
 

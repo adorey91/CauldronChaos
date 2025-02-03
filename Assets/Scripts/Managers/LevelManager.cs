@@ -56,7 +56,6 @@ public class LevelManager : MonoBehaviour
     {
         for (int i = 0; i < levelButtons.Length; i++)
         {
-            Debug.Log("Unlocking Level Button " + levelButtons[i]);
             TextMeshProUGUI buttonText = levelButtons[i].GetComponentInChildren<TextMeshProUGUI>();
 
             if (i < saveLoad.CheckUnlockedDays())
@@ -75,8 +74,9 @@ public class LevelManager : MonoBehaviour
 
     public void LoadScene(string sceneName)
     {
-        InputManager.instance.PauseInputAction.Disable();
-        eventSystem.SetSelectedGameObject(null);
+        InputManager.instance.TurnOffInteraction();
+        Actions.OnFirstSelect(null);
+
         Debug.Log($"LoadScene called: {sceneName}");
 
         Fade("FadeOut", () =>
@@ -201,7 +201,7 @@ public class LevelManager : MonoBehaviour
 
         if (currentScene.name.StartsWith("Day"))
         {
-            InputManager.instance.PauseInputAction.Enable();
+            InputManager.instance.TurnOnInteraction();
             startTimer?.Invoke();
         }
     }
