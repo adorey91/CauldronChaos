@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0eb352f0c1423f41840c91eb37ec086, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mustBePickedUp: 0
+  mustBePickedUp: 1
   isCrate: 0
   interactionLayers:
     serializedVersion: 2

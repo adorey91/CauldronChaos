@@ -108,7 +108,7 @@ public class RecipeBookUI : MonoBehaviour
 
                 Sprite stepSprite;
 
-                if (availableRecipes[recipeIndex].steps[i].stepType == RecipeStepSO.StepType.AddIngredient)
+                if (availableRecipes[recipeIndex].steps[i].action == RecipeStepSO.ActionType.AddIngredient)
                 {
                     stepSprite = availableRecipes[recipeIndex].steps[i].ingredientSprite;
                     stirText.enabled = false;

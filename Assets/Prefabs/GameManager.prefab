@@ -2667,7 +2667,7 @@ MonoBehaviour:
   eodScoreText: {fileID: 8131445544369006351}
   tipMultiplier: 2
   noOrderServedScore: -8
-  scoreDay: f4010000e8030000dc050000a00f000088130000
+  scoreDay: f4010000f4010000f4010000f4010000f4010000
 --- !u!1 &1773694036632923188
 GameObject:
   m_ObjectHideFlags: 0
@@ -2922,7 +2922,7 @@ MonoBehaviour:
     m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 7346488381221850680}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnDown: {fileID: 8419609488970586172}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -12042,7 +12042,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6971208047623907001}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.00935337, y: 0.62404627, z: 0.007470841, w: 0.7812957}
+  m_LocalRotation: {x: -0.009353333, y: 0.62404627, z: 0.0074708113, w: 0.7812957}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -15065,7 +15065,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8788826478654998836}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0093533695, y: 0.62404627, z: 0.007470842, w: 0.7812958}
+  m_LocalRotation: {x: -0.009353333, y: 0.62404627, z: 0.00747081, w: 0.7812958}
   m_LocalPosition: {x: -2.5189395, y: 6.974099, z: -9.164787}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

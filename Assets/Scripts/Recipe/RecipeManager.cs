@@ -71,6 +71,7 @@ public class RecipeManager : MonoBehaviour
 
             recipeBookUi.SetActive(false);
             InputManager.instance.MoveInputAction.Enable();
+            InputManager.instance.PauseInputAction.Enable();
             InputManager.instance.NextPageInputAction.Disable();
             InputManager.instance.PreviousPageInputAction.Disable();
         }
@@ -84,6 +85,7 @@ public class RecipeManager : MonoBehaviour
             recipeBookUi.SetActive(true);
             ControllerSelect.SelectRecipeButton(closeButton);
             InputManager.instance.MoveInputAction.Disable();
+            InputManager.instance.PauseInputAction.Disable();
             InputManager.instance.NextPageInputAction.Enable();
             InputManager.instance.PreviousPageInputAction.Enable();
         }
