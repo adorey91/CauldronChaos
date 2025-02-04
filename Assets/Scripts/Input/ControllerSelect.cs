@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,19 +18,34 @@ public class ControllerSelect : MonoBehaviour
     [SerializeField] private GameObject endOfDayFirstSelect;
     [SerializeField] private GameObject introFirstSelect;
     [SerializeField] private GameObject deleteFileFirstSelect;
+    [SerializeField] private GameObject recipeBookFirstSelect;
 
     [SerializeField] private EventSystem eventSystem;
 
     private GameObject _firstSelected;
 
+    public static Action <GameObject> SelectRecipeButton;
+
     private void OnEnable()
     {
         Actions.OnFirstSelect += SetFirstSelect;
+        SelectRecipeButton += SetRecipeBookButton;
     }
 
     private void OnDisable()
     {
         Actions.OnFirstSelect -= SetFirstSelect;
+        SelectRecipeButton -= SetRecipeBookButton;
+    }
+
+    private void SetRecipeBookButton(GameObject button)
+    {
+        eventSystem.SetSelectedGameObject(null);
+
+        if (!IsControllerConnected())
+            return;
+
+        eventSystem.SetSelectedGameObject(button, new BaseEventData(eventSystem));
     }
 
 
@@ -62,7 +78,10 @@ public class ControllerSelect : MonoBehaviour
             case "Controls": _firstSelected = controlsFirstSelect; break;
             case "EndOfDay": _firstSelected = endOfDayFirstSelect; break;
             case "DeleteFile": _firstSelected = deleteFileFirstSelect; break;
-            default: Debug.LogWarning("First Select is not set for: " + menu); break;
+            default: 
+                Debug.LogWarning("First Select is not set for: " + menu); 
+                _firstSelected = null; 
+                break;
         }
 
         eventSystem.SetSelectedGameObject(_firstSelected, new BaseEventData(eventSystem));
