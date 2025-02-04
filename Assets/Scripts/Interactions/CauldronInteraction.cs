@@ -98,7 +98,7 @@ public class CauldronInteraction : MonoBehaviour
         ingredientGO.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InOutSine).OnComplete(SetInactive);
 
         // Play a sound here
-        //AudioManager.instance.sfxManager.playSFX();
+        AudioManager.instance.sfxManager.PlaySFX(SFX_Type.StationSounds, addIngredientSounds.PickAudioClip(), true);
 
         if (curStepIndex == 0)
         {
@@ -316,7 +316,7 @@ public class CauldronInteraction : MonoBehaviour
         SetPotionOutput();
 
         // Play a sound here
-        //AudioManager.instance.sfxManager.playSFX();
+        //AudioManager.instance.sfxManager.PlaySFX(SFX_Type.StationSounds, FinishPotionSounds.PickAudioClip(), true);
 
         // throw the potion from the cauldron in a random direction
         Vector3 startPosition = ingredientInsertPoint.position;
