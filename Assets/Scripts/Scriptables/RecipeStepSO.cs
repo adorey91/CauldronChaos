@@ -5,11 +5,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Step", menuName = "Recipe/Recipe Step")]
 public class RecipeStepSO : ScriptableObject
 {
-    public enum StepType { Nothing, AddIngredient, StirClockwise, StirCounterClockwise }
-    public StepType stepType;
+    public enum ActionType { Nothing, AddIngredient, Stir }
+    public ActionType action;
 
     // shows if using stir
     public Sprite stirSprite;
+    public bool isClockwise; // Optional, used if the step is stirring
     public int stirAmount; // Optional, used if the step is stirring
 
     // Ingredient

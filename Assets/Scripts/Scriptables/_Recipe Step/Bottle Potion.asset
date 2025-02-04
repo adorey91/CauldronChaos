@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a726084077bf8f4d9977d2b67b9fdb2, type: 3}
   m_Name: Bottle Potion
   m_EditorClassIdentifier: 
-  stepType: 1
+  action: 1
   stirSprite: {fileID: 0}
   stirAmount: 0
   ingredient: 1
