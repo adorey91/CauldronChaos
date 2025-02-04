@@ -1802,7 +1802,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mustBePickedUp: 0
   isCrate: 1
-  ingredientPrefab: {fileID: 232629980984179058, guid: d87753468cc598e499f935b567ac6d01,
+  ingredientPrefab: {fileID: 232629980984179058, guid: 3b72e527b01d2d24fa35b5ba8840f703,
     type: 3}
 --- !u!23 &111932816
 MeshRenderer:
@@ -20275,7 +20275,7 @@ MonoBehaviour:
   - {fileID: 8284360445958240951, guid: 363a521f265904642a942644294114af, type: 3}
   - {fileID: 8284360445958240951, guid: 21d958019fefd5c43a1bd31ed71dec50, type: 3}
   maxCustomers: 5
-  newCustomerTime: 3
+  timeForCustomer: 1
   firstPos: {fileID: 1792185342}
   entryPoint: {fileID: 2072056399}
   exitPoint: {fileID: 447479066}
@@ -24019,7 +24019,7 @@ Transform:
   m_GameObject: {fileID: 1351567250}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.20281683, z: 0}
+  m_LocalPosition: {x: 0.03, y: 0.20281683, z: 0.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
