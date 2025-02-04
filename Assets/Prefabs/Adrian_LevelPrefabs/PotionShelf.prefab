@@ -365,7 +365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mustBePickedUp: 0
-  isCrate: 1
+  isContainer: 1
   ingredientPrefab: {fileID: 232629980984179058, guid: d87753468cc598e499f935b567ac6d01,
     type: 3}
 --- !u!64 &8287291730705920111

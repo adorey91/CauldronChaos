@@ -326,7 +326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mustBePickedUp: 0
-  isCrate: 1
+  isContainer: 1
   ingredientPrefab: {fileID: 1589310688748638498, guid: 01b029e4cae001c46aab15e01288d2eb,
     type: 3}
 --- !u!4 &9116720335631026092 stripped

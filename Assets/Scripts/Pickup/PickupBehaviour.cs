@@ -13,6 +13,10 @@ public class PickupBehaviour : MonoBehaviour
     [SerializeField] private InteractionBehaviour interactionBehaviour; //component containing behaviour for object interactions
     private PickupObject heldObject = null; //reference to object in hand
 
+    [Header("SFX")]
+    [SerializeField] private AudioClip genericPickUp;
+    [SerializeField] private AudioClip genericDrop;
+
     [SerializeField] private Image pickupUIHolder;
 
     //Function that runs when Gameobject script is attached to is enabled
