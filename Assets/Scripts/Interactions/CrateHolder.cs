@@ -6,7 +6,6 @@ public class CrateHolder : Interactable
 {
    public GameObject ingredientPrefab;
 
-
     //Unimplemented regular interact function
     public override void Interact()
     {

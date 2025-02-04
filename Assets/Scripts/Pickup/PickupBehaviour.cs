@@ -53,11 +53,11 @@ public class PickupBehaviour : MonoBehaviour
             }
 
             //player is not holding anything and is by an ingredient crate
-            Interactable crate = interactionVolume.GetCrate();
-            if (crate != null)
+            Interactable container = interactionVolume.GetContainer();
+            if (container != null)
             {
                 //if crate is detected grab from crate using alternate interact
-                crate.Interact(this);
+                container.Interact(this);
             }
             //pick-up off the ground
             else

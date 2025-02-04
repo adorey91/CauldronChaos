@@ -39,7 +39,7 @@ public class InteractionDetection : MonoBehaviour
         for (int i=0; i<interactables.Count; i++)
         {
             //if does not require being picked up for use return
-            if (!interactables[i].MustBePickedUp() && !interactables[i].IsCrate())
+            if (!interactables[i].MustBePickedUp() && !interactables[i].IsContainer())
             {
                 return interactables[i];
             }
@@ -49,13 +49,13 @@ public class InteractionDetection : MonoBehaviour
     }
 
     //Function that searched through the interactables and returns the first crate
-    public Interactable GetCrate()
+    public Interactable GetContainer()
     {
         //loop through interactables list
         for (int i = 0; i < interactables.Count; i++)
         {
             //if does not require being picked up for use return
-            if (interactables[i].IsCrate())
+            if (interactables[i].IsContainer())
             {
                 return interactables[i];
             }

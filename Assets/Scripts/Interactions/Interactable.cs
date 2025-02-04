@@ -7,7 +7,7 @@ public abstract class Interactable : MonoBehaviour
 {
     [Header("Interaction")]
     [SerializeField] private bool mustBePickedUp;
-    [SerializeField] private bool isCrate;
+    [SerializeField] private bool isContainer;
 
     //function that stores the actual interaction functionality of the interactable
     public abstract void Interact();
@@ -22,8 +22,8 @@ public abstract class Interactable : MonoBehaviour
     }
 
     //Accessor method that returns if the interactable is a crate
-    public bool IsCrate()
+    public bool IsContainer()
     {
-        return isCrate;
+        return isContainer;
     }
 }

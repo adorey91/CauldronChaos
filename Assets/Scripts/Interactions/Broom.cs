@@ -12,11 +12,13 @@ public class Broom : Interactable
     [SerializeField] private float moveForce; //force applied to physics objects near the impact point
     [SerializeField] private float forceRadius; //radius in which the force will be applied
 
+    //Inherited method that allows the player to interact with the broom
     public override void Interact()
     {
         animator.Play("BroomHit");
     }
 
+    //Unused inherited method for interating with pickups
     public override void Interact(PickupBehaviour pickup)
     {
         throw new System.NotImplementedException();
