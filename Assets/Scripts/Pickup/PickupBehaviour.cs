@@ -13,10 +13,7 @@ public class PickupBehaviour : MonoBehaviour
     [SerializeField] private InteractionBehaviour interactionBehaviour; //component containing behaviour for object interactions
     private PickupObject heldObject = null; //reference to object in hand
 
-    [Header("SFX")]
-    [SerializeField] private AudioClip genericPickUp;
-    [SerializeField] private AudioClip genericDrop;
-
+    [Header("UI")]
     [SerializeField] private Image pickupUIHolder;
 
     //Function that runs when Gameobject script is attached to is enabled
@@ -42,8 +39,6 @@ public class PickupBehaviour : MonoBehaviour
             if (heldObject != null)
             {
                 heldObject.Drop(); //return object to normal physics
-
-                //pickupVolume.AddPickupToList(heldObject); //adds the pickup back to pickup detection list
 
                 //check if held item is an interactable
                 if (interactionBehaviour.GetHeldInteractable() != null)

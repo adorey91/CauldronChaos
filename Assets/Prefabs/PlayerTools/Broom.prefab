@@ -78,6 +78,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHeld: 0
+  pickUpSFX: {fileID: 8300000, guid: b97a171821c9b5a4096269b2753b1176, type: 3}
+  dropSFX: {fileID: 8300000, guid: 91f80fb6e48e2514f9f9c8f515450e07, type: 3}
 --- !u!114 &3011975775853733377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,7 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mustBePickedUp: 1
-  isCrate: 0
+  isContainer: 0
   interactionLayers:
     serializedVersion: 2
     m_Bits: 383
