@@ -195,6 +195,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: RabbitFootCrate
       objectReference: {fileID: 0}
+    - target: {fileID: 3451118302482216456, guid: 071f6042e4b641b4b8dfca616b385e29,
+        type: 3}
+      propertyPath: m_ProvidesContacts
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -231,7 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mustBePickedUp: 0
-  isCrate: 1
+  isContainer: 1
   ingredientPrefab: {fileID: 1434587993371374756, guid: 975a5059dc8b283458e14c38676c0266,
     type: 3}
 --- !u!4 &6885077693998530423 stripped

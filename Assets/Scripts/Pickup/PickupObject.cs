@@ -9,6 +9,10 @@ public class PickupObject : MonoBehaviour
     private Transform targetPos = null; //transform tarcking the target position of the pickup
     private Rigidbody rb; //rigidbody component of the pickup
 
+    [Header("SFX")]
+    [SerializeField] private AudioClip pickUpSFX;
+    [SerializeField] private AudioClip dropSFX;
+
     // Start is called before the first frame update
     private void Awake()
     {
@@ -28,20 +32,17 @@ public class PickupObject : MonoBehaviour
     //Function that picks up the pickup
     public void PickUp(Transform targetPos)
     {
-        //Debug.Log("Calling pickup");
-
         //setting held to true and removing gravity
         isHeld = true;
         rb.useGravity = false;
-
-        //Debug.Log(targetPos);
 
         //setting target position & parenting
         this.targetPos = targetPos;
         transform.position = targetPos.position;
         transform.parent = targetPos;
 
-        //Debug.Log(targetPos);
+        //playing SFX
+        AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ItemInteraction, pickUpSFX, true);
     }
 
     //Function that drops the pickup
@@ -54,5 +55,8 @@ public class PickupObject : MonoBehaviour
         //removing target position & parent
         targetPos = null;
         transform.parent = null;
+
+        //playing SFX
+        AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ItemInteraction, dropSFX, true);
     }
 }

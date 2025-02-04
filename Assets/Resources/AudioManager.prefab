@@ -339,10 +339,6 @@ MonoBehaviour:
   sfxManager: {fileID: 2839988956548535684}
   musicManager: {fileID: 5192932983537271345}
   masterMixer: {fileID: 24100000, guid: 193ec6afe61047f4494f354986ce01af, type: 2}
-  masterSliders: []
-  musicSliders: []
-  sfxSliders: []
-  initialVolume: 0.5
 --- !u!1 &2116986304916513044
 GameObject:
   m_ObjectHideFlags: 0
@@ -390,7 +386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sfx_Type: 2
   audioSource: {fileID: 3274780881685749514}
-  pitchVariance: 0
+  pitchVariance: 0.1
   cooldownTime: 0
 --- !u!82 &3274780881685749514
 AudioSource:
@@ -781,7 +777,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sfx_Type: 3
   audioSource: {fileID: 591294602562877759}
-  pitchVariance: 0
+  pitchVariance: 0.1
   cooldownTime: 0
 --- !u!82 &591294602562877759
 AudioSource:

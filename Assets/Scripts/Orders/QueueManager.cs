@@ -150,8 +150,12 @@ public class QueueManager : MonoBehaviour
         }
         else
         {
-            newDay = false;
-            newCustomer = new CustomTimer(timeForCustomer, false);
+            if(newDay)
+            {
+                newCustomer = new CustomTimer(timeForCustomer, false);
+                newDay = false;
+            }
+
         }
     }
 

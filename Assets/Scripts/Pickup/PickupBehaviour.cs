@@ -13,6 +13,7 @@ public class PickupBehaviour : MonoBehaviour
     [SerializeField] private InteractionBehaviour interactionBehaviour; //component containing behaviour for object interactions
     private PickupObject heldObject = null; //reference to object in hand
 
+    [Header("UI")]
     [SerializeField] private Image pickupUIHolder;
 
     //Function that runs when Gameobject script is attached to is enabled
@@ -39,8 +40,6 @@ public class PickupBehaviour : MonoBehaviour
             {
                 heldObject.Drop(); //return object to normal physics
 
-                //pickupVolume.AddPickupToList(heldObject); //adds the pickup back to pickup detection list
-
                 //check if held item is an interactable
                 if (interactionBehaviour.GetHeldInteractable() != null)
                 {
@@ -53,11 +52,11 @@ public class PickupBehaviour : MonoBehaviour
             }
 
             //player is not holding anything and is by an ingredient crate
-            Interactable crate = interactionVolume.GetCrate();
-            if (crate != null)
+            Interactable container = interactionVolume.GetContainer();
+            if (container != null)
             {
                 //if crate is detected grab from crate using alternate interact
-                crate.Interact(this);
+                container.Interact(this);
             }
             //pick-up off the ground
             else

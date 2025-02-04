@@ -151,7 +151,7 @@ public class UiManager : MonoBehaviour
     private void Gameplay()
     {
         MenuVirtualCamera.OnResetCamera?.Invoke();
-
+        Actions.OnFirstSelect("Gameplay");
         SetActiveUI(gameplay);
         Time.timeScale = 1;
 

@@ -165,6 +165,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHeld: 0
+  pickUpSFX: {fileID: 8300000, guid: b97a171821c9b5a4096269b2753b1176, type: 3}
+  dropSFX: {fileID: 8300000, guid: 91f80fb6e48e2514f9f9c8f515450e07, type: 3}
 --- !u!1 &3353341840672888303
 GameObject:
   m_ObjectHideFlags: 0
