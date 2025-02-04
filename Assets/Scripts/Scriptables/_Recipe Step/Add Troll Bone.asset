@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Add Troll Bone
   m_EditorClassIdentifier: 
   action: 1
+  stepName: Troll_Bone
   stirSprite: {fileID: 0}
+  isClockwise: 0
   stirAmount: 0
   ingredient: 5
   ingredientSprite: {fileID: 21300000, guid: 3ca91b4d5f6761442877c81c2eabdc98, type: 3}

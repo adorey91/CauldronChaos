@@ -8,6 +8,8 @@ public class RecipeStepSO : ScriptableObject
     public enum ActionType { Nothing, AddIngredient, Stir }
     public ActionType action;
 
+    public string stepName;
+
     // shows if using stir
     public Sprite stirSprite;
     public bool isClockwise; // Optional, used if the step is stirring

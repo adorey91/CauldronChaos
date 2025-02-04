@@ -16,14 +16,15 @@ public class CauldronInteraction : MonoBehaviour
     // Holds all the recipes that can be crafted in this Cauldron
     private RecipeSO[] craftableRecipes;
     private List<RecipeSO> possibleRecipes = new();
+    private string nextStep;
+    private string currentStep;
+    private List<string> possibleNextSteps = new();
 
     // Particles for incorrect step
     private VisualEffect incorrectStep;
 
     // Recipe variables
     private RecipeSO recipe;
-    private RecipeStepSO curStep;
-    private RecipeStepSO nextStep;
     private GameObject ingredientGO;
     private Renderer curPotionRend;
     private int curStepIndex = 0;
@@ -47,9 +48,6 @@ public class CauldronInteraction : MonoBehaviour
     [Tooltip("Lower the number the slower it goes")]
     [SerializeField] private float spoonRotationSpeed = 0.6f;
     [SerializeField] private Transform spoon;
-    [SerializeField] private RecipeStepSO stirCC;
-    [SerializeField] private RecipeStepSO stirC;
-    private bool tryStirring;
 
     //sound libraries and clips
     [Header("Sounds")]
@@ -90,9 +88,11 @@ public class CauldronInteraction : MonoBehaviour
     {
         ingredientGO = ingredientObject;
 
-        curStep = ingredientHolder.recipeStepIngredient;
+        currentStep = null;
 
-        // grabs the ingredient from the recipe step that's holding it.
+        currentStep = ingredientHolder.recipeStepIngredient.stepName;
+
+        // grabs the ingredient from the _recipes step that's holding it.
         ingredientGO.transform.SetParent(null);
         ingredientGO.transform.DOJump(ingredientInsertPoint.position, 1f, 1, 0.5f).SetEase(Ease.InOutSine);
         ingredientGO.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InOutSine).OnComplete(SetInactive);
@@ -140,60 +140,40 @@ public class CauldronInteraction : MonoBehaviour
     private void FindPossibleRecipes()
     {
         List<RecipeSO> filterRecipes = new();
+        possibleNextSteps.Clear();
 
-        foreach (RecipeSO recipe in possibleRecipes)
+        foreach (RecipeSO _recipes in possibleRecipes)
         {
-            if (recipe.steps[curStepIndex].action == ActionType.AddIngredient)
+            if (curStepIndex >= _recipes.steps.Length)
+                continue;
+
+            if (_recipes.steps[curStepIndex].stepName == currentStep)
             {
-                if (recipe.steps[curStepIndex].ingredient == curStep.ingredient)
+                filterRecipes.Add(_recipes);
+                curStirAmount = 0;
+
+                // Ensure next step exists
+                if (curStepIndex + 1 < _recipes.steps.Length)
                 {
-                    filterRecipes.Add(recipe);
+                    nextStep = _recipes.steps[curStepIndex + 1].stepName;
+                    possibleNextSteps.Add(nextStep);
                 }
-            }
-            else if (recipe.steps[curStepIndex].action == ActionType.Stir)
-            {
-                if (recipe.steps[curStepIndex].stirAmount <= curStirAmount && recipe.steps[curStepIndex].isClockwise == curStep.isClockwise)
+                else
                 {
-                    filterRecipes.Add(recipe);
+                    nextStep = null;
+                }
+
+                // Check if it's the final step
+                if (_recipes.steps[curStepIndex].stepName == "Bottle_Potion")
+                {
+                    recipe = _recipes;
+                    CompletePotion();
+                    return;
                 }
             }
         }
 
-        Debug.Log("Possible recipes: " + filterRecipes.Count);
-        possibleRecipes.Clear();
         possibleRecipes = filterRecipes;
-
-        if (possibleRecipes.Count == 0)
-        {
-            HandleIncorrectStep();
-            return;
-        }
-
-        if (possibleRecipes.Count == 1)
-        {
-            recipe = possibleRecipes[0];
-
-            if (recipe.steps[curStepIndex].ingredient == Ingredient.Bottle)
-            {
-                CompletePotion();
-                return;
-            }
-
-            nextStep = recipe.steps[curStepIndex + 1];
-        }
-    }
-
-    private void StartNewRecipe()
-    {
-        possibleRecipes.Clear();
-
-        foreach (RecipeSO recipe in craftableRecipes)
-        {
-            if (recipe.steps[0].ingredient == curStep.ingredient)
-            {
-                possibleRecipes.Add(recipe);
-            }
-        }
 
         if (possibleRecipes.Count == 0)
         {
@@ -206,17 +186,56 @@ public class CauldronInteraction : MonoBehaviour
         if (possibleRecipes.Count == 1)
         {
             recipe = possibleRecipes[0];
-            // Check if it's a one-step recipe (like just adding a bottle)
-            if (recipe.steps[0].ingredient == RecipeStepSO.Ingredient.Bottle)
-            {
-                CompletePotion();
-                return;
-            }
 
-            nextStep = recipe.steps[curStepIndex];
+            if (curStepIndex < recipe.steps.Length)
+            {
+                nextStep = recipe.steps[curStepIndex].stepName;
+            }
         }
 
+        Debug.Log($"Updated nextStep: {nextStep}");
     }
+
+
+    private void StartNewRecipe()
+    {
+        possibleRecipes.Clear();
+        possibleNextSteps.Clear();
+
+        foreach (RecipeSO recipe in craftableRecipes)
+        {
+            if (recipe.steps.Length > 0 && recipe.steps[0].stepName == currentStep)
+            {
+                possibleRecipes.Add(recipe);
+                if (recipe.steps.Length > 1)
+                    possibleNextSteps.Add(recipe.steps[1].stepName);
+            }
+        }
+
+        if (possibleRecipes.Count == 0)
+        {
+            HandleIncorrectStep();
+            return;
+        }
+
+        curStepIndex = 1; // Move to next step
+
+        if (possibleRecipes.Count == 1)
+        {
+            recipe = possibleRecipes[0];
+
+            if (recipe.steps.Length > 1)
+            {
+                nextStep = recipe.steps[curStepIndex].stepName;
+            }
+
+            if (recipe.steps[0].stepName == "Bottle_Potion")
+            {
+                CompletePotion();
+            }
+        }
+    }
+
 
     private void AdvanceToNextStep()
     {
@@ -226,59 +245,60 @@ public class CauldronInteraction : MonoBehaviour
             return;
         }
 
-        switch (curStep.action)
+        if (curStepIndex >= recipe.steps.Length)
         {
-            case ActionType.AddIngredient:
-                if (nextStep.ingredient == curStep.ingredient)
-                {
-                    curStepIndex++;
+            HandleIncorrectStep();
+            return;
+        }
 
-                    if (curStep.ingredient == Ingredient.Bottle)
-                    {
-                        CompletePotion();
-                        return;
-                    }
-                }
-                else
-                {
-                    HandleIncorrectStep();
-                    return;
-                }
-                break;
-            case ActionType.Stir:
-                if (nextStep.isClockwise == curStep.isClockwise)
-                {
-                    if (nextStep.stirAmount > curStep.stirAmount)
-                    {
-                        curStirAmount++;
-                    }
-                    if (nextStep.stirAmount == curStep.stirAmount)
-                    {
-                        curStepIndex++;
-                        curStirAmount = 0;
-                    }
-                }
-                else
-                {
-                    HandleIncorrectStep();
-                }
+        Debug.Log($"Current Step: {currentStep}, Expected Step: {recipe.steps[curStepIndex].stepName}");
 
-                break;
+        // If an unexpected ingredient is added, trigger incorrect step handling
+        if (recipe.steps[curStepIndex].stepName != currentStep)
+        {
+            Debug.LogError($"Incorrect step detected! Current: {currentStep}, Expected: {recipe.steps[curStepIndex].stepName}");
+            HandleIncorrectStep();
+            return;
+        }
+
+        if (recipe.steps[curStepIndex].stepName == "Bottle_Potion")
+        {
+            CompletePotion();
+            return;
+        }
+
+        curStirAmount = 0;
+        curStepIndex++;
+
+        if (curStepIndex < recipe.steps.Length)
+        {
+            nextStep = recipe.steps[curStepIndex].stepName;
+            Debug.Log($"Next expected step: {nextStep}");
         }
     }
+
+
+
 
     #endregion
 
     #region Potion Completion
     private void CompletePotion()
     {
-        if (ingredientGO == null) return;
+
+        if (ingredientGO == null)
+            return;
+
+        if (ingredientGO.transform.childCount < 2)
+            return;
 
         GameObject potionInside = ingredientGO.transform.GetChild(1).gameObject;
-        if (potionInside == null) return;
+        if (potionInside == null)
+            return;
 
         curPotionRend = potionInside.GetComponent<Renderer>();
-        if (curPotionRend == null) return;
+        if (curPotionRend == null)
+            return;
 
         ingredientGO.GetComponent<Rigidbody>().isKinematic = false;
         ingredientGO.GetComponent<IngredientHolder>().enabled = false;
@@ -303,7 +323,10 @@ public class CauldronInteraction : MonoBehaviour
         Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 1, Random.Range(-1f, 1f)).normalized;
         Vector3 targetPosition = startPosition + randomDirection * throwStrength;
 
-        CountPotions();
+        if(recipe.recipeName != "Potion of Hydration")
+            CountPotions();
+        else
+            ResetValues();
 
         ingredientGO.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 1f).SetEase(Ease.InOutSine);
         ingredientGO.transform.DOJump(targetPosition, throwHeight, 1, throwDuration);
@@ -331,11 +354,19 @@ public class CauldronInteraction : MonoBehaviour
     {
         if (recipe != null && recipe.steps[0].ingredient == RecipeStepSO.Ingredient.Bottle)
         {
-            ResetValues();
+            if (potionIndex < 3) // Ensure we don't reset too soon
+            {
+                potionIndex++;
+            }
+            else
+            {
+                ResetValues();
+            }
         }
 
         cauldronFill.DOMove(cauldronFill.position - new Vector3(0, 0.11f, 0), 0.8f).OnComplete(CheckPotionCount);
     }
+
 
     private void CheckPotionCount()
     {
@@ -348,16 +379,18 @@ public class CauldronInteraction : MonoBehaviour
         {
             potionIndex++;
 
+            // Ensure we only reset if all 3 potions were pulled
             if (potionIndex == 3)
                 ResetValues();
         }
     }
 
+
     #endregion
 
     private void SetInactive()
     {
-        if (curStep.ingredient == RecipeStepSO.Ingredient.Bottle) return;
+        if (currentStep == "Bottle_Potion") return;
         ingredientGO.GetComponent<Rigidbody>().isKinematic = true;
         ingredientGO.transform.position = new Vector3(-100, -100, -100);
     }
@@ -379,11 +412,13 @@ public class CauldronInteraction : MonoBehaviour
         if (input.performed)
         {
             if (!canInteract) return;
-            curStep = stirC;
 
             curStirAmount++;
 
-            spoon.DORotate(new Vector3(0, -360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
+            currentStep = "Stir_C_1";  
+            Debug.Log($"Stirring Clockwise: {currentStep}");
+
+            spoon.DORotate(new Vector3(0, 360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
             Stir(true);
         }
     }
@@ -396,11 +431,14 @@ public class CauldronInteraction : MonoBehaviour
 
             curStirAmount++;
 
-            curStep = stirCC;
-            spoon.DORotate(new Vector3(0, 360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
+            currentStep = "Stir_CC_1"; 
+            Debug.Log($"Stirring CounterClockwise: {currentStep}");
+
+            spoon.DORotate(new Vector3(0, -360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
             Stir(false);
         }
     }
+
 
     #endregion
 

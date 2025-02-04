@@ -9,10 +9,12 @@ public class RecipeStepEditor : Editor
     SerializedProperty stirBool;
     SerializedProperty ingredient; // this will need to be renamed
     SerializedProperty ingredientSprite;
+    SerializedProperty nameOfStep;
 
     private void OnEnable()
     {
         // Cache serialized properties
+        nameOfStep = serializedObject.FindProperty("stepName");
         action = serializedObject.FindProperty("action");
         stirAmount = serializedObject.FindProperty("stirAmount");
         stirSprite = serializedObject.FindProperty("stirSprite");
@@ -28,6 +30,7 @@ public class RecipeStepEditor : Editor
 
         // Show step ingredient and allow selection
         EditorGUILayout.PropertyField(action);
+        EditorGUILayout.PropertyField(nameOfStep);
 
         // Conditionally show other fields based on step ingredient
         if (action.enumValueIndex == (int)RecipeStepSO.ActionType.AddIngredient)
