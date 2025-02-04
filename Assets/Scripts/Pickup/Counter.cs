@@ -18,9 +18,9 @@ public class Counter : Interactable
         Debug.Log("Counter Interact called");
 
         //Exit function  if nothing is on counter is selected
-        if (pickupObjects.Count > 0)
+        if (pickupObjects.Count <= 0)
         {
-            Debug.LogError("Nothing on Counter");
+            Debug.Log("Nothing on Counter");
             return;
         }
 
