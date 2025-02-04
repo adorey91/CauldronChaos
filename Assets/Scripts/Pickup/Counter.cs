@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Counter : Interactable
 {
-    private List<PickupObject> pickupObjects; //list of all pickup objects on counter
+    public List<PickupObject> pickupObjects; //list of all pickup objects on counter
 
     //Unimplemented regular interact function
     public override void Interact()
@@ -15,7 +15,7 @@ public class Counter : Interactable
     //Function that holds interact functionality for getting object off of counter
     public override void Interact(PickupBehaviour playerPickup)
     {
-        //Debug.Log("Counter Interact called");
+        Debug.Log("Counter Interact called");
 
         //Exit function  if nothing is on counter is selected
         if (pickupObjects.Count > 0)
