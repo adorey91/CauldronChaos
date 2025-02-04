@@ -23,24 +23,43 @@ public class UiManager : MonoBehaviour
     [SerializeField] private GameObject dayStartPanel;
     [SerializeField] private TextMeshProUGUI dayStartText;
     [SerializeField] private int secondsToStart;
+    private CustomTimer dayTimer;
+    private bool timerStarted = false;
+
 
     private Coroutine dayStartCoroutine;
-
-    [Header("MainMenu Selection Animations")]
-    [SerializeField] private GameObject menuCamera;
-    [SerializeField] private GameObject gameCamera;
-
     private ScoreManager scoreManager;
 
 
     private void Start()
     {
         scoreManager = FindObjectOfType<ScoreManager>();
-       
-        if(Gamepad.current != null)
+
+        if (Gamepad.current != null)
             Cursor.lockState = CursorLockMode.Locked;
         else
             Cursor.lockState = CursorLockMode.Confined;
+
+        dayTimer = new(secondsToStart, false);
+    }
+
+    private void Update()
+    {
+        if (timerStarted)
+        {
+            if (dayTimer.UpdateTimer())
+            {
+                dayStartPanel.SetActive(false); // Disable the day start panel
+                dayTimer.ResetTimer();
+                Actions.OnStartDay?.Invoke(); // Invoke the StartDay action
+                timerStarted = false;
+            }
+            else
+            {
+                int remaining = Mathf.FloorToInt(dayTimer.GetRemainingTime());
+                dayStartText.text = $"Day Starts In:\n{remaining}";
+            }
+        }
     }
 
     private void OnEnable()
@@ -48,6 +67,7 @@ public class UiManager : MonoBehaviour
         Actions.OnStateChange += UpdateUIForGameState;
         CameraMenuCollider.ReachedWaypoint += CameraReached;
         LevelManager.startTimer += StartDayCountdown;
+        Actions.OnResetValues += ResetTimer;
     }
 
     private void OnDisable()
@@ -55,10 +75,13 @@ public class UiManager : MonoBehaviour
         Actions.OnStateChange -= UpdateUIForGameState;
         CameraMenuCollider.ReachedWaypoint -= CameraReached;
         LevelManager.startTimer -= StartDayCountdown;
+        Actions.OnResetValues -= ResetTimer;
     }
 
     private void UpdateUIForGameState(GameManager.GameState state)
     {
+        LevelManager.UpdateLevelButtons?.Invoke();
+
         switch (state)
         {
             case GameManager.GameState.MainMenu: MainMenu(); break;
@@ -96,7 +119,7 @@ public class UiManager : MonoBehaviour
 
     private void CameraReached(string waypoint)
     {
-        if(waypoint == "Door")
+        if (waypoint == "Door")
         {
             SetActiveUI(intro);
             Actions.OnFirstSelect("Intro");
@@ -113,11 +136,12 @@ public class UiManager : MonoBehaviour
 
     private void LevelSelect()
     {
-        if (Gamepad.current != null)
-            Cursor.lockState = CursorLockMode.Locked;
-        else
+        //if (Gamepad.current != null)
+        //    Cursor.lockState = CursorLockMode.Locked;
+        //else
             Cursor.lockState = CursorLockMode.Confined;
 
+        Actions.OnResetValues?.Invoke();
         SetActiveUI(levelSelect);
         Actions.OnFirstSelect("LevelSelect");
         MenuVirtualCamera.OnResetCamera?.Invoke();
@@ -139,21 +163,21 @@ public class UiManager : MonoBehaviour
         SetActiveUI(endOfDay);
         Actions.OnFirstSelect("EndOfDay");
 
-        if (Gamepad.current != null)
-            Cursor.lockState = CursorLockMode.Locked;
-        else
+        //if (Gamepad.current != null)
+        //    Cursor.lockState = CursorLockMode.Locked;
+        //else
             Cursor.lockState = CursorLockMode.Confined;
     }
 
     private void Pause()
     {
         SetActiveUI(pause);
-        Actions.OnFirstSelect("Menu");
+        Actions.OnFirstSelect("Pause");
         Time.timeScale = 0;
 
-        if (Gamepad.current != null)
-            Cursor.lockState = CursorLockMode.Locked;
-        else
+        //if (Gamepad.current != null)
+        //    Cursor.lockState = CursorLockMode.Locked;
+        //else
             Cursor.lockState = CursorLockMode.Confined;
     }
 
@@ -169,24 +193,17 @@ public class UiManager : MonoBehaviour
     private void StartDayCountdown()
     {
         Debug.Log("Start Day Countdown");
+
+        Actions.OnFirstSelect("Gameplay");
         dayStartPanel.SetActive(true);
-        if (dayStartCoroutine != null)
-            StopCoroutine(dayStartCoroutine);
-        else
-            dayStartCoroutine = StartCoroutine(DayStartTimer());
+        dayTimer.StartTimer();
+
+        timerStarted = true;
     }
-    private IEnumerator DayStartTimer()
+
+    private void ResetTimer()
     {
-        int timer = secondsToStart; // Initialize timer with total seconds
-
-        while (timer > 0) // Loop until timer reaches -1
-        {
-            dayStartText.text = $"Day Starts in... {timer}"; // Update text with current timer value
-            timer--; // Decrement timer by 1
-            yield return new WaitForSeconds(1); // Wait for 1 second
-        }
-
-        dayStartPanel.SetActive(false); // Disable the day start panel
-        Actions.OnStartDay?.Invoke(); // Invoke the StartDay action
+        dayTimer.ResetTimer();
+        timerStarted = false;
     }
 }

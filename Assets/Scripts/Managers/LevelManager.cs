@@ -33,12 +33,23 @@ public class LevelManager : MonoBehaviour
     private Action fadeCallback;
     public static Action startTimer;
 
+    public static Action UpdateLevelButtons;
 
     public void Start()
     {
         fadeAnimator = GetComponent<Animator>();
         fadeAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
         UpdateButtons();
+    }
+
+    private void OnEnable()
+    {
+        UpdateLevelButtons += UpdateButtons;
+    }
+
+    private void OnDisable()
+    {
+        UpdateLevelButtons -= UpdateButtons;
     }
 
     public void UpdateButtons()
@@ -63,7 +74,9 @@ public class LevelManager : MonoBehaviour
 
     public void LoadScene(string sceneName)
     {
-        eventSystem.SetSelectedGameObject(null);
+        InputManager.instance.TurnOffInteraction();
+        Actions.OnFirstSelect(null);
+
         Debug.Log($"LoadScene called: {sceneName}");
 
         Fade("FadeOut", () =>
@@ -188,6 +201,7 @@ public class LevelManager : MonoBehaviour
 
         if (currentScene.name.StartsWith("Day"))
         {
+            InputManager.instance.TurnOnInteraction();
             startTimer?.Invoke();
         }
     }

@@ -10,10 +10,11 @@ public class QueueManager : MonoBehaviour
     [Header("Customer Queue Variables")]
     [SerializeField] private List<GameObject> customerPrefabs; // List of possible customer prefabs
     [SerializeField] private int maxCustomers = 5;
-    [SerializeField] private int newCustomerTime = 6;
-    private CustomTimer newCustomerTimer;
+    [SerializeField] private int timeForCustomer = 1;
+    private CustomTimer newCustomer;
     private List<GameObject> customers = new();
     private bool startCustomers = false;
+    private bool newDay;
 
     [Header("Customer Queue Positions")]
     [SerializeField] private Transform firstPos;
@@ -32,7 +33,7 @@ public class QueueManager : MonoBehaviour
 
     public void Start()
     {
-        newCustomerTimer = new CustomTimer(newCustomerTime, true);
+        newCustomer = new CustomTimer(timeForCustomer, true);
 
         queuePositions[0] = firstPos.position;
         for (int i = 1; i < 5; i++)
@@ -46,27 +47,27 @@ public class QueueManager : MonoBehaviour
         Actions.OnEndDay += RemoveAllCustomers;
         Actions.OnStartDay += StartCustomers;
         OnCheckCustomers += CheckCustomerRecipes;
+        Actions.OnResetValues += RemoveAllCustomers;
     }
 
     private void OnDisable()
     {
         Actions.OnEndDay -= RemoveAllCustomers;
+        Actions.OnStartDay -= StartCustomers;
         OnCheckCustomers -= CheckCustomerRecipes;
+        Actions.OnResetValues -= RemoveAllCustomers;
     }
 
 
     // using for testing only
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            Actions.OnStartDay?.Invoke();
-
         if (startCustomers == true)
         {
-            if (newCustomerTimer.UpdateTimer())
+            if (newCustomer.UpdateTimer())
             {
                 SpawnNewCustomer();
-                newCustomerTimer.ResetTimer();
+                newCustomer.ResetTimer();
             }
         }
     }
@@ -74,6 +75,9 @@ public class QueueManager : MonoBehaviour
     private void StartCustomers()
     {
         startCustomers = true;
+        newDay = true;
+        newCustomer = new CustomTimer(3, false);
+        newCustomer.StartTimer();
         SpawnNewCustomer();
     }
 
@@ -144,6 +148,11 @@ public class QueueManager : MonoBehaviour
 
             AddCustomer(newCustomer);
         }
+        else
+        {
+            newDay = false;
+            newCustomer = new CustomTimer(timeForCustomer, false);
+        }
     }
 
     // Update customer positions in the queue
@@ -163,7 +172,8 @@ public class QueueManager : MonoBehaviour
             Destroy(customer);
         }
 
-
+        newDay = false;
         customers.Clear();
+        startCustomers = false;
     }
 }

@@ -26,6 +26,7 @@ public class InputManager : MonoBehaviour
     internal InputAction PreviousPageInputAction;
 
 
+
     //function that checks if instance exists and spawns one if it does not
     // this is spawning a new input manager when quitting play
     public static InputManager instance
@@ -72,6 +73,18 @@ public class InputManager : MonoBehaviour
 
         PreviousPageInputAction.Disable();
         NextPageInputAction.Disable();
+    }
+
+    private void OnEnable()
+    {
+        Actions.OnEndDay += TurnOffInteraction;
+        Actions.OnStartDay += TurnOnInteraction;
+    }
+
+    private void OnDisable()
+    {
+        Actions.OnEndDay -= TurnOffInteraction;
+        Actions.OnStartDay -= TurnOnInteraction;
     }
 
 
@@ -123,4 +136,15 @@ public class InputManager : MonoBehaviour
     {
         PreviousPageAction?.Invoke(input);
     }
+
+    internal void TurnOffInteraction()
+    {
+        playerControls.SwitchCurrentActionMap("UI");
+    }
+
+    internal void TurnOnInteraction()
+    {
+        playerControls.SwitchCurrentActionMap("Player");
+    }
+
 }
