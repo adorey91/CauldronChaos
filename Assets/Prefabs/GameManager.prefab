@@ -420,7 +420,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 635937849737978713}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -5634,8 +5634,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -15}
-  m_SizeDelta: {x: 300, y: 30}
+  m_AnchoredPosition: {x: 0, y: -31.9}
+  m_SizeDelta: {x: 405.8025, y: 30}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &511186966442952188
 CanvasRenderer:
@@ -5693,8 +5693,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34
-  m_fontSizeBase: 34
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6659,7 +6659,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 50}
-  m_SizeDelta: {x: 300, y: 30}
+  m_SizeDelta: {x: 405.8025, y: 30}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &4291894481142443419
 CanvasRenderer:
@@ -6927,7 +6927,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 30}
+  m_SizeDelta: {x: 405.8025, y: 30}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &8730024895700605030
 CanvasRenderer:
@@ -7062,7 +7062,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: -50, y: 0}
-  m_SizeDelta: {x: 200, y: 200}
+  m_SizeDelta: {x: 177.7726, y: 200}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &1361221408384305132
 CanvasRenderer:
@@ -7092,7 +7092,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d234ee2916e14584593e43db562adaf5, type: 3}
+  m_Sprite: {fileID: 1569856570, guid: 0f6a7406e987d5d4c8a1fd1efc1268b0, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -7638,7 +7638,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 100, y: 20}
-  m_SizeDelta: {x: 451.516, y: 210.5758}
+  m_SizeDelta: {x: 556.2932, y: 210.5758}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &5718064231674532916
 CanvasRenderer:
@@ -7668,7 +7668,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d3dcf8543cc36244eb836d659f96fb34, type: 3}
+  m_Sprite: {fileID: 1488764229, guid: e56910449f3720b4dad1eb0a0678303c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8281,7 +8281,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button South
+  m_text: A
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -10699,7 +10699,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6263724421941404991}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -11982,7 +11982,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6971208047623907001}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.009353438, y: 0.6240463, z: 0.0074708904, w: 0.78129566}
+  m_LocalRotation: {x: -0.009353373, y: 0.62404627, z: 0.007470843, w: 0.7812957}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -13871,7 +13871,6 @@ MonoBehaviour:
   endOfDayFirstSelect: {fileID: 9006899815775076905}
   introFirstSelect: {fileID: 6043829468254268742}
   deleteFileFirstSelect: {fileID: 2264507690931675233}
-  recipeBookFirstSelect: {fileID: 0}
   eventSystem: {fileID: 8482081382812266138}
 --- !u!1 &8279266712285669116
 GameObject:
@@ -15117,7 +15116,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button West
+  m_text: X
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

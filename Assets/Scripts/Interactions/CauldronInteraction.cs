@@ -127,7 +127,7 @@ public class CauldronInteraction : MonoBehaviour
     private void HandleIncorrectStep()
     {
         // Blowing up animation thing
-        Debug.Log("Incorrect step");
+        //Debug.Log("Incorrect step");
 
         // Play a sound here
         //AudioManager.instance.sfxManager.playSFX()
@@ -193,7 +193,7 @@ public class CauldronInteraction : MonoBehaviour
             }
         }
 
-        Debug.Log($"Updated nextStep: {nextStep}");
+        //Debug.Log($"Updated nextStep: {nextStep}");
     }
 
 
@@ -251,12 +251,12 @@ public class CauldronInteraction : MonoBehaviour
             return;
         }
 
-        Debug.Log($"Current Step: {currentStep}, Expected Step: {recipe.steps[curStepIndex].stepName}");
+        //Debug.Log($"Current Step: {currentStep}, Expected Step: {recipe.steps[curStepIndex].stepName}");
 
         // If an unexpected ingredient is added, trigger incorrect step handling
         if (recipe.steps[curStepIndex].stepName != currentStep)
         {
-            Debug.LogError($"Incorrect step detected! Current: {currentStep}, Expected: {recipe.steps[curStepIndex].stepName}");
+            //Debug.LogError($"Incorrect step detected! Current: {currentStep}, Expected: {recipe.steps[curStepIndex].stepName}");
             HandleIncorrectStep();
             return;
         }
@@ -273,7 +273,7 @@ public class CauldronInteraction : MonoBehaviour
         if (curStepIndex < recipe.steps.Length)
         {
             nextStep = recipe.steps[curStepIndex].stepName;
-            Debug.Log($"Next expected step: {nextStep}");
+            //Debug.Log($"Next expected step: {nextStep}");
         }
     }
 
@@ -416,7 +416,7 @@ public class CauldronInteraction : MonoBehaviour
             curStirAmount++;
 
             currentStep = "Stir_C_1";  
-            Debug.Log($"Stirring Clockwise: {currentStep}");
+            //Debug.Log($"Stirring Clockwise: {currentStep}");
 
             spoon.DORotate(new Vector3(0, 360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
             Stir(true);
@@ -432,7 +432,7 @@ public class CauldronInteraction : MonoBehaviour
             curStirAmount++;
 
             currentStep = "Stir_CC_1"; 
-            Debug.Log($"Stirring CounterClockwise: {currentStep}");
+            //Debug.Log($"Stirring CounterClockwise: {currentStep}");
 
             spoon.DORotate(new Vector3(0, -360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
             Stir(false);

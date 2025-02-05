@@ -74,6 +74,13 @@ public class LevelManager : MonoBehaviour
 
     public void LoadScene(string sceneName)
     {
+
+        if(SceneManager.GetActiveScene().name == "MainMenu" && sceneName == "MainMenu")
+        {
+            Actions.OnForceStateChange("MainMenu");
+            return;
+        }
+
         InputManager.instance.TurnOffInteraction();
         Actions.OnFirstSelect(null);
 
@@ -115,7 +122,7 @@ public class LevelManager : MonoBehaviour
         while (fakeProgress < 1f)
         {
             // Gradually increase the fake progress
-            fakeProgress += Time.deltaTime * fakeProgressSpeed;
+            fakeProgress += Time.unscaledDeltaTime * fakeProgressSpeed;
 
             // Ensure fake progress doesn't exceed the actual loading progress
             float actualProgress = Mathf.Clamp01(loadOperation.progress / 0.9f);
@@ -123,21 +130,26 @@ public class LevelManager : MonoBehaviour
 
             // Update the loading bar
             loadingBar.value = fakeProgress;
+            Debug.Log($"Loading progress: Fake={fakeProgress}, Actual={actualProgress}");
 
             // Wait for the next frame
             yield return null;
         }
 
-        if(sceneName != "LevelSelect" && sceneName != "MainMenu")
-        {
-            loadingText.text = "Press Any Key To Continue";
 
-            // Wait for any key press
-            yield return WaitForAnyKeyPress();
+        if(sceneName == "MainMenu" || sceneName == "LevelSelect")
+        {
+            yield return new WaitForSecondsRealtime(0.5f);
+            loadingScreen.enabled = false;
+            loadOperation.allowSceneActivation = true;
         }
 
+
+        loadingText.text = "Press Any Key To Continue";
+        Debug.Log("Scene ready for activation...");
+        yield return WaitForAnyKeyPress();
+
         loadingScreen.enabled = false;
-        // Activate the scene after the player presses the button
         loadOperation.allowSceneActivation = true;
     }
 
@@ -172,11 +184,11 @@ public class LevelManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Debug.Log($"Scene Loaded: {scene.name}");
         SceneManager.sceneLoaded -= OnSceneLoaded;
-
-        // Fade in and delay the day start countdown until after fading is complete
         Fade("FadeIn");
     }
+
 
 
     public void Fade(string fadeDir, Action callback = null)
@@ -189,12 +201,13 @@ public class LevelManager : MonoBehaviour
     public void FadeAnimationComplete()
     {
         Debug.Log("Fade Animation Complete");
-        // Ensure the callback is executed only after fade-in is complete
+        Debug.Log($"Invoking fade callback: {fadeCallback != null}");
         fadeCallback?.Invoke();
-        fadeCallback = null; // Clear the callback to prevent accidental reuse
+        fadeCallback = null;
     }
 
-    
+
+
     public void OnFadeInComplete()
     {
         Scene currentScene = SceneManager.GetActiveScene();

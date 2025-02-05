@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4642725207006823632
 RectTransform:
   m_ObjectHideFlags: 0
@@ -254,7 +254,7 @@ GameObject:
   - component: {fileID: 5540948705014897379}
   - component: {fileID: 6410272942242089880}
   - component: {fileID: 4943296655789654444}
-  - component: {fileID: 6949157768722542541}
+  - component: {fileID: 2807654611670000977}
   m_Layer: 7
   m_Name: Apprentice
   m_TagString: Untagged
@@ -330,7 +330,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!95 &6949157768722542541
+--- !u!95 &2807654611670000977
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0

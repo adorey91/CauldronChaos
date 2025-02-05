@@ -18,7 +18,6 @@ public class ControllerSelect : MonoBehaviour
     [SerializeField] private GameObject endOfDayFirstSelect;
     [SerializeField] private GameObject introFirstSelect;
     [SerializeField] private GameObject deleteFileFirstSelect;
-    [SerializeField] private GameObject recipeBookFirstSelect;
 
     [SerializeField] private EventSystem eventSystem;
 
@@ -80,7 +79,6 @@ public class ControllerSelect : MonoBehaviour
             case "EndOfDay": _firstSelected = endOfDayFirstSelect; break;
             case "DeleteFile": _firstSelected = deleteFileFirstSelect; break;
             default: 
-                Debug.LogWarning("First Select is not set for: " + menu); 
                 _firstSelected = null; 
                 break;
         }

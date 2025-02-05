@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -17,10 +18,6 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private RectTransform timerHand;
     private CustomTimer dayTimer;
     private bool timerStarted;
-    private float rotationSpeed;
-    private float secondsToDegrees = 180f / 60f;
-    private Quaternion _minAngle = Quaternion.Euler(0, 0, 90);
-    private Quaternion _maxAngle = Quaternion.Euler(0, 0, -90);
 
     [Header("EOD UI")]
     [SerializeField] private TextMeshProUGUI eodTitle;
@@ -73,6 +70,13 @@ public class ScoreManager : MonoBehaviour
 
     private void Update()
     {
+        //// USED FOR TESTING
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            Actions.OnStartDay?.Invoke();
+        }
+
+
         if (timerStarted)
         {
             SetTimerRotation();
@@ -83,7 +87,6 @@ public class ScoreManager : MonoBehaviour
                 Actions.OnForceStateChange("EndOfDay");
 
                 timerStarted = false;
-                timerHand.transform.rotation = _minAngle;
             }
         }
     }
@@ -104,6 +107,7 @@ public class ScoreManager : MonoBehaviour
     private void SetTimerRotation()
     {
         float remainingTime = dayTimer.GetRemainingTime();
+        float elapsedTime = dayTimer.elapsedTime;
 
         // Convert remaining time into minutes and seconds
         int minutes = Mathf.FloorToInt(remainingTime / 60);
@@ -111,11 +115,16 @@ public class ScoreManager : MonoBehaviour
 
         dayTimerText.text = $"{minutes:00}:{seconds:00}";
 
-        float rotationAngle = remainingTime * secondsToDegrees;
+        // Stop any existing rotation animation
+        timerHand.DOKill();
 
-        // This works but it seems backwards? Rotate towards should be from -> to but this is to -> from. Will need to investigate
-        timerHand.rotation = Quaternion.RotateTowards(_maxAngle, _minAngle, rotationAngle);
+        // Calculate how far along the rotation should be (0° to -360°)
+        float rotationAngle = Mathf.Lerp(0, -360, elapsedTime / (minutesPerDay * 60));
+
+        // Apply rotation directly without animation
+        timerHand.rotation = Quaternion.Euler(0, 0, rotationAngle);
     }
+
 
 
     private void UpdateScore(bool wasGivenOnTime, int regularScore)
@@ -183,6 +192,7 @@ public class ScoreManager : MonoBehaviour
         Debug.Log("Resetting Time");
         dayTimerText.text = null;
         timerStarted = false;
+        timerHand.rotation = Quaternion.Euler(0, 0, 0);
         dayTimer = new CustomTimer(minutesPerDay, true);
         dayText.text = $"Day: {_currentDay}/{daysToPlay}";
         scoreText.text = $"Score: {_score}";

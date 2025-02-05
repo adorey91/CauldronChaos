@@ -4573,7 +4573,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &279494594
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10093,7 +10093,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mustBePickedUp: 0
-  isCrate: 1
+  isContainer: 0
   ingredientPrefab: {fileID: 6429869540098028704, guid: 8066bd2877328af4cb4a54c396506d76,
     type: 3}
 --- !u!64 &609412230
@@ -11511,7 +11511,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &694342574
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -13717,7 +13717,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mustBePickedUp: 0
-  isCrate: 1
+  isContainer: 0
   ingredientPrefab: {fileID: 4247430468868494256, guid: dfe4edd3577e1c5418627583d9a1f7c4,
     type: 3}
 --- !u!64 &787332981
@@ -19204,7 +19204,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mustBePickedUp: 0
-  isCrate: 1
+  isContainer: 0
   ingredientPrefab: {fileID: 1589310688748638498, guid: 01b029e4cae001c46aab15e01288d2eb,
     type: 3}
 --- !u!64 &1084659187
@@ -32376,7 +32376,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mustBePickedUp: 0
-  isCrate: 1
+  isContainer: 0
   ingredientPrefab: {fileID: 1434587993371374756, guid: 975a5059dc8b283458e14c38676c0266,
     type: 3}
 --- !u!64 &1893569707
