@@ -6,11 +6,18 @@ public class IngredientHolder : MonoBehaviour
 {
     // Holds the ingredientBeingHeld for the prefab
     public RecipeStepSO recipeStepIngredient;
-    private bool addedToCauldron = false; 
+    private bool addedToCauldron = false;
+    PickupObject pickup;
+
+    private void Start()
+    {
+        pickup = GetComponent<PickupObject>();
+    }
 
     //Accessor method that checks if the ingredient has been added to the cauldron
     public bool AddedToCauldron()
     {
+        pickup.Drop();
         return addedToCauldron;
     }
 

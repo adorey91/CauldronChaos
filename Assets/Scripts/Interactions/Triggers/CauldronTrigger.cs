@@ -6,6 +6,12 @@ using UnityEngine;
 public class CauldronTrigger : MonoBehaviour
 {
     [SerializeField] private CauldronInteraction cauldron; //cached referene to the cauldron
+    Transform cauldronTransform;
+
+    private void Start()
+    {
+        cauldronTransform = transform.parent;
+    }
 
     //Function called whenever a collider enters the trigger volume
     private void OnTriggerEnter(Collider other)
@@ -16,6 +22,9 @@ public class CauldronTrigger : MonoBehaviour
         {
             //calls cauldron functionality for adding an ingredient
             ingredientHolder.AddToCauldron();
+            GameObject ingredient = ingredientHolder.gameObject;
+            ingredient.transform.SetParent(cauldronTransform);
+
             cauldron.AddIngredient(ingredientHolder, ingredientHolder.gameObject);
         }
     }
