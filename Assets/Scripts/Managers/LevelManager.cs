@@ -84,7 +84,6 @@ public class LevelManager : MonoBehaviour
         InputManager.instance.TurnOffInteraction();
         Actions.OnFirstSelect(null);
 
-        Debug.Log($"LoadScene called: {sceneName}");
 
         Fade("FadeOut", () =>
         {
@@ -130,7 +129,6 @@ public class LevelManager : MonoBehaviour
 
             // Update the loading bar
             loadingBar.value = fakeProgress;
-            Debug.Log($"Loading progress: Fake={fakeProgress}, Actual={actualProgress}");
 
             // Wait for the next frame
             yield return null;
@@ -146,7 +144,6 @@ public class LevelManager : MonoBehaviour
 
 
         loadingText.text = "Press Any Key To Continue";
-        Debug.Log("Scene ready for activation...");
         yield return WaitForAnyKeyPress();
 
         loadingScreen.enabled = false;
@@ -164,7 +161,6 @@ public class LevelManager : MonoBehaviour
             // Check for any key press on the keyboard
             if (keyboard?.anyKey.wasPressedThisFrame == true)
             {
-                Debug.Log("A key was pressed.");
                 yield break; // Exit the loop and the coroutine
             }
 
@@ -173,7 +169,6 @@ public class LevelManager : MonoBehaviour
             {
                 if (gamepad.allControls.OfType<ButtonControl>().Any(button => button.wasPressedThisFrame))
                 {
-                    Debug.Log("A button was pressed.");
                     yield break; // Exit the loop and the coroutine
                 }
             }
@@ -184,7 +179,6 @@ public class LevelManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log($"Scene Loaded: {scene.name}");
         SceneManager.sceneLoaded -= OnSceneLoaded;
         Fade("FadeIn");
     }
@@ -193,15 +187,12 @@ public class LevelManager : MonoBehaviour
 
     public void Fade(string fadeDir, Action callback = null)
     {
-        Debug.Log($"Fade triggered: {fadeDir}");
         fadeCallback = callback;
         fadeAnimator.SetTrigger(fadeDir);
     }
 
     public void FadeAnimationComplete()
     {
-        Debug.Log("Fade Animation Complete");
-        Debug.Log($"Invoking fade callback: {fadeCallback != null}");
         fadeCallback?.Invoke();
         fadeCallback = null;
     }
