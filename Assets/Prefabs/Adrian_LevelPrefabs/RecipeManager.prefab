@@ -3132,7 +3132,7 @@ MonoBehaviour:
   - {fileID: 8284360445958240951, guid: 363a521f265904642a942644294114af, type: 3}
   - {fileID: 8284360445958240951, guid: 21d958019fefd5c43a1bd31ed71dec50, type: 3}
   maxCustomers: 5
-  newCustomerTime: 6
+  timeForCustomer: 1
   firstPos: {fileID: 0}
   entryPoint: {fileID: 0}
   exitPoint: {fileID: 0}
@@ -3879,17 +3879,18 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3a6391b75cfe31c41bc6fa95650bac06, type: 2}
   - {fileID: 11400000, guid: 94a7b08d58d9ca14faf5c55611018c51, type: 2}
   - {fileID: 11400000, guid: 5d9ae04bdfe4fe44cbe31e6509ac8f08, type: 2}
-  - {fileID: 11400000, guid: 599b9795f6e09da42859bef7aa51d556, type: 2}
-  - {fileID: 11400000, guid: c6fe4be6692dca143b1739ed9e8089ad, type: 2}
-  - {fileID: 11400000, guid: 249b52a981b53e048a66f65f39f698cf, type: 2}
   - {fileID: 11400000, guid: 6df65aea544367a44ab19cfe643eda10, type: 2}
+  - {fileID: 11400000, guid: 599b9795f6e09da42859bef7aa51d556, type: 2}
+  - {fileID: 11400000, guid: 249b52a981b53e048a66f65f39f698cf, type: 2}
+  - {fileID: 11400000, guid: c6fe4be6692dca143b1739ed9e8089ad, type: 2}
   - {fileID: 11400000, guid: 39216bea380f09741aa44584efc24f2d, type: 2}
-  - {fileID: 11400000, guid: 0bd8afd36bfe82c45a34d83696553e95, type: 2}
   - {fileID: 11400000, guid: 066e155d5d767d641b77f651688c1564, type: 2}
+  - {fileID: 11400000, guid: 0bd8afd36bfe82c45a34d83696553e95, type: 2}
   - {fileID: 11400000, guid: 19338638cf98d88428e9b837e62eff60, type: 2}
   numberOfRecipes: 2
-  recipeBook: {fileID: 3256355238066636368}
+  recipeBookUi: {fileID: 3256355238066636368}
   useAllRecipes: 1
+  closeButton: {fileID: 2999246414906643949}
 --- !u!1 &7487977803280023232
 GameObject:
   m_ObjectHideFlags: 0

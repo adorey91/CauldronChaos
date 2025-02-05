@@ -17,9 +17,9 @@ MonoBehaviour:
   points: 80
   steps:
   - {fileID: 11400000, guid: 97e7804a0ec3fb94aba85a91aef9dbf8, type: 2}
-  - {fileID: 11400000, guid: c7a2d2150ba7e0a49bd93c6a194ee33a, type: 2}
+  - {fileID: 11400000, guid: ba23049bb157f0b4585f6153add679f3, type: 2}
   - {fileID: 11400000, guid: 1263d1af773c1934389a86be3ac2a831, type: 2}
-  - {fileID: 11400000, guid: 813f59d3c94cb8848ad40c58817a6559, type: 2}
+  - {fileID: 11400000, guid: 56ac427984e910c40ad1fda1338d2022, type: 2}
   - {fileID: 11400000, guid: 610915c10d0751b44b86fdcd1393864f, type: 2}
-  potionIcon: {fileID: 0}
+  potionIcon: {fileID: 21300000, guid: a65a67f22cf2195498a9ff2285af46a0, type: 3}
   potionColor: {r: 0.7490196, g: 0.93725497, b: 0.27058825, a: 1}
