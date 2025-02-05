@@ -71,10 +71,10 @@ public class ScoreManager : MonoBehaviour
     private void Update()
     {
         //// USED FOR TESTING
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            Actions.OnStartDay?.Invoke();
-        }
+        //if (Input.GetKeyDown(KeyCode.Alpha1))
+        //{
+        //    Actions.OnStartDay?.Invoke();
+        //}
 
 
         if (timerStarted)
