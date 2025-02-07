@@ -68,8 +68,8 @@ public class InputManager : MonoBehaviour
 
         MoveInputAction = playerControls.actions.FindAction("Move");
         PauseInputAction = playerControls.actions.FindAction("Pause");
-        NextPageInputAction = playerControls.actions.FindAction("NextPage");
-        PreviousPageInputAction = playerControls.actions.FindAction("PreviousPage");
+        NextPageInputAction = playerControls.actions.FindAction("Next Page");
+        PreviousPageInputAction = playerControls.actions.FindAction("Previous Page");
 
         PreviousPageInputAction.Disable();
         NextPageInputAction.Disable();

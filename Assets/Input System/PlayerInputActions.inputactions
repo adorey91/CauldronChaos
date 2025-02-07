@@ -60,7 +60,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "PreviousPage",
+                    "name": "Previous Page",
                     "type": "Button",
                     "id": "a316ca22-ca9a-41a8-ba14-c312fe36b393",
                     "expectedControlType": "",
@@ -69,7 +69,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "NextPage",
+                    "name": "Next Page",
                     "type": "Button",
                     "id": "b7b41fea-2e99-4bbf-a76e-a53c285e4c2a",
                     "expectedControlType": "",
@@ -339,7 +339,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "PreviousPage",
+                    "action": "Previous Page",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -350,7 +350,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "NextPage",
+                    "action": "Next Page",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

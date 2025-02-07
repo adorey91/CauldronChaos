@@ -79,8 +79,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6575f28d0449666458b7c76d0ac6d6ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rend: {fileID: 7561190872824759389}
   potionInside: {fileID: 0}
   givenToCustomer: 0
+  MaxWobble: 0.03
+  WobbleSpeed: 1
+  Recovery: 1
 --- !u!114 &1302497976632463783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,7 +361,6 @@ GameObject:
   - component: {fileID: 8581827169888680931}
   - component: {fileID: 7561190872824759389}
   - component: {fileID: 305689249100298247}
-  - component: {fileID: 8051639062756722526}
   m_Layer: 6
   m_Name: BottleInner
   m_TagString: Untagged
@@ -452,21 +455,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 5885090576153703262, guid: 8ae2d62ccd280a646974c2fb83a393aa, type: 3}
---- !u!114 &8051639062756722526
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4948029764408668152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 582772a4b346c324eb37a3d471c028c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaxWobble: 0.01
-  WobbleSpeed: 1
-  Recovery: 1
 --- !u!1 &7104233210140413935
 GameObject:
   m_ObjectHideFlags: 0

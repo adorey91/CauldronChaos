@@ -133,7 +133,7 @@ public class CauldronInteraction : MonoBehaviour
         //AudioManager.instance.sfxManager.playSFX()
 
         incorrectStep.Play();
-
+        Destroy(ingredientGO);
         ResetValues();
     }
 
@@ -301,19 +301,18 @@ public class CauldronInteraction : MonoBehaviour
             return;
 
         ingredientGO.GetComponent<Rigidbody>().isKinematic = false;
-        ingredientGO.GetComponent<IngredientHolder>().enabled = false;
+        Destroy(ingredientGO.GetComponent<IngredientHolder>());
         ingredientGO.GetComponent<PotionOutput>().enabled = true;
         ingredientGO.GetComponent<PotionOutput>().potionInside = recipe;
 
         // Instantiate the completed potion prefab
         StartCoroutine(ThrowPotion());
-
     }
 
     private IEnumerator ThrowPotion()
     {
         yield return new WaitForSeconds(0.3f);
-        SetPotionOutput();
+        ingredientGO.GetComponent<PotionOutput>().SetPotionColor();
 
         // Play a sound here
         //AudioManager.instance.sfxManager.PlaySFX(SFX_Type.StationSounds, FinishPotionSounds.PickAudioClip(), true);
@@ -333,22 +332,6 @@ public class CauldronInteraction : MonoBehaviour
 
     }
 
-    private void SetPotionOutput()
-    {
-        if (curPotionRend == null) return;
-        if (recipe == null) return;
-
-        // Create a new MaterialPropertyBlock and get the renderer
-        MaterialPropertyBlock block = new();
-        curPotionRend.GetPropertyBlock(block);
-
-        // Set the fill amount
-        block.SetFloat("_Fill", 0.6f);
-        block.SetColor("_Color", recipe.potionColor);
-
-        // Apply the property block back to the renderer
-        curPotionRend.SetPropertyBlock(block);
-    }
 
     private void CountPotions()
     {

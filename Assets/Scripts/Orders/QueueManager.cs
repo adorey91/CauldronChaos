@@ -59,9 +59,13 @@ public class QueueManager : MonoBehaviour
     }
 
 
-    // using for testing only
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Tab))
+            {
+            StartCustomers();
+        }
+
         if (startCustomers == true)
         {
             if (newCustomer.UpdateTimer())
@@ -88,9 +92,12 @@ public class QueueManager : MonoBehaviour
 
         for (int i = 0; i < customers.Count; i++)
         {
-            if (customers[i].GetComponent<CustomerBehaviour>().requestedOrder == sO)
+            CustomerBehaviour customer = customers[i].GetComponent<CustomerBehaviour>();
+
+            if (customer.requestedOrder == sO && customer.hasJoinedQueue)
             {
                 potionOutput.givenToCustomer = true;
+                potionObj.GetComponent<Collider>().enabled = false;
                 potionObj.GetComponent<Rigidbody>().isKinematic = true;
 
                 CustomerBehaviour servingCustomer = customers[i].GetComponent<CustomerBehaviour>();

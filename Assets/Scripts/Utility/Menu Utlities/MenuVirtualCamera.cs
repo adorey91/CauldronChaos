@@ -17,14 +17,14 @@ public class MenuVirtualCamera : MonoBehaviour
 
     private void OnEnable()
     {
-        SaveLoad.OnSaveExist += MoveMainMenuCamera;
+        SaveManager.OnSaveExist += MoveMainMenuCamera;
         OnResetCamera += ResetCamera;
         TurnCameraBrainOn += TurnOnCameraBrain;
     }
 
     private void OnDisable()
     {
-        SaveLoad.OnSaveExist -= MoveMainMenuCamera;
+        SaveManager.OnSaveExist -= MoveMainMenuCamera;
         OnResetCamera -= ResetCamera;
         TurnCameraBrainOn -= TurnOnCameraBrain;
     }

@@ -34,7 +34,8 @@ public class PickupObject : MonoBehaviour
     {
         //setting held to true and removing gravity
         isHeld = true;
-        rb.useGravity = false;
+        rb.isKinematic = true;
+        //rb.useGravity = false;
 
         //setting target position & parenting
         this.targetPos = targetPos;
@@ -50,7 +51,8 @@ public class PickupObject : MonoBehaviour
     {
         //settomg held to false and enabling gravity
         isHeld = false;
-        rb.useGravity = true;
+        rb.isKinematic = false;
+        //rb.useGravity = true;
 
         //removing target position & parent
         targetPos = null;

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2001475563656110478}
   - component: {fileID: 4892272700829081118}
   - component: {fileID: 6599436366504005752}
+  - component: {fileID: 7576510418696572373}
   m_Layer: 6
   m_Name: RecipeBook
   m_TagString: Untagged
@@ -99,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mustBePickedUp: 0
-  isCrate: 0
+  isContainer: 0
 --- !u!65 &6599436366504005752
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -121,3 +122,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.9296533, y: 0.12233593, z: 0.7468829}
   m_Center: {x: 0, y: 0.060793664, z: -0.000000014901161}
+--- !u!114 &7576510418696572373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4348496950852010747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 1
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff

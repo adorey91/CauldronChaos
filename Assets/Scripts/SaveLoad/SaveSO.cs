@@ -5,28 +5,15 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SaveFile", menuName = "New SaveFile")]
 public class SaveSO : ScriptableObject
 {
-    public bool saveExists;
+    internal string oldHash;
+    // days unlocked
     public int unlockedDays;
 
+    // score for each day
     public int[] scoreDay;
+
+    // people served for each day
     public int[] peopleServed;
 
-
-
-    internal void Delete()
-    {
-        scoreDay = new int[5];  // Reset with correct length
-        peopleServed = new int[5]; // Reset with correct length
-        unlockedDays = 1;
-        saveExists = false;
-    }
-
-
-    internal void SaveDayInfo(int day, int score, int people, int daysUnlcoked)
-    {
-        saveExists = true;
-        scoreDay[day - 1] = score;
-        peopleServed[day - 1] = people;
-        unlockedDays = daysUnlcoked;
-    }
+    public string[] whoOwnsScore;
 }

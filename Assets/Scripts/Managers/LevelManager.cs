@@ -20,12 +20,6 @@ public class LevelManager : MonoBehaviour
     [Header("Scene Fade")]
     private Animator fadeAnimator;
 
-    [Header("LevelButtons")]
-    [SerializeField] private Button[] levelButtons;
-
-    [Header("Save")]
-    [SerializeField] private SaveLoad saveLoad;
-
     [Header("Event System")]
     [SerializeField] private EventSystem eventSystem;
 
@@ -33,46 +27,14 @@ public class LevelManager : MonoBehaviour
     private Action fadeCallback;
     public static Action startTimer;
 
-    public static Action UpdateLevelButtons;
-
     public void Start()
     {
         fadeAnimator = GetComponent<Animator>();
         fadeAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
-        UpdateButtons();
     }
+  
 
-    private void OnEnable()
-    {
-        UpdateLevelButtons += UpdateButtons;
-    }
-
-    private void OnDisable()
-    {
-        UpdateLevelButtons -= UpdateButtons;
-    }
-
-    public void UpdateButtons()
-    {
-        for (int i = 0; i < levelButtons.Length; i++)
-        {
-            TextMeshProUGUI buttonText = levelButtons[i].GetComponentInChildren<TextMeshProUGUI>();
-
-            if (i < saveLoad.CheckUnlockedDays())
-            {
-                levelButtons[i].interactable = true;
-                if (saveLoad.CheckScore(i) == 0) return;
-
-                buttonText.text = $"Day {i + 1}\nScore: {saveLoad.CheckScore(i)}";
-            }
-            else
-            {
-                levelButtons[i].interactable = false;
-            }
-        }
-    }
-
-    public void LoadScene(string sceneName)
+      public void LoadScene(string sceneName)
     {
 
         if(SceneManager.GetActiveScene().name == "MainMenu" && sceneName == "MainMenu")
@@ -93,10 +55,7 @@ public class LevelManager : MonoBehaviour
             {
                 case "MainMenu": Actions.OnForceStateChange("MainMenu"); break;
                 case "Intro": Actions.OnForceStateChange("Intro"); break;
-                case "LevelSelect":
-                    UpdateButtons();
-                    Actions.OnForceStateChange("LevelSelect"); 
-                    break;
+                case "LevelSelect": Actions.OnForceStateChange("LevelSelect"); break;
                 case string name when name.StartsWith("Day"): Actions.OnForceStateChange("Gameplay"); break;
                 case "GameOver": Actions.OnForceStateChange("GameOver"); break;
             }

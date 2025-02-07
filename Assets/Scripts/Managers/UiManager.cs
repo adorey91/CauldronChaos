@@ -26,8 +26,6 @@ public class UiManager : MonoBehaviour
     private CustomTimer dayTimer;
     private bool timerStarted = false;
 
-
-    private Coroutine dayStartCoroutine;
     private ScoreManager scoreManager;
 
 
@@ -80,13 +78,13 @@ public class UiManager : MonoBehaviour
 
     private void UpdateUIForGameState(GameManager.GameState state)
     {
-        LevelManager.UpdateLevelButtons?.Invoke();
+        LevelSelect.UpdateLevelButtons?.Invoke();
 
         switch (state)
         {
             case GameManager.GameState.MainMenu: MainMenu(); break;
             case GameManager.GameState.Gameplay: Gameplay(); break;
-            case GameManager.GameState.LevelSelect: LevelSelect(); break;
+            case GameManager.GameState.LevelSelect: SelectLevel(); break;
             case GameManager.GameState.EndOfDay: EndOfDay(); break;
             case GameManager.GameState.Pause: Pause(); break;
             case GameManager.GameState.Settings: Settings(); break;
@@ -129,12 +127,12 @@ public class UiManager : MonoBehaviour
 
         if (waypoint == "Calendar")
         {
-            LevelSelect();
+            SelectLevel();
         }
     }
 
 
-    private void LevelSelect()
+    private void SelectLevel()
     {
         //if (Gamepad.current != null)
         //    Cursor.lockState = CursorLockMode.Locked;

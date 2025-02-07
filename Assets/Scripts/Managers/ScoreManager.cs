@@ -166,7 +166,7 @@ public class ScoreManager : MonoBehaviour
         {
             increaseDayCount = true;
         }
-        SaveLoad.SaveInfo(_currentDay, _score, _people, increaseDayCount);
+        SaveManager.SaveInfo(_currentDay, _score, _people, increaseDayCount);
 
         eodTitle.text = $"End of Day {_currentDay}";
         peopleServedEOD.text = $"People Served: {_people}";

@@ -1,12 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using System;
 
 public class CauldronTrigger : MonoBehaviour
 {
     [SerializeField] private CauldronInteraction cauldron; //cached referene to the cauldron
     Transform cauldronTransform;
+
+    public static Action addedItem;
 
     private void Start()
     {
@@ -21,6 +21,10 @@ public class CauldronTrigger : MonoBehaviour
         if (ingredientHolder != null && !ingredientHolder.AddedToCauldron())
         {
             //calls cauldron functionality for adding an ingredient
+            //other.gameObject.GetComponent<PickupObject>().Drop();
+            addedItem?.Invoke();
+
+            ingredientHolder.GetComponent<Rigidbody>().isKinematic = true;
             ingredientHolder.AddToCauldron();
             GameObject ingredient = ingredientHolder.gameObject;
             ingredient.transform.SetParent(cauldronTransform);
