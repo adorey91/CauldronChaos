@@ -53,6 +53,7 @@ public class SaveManager : MonoBehaviour
 
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath, json);
+        LevelSelect.UpdateLevelButtons();
     }
 
     public void CheckForSave()
@@ -63,7 +64,9 @@ public class SaveManager : MonoBehaviour
             LoadInformation();
         }
         else
+        {
             OnSaveExist?.Invoke(false);
+        }
     }
     #endregion
 
@@ -88,10 +91,13 @@ public class SaveManager : MonoBehaviour
             catch (Exception e)
             {
                 Debug.LogError("Failed to load save data: " + e.Message);
+
                 // Optionally delete corrupted save
                 File.Delete(savePath);
             }
+
         }
+            LevelSelect.UpdateLevelButtons();
     }
 
     #endregion

@@ -14,6 +14,7 @@ public class LevelSelect : MonoBehaviour
 
     public static Action UpdateLevelButtons;
 
+
     private void OnEnable()
     {
         UpdateLevelButtons += UpdateButtons;
@@ -39,7 +40,9 @@ public class LevelSelect : MonoBehaviour
             if (i < unlockedDays)
             {
                 levelButtons[i].interactable = true;
-                if (score[i] == 0) return;
+
+                if (score == null) break;
+                if (score[i] == 0) break;
 
                 buttonText.text = $"Day {i + 1}\nScore: {score[i]}";
             }

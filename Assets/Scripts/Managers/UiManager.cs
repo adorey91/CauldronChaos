@@ -78,7 +78,7 @@ public class UiManager : MonoBehaviour
 
     private void UpdateUIForGameState(GameManager.GameState state)
     {
-        LevelSelect.UpdateLevelButtons?.Invoke();
+        //LevelSelect.UpdateLevelButtons?.Invoke();
 
         switch (state)
         {
@@ -134,6 +134,7 @@ public class UiManager : MonoBehaviour
 
     private void SelectLevel()
     {
+        LevelSelect.UpdateLevelButtons();
         //if (Gamepad.current != null)
         //    Cursor.lockState = CursorLockMode.Locked;
         //else

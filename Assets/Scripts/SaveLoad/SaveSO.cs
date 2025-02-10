@@ -5,9 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SaveFile", menuName = "New SaveFile")]
 public class SaveSO : ScriptableObject
 {
-    internal string oldHash;
     // days unlocked
     public int unlockedDays;
+
+    public bool savedScores;
 
     // score for each day
     public int[] scoreDay;

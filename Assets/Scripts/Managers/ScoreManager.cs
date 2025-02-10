@@ -1,8 +1,7 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -24,9 +23,13 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI peopleServedEOD;
     [SerializeField] private TextMeshProUGUI eodScoreText;
 
+    [Header("EOD Win Lose Sprite")]
+    [SerializeField] private Image eodWinLoseSprite;
+    [SerializeField] private Sprite winSprite;
+    [SerializeField] private Sprite loseSprite;
+
     [Header("Score Amounts")]
     [SerializeField] private int tipMultiplier = 2;
-    [SerializeField] private int noOrderServedScore = -8;
 
     [Header("Score Needed Per Day")]
     [SerializeField] private int[] scoreDay;
@@ -34,16 +37,12 @@ public class ScoreManager : MonoBehaviour
     // keeps track of current day / day score
     private int _score = 0;
     private int _people = 0;
-    private int _currentDay;
+    private int _currentDay = 0;
 
 
     private void Start()
     {
         dayTimer = new CustomTimer(minutesPerDay, true);
-
-        _currentDay = 1;
-        _score = 0;
-        _people = 0;
 
         dayText.text = $"Day: {_currentDay}/{daysToPlay}";
         scoreText.text = $"Score: {_score}";
@@ -53,7 +52,6 @@ public class ScoreManager : MonoBehaviour
     private void OnEnable()
     {
         Actions.OnCustomerServed += UpdateScore;
-        Actions.OnNoCustomerServed += UpdateNoPersonServed;
         Actions.OnStartDay += StartDay;
         Actions.OnEndDay += UpdateEODText;
         Actions.OnResetValues += ResetValues;
@@ -62,7 +60,6 @@ public class ScoreManager : MonoBehaviour
     private void OnDisable()
     {
         Actions.OnCustomerServed -= UpdateScore;
-        Actions.OnNoCustomerServed -= UpdateNoPersonServed;
         Actions.OnStartDay -= StartDay;
         Actions.OnEndDay -= UpdateEODText;
         Actions.OnResetValues -= ResetValues;
@@ -93,7 +90,7 @@ public class ScoreManager : MonoBehaviour
 
     public void SetCurrentDay(int day)
     {
-        _currentDay = day;
+        _currentDay = day - 1;
     }
 
 
@@ -148,24 +145,15 @@ public class ScoreManager : MonoBehaviour
         peopleServedText.text = "People Served: " + _people;
     }
 
-    private void UpdateNoPersonServed()
-    {
-        _score += noOrderServedScore;
-        scoreText.text = "Score: " + _score;
-    }
-
     private void UpdateEODText()
     {
         bool increaseDayCount;
 
         if (_score < scoreDay[_currentDay])
-        {
             increaseDayCount = false;
-        }
         else
-        {
             increaseDayCount = true;
-        }
+
         SaveManager.SaveInfo(_currentDay, _score, _people, increaseDayCount);
 
         eodTitle.text = $"End of Day {_currentDay}";
@@ -174,14 +162,15 @@ public class ScoreManager : MonoBehaviour
         if (!increaseDayCount)
         {
             eodScoreText.color = Color.red;
+            eodWinLoseSprite.sprite = loseSprite;
             eodScoreText.text = $"Score: {_score}\nTry Level Again";
         }
         else
         {
             eodScoreText.color = Color.green;
+            eodWinLoseSprite.sprite = winSprite;
             eodScoreText.text = $"Score: {_score}";
         }
-
 
         _people = 0;
         _score = 0;
