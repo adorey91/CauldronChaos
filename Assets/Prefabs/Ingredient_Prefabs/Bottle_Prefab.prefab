@@ -98,8 +98,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHeld: 0
-  pickUpSFX: {fileID: 8300000, guid: b97a171821c9b5a4096269b2753b1176, type: 3}
-  dropSFX: {fileID: 8300000, guid: 91f80fb6e48e2514f9f9c8f515450e07, type: 3}
+  pickUpSFX: {fileID: 8300000, guid: f835e3f6250097b42ae9b2894ccd417f, type: 3}
+  dropSFX: {fileID: 8300000, guid: fbfca3feaa83cb548b1e10c5cbb6a31a, type: 3}
 --- !u!114 &2223536446940748280
 MonoBehaviour:
   m_ObjectHideFlags: 0
