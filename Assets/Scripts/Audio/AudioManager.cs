@@ -18,6 +18,9 @@ public class AudioManager : MonoBehaviour
 
     [Header("Audio Mixers")]
     [SerializeField] private AudioMixer masterMixer;
+    [SerializeField] private float masterMixerDefaultVolume = 0.5f;
+    [SerializeField] private float sfxMixerDefaultVolume = 0.5f;
+    [SerializeField] private float musicMixerDefaultVolume = 0.5f;
 
     private static AudioManager _instance;
 
@@ -51,8 +54,12 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        // This isnt needed as it's now nested under the game manager.
-        //DontDestroyOnLoad(this);
+        //sets default mixer volumes
+        SetVolume(MixerGroup.Master, masterMixerDefaultVolume);
+        SetVolume(MixerGroup.Music, musicMixerDefaultVolume);
+        SetVolume(MixerGroup.SFX, sfxMixerDefaultVolume);
+
+        DontDestroyOnLoad(this);
     }
 
     //function that sets volume of mixers
@@ -94,6 +101,7 @@ public class AudioManager : MonoBehaviour
                 break;
         }
 
+        Debug.Log(value);
         value = ConvertFromDB(value);
         return value;
     }
@@ -107,6 +115,7 @@ public class AudioManager : MonoBehaviour
     //utility function for converting DB to a linear float
     private float ConvertFromDB(float db)
     {
+        //Debug.Log((db / 20f));
         return Mathf.Pow(10, (db / 20f));
     }
 }

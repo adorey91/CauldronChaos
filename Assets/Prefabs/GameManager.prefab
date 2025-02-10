@@ -2168,6 +2168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1648296663863312573}
   - component: {fileID: 3550068451621682178}
+  - component: {fileID: 5930536367353346165}
   m_Layer: 0
   m_Name: Slider_SFX
   m_TagString: Untagged
@@ -2248,10 +2249,10 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
-        m_MethodName: OnChangeSlider
-        m_Mode: 5
+      - m_Target: {fileID: 5930536367353346165}
+        m_TargetAssemblyTypeName: UIVolumeSlider, Assembly-CSharp
+        m_MethodName: OnValueChange
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2260,6 +2261,20 @@ MonoBehaviour:
           m_StringArgument: SFX
           m_BoolArgument: 0
         m_CallState: 1
+--- !u!114 &5930536367353346165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900719670662473543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2b29fca636d102488311946ec6c14c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volumeSlider: {fileID: 3550068451621682178}
+  mixerGroup: 2
 --- !u!1 &1994207199469013124
 GameObject:
   m_ObjectHideFlags: 0
@@ -6202,6 +6217,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8879657765869973755}
   - component: {fileID: 7346488381221850680}
+  - component: {fileID: 9100093195880382736}
   m_Layer: 0
   m_Name: Slider_Music
   m_TagString: Untagged
@@ -6282,10 +6298,10 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
-        m_MethodName: OnChangeSlider
-        m_Mode: 5
+      - m_Target: {fileID: 9100093195880382736}
+        m_TargetAssemblyTypeName: UIVolumeSlider, Assembly-CSharp
+        m_MethodName: OnValueChange
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -6294,6 +6310,20 @@ MonoBehaviour:
           m_StringArgument: Music
           m_BoolArgument: 0
         m_CallState: 1
+--- !u!114 &9100093195880382736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4865423796555119310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2b29fca636d102488311946ec6c14c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volumeSlider: {fileID: 7346488381221850680}
+  mixerGroup: 1
 --- !u!1 &4894422015044775605
 GameObject:
   m_ObjectHideFlags: 0
@@ -6970,6 +7000,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5814548058417588771}
   - component: {fileID: 4789933561739004765}
+  - component: {fileID: 706350970407567166}
   m_Layer: 0
   m_Name: Slider_Master
   m_TagString: Untagged
@@ -7050,10 +7081,10 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
-        m_MethodName: OnChangeSlider
-        m_Mode: 5
+      - m_Target: {fileID: 706350970407567166}
+        m_TargetAssemblyTypeName: UIVolumeSlider, Assembly-CSharp
+        m_MethodName: OnValueChange
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -7062,6 +7093,20 @@ MonoBehaviour:
           m_StringArgument: Master
           m_BoolArgument: 0
         m_CallState: 1
+--- !u!114 &706350970407567166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5831519832838433306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2b29fca636d102488311946ec6c14c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volumeSlider: {fileID: 4789933561739004765}
+  mixerGroup: 0
 --- !u!1 &5975506956133354868
 GameObject:
   m_ObjectHideFlags: 0
