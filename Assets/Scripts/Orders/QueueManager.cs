@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using Unity.VisualScripting;
 using DG.Tweening;
 
 public class QueueManager : MonoBehaviour
@@ -109,7 +108,11 @@ public class QueueManager : MonoBehaviour
         }
 
         Debug.Log("No customers with that recipe");
-        potionObj.transform.DOScale(Vector3.zero, 1).OnComplete(() => Destroy(potionObj));
+
+        Vector3 startPos = potionObj.transform.position;
+        Vector3 randomDirection = new Vector3(UnityEngine.Random.Range(-1f, 1f), 0, UnityEngine.Random.Range(0.5f, 2f));
+        Vector3 endPos = startPos + randomDirection * 3f;
+        potionObj.transform.DOJump(endPos, 2, 1, 1);
     }
 
     private void FinishOrder(CustomerBehaviour servingCustomer, GameObject obj)

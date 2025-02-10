@@ -333,9 +333,10 @@ GameObject:
   - component: {fileID: 1379544504974567125}
   - component: {fileID: 3275504426634709544}
   - component: {fileID: 3233062128448102678}
+  - component: {fileID: 7058928485430549902}
   m_Layer: 6
   m_Name: Cauldron
-  m_TagString: Untagged
+  m_TagString: Cauldron
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -491,6 +492,28 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!64 &7058928485430549902
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3632699681364679363}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 1
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 72713781330414003, guid: fe399b8ab7ccf1446b0485492ceb59ac, type: 3}
 --- !u!1 &4135118022640320120
 GameObject:
   m_ObjectHideFlags: 0

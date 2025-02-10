@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Potion of Healing
   m_EditorClassIdentifier: 
   recipeName: Potion of Healing
-  weight: 1
+  weight: 8
   points: 20
   steps:
   - {fileID: 11400000, guid: 1263d1af773c1934389a86be3ac2a831, type: 2}

@@ -8,31 +8,42 @@ public class OrderManager : MonoBehaviour
 {
     [Header("Order Variables")]
     [SerializeField] private RecipeManager recipeManager;
-    private RecipeSO[] _availableRecipes;
+    private List<RecipeSO> availableRecipes = new();
 
 
     private void Start()
     {
         recipeManager = FindObjectOfType<RecipeManager>();
-        _availableRecipes = recipeManager.FindAvailableRecipes();
+        GetAvailableRecipes();
+    }
+
+    private void GetAvailableRecipes()
+    {
+        foreach (RecipeSO recipe in recipeManager.FindAvailableRecipes())
+        {
+            for(int i = 0; i < recipe.weight; i++)
+            {
+                availableRecipes.Add(recipe);
+            }
+        }
     }
 
     // Generate a random order for a customer
     internal RecipeSO GiveOrder(string name)
     {
         // If there are no available recipes, return
-        if (_availableRecipes.Length == 0) return null;
+        if (availableRecipes.Count == 0) return null;
 
         RecipeSO assignedOrder;
 
-        if(name == "EvilMage")
+        if(name == "Evil Mage")
         {
-            assignedOrder = _availableRecipes[0];
+            assignedOrder = availableRecipes[0];
         }
         else
         {
-            int randomIndex = Random.Range(0, _availableRecipes.Length);
-            assignedOrder = _availableRecipes[randomIndex];
+            int randomIndex = Random.Range(0, availableRecipes.Count);
+            assignedOrder = availableRecipes[randomIndex];
         }
 
         return assignedOrder;

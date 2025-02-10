@@ -8,55 +8,73 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2079494219999610102, guid: 96e79bc864b817642932067c309ecb93, type: 3}
+    - target: {fileID: 2079494219999610102, guid: 96e79bc864b817642932067c309ecb93,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2079494219999610102, guid: 96e79bc864b817642932067c309ecb93, type: 3}
+    - target: {fileID: 2079494219999610102, guid: 96e79bc864b817642932067c309ecb93,
+        type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2079494219999610102, guid: 96e79bc864b817642932067c309ecb93, type: 3}
+    - target: {fileID: 2079494219999610102, guid: 96e79bc864b817642932067c309ecb93,
+        type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2079494219999610102, guid: 96e79bc864b817642932067c309ecb93, type: 3}
+    - target: {fileID: 2079494219999610102, guid: 96e79bc864b817642932067c309ecb93,
+        type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2079494219999610102, guid: 96e79bc864b817642932067c309ecb93, type: 3}
+    - target: {fileID: 2079494219999610102, guid: 96e79bc864b817642932067c309ecb93,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2079494219999610102, guid: 96e79bc864b817642932067c309ecb93, type: 3}
+    - target: {fileID: 2079494219999610102, guid: 96e79bc864b817642932067c309ecb93,
+        type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2079494219999610102, guid: 96e79bc864b817642932067c309ecb93, type: 3}
+    - target: {fileID: 2079494219999610102, guid: 96e79bc864b817642932067c309ecb93,
+        type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2079494219999610102, guid: 96e79bc864b817642932067c309ecb93, type: 3}
+    - target: {fileID: 2079494219999610102, guid: 96e79bc864b817642932067c309ecb93,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2079494219999610102, guid: 96e79bc864b817642932067c309ecb93, type: 3}
+    - target: {fileID: 2079494219999610102, guid: 96e79bc864b817642932067c309ecb93,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2079494219999610102, guid: 96e79bc864b817642932067c309ecb93, type: 3}
+    - target: {fileID: 2079494219999610102, guid: 96e79bc864b817642932067c309ecb93,
+        type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4028038263514788674, guid: 96e79bc864b817642932067c309ecb93, type: 3}
+    - target: {fileID: 4028038263514788674, guid: 96e79bc864b817642932067c309ecb93,
+        type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 1fd73762f2a231949b1331dea484abdd, type: 2}
-    - target: {fileID: 5793240767321800637, guid: 96e79bc864b817642932067c309ecb93, type: 3}
+    - target: {fileID: 5793240767321800637, guid: 96e79bc864b817642932067c309ecb93,
+        type: 3}
       propertyPath: customerName
       value: Evil Mage
       objectReference: {fileID: 0}
-    - target: {fileID: 6356803835694476596, guid: 96e79bc864b817642932067c309ecb93, type: 3}
+    - target: {fileID: 6242979879473526914, guid: 96e79bc864b817642932067c309ecb93,
+        type: 3}
+      propertyPath: customerName
+      value: Evil Mage
+      objectReference: {fileID: 0}
+    - target: {fileID: 6356803835694476596, guid: 96e79bc864b817642932067c309ecb93,
+        type: 3}
       propertyPath: m_Name
       value: Customer Variant 3
       objectReference: {fileID: 0}
