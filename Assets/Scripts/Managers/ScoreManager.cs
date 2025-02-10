@@ -30,9 +30,8 @@ public class ScoreManager : MonoBehaviour
 
     [Header("Score Amounts")]
     [SerializeField] private int tipMultiplier = 2;
-
-    [Header("Score Needed Per Day")]
-    [SerializeField] private int[] scoreDay;
+    [SerializeField] private int[] scorePerLevel = new int[] { 300, 750, 1500, 1700, 1900 };
+    //[SerializeField] private int[] scorePerLevel = new int[] { 300, 500, 750, 1000, 1500, 1600, 1700, 1800, 1900, 2000 };
 
     // keeps track of current day / day score
     private int _score = 0;
@@ -43,6 +42,7 @@ public class ScoreManager : MonoBehaviour
     private void Start()
     {
         dayTimer = new CustomTimer(minutesPerDay, true);
+        
 
         dayText.text = $"Day: {_currentDay}/{daysToPlay}";
         scoreText.text = $"Score: {_score}";
@@ -98,7 +98,6 @@ public class ScoreManager : MonoBehaviour
     {
         timerStarted = true;
         dayTimer.StartTimer();
-        Debug.Log("Day Started " + _currentDay);
     }
 
     private void SetTimerRotation()
@@ -141,7 +140,7 @@ public class ScoreManager : MonoBehaviour
 
         _people++;
 
-        scoreText.text = $"Score: {_score} / {scoreDay[_currentDay]}";
+        scoreText.text = $"Score: {_score} / {scorePerLevel[_currentDay]}";
         peopleServedText.text = "People Served: " + _people;
     }
 
@@ -149,16 +148,20 @@ public class ScoreManager : MonoBehaviour
     {
         bool increaseDayCount;
 
-        if (_score < scoreDay[_currentDay])
+        // Check if the player has reached the score for the current day
+        if (_score < scorePerLevel[_currentDay])
             increaseDayCount = false;
         else
             increaseDayCount = true;
 
-        SaveManager.SaveInfo(_currentDay, _score, _people, increaseDayCount);
+        // Save the current day's score and people served
+        SaveManager.OnSaveDay(_currentDay, _score, _people, increaseDayCount);
 
+        // Sets the EOD text
         eodTitle.text = $"End of Day {_currentDay}";
         peopleServedEOD.text = $"People Served: {_people}";
 
+        // Sets the EOD win/lose sprite and score text
         if (!increaseDayCount)
         {
             eodScoreText.color = Color.red;
@@ -174,6 +177,7 @@ public class ScoreManager : MonoBehaviour
 
         _people = 0;
         _score = 0;
+
     }
 
     public void ResetValues()

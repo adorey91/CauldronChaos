@@ -13,22 +13,30 @@ public class LevelSelect : MonoBehaviour
     private int[] peopleServed;
 
     public static Action UpdateLevelButtons;
+    public static Action<int> OnSetUnlockedDays;
+    public static Action<int[]> OnSetScore;
+    public static Action<int[]> OnSetPeopleServed;
 
+    private void Start()
+    {
+        score = new int[levelButtons.Length];
+        peopleServed = new int[levelButtons.Length];
+    }
 
     private void OnEnable()
     {
         UpdateLevelButtons += UpdateButtons;
-        SaveManager.SetUnlockedDays += SetUnlockedDays;
-        SaveManager.SetScore += SetScore;
-        SaveManager.SetPeopleServed += SetPeopleServed;
+        OnSetUnlockedDays += SetUnlockedDays;
+        OnSetScore += SetScore;
+        OnSetPeopleServed += SetPeopleServed;
     }
 
     private void OnDisable()
     {
         UpdateLevelButtons -= UpdateButtons;
-        SaveManager.SetUnlockedDays -= SetUnlockedDays;
-        SaveManager.SetScore -= SetScore;
-        SaveManager.SetPeopleServed -= SetPeopleServed;
+        OnSetUnlockedDays += SetUnlockedDays;
+        OnSetScore += SetScore;
+        OnSetPeopleServed += SetPeopleServed;
     }
 
     private void UpdateButtons()
@@ -42,7 +50,7 @@ public class LevelSelect : MonoBehaviour
                 levelButtons[i].interactable = true;
 
                 if (score == null) break;
-                if (score[i] == 0) break;
+                if (score[i] == 0) continue;
 
                 buttonText.text = $"Day {i + 1}\nScore: {score[i]}";
             }
@@ -57,21 +65,17 @@ public class LevelSelect : MonoBehaviour
     public void SetUnlockedDays(int days)
     {
         unlockedDays = days;
+
+        UpdateButtons();
     }
 
-    public void SetScore(int[] score)
+    public void SetScore(int[] _score)
     {
-        for(int i = 0; i < score.Length; i++)
-        {
-            this.score[i] = score[i];
-        }
+        score = _score;
     }
 
-    public void SetPeopleServed(int[] people)
+    public void SetPeopleServed(int[] _people)
     {
-        for (int i = 0; i < peopleServed.Length; i++)
-        {
-            peopleServed[i] = people[i];
-        }
+        peopleServed = _people;
     }
 }

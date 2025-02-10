@@ -1,114 +1,133 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+
 
 public class SaveManager : MonoBehaviour
 {
     private string savePath;
     private string saveFileName = "cauldronChaos.json";
-    [SerializeField] private SaveSO backup;
 
-    public static Action<int, int, int, bool> SaveInfo;
+    public GameData gameData;
+
     public static Action<bool> OnSaveExist;
-    public static Action<int> SetUnlockedDays;
-    public static Action<int[]> SetScore;
-    public static Action<int[]> SetPeopleServed;
+    public static Action<int, int, int, bool> OnSaveDay;
 
     public void Start()
     {
-        savePath = Path.Combine(GetSavePath(), saveFileName);
+        savePath = Path.Combine(Application.persistentDataPath, saveFileName);
+        LoadGame();
     }
 
     private void OnEnable()
     {
-        SaveInfo += SaveInformation;
+        OnSaveDay += SaveDayScore;
     }
 
     private void OnDisable()
     {
-        SaveInfo -= SaveInformation;
+        OnSaveDay -= SaveDayScore;
     }
 
-    #region Save
-    private void SaveInformation(int day, int score, int people, bool nextDay)
+    public void CheckSaveFile()
     {
-        ScoreData data = new();
-
-        if (nextDay)
-        {
-            data.unlockedDays = day + 1;
-            backup.unlockedDays = day + 1;
-        }
-        else
-        {
-            data.unlockedDays = day;
-            backup.unlockedDays = day;
-        }
-
-        data.scoreDay[day] = score;
-        data.peopleServed[day] = people;
-
-        backup.scoreDay[day] = score;
-        backup.peopleServed[day] = people;
-
-        string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(savePath, json);
-        LevelSelect.UpdateLevelButtons();
-    }
-
-    public void CheckForSave()
-    {
-        if (File.Exists(savePath))
+        if (gameData.isValidSave)
         {
             OnSaveExist?.Invoke(true);
-            LoadInformation();
+            LevelSelect.OnSetUnlockedDays?.Invoke(GetUnlockedDaysCount());
+            LevelSelect.OnSetScore?.Invoke(GetAllScores());
+            LevelSelect.OnSetPeopleServed?.Invoke(GetAllPeopleServed());
         }
         else
         {
             OnSaveExist?.Invoke(false);
+            LevelSelect.OnSetUnlockedDays?.Invoke(1);
         }
     }
-    #endregion
 
-    #region Load
-    private void LoadInformation()
+
+    public void SaveGame()
+    {
+        gameData.isValidSave = true;
+
+        LevelSelect.OnSetUnlockedDays?.Invoke(GetUnlockedDaysCount());
+        LevelSelect.OnSetScore?.Invoke(GetAllScores());
+        LevelSelect.OnSetPeopleServed?.Invoke(GetAllPeopleServed());
+
+        string json = JsonUtility.ToJson(gameData);
+        File.WriteAllText(savePath, json);
+    }
+
+    private void LoadGame()
     {
         if (File.Exists(savePath))
         {
-            try
-            {
-                string json = File.ReadAllText(savePath);
-                ScoreData data = JsonUtility.FromJson<ScoreData>(json);
-
-                SetUnlockedDays?.Invoke(data.unlockedDays);
-                SetScore?.Invoke(data.scoreDay);
-                SetPeopleServed?.Invoke(data.peopleServed);
-
-                backup.unlockedDays = data.unlockedDays;
-                backup.scoreDay = data.scoreDay;
-                backup.peopleServed = data.peopleServed;
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Failed to load save data: " + e.Message);
-
-                // Optionally delete corrupted save
-                File.Delete(savePath);
-            }
-
+            string json = File.ReadAllText(savePath);
+            gameData = JsonUtility.FromJson<GameData>(json);
         }
-            LevelSelect.UpdateLevelButtons();
     }
 
-    #endregion
-
-    private string GetSavePath()
+    private void SaveDayScore(int day, int score, int people, bool unlockNext)
     {
-        string path = Application.persistentDataPath;
+        // Update the day data if the day is valid
+        if (day >= 0 && day < gameData.days.Count)
+        {
+            DayData dayData = gameData.days[day];
 
-        if (!Directory.Exists(path))
-            Directory.CreateDirectory(path);
-        return path;
+            // Update the best score and people served for the day
+            if (score > dayData.bestScore)
+                dayData.bestScore = score;
+
+            if (people > dayData.peopleServed)
+                dayData.peopleServed = people;
+
+            // Unlock the next day if the current day is completed
+            if (unlockNext)
+                UnlockDay(day + 1);
+        }
+
+        SaveGame();
+    }
+
+    private void UnlockDay(int day)
+    {
+        if (day >= 0 && day < gameData.days.Count)
+        {
+            gameData.days[day].isUnlocked = true;
+        }
+    }
+
+
+    private int GetUnlockedDaysCount()
+    {
+        int count = 0;
+        foreach (DayData day in gameData.days)
+        {
+            if (day.isUnlocked)
+                count++;
+        }
+        return count;
+    }
+
+    private int[] GetAllScores()
+    {
+        int[] scores = new int[gameData.days.Count];
+        for (int i = 0; i < gameData.days.Count; i++)
+        {
+            scores[i] = gameData.days[i].bestScore;
+        }
+        return scores;
+    }
+
+    private int[] GetAllPeopleServed()
+    {
+        int[] people = new int[gameData.days.Count];
+        for (int i = 0; i < gameData.days.Count; i++)
+        {
+            people[i] = gameData.days[i].peopleServed;
+        }
+        return people;
     }
 
     public void DeleteSave()
@@ -117,6 +136,17 @@ public class SaveManager : MonoBehaviour
         {
             File.Delete(savePath);
             Debug.Log("Save file deleted");
+
+            if (!File.Exists(savePath))
+            {
+                Debug.Log("Save file successfully deleted.");
+                gameData = new GameData();
+                gameData.isValidSave = false;
+            }
+            else
+            {
+                Debug.LogError("Failed to delete save file.");
+            }
         }
     }
 }

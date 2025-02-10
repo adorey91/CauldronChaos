@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class ScoreData : MonoBehaviour
+public class ScoreData
 {
     // days unlocked
     public int unlockedDays;

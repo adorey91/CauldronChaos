@@ -111,7 +111,7 @@ public class CauldronInteraction : MonoBehaviour
 
     }
 
-    private void Stir(bool isClockwise)
+    private void Stir()
     {
         if (recipe == null)
         {
@@ -327,7 +327,7 @@ public class CauldronInteraction : MonoBehaviour
         else
             ResetValues();
 
-        ingredientGO.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 1f).SetEase(Ease.InOutSine);
+        ingredientGO.transform.DOScale(new Vector3(1f, 1f, 1f), 1f).SetEase(Ease.InOutSine);
         ingredientGO.transform.DOJump(targetPosition, throwHeight, 1, throwDuration);
 
     }
@@ -402,7 +402,7 @@ public class CauldronInteraction : MonoBehaviour
             //Debug.Log($"Stirring Clockwise: {currentStep}");
 
             spoon.DORotate(new Vector3(0, 360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
-            Stir(true);
+            Stir();
         }
     }
 
@@ -418,7 +418,7 @@ public class CauldronInteraction : MonoBehaviour
             //Debug.Log($"Stirring CounterClockwise: {currentStep}");
 
             spoon.DORotate(new Vector3(0, -360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
-            Stir(false);
+            Stir();
         }
     }
 

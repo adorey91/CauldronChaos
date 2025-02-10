@@ -63,6 +63,7 @@ public class PotionOutput : MonoBehaviour
                 {
                     wobbleAmountX = 0;
                     wobbleAmountZ = 0;
+
                     return;
                 }
 

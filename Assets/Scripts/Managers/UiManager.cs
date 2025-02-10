@@ -113,6 +113,7 @@ public class UiManager : MonoBehaviour
         MenuVirtualCamera.TurnCameraBrainOn?.Invoke();
         SetActiveUI(mainMenu);
         Actions.OnFirstSelect("Menu");
+        Time.timeScale = 1;
     }
 
     private void CameraReached(string waypoint)
