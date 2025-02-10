@@ -7,23 +7,22 @@ public class UIVolumeSlider : MonoBehaviour
 {
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private MixerGroup mixerGroup;
-    private AudioManager audioManager;
-
-    private void Awake()
-    {
-        audioManager = AudioManager.instance;
-    }
 
     // Start is called before the first frame update
     void Start()
     {
-        audioManager.GetVolume(mixerGroup);
+        volumeSlider.value = AudioManager.instance.GetVolume(mixerGroup);
     }
 
     //function that changes the volume of a mixer group basedon slidewri input
     public void OnValueChange(float value)
     {
-        audioManager.SetVolume(mixerGroup, value);
+        if (value < 0.0001f)
+        {
+            value = 0.0001f;
+        }
+
+        AudioManager.instance.SetVolume(mixerGroup, value);
     }
     
 }

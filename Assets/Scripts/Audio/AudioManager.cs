@@ -18,9 +18,9 @@ public class AudioManager : MonoBehaviour
 
     [Header("Audio Mixers")]
     [SerializeField] private AudioMixer masterMixer;
-    [SerializeField] private float masterMixerDefaultVolume = 0.5f;
-    [SerializeField] private float sfxMixerDefaultVolume = 0.5f;
-    [SerializeField] private float musicMixerDefaultVolume = 0.5f;
+    [SerializeField][Range(0.0001f, 1f)] private float masterMixerDefaultVolume = 0.5f;
+    [SerializeField][Range(0.0001f, 1f)] private float sfxMixerDefaultVolume = 0.5f;
+    [SerializeField][Range(0.0001f, 1f)] private float musicMixerDefaultVolume = 0.5f;
 
     private static AudioManager _instance;
 
@@ -47,19 +47,28 @@ public class AudioManager : MonoBehaviour
         if (!_instance || _instance == this)
         {
             _instance = this;
+            //Debug.Log("New Instance Set");
+
+            DontDestroyOnLoad(this);
         }
         else
         {
             //remove copy
             Destroy(gameObject);
+            //Debug.Log("New Instance Destroyed");
         }
+    }
 
+    private void Start()
+    {
         //sets default mixer volumes
         SetVolume(MixerGroup.Master, masterMixerDefaultVolume);
         SetVolume(MixerGroup.Music, musicMixerDefaultVolume);
         SetVolume(MixerGroup.SFX, sfxMixerDefaultVolume);
 
-        DontDestroyOnLoad(this);
+        //Debug.Log("MasterGroup =" + GetVolume(MixerGroup.Master));
+        //Debug.Log("MusicGroup =" + GetVolume(MixerGroup.Music));
+        //Debug.Log("SFXGroup =" + GetVolume(MixerGroup.SFX));
     }
 
     //function that sets volume of mixers
@@ -101,7 +110,7 @@ public class AudioManager : MonoBehaviour
                 break;
         }
 
-        Debug.Log(value);
+        //Debug.Log(value);
         value = ConvertFromDB(value);
         return value;
     }
