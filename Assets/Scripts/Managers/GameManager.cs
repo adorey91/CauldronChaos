@@ -26,8 +26,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        //SetState(GameState.Gameplay);
-
         if(SceneManager.GetActiveScene().name == "MainMenu")
             SetState(GameState.MainMenu);
         else
