@@ -61,4 +61,22 @@ public class PickupObject : MonoBehaviour
         //playing SFX
         AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ItemInteraction, dropSFX, true);
     }
+
+    public void Drop(bool playSFX)
+    {
+        //settomg held to false and enabling gravity
+        isHeld = false;
+        rb.isKinematic = false;
+        //rb.useGravity = true;
+
+        //removing target position & parent
+        targetPos = null;
+        transform.parent = null;
+
+        //playing SFX
+        if(playSFX)
+        {
+            AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ItemInteraction, dropSFX, true);
+        }    
+    }
 }
