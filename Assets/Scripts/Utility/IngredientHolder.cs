@@ -17,7 +17,7 @@ public class IngredientHolder : MonoBehaviour
     //Accessor method that checks if the ingredient has been added to the cauldron
     public bool AddedToCauldron()
     {
-        pickup.Drop();
+        pickup.Drop(false);
         return addedToCauldron;
     }
 

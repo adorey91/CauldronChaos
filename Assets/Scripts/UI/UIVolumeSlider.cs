@@ -17,6 +17,11 @@ public class UIVolumeSlider : MonoBehaviour
     //function that changes the volume of a mixer group basedon slidewri input
     public void OnValueChange(float value)
     {
+        if (value < 0.0001f)
+        {
+            value = 0.0001f;
+        }
+
         AudioManager.instance.SetVolume(mixerGroup, value);
     }
     
