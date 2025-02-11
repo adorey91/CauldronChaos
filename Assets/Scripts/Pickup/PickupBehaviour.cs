@@ -17,6 +17,11 @@ public class PickupBehaviour : MonoBehaviour
     [Header("UI")]
     [SerializeField] private Image pickupUIHolder;
 
+    private void Awake()
+    {
+        pickupUIHolder.enabled = false;
+    }
+
     //Function that runs when Gameobject script is attached to is enabled
     private void OnEnable()
     {
@@ -51,6 +56,7 @@ public class PickupBehaviour : MonoBehaviour
             if (heldObject != null)
             {
                 playerAnimator.SetTrigger("Drop");
+                pickupUIHolder.enabled = false;
                 heldObject.Drop(); //return object to normal physics
 
                 //check if held item is an interactable
@@ -70,7 +76,7 @@ public class PickupBehaviour : MonoBehaviour
             {
                 //if crate is detected grab from crate using alternate interact
                 container.Interact(this);
-                    playerAnimator.SetTrigger("Pickup");
+                playerAnimator.SetTrigger("Pickup");
             }
             //pick-up off the ground
             else
@@ -102,6 +108,8 @@ public class PickupBehaviour : MonoBehaviour
         //Debug.Log("In set held object");
         heldObject = targetObject;
         pickupVolume.RemovePickupFromList(heldObject);
+        pickupUIHolder.enabled = true;
+        pickupUIHolder.sprite = heldObject.GetComponent<IngredientHolder>().recipeStepIngredient.ingredientSprite;
         heldObject.PickUp(pickupHolder);
     }
 

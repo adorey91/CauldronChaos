@@ -4,14 +4,10 @@ using System;
 public class CauldronTrigger : MonoBehaviour
 {
     [SerializeField] private CauldronInteraction cauldron; //cached referene to the cauldron
-    Transform cauldronTransform;
+    [SerializeField] private Transform cauldronItems;
 
     public static Action addedItem;
 
-    private void Start()
-    {
-        cauldronTransform = transform.parent;
-    }
 
     //Function called whenever a collider enters the trigger volume
     private void OnTriggerEnter(Collider other)
@@ -26,10 +22,23 @@ public class CauldronTrigger : MonoBehaviour
 
             ingredientHolder.GetComponent<Rigidbody>().isKinematic = true;
             ingredientHolder.AddToCauldron();
-            GameObject ingredient = ingredientHolder.gameObject;
-            ingredient.transform.SetParent(cauldronTransform);
-
             cauldron.AddIngredient(ingredientHolder, ingredientHolder.gameObject);
+           
+            GameObject ingredient = ingredientHolder.gameObject;
+            ingredient.transform.SetParent(cauldronItems);
+            CheckItemHolder();
+        }
+    }
+
+
+    private void CheckItemHolder()
+    {
+        if(cauldronItems.childCount == 10)
+        {
+            foreach(GameObject child in cauldronItems)
+            {
+                Destroy(child);
+            }
         }
     }
 }

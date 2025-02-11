@@ -56,6 +56,7 @@ public class CauldronInteraction : MonoBehaviour
     [SerializeField] private SFXLibrary incorrectStepSounds;
 
 
+
     public void Start()
     {
         cauldronStartingPosition = cauldronFill.transform.position;
@@ -81,6 +82,11 @@ public class CauldronInteraction : MonoBehaviour
         InputManager.StirCounterClockwiseAction -= StirCounterClockwise;
         //Actions.OnResetValues -= ResetValues;
     }
+
+    private void OnDestroy()
+    {
+        DOTween.KillAll();
+    }
     #endregion
 
     #region Recipe Steps
@@ -93,7 +99,6 @@ public class CauldronInteraction : MonoBehaviour
         currentStep = ingredientHolder.recipeStepIngredient.stepName;
 
         // grabs the ingredient from the _recipes step that's holding it.
-        ingredientGO.transform.SetParent(null);
         ingredientGO.transform.DOJump(ingredientInsertPoint.position, 1f, 1, 0.5f).SetEase(Ease.InOutSine);
         ingredientGO.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InOutSine).OnComplete(SetInactive);
 
@@ -126,14 +131,11 @@ public class CauldronInteraction : MonoBehaviour
     // Handles the incorrect step
     private void HandleIncorrectStep()
     {
-        // Blowing up animation thing
-        //Debug.Log("Incorrect step");
-
         // Play a sound here
         //AudioManager.instance.sfxManager.playSFX()
+        ingredientGO.GetComponent<Rigidbody>().isKinematic = true;
 
         incorrectStep.Play();
-        Destroy(ingredientGO);
         ResetValues();
     }
 
@@ -304,6 +306,7 @@ public class CauldronInteraction : MonoBehaviour
         Destroy(ingredientGO.GetComponent<IngredientHolder>());
         ingredientGO.GetComponent<PotionOutput>().enabled = true;
         ingredientGO.GetComponent<PotionOutput>().potionInside = recipe;
+        ingredientGO.transform.SetParent(null);
 
         // Instantiate the completed potion prefab
         StartCoroutine(ThrowPotion());
@@ -375,7 +378,6 @@ public class CauldronInteraction : MonoBehaviour
     {
         if (currentStep == "Bottle_Potion") return;
         ingredientGO.GetComponent<Rigidbody>().isKinematic = true;
-        ingredientGO.transform.position = new Vector3(-100, -100, -100);
     }
 
     private void ResetValues()
