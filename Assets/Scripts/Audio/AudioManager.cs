@@ -29,14 +29,16 @@ public class AudioManager : MonoBehaviour
     {
         get
         {
+            _instance = FindObjectOfType<AudioManager>();  // Try to find an existing AudioManager in the scene
+
             //check if instance is null
             if (_instance == null)
             {
-                //spawn instance
+                // If no instance exists, instantiate it
                 _instance = Instantiate(Resources.Load("AudioManager") as GameObject).GetComponent<AudioManager>();
-                _instance.name = "AudioManager"; //renames the game object to InputManager
+                _instance.name = "AudioManager";
             }
-            return _instance; //returns 
+        return _instance;
         }
     }
 

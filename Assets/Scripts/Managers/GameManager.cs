@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
         }
         else if (instance != this)
             Destroy(gameObject);
+
+        Debug.Log("");
     }
 
     private void Start()
