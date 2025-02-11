@@ -30,6 +30,7 @@ public class CustomerBehaviour : MonoBehaviour
     private void Start()
     {
         tipTimer = new CustomTimer(2, true);
+        moveSpeed = 3f;
     }
 
     private void Update()
@@ -40,7 +41,6 @@ public class CustomerBehaviour : MonoBehaviour
         if (!leavingQueue)
             MoveToTarget();
     }
-
 
     #region Order Events
     internal void AssignOrder(RecipeSO order, Transform parent)

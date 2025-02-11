@@ -179,6 +179,13 @@ public class QueueManager : MonoBehaviour
     }
     #endregion
 
+    private void ScareCustomer()
+    {
+        int random = UnityEngine.Random.Range(0, customers.Count);
+
+        customers[random].GetComponent<CustomerBehaviour>().moveSpeed = 6;
+    }
+
     private void RemoveAllCustomers()
     {
         foreach (GameObject customer in customers)
