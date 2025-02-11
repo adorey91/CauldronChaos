@@ -17,12 +17,13 @@ public class PlayerMovement : MonoBehaviour
     [Header("Object References")]
     [SerializeField] private Rigidbody playerRB;
     private Animator playerAnimation;
+    private InputManager inputManager;
+    private Vector2 moveDir = Vector2.zero;
 
-    Vector2 moveDir = Vector2.zero;
 
-
-    private void Start()
+    private void Awake()
     {
+        inputManager = InputManager.instance;
         playerAnimation = GetComponentInChildren<Animator>();
     }
 
