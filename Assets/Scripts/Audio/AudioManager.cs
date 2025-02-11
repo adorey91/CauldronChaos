@@ -44,12 +44,12 @@ public class AudioManager : MonoBehaviour
     void Awake()
     {
         //check if this is the active instance
-        if (!_instance || _instance == this)
+        if (_instance == null || _instance == this)
         {
             _instance = this;
-            //Debug.Log("New Instance Set");
+            Debug.Log("Instance Audio Manager: " + gameObject.GetInstanceID());
 
-            DontDestroyOnLoad(this);
+            //DontDestroyOnLoad(this);
         }
         else
         {
