@@ -332,6 +332,7 @@ GameObject:
   - component: {fileID: 7651719252592166061}
   - component: {fileID: 1379544504974567125}
   - component: {fileID: 3275504426634709544}
+  - component: {fileID: 8071956092502466619}
   - component: {fileID: 3233062128448102678}
   - component: {fileID: 7058928485430549902}
   m_Layer: 6
@@ -435,6 +436,7 @@ MonoBehaviour:
   addIngredientSounds: {fileID: 1379544504974567125}
   FinishPotionSounds: {fileID: 3275504426634709544}
   incorrectStepSounds: {fileID: 0}
+  stirSouds: {fileID: 8071956092502466619}
 --- !u!114 &1379544504974567125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -465,6 +467,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioClips:
   - {fileID: 8300000, guid: 1a669a19eaf32de44ab6ad149746e7d0, type: 3}
+--- !u!114 &8071956092502466619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3632699681364679363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 953697c0e7782b748887310ece8ca880, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClips:
+  - {fileID: 8300000, guid: 7b7f23c2841400c49a89e2d1e7924829, type: 3}
+  - {fileID: 8300000, guid: 559ab4d050de69d418e30ed97863e2c0, type: 3}
+  - {fileID: 8300000, guid: 4f144547cc39fdd44b2b736bc00c89d7, type: 3}
 --- !u!54 &3233062128448102678
 Rigidbody:
   m_ObjectHideFlags: 0

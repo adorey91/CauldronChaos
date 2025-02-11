@@ -54,6 +54,7 @@ public class CauldronInteraction : MonoBehaviour
     [SerializeField] private SFXLibrary addIngredientSounds;
     [SerializeField] private SFXLibrary FinishPotionSounds;
     [SerializeField] private SFXLibrary incorrectStepSounds;
+    [SerializeField] private SFXLibrary stirSouds;
 
 
     public void Start()
@@ -113,6 +114,9 @@ public class CauldronInteraction : MonoBehaviour
 
     private void Stir()
     {
+        //play stirring sound
+        AudioManager.instance.sfxManager.PlaySFX(SFX_Type.StationSounds, stirSouds.PickAudioClip(), false);
+
         if (recipe == null)
         {
             FindPossibleRecipes();
@@ -402,6 +406,7 @@ public class CauldronInteraction : MonoBehaviour
             //Debug.Log($"Stirring Clockwise: {currentStep}");
 
             spoon.DORotate(new Vector3(0, 360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
+
             Stir();
         }
     }
