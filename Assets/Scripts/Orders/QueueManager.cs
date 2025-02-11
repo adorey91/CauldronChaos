@@ -27,6 +27,9 @@ public class QueueManager : MonoBehaviour
     [Header("Order Holder")]
     [SerializeField] private GameObject orderHolder;
 
+    [Header("SFX")]
+    [SerializeField] private SFXLibrary newCustomerSFX;
+    [SerializeField] private AudioClip potionSaleSFX;
 
     public static Action<PotionOutput> OnCheckCustomers;
 
@@ -118,6 +121,10 @@ public class QueueManager : MonoBehaviour
     private void FinishOrder(CustomerBehaviour servingCustomer, GameObject obj)
     {
         servingCustomer.OrderComplete();
+
+        //playing SFX for potion sale
+        AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ShopSounds, potionSaleSFX, true);
+
         RemoveCustomer(servingCustomer.gameObject);
     }
 
@@ -157,6 +164,9 @@ public class QueueManager : MonoBehaviour
             _newCustomBehav.AssignOrder(orderManager.GiveOrder(_newCustomBehav.customerName), orderHolder.transform);
 
             AddCustomer(newCustomer);
+
+            //playing SFX for new customer arriving
+            AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ShopSounds, newCustomerSFX.PickAudioClip(), true);
         }
         else
         {
