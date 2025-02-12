@@ -124,6 +124,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2079494219999610102}
   - component: {fileID: 6242979879473526914}
+  - component: {fileID: 5184939874115157038}
   m_Layer: 0
   m_Name: Customer Base
   m_TagString: Untagged
@@ -165,6 +166,28 @@ MonoBehaviour:
   orderUiPrefab: {fileID: 6402695683748899613, guid: 5f38278dd2ddd4b4faeb7fff945b6fde,
     type: 3}
   moveSpeed: 3
+  animator: {fileID: 5184939874115157038}
+--- !u!95 &5184939874115157038
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6356803835694476596}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 30b66b8f8708f7343908210deaca181c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7335650812654629374
 GameObject:
   m_ObjectHideFlags: 0

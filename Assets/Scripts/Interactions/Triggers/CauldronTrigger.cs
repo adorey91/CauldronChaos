@@ -23,22 +23,6 @@ public class CauldronTrigger : MonoBehaviour
             ingredientHolder.GetComponent<Rigidbody>().isKinematic = true;
             ingredientHolder.AddToCauldron();
             cauldron.AddIngredient(ingredientHolder, ingredientHolder.gameObject);
-           
-            GameObject ingredient = ingredientHolder.gameObject;
-            ingredient.transform.SetParent(cauldronItems);
-            CheckItemHolder();
-        }
-    }
-
-
-    private void CheckItemHolder()
-    {
-        if(cauldronItems.childCount == 10)
-        {
-            foreach(GameObject child in cauldronItems)
-            {
-                Destroy(child);
-            }
         }
     }
 }
