@@ -34,7 +34,10 @@ public class CrateHolder : Interactable
     {
         GameObject ingredient;
         ingredient = Instantiate(ingredientPrefab, goblin.position, Quaternion.identity);
+
+        Vector3 randomPosition = new(UnityEngine.Random.Range(-1, 1), 0, UnityEngine.Random.Range(-1, 1));
+
         ingredient.transform.DOScale(new Vector3(1f, 1f, 1f), 1f); //DOTween animation for scaling the ingredient
-        ingredient.transform.DOJump(goblin.position + new Vector3(0, 1, 0), 1, 1, 1); //DOTween animation for jumping the ingredient
+        ingredient.transform.DOJump(goblin.position + randomPosition, 1, 1, 1); //DOTween animation for jumping the ingredient
     }
 }

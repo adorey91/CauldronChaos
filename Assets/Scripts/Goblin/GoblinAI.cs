@@ -115,11 +115,17 @@ public class GoblinAI : MonoBehaviour
         CrateHolder crate = crates[UnityEngine.Random.Range(0, crates.Length)];
 
         agent.SetDestination(crate.transform.position);
+        int amount = UnityEngine.Random.Range(1, 4);
+
         while (!ReachedTarget())
         {
             yield return null;
         }
-        crate.GoblinInteraction(goblinHands);
+
+        for(int i = 0; i < amount; i++)
+        {
+            crate.GoblinInteraction(goblinHands);
+        }
         yield return new WaitForSeconds(throwFromCrate); // Simulated action time
         isPerformingAction = false;
     }
