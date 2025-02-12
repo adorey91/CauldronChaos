@@ -41,6 +41,24 @@ public class QueueManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        // For testing purposes
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            StartCustomers();
+        }
+
+        if (startCustomers == true)
+        {
+            if (newCustomer.UpdateTimer())
+            {
+                SpawnNewCustomer();
+                newCustomer.ResetTimer();
+            }
+        }
+    }
+
     private void OnEnable()
     {
         Actions.OnEndDay += RemoveAllCustomers;
@@ -55,24 +73,6 @@ public class QueueManager : MonoBehaviour
         Actions.OnStartDay -= StartCustomers;
         OnCheckCustomers -= CheckCustomerRecipes;
         Actions.OnResetValues -= RemoveAllCustomers;
-    }
-
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Tab))
-            {
-            StartCustomers();
-        }
-
-        if (startCustomers == true)
-        {
-            if (newCustomer.UpdateTimer())
-            {
-                SpawnNewCustomer();
-                newCustomer.ResetTimer();
-            }
-        }
     }
 
     private void StartCustomers()
@@ -160,7 +160,7 @@ public class QueueManager : MonoBehaviour
         }
         else
         {
-            if(newDay)
+            if (newDay)
             {
                 newCustomer = new CustomTimer(timeForCustomer, false);
                 newDay = false;
@@ -179,11 +179,25 @@ public class QueueManager : MonoBehaviour
     }
     #endregion
 
-    private void ScareCustomer()
+    internal void ScareCustomer()
     {
-        int random = UnityEngine.Random.Range(0, customers.Count);
+        List<GameObject> customersInQueue = new List<GameObject>();
 
-        customers[random].GetComponent<CustomerBehaviour>().moveSpeed = 6;
+        foreach (GameObject customer in customers)
+        {
+            if (customer.GetComponent<CustomerBehaviour>().hasJoinedQueue)
+            {
+                customersInQueue.Add(customer);
+            }
+        }
+
+        if (customersInQueue.Count > 0)
+        {
+            int random = UnityEngine.Random.Range(0, customersInQueue.Count);
+            CustomerBehaviour scaredCustomer = customersInQueue[random].GetComponent<CustomerBehaviour>();
+            scaredCustomer.ScareAway();
+            RemoveCustomer(customers[random]);
+        }
     }
 
     private void RemoveAllCustomers()
@@ -196,5 +210,19 @@ public class QueueManager : MonoBehaviour
         newDay = false;
         customers.Clear();
         startCustomers = false;
+    }
+
+
+    internal int AreThereCustomers()
+    {
+        int count = 0;
+
+        foreach (GameObject customer in customers)
+        {
+            if (customer.GetComponent<CustomerBehaviour>().hasJoinedQueue)
+                count++;
+        }
+
+        return count;
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -20,8 +21,9 @@ public class CustomerBehaviour : MonoBehaviour
     private bool hasShownOrder;
 
     [Header("Movement Settings")]
-    private Vector3 targetPosition;
     public float moveSpeed = 3f;
+    [SerializeField] private Animator animator;
+    private Vector3 targetPosition;
     private bool leavingQueue;
     internal bool hasJoinedQueue;
 
@@ -31,6 +33,7 @@ public class CustomerBehaviour : MonoBehaviour
     {
         tipTimer = new CustomTimer(2, true);
         moveSpeed = 3f;
+        animator.speed = 1f;
     }
 
     private void Update()
@@ -99,6 +102,7 @@ public class CustomerBehaviour : MonoBehaviour
     #region Positioning
     internal void SetTarget(Vector3 position)
     {
+        animator.SetBool("isWalking", true);
         targetPosition = position;
         leavingQueue = false;
     }
@@ -115,6 +119,7 @@ public class CustomerBehaviour : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, targetPosition) > 0.1f)
         {
+            animator.SetBool("isWalking", true);
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Euler(0, 270, 0);
         }
@@ -122,6 +127,7 @@ public class CustomerBehaviour : MonoBehaviour
         {
             transform.rotation = Quaternion.identity;
             hasJoinedQueue = true;
+            animator.SetBool("isWalking", false);
 
             if (!hasShownOrder)
             {
@@ -133,6 +139,7 @@ public class CustomerBehaviour : MonoBehaviour
 
     private IEnumerator LeaveAndExit(Vector3 exitPosition, System.Action onExitComplete)
     {
+        animator.SetBool("isWalking", true);
         float stepDistance = 1.2f; // Distance to step back
         Vector3 backwardStep = transform.position - transform.forward * stepDistance; // Step back 1 unit
 
@@ -157,6 +164,12 @@ public class CustomerBehaviour : MonoBehaviour
 
         // Notify that the customer has left
         onExitComplete?.Invoke();
+    }
+
+    internal void ScareAway()
+    {
+        animator.speed = 2f;
+        moveSpeed = 12f;
     }
     #endregion
 }

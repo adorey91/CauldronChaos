@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,5 +28,13 @@ public class CrateHolder : Interactable
         GameObject newIngredient;
         newIngredient = Instantiate(ingredientPrefab, playerPickup.GetHolderLocation()); //spawning new ingredient
         playerPickup.SetHeldObject(newIngredient.GetComponent<PickupObject>()); //adding manually to player's held slot
+    }
+
+    internal void GoblinInteraction(Transform goblin)
+    {
+        GameObject ingredient;
+        ingredient = Instantiate(ingredientPrefab, goblin.position, Quaternion.identity);
+        ingredient.transform.DOScale(new Vector3(1f, 1f, 1f), 1f); //DOTween animation for scaling the ingredient
+        ingredient.transform.DOJump(goblin.position + new Vector3(0, 1, 0), 1, 1, 1); //DOTween animation for jumping the ingredient
     }
 }

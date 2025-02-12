@@ -1,12 +1,9 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.VFX;
-using static RecipeStepSO;
 
 public class CauldronInteraction : MonoBehaviour
 {
@@ -380,7 +377,13 @@ public class CauldronInteraction : MonoBehaviour
         ingredientGO.GetComponent<Rigidbody>().isKinematic = true;
     }
 
-    private void ResetValues()
+    internal void GoblinInteraction()
+    {
+        cauldronFill.DOMove(cauldronFill.position - new Vector3(0, 0.11f * 2, 0), 1f).SetEase(Ease.InOutSine).OnComplete(ResetValues);
+    }
+
+
+    internal void ResetValues()
     {
         cauldronFill.DOMove(cauldronStartingPosition, 1f);
         potionCompleted = false;
