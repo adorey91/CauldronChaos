@@ -265,6 +265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cauldron: {fileID: 7651719252592166061}
+  cauldronItems: {fileID: 0}
 --- !u!1 &2737577289593619860
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,7 +428,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cauldronFill: {fileID: 7903852435587969304}
-  givenItemsParent: {fileID: 6753306399176301099}
   ingredientInsertPoint: {fileID: 5672755786491921061}
   throwStrength: 2
   throwHeight: 2
@@ -513,7 +513,7 @@ MeshCollider:
   m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 72713781330414003, guid: fe399b8ab7ccf1446b0485492ceb59ac, type: 3}
 --- !u!1 &3649244732510212121

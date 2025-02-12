@@ -161,7 +161,7 @@ Transform:
   m_GameObject: {fileID: 244717859825999800}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.73, y: 0, z: -1.032}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -632,7 +632,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 433065709252157456}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -669,7 +669,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 19338638cf98d88428e9b837e62eff60, type: 2}
   numberOfRecipes: 2
   recipeBookUi: {fileID: 8838291415264404701}
-  useAllRecipes: 0
+  useAllRecipes: 1
   closeButton: {fileID: 2337243748302970550}
 --- !u!1 &475520456937432344
 GameObject:
@@ -2305,7 +2305,7 @@ Transform:
   m_GameObject: {fileID: 4030775730979242478}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.76, y: 0, z: -1}
+  m_LocalPosition: {x: -0.4, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3648,8 +3648,8 @@ Transform:
   m_GameObject: {fileID: 7347180894933296259}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.723, y: 0, z: -1.644}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.3, y: 0, z: -1.644}
+  m_LocalScale: {x: 3, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6904375236869376088}
@@ -3738,8 +3738,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 0.4580543, z: 1.8351932}
-  m_Center: {x: 0, y: 0.40261817, z: -0.42219043}
+  m_Size: {x: 1, y: 0.65557075, z: 1.8351932}
+  m_Center: {x: 0, y: 0.5013764, z: -0.42219043}
 --- !u!114 &8177146680142514291
 MonoBehaviour:
   m_ObjectHideFlags: 0
