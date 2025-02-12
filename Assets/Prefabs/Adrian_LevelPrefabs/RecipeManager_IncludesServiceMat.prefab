@@ -145,6 +145,7 @@ GameObject:
   m_Component:
   - component: {fileID: 258443644902610825}
   - component: {fileID: 1756704728737677199}
+  - component: {fileID: 6070448593071578903}
   m_Layer: 0
   m_Name: QueueManager
   m_TagString: Queue
@@ -192,6 +193,23 @@ MonoBehaviour:
   exitPoint: {fileID: 502153133774814190}
   orderManager: {fileID: 7622187925886525220}
   orderHolder: {fileID: 7022982479108486038}
+  newCustomerSFX: {fileID: 6070448593071578903}
+  potionSaleSFX: {fileID: 8300000, guid: 0b00ff4561152f644a38651fd70fdbc1, type: 3}
+--- !u!114 &6070448593071578903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 244717859825999800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 953697c0e7782b748887310ece8ca880, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClips:
+  - {fileID: 8300000, guid: 7b5568ae4b6f495479a857614c3a71d2, type: 3}
+  - {fileID: 8300000, guid: 5ec8fdf49700924409797a2bf27a783b, type: 3}
 --- !u!1 &281914543025872782
 GameObject:
   m_ObjectHideFlags: 0

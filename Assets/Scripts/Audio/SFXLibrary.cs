@@ -20,12 +20,12 @@ public class SFXLibrary : MonoBehaviour
         if (audioClips.Length > 1)
         {
             //pick random audio clip
-            audioClip = audioClips[Random.Range(0, audioClips.Length - 1)];
+            audioClip = audioClips[Random.Range(0, audioClips.Length)];
 
             //if audio picked is the last one played pick a different one
             while (audioClip == lastPlayed)
             {
-                audioClip = audioClips[Random.Range(0, audioClips.Length - 1)];
+                audioClip = audioClips[Random.Range(0, audioClips.Length)];
             }
         }
         //pick only audioclip

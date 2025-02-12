@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sfx_Type: 1
   audioSource: {fileID: 5270476254455450068}
-  pitchVariance: 0
+  pitchVariance: 0.1
   cooldownTime: 0
 --- !u!82 &5270476254455450068
 AudioSource:
