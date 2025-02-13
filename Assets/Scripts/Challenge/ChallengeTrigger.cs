@@ -63,7 +63,7 @@ public class ChallengeTrigger : MonoBehaviour
                 }
                 break;
             case ChallengeType.MovingCauldron: CauldronMovement.OnStartChallenge?.Invoke (); break;
-            case ChallengeType.GoblinUnleashed: break;
+            case ChallengeType.GoblinUnleashed: goblin.GetComponent<GoblinAI>().enabled = true; break;
             case ChallengeType.WindyDay: break;
             default: ResetChallenges(); break;
         }
