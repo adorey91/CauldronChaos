@@ -6,7 +6,6 @@ public class ChallengeTrigger : MonoBehaviour
     public enum ChallengeType { None, SlipperyFloor, MovingCauldron, GoblinUnleashed, WindyDay, SnailSlimed }
     public ChallengeType challengeType;
 
-    public static Action OnStartChallenge;
     [SerializeField] private GameObject[] floor;
     [SerializeField] private GameObject[] cauldron;
     [SerializeField] private GameObject goblin;
@@ -35,10 +34,14 @@ public class ChallengeTrigger : MonoBehaviour
                 }
                 break;
             case ChallengeType.MovingCauldron:
+                goblin.GetComponent<GoblinAI>().enabled = false;
+                CauldronMovement.OnStartChallenge?.Invoke();
                 break;
             case ChallengeType.GoblinUnleashed:
+                goblin.GetComponent<GoblinAI>().enabled = true;
                 break;
             case ChallengeType.WindyDay:
+                goblin.GetComponent<GoblinAI>().enabled = true;
                 break;
         }
     }

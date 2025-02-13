@@ -32024,6 +32024,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: RecipeManager
       objectReference: {fileID: 0}
+    - target: {fileID: 5635559856003141154, guid: e8bf7052047b969418f9861460a0b8cd,
+        type: 3}
+      propertyPath: useAllRecipes
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6912728288701112207, guid: e8bf7052047b969418f9861460a0b8cd,
         type: 3}
       propertyPath: m_LocalPosition.x

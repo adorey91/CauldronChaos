@@ -23781,7 +23781,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.016666668
+  m_VoxelSize: 0.1
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: c7d83ce73c7bc1b47a2872bbcfd37432, type: 2}
   m_BuildHeightMesh: 0
@@ -31124,6 +31124,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RecipeManager (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5635559856003141154, guid: e8bf7052047b969418f9861460a0b8cd,
+        type: 3}
+      propertyPath: useAllRecipes
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5635559856003141154, guid: e8bf7052047b969418f9861460a0b8cd,
         type: 3}

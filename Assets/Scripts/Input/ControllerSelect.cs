@@ -18,6 +18,7 @@ public class ControllerSelect : MonoBehaviour
     [SerializeField] private GameObject endOfDayFirstSelect;
     [SerializeField] private GameObject introFirstSelect;
     [SerializeField] private GameObject deleteFileFirstSelect;
+    [SerializeField] private GameObject howToPlayFirstSelect;
 
     [SerializeField] private EventSystem eventSystem;
 
@@ -58,7 +59,7 @@ public class ControllerSelect : MonoBehaviour
         SetFirstSelect("DeleteFile");
     }
 
-    private void SetFirstSelect(string menu)
+    public void SetFirstSelect(string menu)
     {
         eventSystem.SetSelectedGameObject(null);
 
@@ -78,6 +79,7 @@ public class ControllerSelect : MonoBehaviour
             case "Controls": _firstSelected = controlsFirstSelect; break;
             case "EndOfDay": _firstSelected = endOfDayFirstSelect; break;
             case "DeleteFile": _firstSelected = deleteFileFirstSelect; break;
+            case "HowToPlay": _firstSelected = howToPlayFirstSelect; break;
             default: 
                 _firstSelected = null; 
                 break;

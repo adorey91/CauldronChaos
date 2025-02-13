@@ -14,7 +14,7 @@ public class LevelManager : MonoBehaviour
     [Header("Loading Screen")]
     [SerializeField] private Canvas loadingScreen;
     [SerializeField] private Slider loadingBar;
-    [SerializeField] private float fakeProgressSpeed = 0.2f;
+    [SerializeField] private float fakeProgressSpeed;
     [SerializeField] private TextMeshProUGUI loadingText;
 
     [Header("Scene Fade")]
@@ -32,12 +32,12 @@ public class LevelManager : MonoBehaviour
         fadeAnimator = GetComponent<Animator>();
         fadeAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
     }
-  
 
-      public void LoadScene(string sceneName)
+
+    public void LoadScene(string sceneName)
     {
 
-        if(SceneManager.GetActiveScene().name == "MainMenu" && sceneName == "MainMenu")
+        if (SceneManager.GetActiveScene().name == "MainMenu" && sceneName == "MainMenu")
         {
             Actions.OnForceStateChange("MainMenu");
             return;
@@ -62,6 +62,17 @@ public class LevelManager : MonoBehaviour
 
             loadingScreen.enabled = true;
             loadingText.text = "Loading...";
+
+            if (sceneName.StartsWith("Day"))
+            {
+                HowToPlayUI.OnActivateHowToPlay?.Invoke(true);
+                fakeProgressSpeed = 0.2f;
+            }
+            else
+            {
+                fakeProgressSpeed = 0.6f;
+            }
+
 
             StartCoroutine(LoadAsync(sceneName));
         });
@@ -94,7 +105,7 @@ public class LevelManager : MonoBehaviour
         }
 
 
-        if(sceneName == "MainMenu" || sceneName == "LevelSelect")
+        if (sceneName == "MainMenu" || sceneName == "LevelSelect")
         {
             yield return new WaitForSecondsRealtime(0.5f);
             loadingScreen.enabled = false;
@@ -105,10 +116,14 @@ public class LevelManager : MonoBehaviour
         loadingText.text = "Press Any Key To Continue";
         yield return WaitForAnyKeyPress();
 
+        if (sceneName.StartsWith("Day"))
+            HowToPlayUI.OnDeactivateHowToPlay?.Invoke();
+
         loadingScreen.enabled = false;
         loadOperation.allowSceneActivation = true;
     }
 
+    // Used for loading screen between level selection or main menu and gameplay
     private IEnumerator WaitForAnyKeyPress()
     {
         // Cache the keyboard and gamepad references
@@ -136,6 +151,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    // Called when the scene is loaded and ready to be activated
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
@@ -149,30 +165,25 @@ public class LevelManager : MonoBehaviour
         Fade("FadeIn");
     }
 
-
-
+    // Fade the screen to black or clear
     public void Fade(string fadeDir, Action callback = null)
     {
         fadeCallback = callback;
         fadeAnimator.SetTrigger(fadeDir);
     }
 
+    // Is called at the end of the fade out animation
     public void FadeAnimationComplete()
     {
         fadeCallback?.Invoke();
         fadeCallback = null;
     }
+}
 
-
-
-    public void OnFadeInComplete()
-    {
-        //Scene currentScene = SceneManager.GetActiveScene();
-
-        //if (currentScene.name.StartsWith("Day"))
-        //{
-        //    startTimer?.Invoke();
-        //    InputManager.instance.TurnOnInteraction();
-        //}
-    }
+[Serializable]
+public class LoadingScreen
+{
+    [SerializeField] private Image howToPlayImage;
+    [SerializeField] private TextMeshProUGUI howToPlayTextTitle;
+    [SerializeField] private Button[] nextPreviousButtons;
 }
