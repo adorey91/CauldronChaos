@@ -139,6 +139,13 @@ public class LevelManager : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        Scene currentScene = SceneManager.GetActiveScene();
+
+        if (currentScene.name.StartsWith("Day"))
+        {
+            startTimer?.Invoke();
+            InputManager.instance.TurnOnInteraction();
+        }
         Fade("FadeIn");
     }
 
@@ -160,12 +167,12 @@ public class LevelManager : MonoBehaviour
 
     public void OnFadeInComplete()
     {
-        Scene currentScene = SceneManager.GetActiveScene();
+        //Scene currentScene = SceneManager.GetActiveScene();
 
-        if (currentScene.name.StartsWith("Day"))
-        {
-            InputManager.instance.TurnOnInteraction();
-            startTimer?.Invoke();
-        }
+        //if (currentScene.name.StartsWith("Day"))
+        //{
+        //    startTimer?.Invoke();
+        //    InputManager.instance.TurnOnInteraction();
+        //}
     }
 }

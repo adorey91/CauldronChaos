@@ -75,5 +75,6 @@ public class GraphicsManager : MonoBehaviour
     public void SetWindowed(bool value)
     {
         _isFullScreen = value;
+        Screen.fullScreen = value;
     }
 }

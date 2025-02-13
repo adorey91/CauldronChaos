@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -17,13 +18,18 @@ public class PlayerMovement : MonoBehaviour
     [Header("Object References")]
     [SerializeField] private Rigidbody playerRB;
     private Animator playerAnimation;
-    private InputManager inputManager;
     private Vector2 moveDir = Vector2.zero;
 
+    [Header("Ice Movement")]
+    [SerializeField] private bool isOnIce = false;
+    [SerializeField] private float acceleration = 5f;
+    [SerializeField] private float deceleration = 2f;
+    [SerializeField] private float maxSpeed = 6f;
+
+    public static Action <bool> OnIceDay;
 
     private void Awake()
     {
-        inputManager = InputManager.instance;
         playerAnimation = GetComponentInChildren<Animator>();
     }
 
@@ -31,16 +37,47 @@ public class PlayerMovement : MonoBehaviour
     private void OnEnable()
     {
         InputManager.MoveAction += GetMove;
+        OnIceDay += ToggleIceMode;
     }
 
     //Called when object is disabled
     private void OnDisable()
     {
         InputManager.MoveAction -= GetMove;
+        OnIceDay -= ToggleIceMode;
     }
 
     // Update is called once per frame
     void FixedUpdate()
+    {
+        if (!isOnIce)
+        {
+            NormalMovement();
+        }
+        else
+        {
+            IceMovement();
+        }
+    }
+
+    public void ToggleIceMode(bool isIcy)
+    {
+        isOnIce = isIcy;
+
+        // Reset velocity when switching back to normal movement
+        if (!isIcy)
+        {
+            playerRB.velocity = Vector3.zero;
+        }
+    }
+
+    private void GetMove(InputAction.CallbackContext input)
+    {
+        moveDir = input.ReadValue<Vector2>();
+    }
+
+
+    private void NormalMovement()
     {
         //translate Vector2 to Vector3
         Vector3 movement = new Vector3(moveDir.x, 0, moveDir.y);
@@ -65,13 +102,33 @@ public class PlayerMovement : MonoBehaviour
 
         //apply movement
         playerRB.MovePosition(playerRB.position + movement);
+
     }
 
-
-    private void GetMove(InputAction.CallbackContext input)
+    private void IceMovement()
     {
-        moveDir = input.ReadValue<Vector2>();
+        Vector3 targetVelocity = new Vector3(moveDir.x, 0, moveDir.y) * maxSpeed;
+
+        // Only rotate if the player is actually moving
+        if (playerRB.velocity.sqrMagnitude > 0.01f)
+        {
+            Quaternion toRotation = Quaternion.LookRotation(playerRB.velocity.normalized, Vector3.up);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.fixedDeltaTime);
+        }
+
+        // Handle acceleration and deceleration smoothly
+        if (moveDir.sqrMagnitude > 0.001f)
+        {
+            playerRB.velocity = Vector3.MoveTowards(playerRB.velocity, targetVelocity, acceleration * Time.fixedDeltaTime);
+            playerAnimation.SetBool("isMoving", true);
+        }
+        else
+        {
+            playerRB.velocity = Vector3.MoveTowards(playerRB.velocity, Vector3.zero, deceleration * Time.fixedDeltaTime);
+            playerAnimation.SetBool("isMoving", playerRB.velocity.sqrMagnitude > 0.01f);
+        }
     }
+
 
     //Function that tries to detect any collisions and modify the move to account for them
     private Vector3 CheckMove(Vector3 move)

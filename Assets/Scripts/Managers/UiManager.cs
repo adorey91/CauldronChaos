@@ -33,10 +33,10 @@ public class UiManager : MonoBehaviour
     {
         scoreManager = FindObjectOfType<ScoreManager>();
 
-        if (Gamepad.current != null)
-            Cursor.lockState = CursorLockMode.Locked;
-        else
-            Cursor.lockState = CursorLockMode.Confined;
+        //if (Gamepad.current != null)
+        //    Cursor.lockState = CursorLockMode.Locked;
+        //else
+        //    Cursor.lockState = CursorLockMode.Confined;
 
         dayTimer = new(secondsToStart, false);
     }
@@ -139,7 +139,7 @@ public class UiManager : MonoBehaviour
         //if (Gamepad.current != null)
         //    Cursor.lockState = CursorLockMode.Locked;
         //else
-            Cursor.lockState = CursorLockMode.Confined;
+            //Cursor.lockState = CursorLockMode.Confined;
 
         Actions.OnResetValues?.Invoke();
         SetActiveUI(levelSelect);
@@ -155,7 +155,7 @@ public class UiManager : MonoBehaviour
         SetActiveUI(gameplay);
         Time.timeScale = 1;
 
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void EndOfDay()
@@ -166,7 +166,7 @@ public class UiManager : MonoBehaviour
         //if (Gamepad.current != null)
         //    Cursor.lockState = CursorLockMode.Locked;
         //else
-            Cursor.lockState = CursorLockMode.Confined;
+            //Cursor.lockState = CursorLockMode.Confined;
     }
 
     private void Pause()
@@ -178,7 +178,7 @@ public class UiManager : MonoBehaviour
         //if (Gamepad.current != null)
         //    Cursor.lockState = CursorLockMode.Locked;
         //else
-            Cursor.lockState = CursorLockMode.Confined;
+            //Cursor.lockState = CursorLockMode.Confined;
     }
 
     private void Settings()
