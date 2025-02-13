@@ -14,6 +14,7 @@ public class QueueManager : MonoBehaviour
     private List<GameObject> customers = new();
     private bool startCustomers = false;
     private bool newDay;
+    private int previousIndex;
 
     [Header("Customer Queue Positions")]
     [SerializeField] private Transform firstPos;
@@ -157,6 +158,13 @@ public class QueueManager : MonoBehaviour
         if (customerPrefabs.Count > 0 && customers.Count < maxCustomers)
         {
             int randomIndex = UnityEngine.Random.Range(0, customerPrefabs.Count);
+
+            while(randomIndex == previousIndex)
+            {
+                randomIndex = UnityEngine.Random.Range(0, customerPrefabs.Count);
+            }
+
+            previousIndex = randomIndex;
             GameObject newCustomer = Instantiate(customerPrefabs[randomIndex], entryPoint.position, Quaternion.identity);
 
             CustomerBehaviour _newCustomBehav = newCustomer.GetComponent<CustomerBehaviour>();

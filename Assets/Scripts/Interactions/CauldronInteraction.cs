@@ -57,7 +57,7 @@ public class CauldronInteraction : MonoBehaviour
 
     public void Start()
     {
-        cauldronStartingPosition = cauldronFill.transform.position;
+        cauldronStartingPosition = cauldronFill.transform.localPosition;
         incorrectStep = GetComponentInChildren<VisualEffect>();
 
         recipeManager = FindObjectOfType<RecipeManager>();
@@ -351,7 +351,7 @@ public class CauldronInteraction : MonoBehaviour
             }
         }
 
-        cauldronFill.DOMove(cauldronFill.position - new Vector3(0, 0.11f, 0), 0.8f).OnComplete(CheckPotionCount);
+        cauldronFill.DOLocalMove(cauldronFill.localPosition - new Vector3(0, 0.11f, 0), 0.8f).OnComplete(CheckPotionCount);
     }
 
 
@@ -383,13 +383,13 @@ public class CauldronInteraction : MonoBehaviour
 
     internal void GoblinInteraction()
     {
-        cauldronFill.DOMove(cauldronFill.position - new Vector3(0, 0.11f * 2, 0), 1f).SetEase(Ease.InOutSine).OnComplete(ResetValues);
+        cauldronFill.DOLocalMove(cauldronFill.localPosition - new Vector3(0, 0.11f * 2, 0), 1f).SetEase(Ease.InOutSine).OnComplete(ResetValues);
     }
 
 
     internal void ResetValues()
     {
-        cauldronFill.DOMove(cauldronStartingPosition, 1f);
+        cauldronFill.DOLocalMove(cauldronStartingPosition, 1f);
         potionCompleted = false;
         curStirAmount = 0;
         potionIndex = 0;

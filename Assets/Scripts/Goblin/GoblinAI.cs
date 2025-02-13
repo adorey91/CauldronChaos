@@ -202,6 +202,6 @@ public class GoblinAI : MonoBehaviour
     {
         return !agent.pathPending &&
                agent.remainingDistance <= agent.stoppingDistance &&
-               (!agent.hasPath || agent.velocity.sqrMagnitude == 0f);
+               (!agent.hasPath || agent.velocity.sqrMagnitude < 0.1f);
     }
 }

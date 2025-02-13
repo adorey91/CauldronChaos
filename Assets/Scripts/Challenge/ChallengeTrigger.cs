@@ -1,5 +1,9 @@
 using UnityEngine;
 using System;
+using UnityEngine.UI;
+using UnityEditor.IMGUI.Controls;
+using TMPro;
+using UnityEditor;
 
 public class ChallengeTrigger : MonoBehaviour
 {
@@ -11,10 +15,37 @@ public class ChallengeTrigger : MonoBehaviour
     [SerializeField] private GameObject goblin;
 
     [SerializeField] private PhysicMaterial slipperyMaterial;
+    [SerializeField] private PhysicMaterial defaultMaterial;
+    [SerializeField] private TMP_Dropdown dropdown;
 
 
     private void Start()
     {
+        if (floor.Length > 0)
+            defaultMaterial = floor[0].GetComponent<Collider>().material;
+
+        InitializeDropdown();
+        StartChallenge();
+    }
+
+    private void InitializeDropdown()
+    {
+        if (dropdown != null)
+        {
+            dropdown.ClearOptions();
+            foreach (ChallengeType challenge in Enum.GetValues(typeof(ChallengeType)))
+            {
+                string challengeName = ObjectNames.NicifyVariableName(challenge.ToString());
+                dropdown.options.Add(new TMP_Dropdown.OptionData(challengeName));
+            }
+
+            dropdown.onValueChanged.AddListener(OnDropdownChanged);
+        }
+    }
+    private void OnDropdownChanged(int index)
+    {
+        challengeType = (ChallengeType)index; // Convert dropdown index to ChallengeType
+        ResetChallenges();
         StartChallenge();
     }
 
@@ -23,26 +54,30 @@ public class ChallengeTrigger : MonoBehaviour
     {
         switch (challengeType)
         {
-            case ChallengeType.None:
-                break;
-            case ChallengeType.SlipperyFloor:
-                goblin.GetComponent<GoblinAI>().enabled = false;
+            case ChallengeType.None: ResetChallenges(); break;
+            case ChallengeType.SlipperyFloor: 
                 PlayerMovement.OnIceDay?.Invoke(true);
                 foreach (GameObject floor in floor)
                 {
                     floor.GetComponent<Collider>().material = slipperyMaterial;
                 }
                 break;
-            case ChallengeType.MovingCauldron:
-                goblin.GetComponent<GoblinAI>().enabled = false;
-                CauldronMovement.OnStartChallenge?.Invoke();
-                break;
-            case ChallengeType.GoblinUnleashed:
-                goblin.GetComponent<GoblinAI>().enabled = true;
-                break;
-            case ChallengeType.WindyDay:
-                goblin.GetComponent<GoblinAI>().enabled = true;
-                break;
+            case ChallengeType.MovingCauldron: CauldronMovement.OnStartChallenge?.Invoke (); break;
+            case ChallengeType.GoblinUnleashed: break;
+            case ChallengeType.WindyDay: break;
+            default: ResetChallenges(); break;
         }
+    }
+
+    private void ResetChallenges()
+    {
+        foreach (GameObject floor in floor)
+        {
+            floor.GetComponent<Collider>().material = defaultMaterial;
+        }
+
+        CauldronMovement.OnEndChallenge?.Invoke();
+        goblin.GetComponent<GoblinAI>().enabled = false;
+        PlayerMovement.OnIceDay?.Invoke(false);
     }
 }

@@ -8,6 +8,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 314620424387261197, guid: 96e79bc864b817642932067c309ecb93,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: db1054fc5d56bd543b5d2373bb373b1b, type: 2}
+    - target: {fileID: 476159825714606255, guid: 96e79bc864b817642932067c309ecb93,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: db1054fc5d56bd543b5d2373bb373b1b, type: 2}
+    - target: {fileID: 1019489123517990889, guid: 96e79bc864b817642932067c309ecb93,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: db1054fc5d56bd543b5d2373bb373b1b, type: 2}
     - target: {fileID: 2079494219999610102, guid: 96e79bc864b817642932067c309ecb93,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -62,7 +77,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 1fd73762f2a231949b1331dea484abdd, type: 2}
+      objectReference: {fileID: 2100000, guid: db1054fc5d56bd543b5d2373bb373b1b, type: 2}
     - target: {fileID: 5793240767321800637, guid: 96e79bc864b817642932067c309ecb93,
         type: 3}
       propertyPath: customerName
@@ -76,7 +91,7 @@ PrefabInstance:
     - target: {fileID: 6356803835694476596, guid: 96e79bc864b817642932067c309ecb93,
         type: 3}
       propertyPath: m_Name
-      value: Customer Variant 3
+      value: Customer Evil Mage
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

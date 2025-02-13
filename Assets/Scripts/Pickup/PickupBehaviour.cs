@@ -90,7 +90,16 @@ public class PickupBehaviour : MonoBehaviour
                     playerAnimator.SetTrigger("Pickup");
                     heldObject.PickUp(pickupHolder);
                     pickupUIHolder.enabled = true;
-                    pickupUIHolder.sprite = heldObject.GetComponent<IngredientHolder>().recipeStepIngredient.ingredientSprite;
+
+                    if(heldObject.TryGetComponent(out IngredientHolder ingredientHolder))
+                    {
+                        pickupUIHolder.sprite = ingredientHolder.recipeStepIngredient.ingredientSprite;
+                    }
+                    
+                    if(heldObject.TryGetComponent(out PotionOutput potionOutput))
+                    {
+                        pickupUIHolder.sprite = potionOutput.potionInside.potionIcon;
+                    }
 
                     //try to get interactable component of the held object
                     Interactable interactable = heldObject.GetComponent<Interactable>();
