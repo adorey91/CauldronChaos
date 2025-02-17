@@ -94,9 +94,8 @@ GameObject:
   - component: {fileID: 5672755786491921061}
   - component: {fileID: 2353753502297967272}
   - component: {fileID: 8222872330306017181}
-  - component: {fileID: 2931494147370894802}
   m_Layer: 6
-  m_Name: PotionSpot
+  m_Name: IngredientEndZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -167,27 +166,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2931494147370894802
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1371219416842729013}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2602605575600190389
 GameObject:
   m_ObjectHideFlags: 0
@@ -198,11 +176,11 @@ GameObject:
   m_Component:
   - component: {fileID: 7943688033565125328}
   - component: {fileID: 80016241788307924}
-  - component: {fileID: 9095283076929538751}
   - component: {fileID: 68611658671651956}
+  - component: {fileID: 1078611641304228769}
   m_Layer: 6
   m_Name: CauldronTrigger
-  m_TagString: Untagged
+  m_TagString: Cauldron
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -216,7 +194,7 @@ Transform:
   m_GameObject: {fileID: 2602605575600190389}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.7, z: 0}
+  m_LocalPosition: {x: 0, y: 0.54, z: 0}
   m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -229,28 +207,6 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2602605575600190389}
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!64 &9095283076929538751
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2602605575600190389}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 512
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &68611658671651956
 MonoBehaviour:
@@ -265,46 +221,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cauldron: {fileID: 7651719252592166061}
-  cauldronItems: {fileID: 0}
---- !u!1 &2737577289593619860
-GameObject:
+--- !u!136 &1078611641304228769
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5400756596251400723}
-  - component: {fileID: 939167520593220237}
-  m_Layer: 6
-  m_Name: Interaction
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5400756596251400723
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2737577289593619860}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1353163748795567340}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &939167520593220237
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2737577289593619860}
+  m_GameObject: {fileID: 2602605575600190389}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -316,8 +239,10 @@ SphereCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.8
+  serializedVersion: 2
+  m_Radius: 0.65
+  m_Height: 0.84
+  m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3632699681364679363
 GameObject:
@@ -335,9 +260,9 @@ GameObject:
   - component: {fileID: 3275504426634709544}
   - component: {fileID: 8071956092502466619}
   - component: {fileID: 3233062128448102678}
-  - component: {fileID: 7058928485430549902}
   - component: {fileID: 4175822155246736988}
   - component: {fileID: 7987518720466273988}
+  - component: {fileID: 8033394736698248445}
   m_Layer: 6
   m_Name: Cauldron
   m_TagString: Cauldron
@@ -360,11 +285,9 @@ Transform:
   m_Children:
   - {fileID: 8398806761146628550}
   - {fileID: 7903852435587969304}
-  - {fileID: 5400756596251400723}
   - {fileID: 5672755786491921061}
   - {fileID: 8901120777319129939}
   - {fileID: 7943688033565125328}
-  - {fileID: 6753306399176301099}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7240002407962412314
@@ -513,28 +436,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!64 &7058928485430549902
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3632699681364679363}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 1
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 72713781330414003, guid: fe399b8ab7ccf1446b0485492ceb59ac, type: 3}
 --- !u!114 &4175822155246736988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -565,7 +466,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 3632699681364679363}
   m_Enabled: 1
   m_AgentTypeID: -1372625422
-  m_Radius: 0.57
+  m_Radius: 0.45
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -578,37 +479,27 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!1 &3649244732510212121
-GameObject:
+--- !u!135 &8033394736698248445
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6753306399176301099}
-  m_Layer: 6
-  m_Name: GivenItems
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6753306399176301099
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3649244732510212121}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -100, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1353163748795567340}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_GameObject: {fileID: 3632699681364679363}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.45
+  m_Center: {x: 0, y: 0.3461356, z: -0.0000001937151}
 --- !u!1 &4135118022640320120
 GameObject:
   m_ObjectHideFlags: 0
@@ -815,7 +706,7 @@ GameObject:
   - component: {fileID: 2368144188668533519}
   - component: {fileID: 6583230757831369852}
   m_Layer: 0
-  m_Name: Cylinder
+  m_Name: CauldronLiquid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

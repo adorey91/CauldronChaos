@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7947374703834326683}
   - component: {fileID: 751202463998919567}
   - component: {fileID: 1010409159330157091}
+  - component: {fileID: 4557893527993127726}
   m_Layer: 0
   m_Name: Goblin
   m_TagString: Untagged
@@ -95,6 +96,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &4557893527993127726
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2864664442665707075}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.15
+  m_Height: 0.66081274
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.3221625, z: 0}
 --- !u!1 &6654570659812948188
 GameObject:
   m_ObjectHideFlags: 0

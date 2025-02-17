@@ -4316,12 +4316,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 244170621}
   m_Mesh: {fileID: -629719859055844128, guid: fc4d84024dde4bc4a88ae2a72af66913, type: 3}
---- !u!4 &245698502 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6753306399176301099, guid: 7ce4f7651a1f047449c653277d1cc9ae,
-    type: 3}
-  m_PrefabInstance: {fileID: 1391526312}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &253883238
 GameObject:
   m_ObjectHideFlags: 0
@@ -4596,6 +4590,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6611626575362553396, guid: ced472106d5717446a58a4a8ad5dbb10,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -24113,7 +24112,7 @@ PrefabInstance:
         type: 3}
       propertyPath: cauldronItems
       value: 
-      objectReference: {fileID: 245698502}
+      objectReference: {fileID: 0}
     - target: {fileID: 1353163748795567340, guid: 7ce4f7651a1f047449c653277d1cc9ae,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -24177,6 +24176,11 @@ PrefabInstance:
     - target: {fileID: 3632699681364679363, guid: 7ce4f7651a1f047449c653277d1cc9ae,
         type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467418012529647783, guid: 7ce4f7651a1f047449c653277d1cc9ae,
+        type: 3}
+      propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

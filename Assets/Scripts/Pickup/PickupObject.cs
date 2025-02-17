@@ -5,9 +5,14 @@ using UnityEngine.UIElements;
 
 public class PickupObject : MonoBehaviour
 {
+    [Header("Ingredient")]
+    public RecipeStepSO recipeIngredient;
+
+    [Header("Pick Up")]
     public bool isHeld = false; //bool tracking if the pickup is held
     private Transform targetPos = null; //transform tarcking the target position of the pickup
     private Rigidbody rb; //rigidbody component of the pickup
+    private bool addedToCauldron = false;
 
     [Header("SFX")]
     [SerializeField] private AudioClip pickUpSFX;
@@ -62,22 +67,14 @@ public class PickupObject : MonoBehaviour
         AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ItemInteraction, dropSFX, true);
     }
 
-    public void Drop(bool playSFX, bool setParent)
+    public bool AddedToCauldron()
     {
-        //settomg held to false and enabling gravity
-        isHeld = false;
-        rb.isKinematic = false;
-        //rb.useGravity = true;
+        return addedToCauldron;
+    }
 
-        //removing target position & parent
-        targetPos = null;
-        if(!setParent)
-            transform.parent = null;
-
-        //playing SFX
-        if(playSFX)
-        {
-            AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ItemInteraction, dropSFX, true);
-        }    
+    //Mutator method that marks the ingredient as added to the cauldron
+    public void AddToCauldron()
+    {
+        addedToCauldron = true;
     }
 }

@@ -21,7 +21,7 @@ public class GoblinAI : MonoBehaviour
 
     // References to the things the goblin can interact with - the only thing that changes is ingredients.
     private CrateHolder[] crates;
-    private List<IngredientHolder> ingredients;
+    private List<PickupObject> ingredients;
     private CauldronInteraction[] cauldrons;
     private QueueManager queue;
 
@@ -98,7 +98,7 @@ public class GoblinAI : MonoBehaviour
     {
         isPerformingAction = true;
 
-        IngredientHolder item = ingredients[UnityEngine.Random.Range(0, ingredients.Count)];
+        PickupObject item = ingredients[UnityEngine.Random.Range(0, ingredients.Count)];
 
         if (item == null)
         {
@@ -193,10 +193,10 @@ public class GoblinAI : MonoBehaviour
     // Used to find all the ingredients on the floor
     private void FindFloorItems()
     {
-        ingredients = new List<IngredientHolder>();
-        IngredientHolder[] ing = FindObjectsOfType<IngredientHolder>();
+        ingredients = new List<PickupObject>();
+        PickupObject[] ing = FindObjectsOfType<PickupObject>();
 
-        foreach (IngredientHolder ingredient in ing)
+        foreach (PickupObject ingredient in ing)
         {
             if (!ingredient.AddedToCauldron())
                 ingredients.Add(ingredient);

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 673819675195865954}
   - component: {fileID: 6996077545047624858}
   - component: {fileID: 1302497976632463783}
-  - component: {fileID: 2223536446940748280}
   - component: {fileID: 7276789477590418464}
   m_Layer: 6
   m_Name: Bottle_Prefab
@@ -97,23 +96,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2365aa82508257248828513cc11c57a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  recipeIngredient: {fileID: 11400000, guid: 610915c10d0751b44b86fdcd1393864f, type: 2}
   isHeld: 0
   pickUpSFX: {fileID: 8300000, guid: 28ab638ca864b3d45afa85039f2c9c25, type: 3}
   dropSFX: {fileID: 8300000, guid: 958eab05f15fc7b4f842e5ec094944d6, type: 3}
---- !u!114 &2223536446940748280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 232629980984179058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dbec579e7684134f867f00dbcdb7fa2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  recipeStepIngredient: {fileID: 11400000, guid: 610915c10d0751b44b86fdcd1393864f,
-    type: 2}
 --- !u!136 &7276789477590418464
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -148,7 +134,6 @@ GameObject:
   - component: {fileID: 6046672616352226318}
   - component: {fileID: 3700922920867343164}
   - component: {fileID: 4956964372629776814}
-  - component: {fileID: 2584692512498601129}
   m_Layer: 6
   m_Name: Bottle
   m_TagString: Untagged
@@ -221,28 +206,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2584692512498601129
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1955220575334945324}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 6121590469811200223, guid: 8ae2d62ccd280a646974c2fb83a393aa, type: 3}
 --- !u!1 &4417061401346224553
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,7 +217,6 @@ GameObject:
   - component: {fileID: 6244446652241045175}
   - component: {fileID: 1463188245877652268}
   - component: {fileID: 68288435674010767}
-  - component: {fileID: 610863681267563120}
   m_Layer: 6
   m_Name: Cork
   m_TagString: Untagged
@@ -327,28 +289,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &610863681267563120
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4417061401346224553}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 5217060457567411043, guid: 8ae2d62ccd280a646974c2fb83a393aa, type: 3}
 --- !u!1 &4948029764408668152
 GameObject:
   m_ObjectHideFlags: 0
@@ -360,7 +300,6 @@ GameObject:
   - component: {fileID: 813550563711461417}
   - component: {fileID: 8581827169888680931}
   - component: {fileID: 7561190872824759389}
-  - component: {fileID: 305689249100298247}
   m_Layer: 6
   m_Name: BottleInner
   m_TagString: Untagged
@@ -433,28 +372,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &305689249100298247
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4948029764408668152}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 5885090576153703262, guid: 8ae2d62ccd280a646974c2fb83a393aa, type: 3}
 --- !u!1 &7104233210140413935
 GameObject:
   m_ObjectHideFlags: 0

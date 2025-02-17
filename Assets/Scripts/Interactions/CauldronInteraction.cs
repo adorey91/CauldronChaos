@@ -23,7 +23,6 @@ public class CauldronInteraction : MonoBehaviour
     // Recipe variables
     private RecipeSO recipe;
     private GameObject ingredientGO;
-    private Renderer curPotionRend;
     private int curStepIndex = 0;
     private int curStirAmount = 0;
     private bool canInteract;
@@ -52,7 +51,6 @@ public class CauldronInteraction : MonoBehaviour
     [SerializeField] private SFXLibrary FinishPotionSounds;
     [SerializeField] private SFXLibrary incorrectStepSounds;
     [SerializeField] private SFXLibrary stirSouds;
-
 
 
     public void Start()
@@ -88,13 +86,13 @@ public class CauldronInteraction : MonoBehaviour
     #endregion
 
     #region Recipe Steps
-    public void AddIngredient(IngredientHolder ingredientHolder, GameObject ingredientObject)
+    public void AddIngredient(PickupObject ingredientHolder, GameObject ingredientObject)
     {
         ingredientGO = ingredientObject;
 
         currentStep = null;
 
-        currentStep = ingredientHolder.recipeStepIngredient.stepName;
+        currentStep = ingredientHolder.recipeIngredient.stepName;
 
         // grabs the ingredient from the _recipes step that's holding it.
         ingredientGO.transform.DOJump(ingredientInsertPoint.position, 1f, 1, 0.5f).SetEase(Ease.InOutSine);
@@ -134,7 +132,8 @@ public class CauldronInteraction : MonoBehaviour
     {
         // Play a sound here
         //AudioManager.instance.sfxManager.playSFX()
-        ingredientGO.GetComponent<Rigidbody>().isKinematic = true;
+        if(ingredientGO != null)
+            ingredientGO.GetComponent<Rigidbody>().isKinematic = true;
 
         incorrectStep.Play();
         ResetValues();
@@ -288,23 +287,9 @@ public class CauldronInteraction : MonoBehaviour
     #region Potion Completion
     private void CompletePotion()
     {
-
-        if (ingredientGO == null)
-            return;
-
-        if (ingredientGO.transform.childCount < 2)
-            return;
-
-        GameObject potionInside = ingredientGO.transform.GetChild(1).gameObject;
-        if (potionInside == null)
-            return;
-
-        curPotionRend = potionInside.GetComponent<Renderer>();
-        if (curPotionRend == null)
-            return;
+        if (ingredientGO == null) return;
 
         ingredientGO.GetComponent<Rigidbody>().isKinematic = false;
-        Destroy(ingredientGO.GetComponent<IngredientHolder>());
         ingredientGO.GetComponent<PotionOutput>().enabled = true;
         ingredientGO.GetComponent<PotionOutput>().potionInside = recipe;
         ingredientGO.transform.SetParent(null);

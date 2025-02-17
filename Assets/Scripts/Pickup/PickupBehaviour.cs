@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -16,6 +14,7 @@ public class PickupBehaviour : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private Image pickupUIHolder;
+    internal bool isHoldingItem = false;
 
     private void Awake()
     {
@@ -26,22 +25,12 @@ public class PickupBehaviour : MonoBehaviour
     private void OnEnable()
     {
         InputManager.PickupAction += Pickup; //subscribing to the action for picking up
-        CauldronTrigger.addedItem += RemoveItem;
-        OrderCounter.FilledOrder += RemoveItem;
     }
 
     //Function that runs when Gameobject script is attached to is disabled
     private void OnDisable()
     {
         InputManager.PickupAction -= Pickup; //un-subscribing to the action for picking up
-        CauldronTrigger.addedItem -= RemoveItem;
-        OrderCounter.FilledOrder -= RemoveItem;
-    }
-
-    private void RemoveItem()
-    {
-        heldObject = null;
-        playerAnimator.SetTrigger("Drop");
     }
 
 
@@ -55,18 +44,7 @@ public class PickupBehaviour : MonoBehaviour
             //player is holding something
             if (heldObject != null)
             {
-                playerAnimator.SetTrigger("Drop");
-                pickupUIHolder.enabled = false;
-                heldObject.Drop(); //return object to normal physics
-
-                //check if held item is an interactable
-                if (interactionBehaviour.GetHeldInteractable() != null)
-                {
-                    //if held interactable is detected set to null
-                    interactionBehaviour.UpdateHeldInteractable(null);
-                }
-
-                heldObject = null;
+               DropItem();
                 return;
             }
 
@@ -74,7 +52,6 @@ public class PickupBehaviour : MonoBehaviour
             Interactable container = interactionVolume.GetContainer();
             if (container != null)
             {
-                //if crate is detected grab from crate using alternate interact
                 container.Interact(this);
                 playerAnimator.SetTrigger("Pickup");
             }
@@ -91,14 +68,13 @@ public class PickupBehaviour : MonoBehaviour
                     heldObject.PickUp(pickupHolder);
                     pickupUIHolder.enabled = true;
 
-                    if(heldObject.TryGetComponent(out IngredientHolder ingredientHolder))
-                    {
-                        pickupUIHolder.sprite = ingredientHolder.recipeStepIngredient.ingredientSprite;
-                    }
-                    
-                    if(heldObject.TryGetComponent(out PotionOutput potionOutput))
+                    if (heldObject.TryGetComponent(out PotionOutput potionOutput))
                     {
                         pickupUIHolder.sprite = potionOutput.potionInside.potionIcon;
+                    }
+                    else if (heldObject.TryGetComponent(out PickupObject ingredientHolder))
+                    {
+                        pickupUIHolder.sprite = ingredientHolder.recipeIngredient.ingredientSprite;
                     }
 
                     //try to get interactable component of the held object
@@ -120,21 +96,26 @@ public class PickupBehaviour : MonoBehaviour
         heldObject = targetObject;
         pickupVolume.RemovePickupFromList(heldObject);
         pickupUIHolder.enabled = true;
-        pickupUIHolder.sprite = heldObject.GetComponent<IngredientHolder>().recipeStepIngredient.ingredientSprite;
+        pickupUIHolder.sprite = heldObject.GetComponent<PickupObject>().recipeIngredient.ingredientSprite;
         heldObject.PickUp(pickupHolder);
+        isHoldingItem = true;
     }
 
-    //Accessor method that returns if the player is holding something
-    public bool IsHoldingSomething()
+    private void DropItem()
     {
-        if (heldObject != null)
+        playerAnimator.SetTrigger("Drop");
+        pickupUIHolder.enabled = false;
+        heldObject.Drop();
+        isHoldingItem = false;
+
+        // check if held item is an interactable
+        if (interactionBehaviour.GetHeldInteractable() != null)
         {
-            return true;
+            //if held interactable is detected set to null
+            interactionBehaviour.UpdateHeldInteractable(null);
         }
-        else
-        {
-            return false;
-        }
+
+        heldObject = null;
     }
 
     public Transform GetHolderLocation()

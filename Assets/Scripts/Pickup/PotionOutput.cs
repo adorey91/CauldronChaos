@@ -45,49 +45,7 @@ public class PotionOutput : MonoBehaviour
         }
 
         if (!wasPaused && addedWobble)
-        {
-            if (!wasPaused && addedWobble)
-            {
-                time += Time.deltaTime;
-
-                // Decrease wobble over time
-                wobbleAmountToAddX = Mathf.Lerp(wobbleAmountToAddX, 0, Time.deltaTime * Recovery);
-                wobbleAmountToAddZ = Mathf.Lerp(wobbleAmountToAddZ, 0, Time.deltaTime * Recovery);
-
-                // Create a sine wave wobble
-                pulse = 2 * Mathf.PI * WobbleSpeed;
-                wobbleAmountX = wobbleAmountToAddX * Mathf.Sin(pulse * time);
-                wobbleAmountZ = wobbleAmountToAddZ * Mathf.Sin(pulse * time);
-
-                if(float.IsNaN(wobbleAmountX) || float.IsNaN(wobbleAmountZ))
-                {
-                    wobbleAmountX = 0;
-                    wobbleAmountZ = 0;
-
-                    return;
-                }
-
-                // Apply rotation wobble instead of modifying the material
-                transform.localRotation = Quaternion.Euler(
-                    wobbleAmountX * 5f,   // Small tilt on X
-                    transform.localRotation.eulerAngles.y, // Keep original Y rotation
-                    wobbleAmountZ * 5f    // Small tilt on Z
-                );
-
-                // Calculate velocity changes
-                velocity = (lastPos - transform.position) / Time.deltaTime;
-                angularVelocity = transform.rotation.eulerAngles - lastRot;
-
-                // Add clamped velocity to wobble
-                wobbleAmountToAddX += Mathf.Clamp((velocity.x + (angularVelocity.z * 0.2f)) * MaxWobble, -MaxWobble, MaxWobble);
-                wobbleAmountToAddZ += Mathf.Clamp((velocity.z + (angularVelocity.x * 0.2f)) * MaxWobble, -MaxWobble, MaxWobble);
-
-                // Keep last position and rotation
-                lastPos = transform.position;
-                lastRot = transform.rotation.eulerAngles;
-            }
-
-        }
+            Wobble();
     }
 
     public void SetPotionColor()
@@ -105,5 +63,46 @@ public class PotionOutput : MonoBehaviour
         rend.SetPropertyBlock(propBlock);
 
         addedWobble = true;
+    }
+
+    private void Wobble()
+    {
+        time += Time.deltaTime;
+
+        // Decrease wobble over time
+        wobbleAmountToAddX = Mathf.Lerp(wobbleAmountToAddX, 0, Time.deltaTime * Recovery);
+        wobbleAmountToAddZ = Mathf.Lerp(wobbleAmountToAddZ, 0, Time.deltaTime * Recovery);
+
+        // Create a sine wave wobble
+        pulse = 2 * Mathf.PI * WobbleSpeed;
+        wobbleAmountX = wobbleAmountToAddX * Mathf.Sin(pulse * time);
+        wobbleAmountZ = wobbleAmountToAddZ * Mathf.Sin(pulse * time);
+
+        if (float.IsNaN(wobbleAmountX) || float.IsNaN(wobbleAmountZ))
+        {
+            wobbleAmountX = 0;
+            wobbleAmountZ = 0;
+
+            return;
+        }
+
+        // Apply rotation wobble instead of modifying the material
+        transform.localRotation = Quaternion.Euler(
+            wobbleAmountX * 5f,   // Small tilt on X
+            transform.localRotation.eulerAngles.y, // Keep original Y rotation
+            wobbleAmountZ * 5f    // Small tilt on Z
+        );
+
+        // Calculate velocity changes
+        velocity = (lastPos - transform.position) / Time.deltaTime;
+        angularVelocity = transform.rotation.eulerAngles - lastRot;
+
+        // Add clamped velocity to wobble
+        wobbleAmountToAddX += Mathf.Clamp((velocity.x + (angularVelocity.z * 0.2f)) * MaxWobble, -MaxWobble, MaxWobble);
+        wobbleAmountToAddZ += Mathf.Clamp((velocity.z + (angularVelocity.x * 0.2f)) * MaxWobble, -MaxWobble, MaxWobble);
+
+        // Keep last position and rotation
+        lastPos = transform.position;
+        lastRot = transform.rotation.eulerAngles;
     }
 }
