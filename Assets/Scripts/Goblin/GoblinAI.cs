@@ -25,6 +25,8 @@ public class GoblinAI : MonoBehaviour
     private CauldronInteraction[] cauldrons;
     private QueueManager queue;
 
+    private Coroutine currentAction;
+
     // Action to start the goblin chaos
     public static Action StartGoblinChaos;
 
@@ -34,8 +36,6 @@ public class GoblinAI : MonoBehaviour
         crates = FindObjectsOfType<CrateHolder>();
         queue = FindObjectOfType<QueueManager>();
         cauldrons = FindObjectsOfType<CauldronInteraction>();
-
-        StartCoroutine(BehaviourLoop());
     }
 
     private void OnEnable()
@@ -56,6 +56,7 @@ public class GoblinAI : MonoBehaviour
 
     private IEnumerator BehaviourLoop()
     {
+        currentAction = null;
         while (true)
         {
             yield return new WaitForSeconds(actionCooldown);
@@ -64,18 +65,28 @@ public class GoblinAI : MonoBehaviour
 
             float roll = UnityEngine.Random.Range(0f, 1f);
 
+            if(currentAction != null)
+            {
+                StopCoroutine(currentAction);
+            }
+
             switch (roll)
             {
                 case float n when n < 0.4f:
                     FindFloorItems();
                     if (ingredients.Count > 0)
-                        StartCoroutine(ThrowItems());
+                        currentAction = StartCoroutine(ThrowItems());
+                    
                     break;
-                case float n when n < 0.7f: StartCoroutine(ThrowIngredients()); break;
-                case float n when n < 0.9f: StartCoroutine(SlurpCauldron()); break;
+                case float n when n < 0.7f: 
+                    currentAction = StartCoroutine(ThrowIngredients()); 
+                    break;
+                case float n when n < 0.9f: 
+                    currentAction = StartCoroutine(SlurpCauldron()); 
+                    break;
                 case float n when n < 1f:
                     if (queue.AreThereCustomers() != 0)
-                        StartCoroutine(ScareCustomer());
+                        currentAction = StartCoroutine(ScareCustomer());
                     break;
             }
         }
@@ -86,7 +97,6 @@ public class GoblinAI : MonoBehaviour
     private IEnumerator ThrowItems()
     {
         isPerformingAction = true;
-        Debug.Log("Goblin is throwing items!");
 
         IngredientHolder item = ingredients[UnityEngine.Random.Range(0, ingredients.Count)];
 
@@ -110,7 +120,6 @@ public class GoblinAI : MonoBehaviour
     private IEnumerator ThrowIngredients()
     {
         isPerformingAction = true;
-        Debug.Log("Goblin is throwing ingredients!");
 
         CrateHolder crate = crates[UnityEngine.Random.Range(0, crates.Length)];
 
@@ -134,8 +143,7 @@ public class GoblinAI : MonoBehaviour
     private IEnumerator SlurpCauldron()
     {
         isPerformingAction = true;
-        Debug.Log("Goblin is slurping the cauldron!");
-        // Reset the cauldron recipe
+
         CauldronInteraction cauldron = cauldrons[UnityEngine.Random.Range(0, cauldrons.Length)];
 
         agent.SetDestination(cauldron.transform.position);
@@ -152,8 +160,6 @@ public class GoblinAI : MonoBehaviour
     private IEnumerator ScareCustomer()
     {
         isPerformingAction = true;
-        Debug.Log("Goblin scared a customer!");
-        // Remove a customer from the queue
 
         agent.SetDestination(queue.transform.position);
         while (!ReachedTarget())

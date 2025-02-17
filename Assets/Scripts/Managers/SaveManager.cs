@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -34,15 +33,17 @@ public class SaveManager : MonoBehaviour
     {
         if (gameData.isValidSave)
         {
-            OnSaveExist?.Invoke(true);
             LevelSelect.OnSetUnlockedDays?.Invoke(GetUnlockedDaysCount());
             LevelSelect.OnSetScore?.Invoke(GetAllScores());
             LevelSelect.OnSetPeopleServed?.Invoke(GetAllPeopleServed());
+            OnSaveExist?.Invoke(true);
         }
         else
         {
             OnSaveExist?.Invoke(false);
             LevelSelect.OnSetUnlockedDays?.Invoke(1);
+            gameData = new GameData();
+            gameData.CreateNewSave();
         }
     }
 
@@ -65,13 +66,16 @@ public class SaveManager : MonoBehaviour
         {
             string json = File.ReadAllText(savePath);
             gameData = JsonUtility.FromJson<GameData>(json);
+
+            gameData.days[0].isUnlocked = true;
         }
     }
 
     private void SaveDayScore(int day, int score, int people, bool unlockNext)
     {
+        Debug.Log("saving day score " + day + " Is next day unlocked? " + unlockNext);
         // Update the day data if the day is valid
-        if (day >= 0 && day < gameData.days.Count)
+        if (day < gameData.days.Count)
         {
             DayData dayData = gameData.days[day];
 
@@ -84,7 +88,7 @@ public class SaveManager : MonoBehaviour
 
             // Unlock the next day if the current day is completed
             if (unlockNext)
-                UnlockDay(day + 1);
+                UnlockDay(day+1 );
         }
 
         SaveGame();
@@ -92,9 +96,11 @@ public class SaveManager : MonoBehaviour
 
     private void UnlockDay(int day)
     {
-        if (day >= 0 && day < gameData.days.Count)
+        if (day < gameData.days.Count)
         {
+            gameData.days[0].isUnlocked = true;
             gameData.days[day].isUnlocked = true;
+            LevelSelect.OnSetUnlockedDays?.Invoke(GetUnlockedDaysCount());
         }
     }
 
@@ -107,6 +113,7 @@ public class SaveManager : MonoBehaviour
             if (day.isUnlocked)
                 count++;
         }
+        
         return count;
     }
 
@@ -141,7 +148,8 @@ public class SaveManager : MonoBehaviour
             {
                 Debug.Log("Save file successfully deleted.");
                 gameData = new GameData();
-                gameData.isValidSave = false;
+                gameData.CreateNewSave();
+
             }
             else
             {

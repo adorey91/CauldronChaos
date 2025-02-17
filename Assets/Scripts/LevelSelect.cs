@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 public class LevelSelect : MonoBehaviour
 {
-    [Header("LevelButtons")]
-    [SerializeField] private Button[] levelButtons;
+    [SerializeField] private LevelSelectionButtons[] levelSelection;
 
     private int unlockedDays;
     private int[] score;
@@ -19,8 +18,8 @@ public class LevelSelect : MonoBehaviour
 
     private void Start()
     {
-        score = new int[levelButtons.Length];
-        peopleServed = new int[levelButtons.Length];
+        score = new int[levelSelection.Length];
+        peopleServed = new int[levelSelection.Length];
     }
 
     private void OnEnable()
@@ -41,22 +40,22 @@ public class LevelSelect : MonoBehaviour
 
     private void UpdateButtons()
     {
-        for (int i = 0; i < levelButtons.Length; i++)
+        for (int i = 0; i < levelSelection.Length; i++)
         {
-            TextMeshProUGUI buttonText = levelButtons[i].GetComponentInChildren<TextMeshProUGUI>();
-
             if (i < unlockedDays)
             {
-                levelButtons[i].interactable = true;
+                levelSelection[i].button.interactable = true;
+                levelSelection[i].dayImage.enabled = true;
 
                 if (score == null) break;
                 if (score[i] == 0) continue;
 
-                buttonText.text = $"Day {i + 1}\nScore: {score[i]}";
+                levelSelection[i].buttonText.text = $"Day {i + 1}\nScore: {score[i]}";
             }
             else
             {
-                levelButtons[i].interactable = false;
+                levelSelection[i].button.interactable = false;
+                levelSelection[i].dayImage.enabled = false;
             }
         }
     }
@@ -78,4 +77,12 @@ public class LevelSelect : MonoBehaviour
     {
         peopleServed = _people;
     }
+}
+
+[Serializable]
+public class LevelSelectionButtons
+{
+    public Button button;
+    public Image dayImage;
+    public TextMeshProUGUI buttonText;
 }

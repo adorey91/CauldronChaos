@@ -19,13 +19,29 @@ public class ChallengeTrigger : MonoBehaviour
     [SerializeField] private TMP_Dropdown dropdown;
 
 
+    public static Action OnStartChallenge;
+
+
     private void Start()
     {
         if (floor.Length > 0)
             defaultMaterial = floor[0].GetComponent<Collider>().material;
 
+        // use for testing only
         InitializeDropdown();
-        StartChallenge();
+        //StartChallenge();
+    }
+
+    private void OnEnable()
+    {
+        OnStartChallenge += StartChallenge;
+        Actions.OnEndDay += ResetChallenges;
+    }
+
+    private void OnDisable()
+    {
+        OnStartChallenge -= StartChallenge;
+        Actions.OnEndDay -= ResetChallenges;
     }
 
     private void InitializeDropdown()
@@ -62,9 +78,15 @@ public class ChallengeTrigger : MonoBehaviour
                     floor.GetComponent<Collider>().material = slipperyMaterial;
                 }
                 break;
-            case ChallengeType.MovingCauldron: CauldronMovement.OnStartChallenge?.Invoke (); break;
-            case ChallengeType.GoblinUnleashed: goblin.GetComponent<GoblinAI>().enabled = true; break;
-            case ChallengeType.WindyDay: break;
+            case ChallengeType.MovingCauldron: 
+                CauldronMovement.OnStartChallenge?.Invoke (); 
+                break;
+            case ChallengeType.GoblinUnleashed: 
+                GoblinAI.StartGoblinChaos?.Invoke(); 
+                break;
+            case ChallengeType.WindyDay: 
+                GoblinAI.StartGoblinChaos?.Invoke(); 
+                break;
             default: ResetChallenges(); break;
         }
     }
@@ -77,7 +99,8 @@ public class ChallengeTrigger : MonoBehaviour
         }
 
         CauldronMovement.OnEndChallenge?.Invoke();
-        goblin.GetComponent<GoblinAI>().enabled = false;
+        if(goblin != null)
+            goblin.GetComponent<GoblinAI>().enabled = false;
         PlayerMovement.OnIceDay?.Invoke(false);
     }
 }

@@ -28,15 +28,12 @@ public class UiManager : MonoBehaviour
 
     private ScoreManager scoreManager;
 
+    public static Action<bool> SetCursorVisibility;
+
 
     private void Start()
     {
         scoreManager = FindObjectOfType<ScoreManager>();
-
-        //if (Gamepad.current != null)
-        //    Cursor.lockState = CursorLockMode.Locked;
-        //else
-        //    Cursor.lockState = CursorLockMode.Confined;
 
         dayTimer = new(secondsToStart, false);
     }
@@ -66,10 +63,12 @@ public class UiManager : MonoBehaviour
         CameraMenuCollider.ReachedWaypoint += CameraReached;
         LevelManager.startTimer += StartDayCountdown;
         Actions.OnResetValues += ResetTimer;
+        SetCursorVisibility += SetCursor;
     }
 
     private void OnDisable()
     {
+        SetCursorVisibility -= SetCursor;
         Actions.OnStateChange -= UpdateUIForGameState;
         CameraMenuCollider.ReachedWaypoint -= CameraReached;
         LevelManager.startTimer -= StartDayCountdown;
@@ -114,6 +113,7 @@ public class UiManager : MonoBehaviour
         SetActiveUI(mainMenu);
         Actions.OnFirstSelect("Menu");
         Time.timeScale = 1;
+        SetCursor(true);
     }
 
     private void CameraReached(string waypoint)
@@ -136,10 +136,7 @@ public class UiManager : MonoBehaviour
     private void SelectLevel()
     {
         LevelSelect.UpdateLevelButtons();
-        //if (Gamepad.current != null)
-        //    Cursor.lockState = CursorLockMode.Locked;
-        //else
-            //Cursor.lockState = CursorLockMode.Confined;
+        Cursor.lockState = CursorLockMode.None;
 
         Actions.OnResetValues?.Invoke();
         SetActiveUI(levelSelect);
@@ -155,7 +152,9 @@ public class UiManager : MonoBehaviour
         SetActiveUI(gameplay);
         Time.timeScale = 1;
 
-        //Cursor.lockState = CursorLockMode.Locked;
+
+        SetCursor(true);
+        //SetCursor(false);
     }
 
     private void EndOfDay()
@@ -163,10 +162,7 @@ public class UiManager : MonoBehaviour
         SetActiveUI(endOfDay);
         Actions.OnFirstSelect("EndOfDay");
 
-        //if (Gamepad.current != null)
-        //    Cursor.lockState = CursorLockMode.Locked;
-        //else
-            //Cursor.lockState = CursorLockMode.Confined;
+        SetCursor(true);
     }
 
     private void Pause()
@@ -174,18 +170,13 @@ public class UiManager : MonoBehaviour
         SetActiveUI(pause);
         Actions.OnFirstSelect("Pause");
         Time.timeScale = 0;
-
-        //if (Gamepad.current != null)
-        //    Cursor.lockState = CursorLockMode.Locked;
-        //else
-            //Cursor.lockState = CursorLockMode.Confined;
+        SetCursor(true);
     }
 
     private void Settings()
     {
         SetActiveUI(settings);
         settingsManager.OpenSettings();
-
     }
     #endregion
 
@@ -193,7 +184,7 @@ public class UiManager : MonoBehaviour
     private void StartDayCountdown()
     {
         Debug.Log("Start Day Countdown");
-
+        ScoreManager.OnChallengeDay?.Invoke();
         Actions.OnFirstSelect("Gameplay");
         dayStartPanel.SetActive(true);
         dayTimer.StartTimer();
@@ -205,5 +196,19 @@ public class UiManager : MonoBehaviour
     {
         dayTimer.ResetTimer();
         timerStarted = false;
+    }
+
+    private void SetCursor(bool isVisible)
+    {
+        if (isVisible)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 }

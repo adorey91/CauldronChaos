@@ -18,6 +18,5 @@ public class RecipeSO : ScriptableObject
 
     [Header("Potion / Output")]
     public Sprite potionIcon;
-    public Material potionMaterial;
     public Color potionColor;
 }

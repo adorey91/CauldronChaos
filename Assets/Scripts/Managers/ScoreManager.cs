@@ -1,7 +1,10 @@
 using DG.Tweening;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+using System.Runtime.CompilerServices;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -9,7 +12,6 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dayText;
     [SerializeField] private TextMeshProUGUI peopleServedText;
     [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private int daysToPlay = 5;
 
     [Header("Day Timer")]
     [SerializeField] private int minutesPerDay = 5;
@@ -30,23 +32,23 @@ public class ScoreManager : MonoBehaviour
 
     [Header("Score Amounts")]
     [SerializeField] private int tipMultiplier = 2;
-    [SerializeField] private int[] scorePerLevel = new int[] { 300, 750, 1500, 1700, 1900 };
-    //[SerializeField] private int[] scorePerLevel = new int[] { 300, 500, 750, 1000, 1500, 1600, 1700, 1800, 1900, 2000 };
+    [SerializeField] private int[] scorePerLevel;
 
     // keeps track of current day / day score
-    private int _score = 0;
-    private int _people = 0;
-    private int _currentDay = 0;
+    private int score = 0;
+    private int people = 0;
+    private int currentDay = 0;
 
+    public static Action OnChallengeDay;
 
     private void Start()
     {
         dayTimer = new CustomTimer(minutesPerDay, true);
         
 
-        dayText.text = $"Day: {_currentDay}/{daysToPlay}";
-        scoreText.text = $"Score: {_score}";
-        peopleServedText.text = $"People Served: {_people}";
+        dayText.text = $"Day: {currentDay + 1}";
+        scoreText.text = $"Score: {score} / {scorePerLevel[currentDay]}";
+        peopleServedText.text = $"People Served: {people}";
     }
 
     private void OnEnable()
@@ -55,6 +57,7 @@ public class ScoreManager : MonoBehaviour
         Actions.OnStartDay += StartDay;
         Actions.OnEndDay += UpdateEODText;
         Actions.OnResetValues += ResetValues;
+        OnChallengeDay += CheckChallengeDay;
     }
 
     private void OnDisable()
@@ -63,6 +66,7 @@ public class ScoreManager : MonoBehaviour
         Actions.OnStartDay -= StartDay;
         Actions.OnEndDay -= UpdateEODText;
         Actions.OnResetValues -= ResetValues;
+        OnChallengeDay -= CheckChallengeDay;
     }
 
     private void Update()
@@ -83,7 +87,29 @@ public class ScoreManager : MonoBehaviour
 
     public void SetCurrentDay(int day)
     {
-        _currentDay = day - 1;
+        currentDay = day;
+
+        dayText.text = $"Day: {currentDay + 1}";
+        scoreText.text = $"Score: {score} / {scorePerLevel[currentDay]}";
+        peopleServedText.text = $"People Served: {people}";
+    }
+
+    private void CheckChallengeDay()
+    {
+        if ((currentDay + 1) % 2 == 0)
+        {
+            Debug.Log(currentDay +1);
+            ChallengeTrigger.OnStartChallenge?.Invoke();
+        }
+        else
+        {
+            if((currentDay +1) > 5)
+            {
+                GoblinAI.StartGoblinChaos?.Invoke();
+                Debug.Log("Goblin Chaos");
+            }
+            Debug.Log("Not a challenge day");
+        }
     }
 
 
@@ -122,19 +148,19 @@ public class ScoreManager : MonoBehaviour
         if (wasGivenOnTime)
         {
             int addedScore = regularScore * tipMultiplier;
-            _score += addedScore;
+            score += addedScore;
             _addToTotalScore = addedScore;
         }
         else
         {
-            _score += regularScore;
+            score += regularScore;
             _addToTotalScore = regularScore;
         }
 
-        _people++;
+        people++;
 
-        scoreText.text = $"Score: {_score} / {scorePerLevel[_currentDay]}";
-        peopleServedText.text = "People Served: " + _people;
+        scoreText.text = $"Score: {score} / {scorePerLevel[currentDay]}";
+        peopleServedText.text = "People Served: " + people;
     }
 
     private void UpdateEODText()
@@ -142,36 +168,37 @@ public class ScoreManager : MonoBehaviour
         bool increaseDayCount;
 
         // Check if the player has reached the score for the current day
-        if (_score < scorePerLevel[_currentDay])
+        if (score < scorePerLevel[currentDay])
             increaseDayCount = false;
         else
             increaseDayCount = true;
 
         // Save the current day's score and people served
-        SaveManager.OnSaveDay(_currentDay, _score, _people, increaseDayCount);
+        SaveManager.OnSaveDay(currentDay, score, people, increaseDayCount);
 
         // Sets the EOD text
-        eodTitle.text = $"End of Day {_currentDay}";
-        peopleServedEOD.text = $"People Served: {_people}";
+        eodTitle.text = $"End of Day {currentDay}";
+        peopleServedEOD.text = $"People Served: {people}";
 
         // Sets the EOD win/lose sprite and score text
         if (!increaseDayCount)
         {
             eodScoreText.color = Color.red;
             eodWinLoseSprite.sprite = loseSprite;
-            eodScoreText.text = $"Score: {_score}\nTry Level Again";
+            eodScoreText.text = $"Score: {score}\nTry Level Again";
         }
         else
         {
             eodScoreText.color = Color.green;
             eodWinLoseSprite.sprite = winSprite;
-            eodScoreText.text = $"Score: {_score}";
+            eodScoreText.text = $"Score: {score}";
+
         }
 
-        _people = 0;
-        _score = 0;
-
+        people = 0;
+        score = 0;
     }
+
 
     public void ResetValues()
     {
@@ -180,8 +207,8 @@ public class ScoreManager : MonoBehaviour
         timerStarted = false;
         timerHand.rotation = Quaternion.Euler(0, 0, 0);
         dayTimer = new CustomTimer(minutesPerDay, true);
-        dayText.text = $"Day: {_currentDay}/{daysToPlay}";
-        scoreText.text = $"Score: {_score}";
-        peopleServedText.text = $"People Served: {_people}";
+        dayText.text = $"Day: {currentDay}";
+        scoreText.text = $"Score: {score}";
+        peopleServedText.text = $"People Served: {people}";
     }
 }

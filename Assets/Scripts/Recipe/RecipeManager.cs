@@ -67,7 +67,7 @@ public class RecipeManager : MonoBehaviour
 
         if (recipeBookUi.activeSelf)
         {
-           Cursor.lockState = CursorLockMode.Locked;
+            UiManager.SetCursorVisibility(false);
 
             recipeBookUi.SetActive(false);
             InputManager.instance.MoveInputAction.Enable();
@@ -77,10 +77,7 @@ public class RecipeManager : MonoBehaviour
         }
         else
         {
-            if (Gamepad.current != null)
-                Cursor.lockState = CursorLockMode.Locked;
-            else
-                Cursor.lockState = CursorLockMode.Confined;
+            UiManager.SetCursorVisibility(true);
 
             recipeBookUi.SetActive(true);
             ControllerSelect.SelectRecipeButton(closeButton);
