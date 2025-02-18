@@ -25,10 +25,12 @@ public class GoblinAI : MonoBehaviour
     private CauldronInteraction[] cauldrons;
     private QueueManager queue;
 
+    private Coroutine goblinBehaviour;
     private Coroutine currentAction;
 
     // Action to start the goblin chaos
     public static Action StartGoblinChaos;
+    public static Action EndGoblinChaos;
 
     private void Start()
     {
@@ -41,17 +43,24 @@ public class GoblinAI : MonoBehaviour
     private void OnEnable()
     {
         StartGoblinChaos += StartChaos;
+        EndGoblinChaos += EndChaos;
     }
 
     private void OnDisable()
     {
         StartGoblinChaos -= StartChaos;
-        StopAllCoroutines();
+        EndGoblinChaos -= EndChaos;
     }
 
     private void StartChaos()
     {
-        StartCoroutine(BehaviourLoop());
+        goblinBehaviour = StartCoroutine(BehaviourLoop());
+    }
+
+    private void EndChaos()
+    {
+        if(goblinBehaviour != null)
+            StopCoroutine(goblinBehaviour);
     }
 
     private IEnumerator BehaviourLoop()

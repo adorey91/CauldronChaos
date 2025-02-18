@@ -111,8 +111,6 @@ public class QueueManager : MonoBehaviour
             }
         }
 
-        Debug.Log("No customers with that recipe");
-
         Vector3 startPos = potionObj.transform.position;
         Vector3 randomDirection = new Vector3(UnityEngine.Random.Range(-1f, 1f), 0, UnityEngine.Random.Range(0.5f, 2f));
         Vector3 endPos = startPos + randomDirection * 3f;

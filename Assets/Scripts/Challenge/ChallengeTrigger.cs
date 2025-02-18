@@ -10,10 +10,6 @@ public class ChallengeTrigger : MonoBehaviour
     public enum ChallengeType { None, SlipperyFloor, MovingCauldron, GoblinUnleashed, WindyDay, SnailSlimed }
     public ChallengeType challengeType;
 
-    [SerializeField] private GameObject[] floor;
-    [SerializeField] private GameObject[] cauldron;
-    [SerializeField] private GameObject goblin;
-
     [SerializeField] private PhysicMaterial slipperyMaterial;
     [SerializeField] private PhysicMaterial defaultMaterial;
     [SerializeField] private TMP_Dropdown dropdown;
@@ -24,12 +20,8 @@ public class ChallengeTrigger : MonoBehaviour
 
     private void Start()
     {
-        if (floor.Length > 0)
-            defaultMaterial = floor[0].GetComponent<Collider>().material;
-
-        // use for testing only
+        // used in testing scene only
         InitializeDropdown();
-        //StartChallenge();
     }
 
     private void OnEnable()
@@ -73,10 +65,7 @@ public class ChallengeTrigger : MonoBehaviour
             case ChallengeType.None: ResetChallenges(); break;
             case ChallengeType.SlipperyFloor: 
                 PlayerMovement.OnIceDay?.Invoke(true);
-                foreach (GameObject floor in floor)
-                {
-                    floor.GetComponent<Collider>().material = slipperyMaterial;
-                }
+               Floor.OnApplyMaterial?.Invoke(slipperyMaterial);
                 break;
             case ChallengeType.MovingCauldron: 
                 CauldronMovement.OnStartChallenge?.Invoke (); 
@@ -93,14 +82,9 @@ public class ChallengeTrigger : MonoBehaviour
 
     private void ResetChallenges()
     {
-        foreach (GameObject floor in floor)
-        {
-            floor.GetComponent<Collider>().material = defaultMaterial;
-        }
-
+        Floor.OnApplyMaterial?.Invoke(defaultMaterial);
         CauldronMovement.OnEndChallenge?.Invoke();
-        if(goblin != null)
-            goblin.GetComponent<GoblinAI>().enabled = false;
         PlayerMovement.OnIceDay?.Invoke(false);
+        GoblinAI.EndGoblinChaos?.Invoke();
     }
 }

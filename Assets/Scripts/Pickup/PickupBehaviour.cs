@@ -68,7 +68,7 @@ public class PickupBehaviour : MonoBehaviour
                     heldObject.PickUp(pickupHolder);
                     pickupUIHolder.enabled = true;
 
-                    if (heldObject.TryGetComponent(out PotionOutput potionOutput))
+                    if (heldObject.TryGetComponent(out PotionOutput potionOutput) && potionOutput.potionInside != null)
                     {
                         pickupUIHolder.sprite = potionOutput.potionInside.potionIcon;
                     }
