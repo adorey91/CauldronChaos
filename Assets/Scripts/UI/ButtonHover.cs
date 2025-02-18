@@ -18,12 +18,20 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void OnPointerEnter(PointerEventData eventData)
     {
         button.transform.DOKill();
-        button.transform.DOScale(1.3f, 0.2f);
-        button.transform.DOLocalMoveZ(-1f, 0.2f).SetUpdate(true); // Moves forward
+        button.transform.DOScale(1.3f, 0.2f).SetUpdate(true).OnComplete(() =>
+        {
+            if(isLevelSelectButton)
+            {
+                button.transform.SetAsLastSibling();
+            }
+        });
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        if(isLevelSelectButton)
+            button.transform.SetAsFirstSibling();
+        
         button.transform.DOKill();
         button.transform.DOScale(1f, 0.2f);
         button.transform.DOLocalMoveZ(0f, 0.2f).SetUpdate(true); // Moves back
@@ -32,14 +40,21 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void OnSelect(BaseEventData eventData)
     {
         button.transform.DOKill();
-        button.transform.DOScale(1.3f, 0.2f);
-        button.transform.DOLocalMoveZ(-1f, 0.2f).SetUpdate(true); // Moves forward
+        button.transform.DOScale(1.3f, 0.2f).SetUpdate(true).OnComplete(() =>
+        {
+            if (isLevelSelectButton)
+            {
+                button.transform.SetAsLastSibling();
+            }
+        });
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
+        if (isLevelSelectButton)
+            button.transform.SetAsFirstSibling();
+
         button.transform.DOKill();
-        button.transform.DOScale(1f, 0.2f);
-        button.transform.DOLocalMoveZ(0f, 0.2f).SetUpdate(true); // Moves back
+        button.transform.DOScale(1f, 0.2f).SetUpdate(true);
     }
 }
