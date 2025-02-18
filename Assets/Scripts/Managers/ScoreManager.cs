@@ -202,7 +202,6 @@ public class ScoreManager : MonoBehaviour
 
     public void ResetValues()
     {
-        Debug.Log("Resetting Time");
         dayTimerText.text = null;
         timerStarted = false;
         timerHand.rotation = Quaternion.Euler(0, 0, 0);
