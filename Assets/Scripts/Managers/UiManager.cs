@@ -23,6 +23,10 @@ public class UiManager : MonoBehaviour
     [SerializeField] private GameObject dayStartPanel;
     [SerializeField] private TextMeshProUGUI dayStartText;
     [SerializeField] private int secondsToStart;
+
+    [Header("SFX")]
+    [SerializeField] private AudioClip dayStartSFX;
+
     private CustomTimer dayTimer;
     private bool timerStarted = false;
 
@@ -190,6 +194,9 @@ public class UiManager : MonoBehaviour
         dayTimer.StartTimer();
 
         timerStarted = true;
+
+        //playing day start SFX
+        AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ShopSounds, dayStartSFX, true);
     }
 
     private void ResetTimer()

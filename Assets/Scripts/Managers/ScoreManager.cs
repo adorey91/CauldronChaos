@@ -34,6 +34,9 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private int tipMultiplier = 2;
     [SerializeField] private int[] scorePerLevel;
 
+    [Header("SFX")]
+    [SerializeField] private AudioClip endOfDaySFX;
+
     // keeps track of current day / day score
     private int score = 0;
     private int people = 0;
@@ -81,6 +84,9 @@ public class ScoreManager : MonoBehaviour
                 Actions.OnForceStateChange("EndOfDay");
 
                 timerStarted = false;
+
+                //playing end of day SFX
+                AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ShopSounds, endOfDaySFX, true);
             }
         }
     }
