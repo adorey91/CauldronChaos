@@ -28,6 +28,7 @@ public class LevelSelect : MonoBehaviour
         OnSetUnlockedDays += SetUnlockedDays;
         OnSetScore += SetScore;
         OnSetPeopleServed += SetPeopleServed;
+        SaveManager.OnDeleteGame += ResetButtonLabels;
     }
 
     private void OnDisable()
@@ -36,7 +37,17 @@ public class LevelSelect : MonoBehaviour
         OnSetUnlockedDays += SetUnlockedDays;
         OnSetScore += SetScore;
         OnSetPeopleServed += SetPeopleServed;
+        SaveManager.OnDeleteGame -= ResetButtonLabels;
     }
+
+    private void ResetButtonLabels()
+    {
+        for(int i = 0; i < levelSelection.Length; i++)
+        {
+            levelSelection[i].buttonText.text = $"Day {i + 1}";
+        }
+    }
+
 
     private void UpdateButtons()
     {

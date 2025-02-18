@@ -88,10 +88,11 @@ public class CauldronInteraction : MonoBehaviour
     #region Recipe Steps
     public void AddIngredient(PickupObject ingredientHolder, GameObject ingredientObject)
     {
+        // Set the ingredient to the current ingredient
         ingredientGO = ingredientObject;
 
+        // Set the current step to the ingredient's step
         currentStep = null;
-
         currentStep = ingredientHolder.recipeIngredient.stepName;
 
         // grabs the ingredient from the _recipes step that's holding it.
@@ -101,15 +102,11 @@ public class CauldronInteraction : MonoBehaviour
         // Play a sound here
         AudioManager.instance.sfxManager.PlaySFX(SFX_Type.StationSounds, addIngredientSounds.PickAudioClip(), true);
 
+        // Check if it's the first step in the recipe or not
         if (curStepIndex == 0)
-        {
             StartNewRecipe();
-        }
         else
-        {
             AdvanceToNextStep();
-        }
-
     }
 
     private void Stir()
@@ -117,14 +114,15 @@ public class CauldronInteraction : MonoBehaviour
         //play stirring sound
         AudioManager.instance.sfxManager.PlaySFX(SFX_Type.StationSounds, stirSouds.PickAudioClip(), false);
 
+        // If the recipe is null, find the possible recipes
         if (recipe == null)
         {
             FindPossibleRecipes();
             return;
         }
 
+        // If the recipe is not null, advance to the next step
         AdvanceToNextStep();
-
     }
 
     // Handles the incorrect step
@@ -139,6 +137,7 @@ public class CauldronInteraction : MonoBehaviour
         ResetValues();
     }
 
+    // Find the possible recipes based on the current step
     private void FindPossibleRecipes()
     {
         List<RecipeSO> filterRecipes = new();
@@ -194,11 +193,9 @@ public class CauldronInteraction : MonoBehaviour
                 nextStep = recipe.steps[curStepIndex].stepName;
             }
         }
-
-        //Debug.Log($"Updated nextStep: {nextStep}");
     }
 
-
+    // Start a new recipe based on the current step
     private void StartNewRecipe()
     {
         possibleRecipes.Clear();
@@ -238,7 +235,7 @@ public class CauldronInteraction : MonoBehaviour
         }
     }
 
-
+    // Advance to the next step in the recipe
     private void AdvanceToNextStep()
     {
         if (recipe == null)
@@ -278,13 +275,10 @@ public class CauldronInteraction : MonoBehaviour
             //Debug.Log($"Next expected step: {nextStep}");
         }
     }
-
-
-
-
     #endregion
 
     #region Potion Completion
+    // Complete the potion and throw it
     private void CompletePotion()
     {
         if (ingredientGO == null) return;
@@ -318,7 +312,6 @@ public class CauldronInteraction : MonoBehaviour
 
         ingredientGO.transform.DOScale(new Vector3(1f, 1f, 1f), 1f).SetEase(Ease.InOutSine);
         ingredientGO.transform.DOJump(targetPosition, throwHeight, 1, throwDuration);
-
     }
 
 
@@ -327,13 +320,9 @@ public class CauldronInteraction : MonoBehaviour
         if (recipe != null && recipe.steps[0].ingredient == RecipeStepSO.Ingredient.Bottle)
         {
             if (potionIndex < 3) // Ensure we don't reset too soon
-            {
                 potionIndex++;
-            }
             else
-            {
                 ResetValues();
-            }
         }
 
         cauldronFill.DOLocalMove(cauldronFill.localPosition - new Vector3(0, 0.11f, 0), 0.8f).OnComplete(CheckPotionCount);
@@ -356,14 +345,14 @@ public class CauldronInteraction : MonoBehaviour
                 ResetValues();
         }
     }
-
-
     #endregion
 
     private void SetInactive()
     {
         if (currentStep == "Bottle_Potion") return;
-        ingredientGO.GetComponent<Rigidbody>().isKinematic = true;
+
+        DOTween.Kill(ingredientGO.transform);
+        Destroy(ingredientGO);
     }
 
     internal void GoblinInteraction()
@@ -392,11 +381,8 @@ public class CauldronInteraction : MonoBehaviour
 
             curStirAmount++;
 
-            currentStep = "Stir_C_1";  
-            //Debug.Log($"Stirring Clockwise: {currentStep}");
-
-            spoon.DORotate(new Vector3(0, 360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
-
+            currentStep = "Stir_C_1";
+            spoon.DOLocalRotate(new Vector3(0, 360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
             Stir();
         }
     }
@@ -410,14 +396,10 @@ public class CauldronInteraction : MonoBehaviour
             curStirAmount++;
 
             currentStep = "Stir_CC_1"; 
-            //Debug.Log($"Stirring CounterClockwise: {currentStep}");
-
-            spoon.DORotate(new Vector3(0, -360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
+            spoon.DOLocalRotate(new Vector3(0, -360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
             Stir();
         }
     }
-
-
     #endregion
 
     // using this to check if the player is in range to stir the cauldron
@@ -429,6 +411,7 @@ public class CauldronInteraction : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        canInteract = false;
+        if (other.gameObject.CompareTag("Player"))
+            canInteract = false;
     }
 }

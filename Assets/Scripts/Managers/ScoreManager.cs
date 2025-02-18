@@ -1,10 +1,8 @@
 using DG.Tweening;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-using System.Runtime.CompilerServices;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -183,7 +181,7 @@ public class ScoreManager : MonoBehaviour
         SaveManager.OnSaveDay(currentDay, score, people, increaseDayCount);
 
         // Sets the EOD text
-        eodTitle.text = $"End of Day {currentDay}";
+        eodTitle.text = $"End of Day {currentDay + 1}";
         peopleServedEOD.text = $"People Served: {people}";
 
         // Sets the EOD win/lose sprite and score text

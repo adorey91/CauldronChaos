@@ -46,12 +46,16 @@ public class UiManager : MonoBehaviour
     {
         if (timerStarted)
         {
+            // If the timer has reached 0 then start the day
             if (dayTimer.UpdateTimer())
             {
+                //playing day start SFX
+                AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ShopSounds, dayStartSFX, true);
                 dayStartPanel.SetActive(false); // Disable the day start panel
                 dayTimer.ResetTimer();
                 Actions.OnStartDay?.Invoke(); // Invoke the StartDay action
                 timerStarted = false;
+
             }
             else
             {
@@ -141,6 +145,7 @@ public class UiManager : MonoBehaviour
     {
         LevelSelect.UpdateLevelButtons();
         Cursor.lockState = CursorLockMode.None;
+        Time.timeScale = 1;
 
         Actions.OnResetValues?.Invoke();
         SetActiveUI(levelSelect);
@@ -184,7 +189,7 @@ public class UiManager : MonoBehaviour
     }
     #endregion
 
-
+    // Starts the countdown for the day to start
     private void StartDayCountdown()
     {
         Debug.Log("Start Day Countdown");
@@ -194,9 +199,6 @@ public class UiManager : MonoBehaviour
         dayTimer.StartTimer();
 
         timerStarted = true;
-
-        //playing day start SFX
-        AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ShopSounds, dayStartSFX, true);
     }
 
     private void ResetTimer()

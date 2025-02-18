@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.IO;
+using TMPro;
 using UnityEngine;
 
 
@@ -7,14 +9,19 @@ public class SaveManager : MonoBehaviour
 {
     private string savePath;
     private string saveFileName = "cauldronChaos.json";
+    [SerializeField] private TextMeshProUGUI deleteFileConfirmation;
 
     public GameData gameData;
 
     public static Action<bool> OnSaveExist;
     public static Action<int, int, int, bool> OnSaveDay;
+    public static Action OnDeleteGame;
+
+    private Coroutine deleteConfirm;
 
     public void Start()
     {
+       deleteFileConfirmation.enabled = false;
         savePath = Path.Combine(Application.persistentDataPath, saveFileName);
         LoadGame();
     }
@@ -142,19 +149,27 @@ public class SaveManager : MonoBehaviour
         if (File.Exists(savePath))
         {
             File.Delete(savePath);
-            Debug.Log("Save file deleted");
 
+            // Will reset the game data and refresh the level select screen
             if (!File.Exists(savePath))
             {
-                Debug.Log("Save file successfully deleted.");
                 gameData = new GameData();
                 gameData.CreateNewSave();
-
-            }
-            else
-            {
-                Debug.LogError("Failed to delete save file.");
+                OnDeleteGame?.Invoke();
+                deleteConfirm = StartCoroutine(ShowDeleteConfirmation("Save File Deleted"));
             }
         }
+        else
+        {
+            deleteConfirm = StartCoroutine(ShowDeleteConfirmation("No Save File Found"));
+        }
+    }
+
+    private IEnumerator ShowDeleteConfirmation(string text)
+    {
+        deleteFileConfirmation.enabled = true;
+        deleteFileConfirmation.text = text;
+        yield return new WaitForSeconds(2);
+        deleteFileConfirmation.enabled = false;
     }
 }

@@ -218,6 +218,8 @@ public class QueueManager : MonoBehaviour
 
     private void RemoveAllCustomers()
     {
+        startCustomers = false;
+
         foreach (GameObject customer in customers)
         {
             Destroy(customer);
@@ -225,7 +227,6 @@ public class QueueManager : MonoBehaviour
 
         newDay = false;
         customers.Clear();
-        startCustomers = false;
     }
 
 
