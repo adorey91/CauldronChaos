@@ -1,6 +1,4 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CrateHolder : Interactable
@@ -16,12 +14,12 @@ public class CrateHolder : Interactable
         {
             switch (crateType)
             {
-                case CrateType.Bottle: ingredientPrefab = LoadPrefab("Assets/Prefabs/Ingredient_Prefabs/Bottle_Prefab.prefab"); break;
-                case CrateType.Mushroom: ingredientPrefab = LoadPrefab("Assets/Prefabs/Ingredient_Prefabs/Mushroom.prefab"); break;
-                case CrateType.RabbitFoot: ingredientPrefab = LoadPrefab("Assets/Prefabs/Ingredient_Prefabs/Rabbit_Foot_Prefab.prefab"); break;
-                case CrateType.EyeOfBasilisk: ingredientPrefab = LoadPrefab("Assets/Prefabs/Ingredient_Prefabs/Eye_of_Basilisk_Prefab.prefab"); break;
-                case CrateType.Mandrake: ingredientPrefab = LoadPrefab("Assets/Prefabs/Ingredient_Prefabs/Mandrake.prefab"); break;
-                case CrateType.TrollBone: ingredientPrefab = LoadPrefab("Assets/Prefabs/Ingredient_Prefabs/Troll_Bone.prefab"); break;
+                case CrateType.Bottle: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Bottle_Prefab.prefab"); break;
+                case CrateType.Mushroom: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Mushroom.prefab"); break;
+                case CrateType.RabbitFoot: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Rabbit_Foot_Prefab.prefab"); break;
+                case CrateType.EyeOfBasilisk: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Eye_of_Basilisk_Prefab.prefab"); break;
+                case CrateType.Mandrake: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Mandrake.prefab"); break;
+                case CrateType.TrollBone: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Troll_Bone.prefab"); break;
             }
         }
     }
@@ -62,7 +60,7 @@ public class CrateHolder : Interactable
 
     private GameObject LoadPrefab(string path)
     {
-        GameObject prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(path);
+        GameObject prefab = Resources.Load<GameObject>(path);
 
         if (prefab == null)
         {

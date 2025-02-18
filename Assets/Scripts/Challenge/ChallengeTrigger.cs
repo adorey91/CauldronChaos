@@ -1,9 +1,6 @@
 using UnityEngine;
 using System;
-using UnityEngine.UI;
-using UnityEditor.IMGUI.Controls;
 using TMPro;
-using UnityEditor;
 
 public class ChallengeTrigger : MonoBehaviour
 {
@@ -43,13 +40,14 @@ public class ChallengeTrigger : MonoBehaviour
             dropdown.ClearOptions();
             foreach (ChallengeType challenge in Enum.GetValues(typeof(ChallengeType)))
             {
-                string challengeName = ObjectNames.NicifyVariableName(challenge.ToString());
+                string challengeName = challenge.ToString();
                 dropdown.options.Add(new TMP_Dropdown.OptionData(challengeName));
             }
 
             dropdown.onValueChanged.AddListener(OnDropdownChanged);
         }
     }
+
     private void OnDropdownChanged(int index)
     {
         challengeType = (ChallengeType)index; // Convert dropdown index to ChallengeType
