@@ -7738,10 +7738,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   howToPlayCanvas: {fileID: 638633096332771184}
   _howToPlayImages:
-  - {fileID: 21300000, guid: e3a87bfc438073349ae55a1b7a1994a8, type: 3}
-  - {fileID: 21300000, guid: 0e0f831ce66b7fc4fbce1960269ea3d4, type: 3}
-  - {fileID: 21300000, guid: 4e415f4043f36a241b9b99cccd36a5b7, type: 3}
-  - {fileID: 21300000, guid: 90f7d7e29624dda41a965e335edb26a1, type: 3}
+  - {fileID: 21300000, guid: e5fb1b79d3ae38448807c9ed6511c1ce, type: 3}
+  - {fileID: 21300000, guid: 793386cc95be0f045b0b25b4e3d858ee, type: 3}
+  - {fileID: 21300000, guid: 18cbd253e87ae534392181f6be814bab, type: 3}
+  - {fileID: 21300000, guid: 7f6fa6e30551d854db2ed988de804d17, type: 3}
+  - {fileID: 21300000, guid: e60b68ed3355a8146b6957e0d7b0da77, type: 3}
+  - {fileID: 21300000, guid: 134cf527a7d5bce4d8ea3879e60aa3cc, type: 3}
+  - {fileID: 21300000, guid: a3abd233fadccb74b8abc9c609b6c37e, type: 3}
+  - {fileID: 21300000, guid: faee14242b517734c97defe6abbca413, type: 3}
   howToPlayImage: {fileID: 2387712156653717851}
   imageBG: {fileID: 474891334943318497}
   backButton: {fileID: 6162111227458379247}
@@ -10232,7 +10236,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6971208047623907001}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.010230631, y: 0.5191887, z: 0.006215514, w: 0.8545758}
+  m_LocalRotation: {x: -0.009352707, y: 0.6241123, z: 0.007471606, w: 0.78124297}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -13187,7 +13191,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8788826478654998836}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.01023063, y: 0.51918876, z: 0.006215515, w: 0.85457575}
+  m_LocalRotation: {x: -0.009352707, y: 0.6241123, z: 0.007471606, w: 0.78124297}
   m_LocalPosition: {x: -2.5189395, y: 6.974099, z: -9.164787}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
