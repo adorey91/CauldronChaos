@@ -2331,6 +2331,7 @@ MonoBehaviour:
   loseSprite: {fileID: 21300000, guid: 90f7d7e29624dda41a965e335edb26a1, type: 3}
   tipMultiplier: 2
   scorePerLevel: 2c010000f4010000ee020000e8030000dc05000040060000a4060000080700006c070000d0070000
+  endOfDaySFX: {fileID: 8300000, guid: 232f504a7739c1f429065a8f60337c66, type: 3}
 --- !u!1 &1866572031274777868
 GameObject:
   m_ObjectHideFlags: 0
@@ -6361,6 +6362,7 @@ MonoBehaviour:
   dayStartPanel: {fileID: 6920660768894710421}
   dayStartText: {fileID: 6467723165650828040}
   secondsToStart: 4
+  dayStartSFX: {fileID: 8300000, guid: da32e896bb83a1a4a922b1eb83cb258d, type: 3}
 --- !u!1 &4585316195480795298
 GameObject:
   m_ObjectHideFlags: 0
@@ -10232,7 +10234,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6971208047623907001}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.010230631, y: 0.5191887, z: 0.006215514, w: 0.8545758}
+  m_LocalRotation: {x: -0.009539839, y: 0.6040266, z: 0.00723115, w: 0.7968742}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -13187,7 +13189,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8788826478654998836}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.01023063, y: 0.51918876, z: 0.006215515, w: 0.85457575}
+  m_LocalRotation: {x: -0.009539838, y: 0.6040267, z: 0.0072311494, w: 0.7968742}
   m_LocalPosition: {x: -2.5189395, y: 6.974099, z: -9.164787}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
