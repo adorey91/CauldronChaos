@@ -13,19 +13,19 @@ public class ControllerSelect : MonoBehaviour
     [SerializeField] private GameObject settingsFirstSelect;
     [SerializeField] private GameObject levelSelectFirstSelect;
     [SerializeField] private GameObject audioFirstSelect;
-    [SerializeField] private GameObject videoFirstSelect;
     [SerializeField] private GameObject controlsFirstSelect;
     [SerializeField] private GameObject endOfDayFirstSelect;
     [SerializeField] private GameObject introFirstSelect;
     [SerializeField] private GameObject deleteFileFirstSelect;
     [SerializeField] private GameObject howToPlayFirstSelect;
+    [SerializeField] private GameObject debugFirstSelect;
 
     [SerializeField] private EventSystem eventSystem;
 
     private GameObject _firstSelected;
 
     // Actions for controller select
-    public static Action <GameObject> SelectRecipeButton;
+    public static Action<GameObject> SelectRecipeButton;
     public static Action<string> OnFirstSelect;
 
     private void OnEnable()
@@ -57,12 +57,6 @@ public class ControllerSelect : MonoBehaviour
         return Gamepad.all.Count > 0;
     }
 
-    // Sets the first selected button for the controller for the delete file menu
-    public void SetControllerFirstSelect()
-    {
-        SetFirstSelect("DeleteFile");
-    }
-
     // Sets the first selected button for the controller depending on the string
     public void SetFirstSelect(string menu)
     {
@@ -79,14 +73,14 @@ public class ControllerSelect : MonoBehaviour
             case "Settings": _firstSelected = settingsFirstSelect; break;
             case "Audio": _firstSelected = audioFirstSelect; break;
             case "Gameplay": _firstSelected = null; break;
-            case "Video": _firstSelected = videoFirstSelect; break;
             case "Intro": _firstSelected = introFirstSelect; break;
             case "Controls": _firstSelected = controlsFirstSelect; break;
             case "EndOfDay": _firstSelected = endOfDayFirstSelect; break;
             case "DeleteFile": _firstSelected = deleteFileFirstSelect; break;
             case "HowToPlay": _firstSelected = howToPlayFirstSelect; break;
-            default: 
-                _firstSelected = null; 
+            case "Debug": _firstSelected = debugFirstSelect; break;
+            default:
+                _firstSelected = null;
                 break;
         }
 

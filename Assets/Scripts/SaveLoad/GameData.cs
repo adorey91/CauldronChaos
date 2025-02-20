@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameData
 {
     public bool isValidSave;
+    public bool abovePlayerUI;
     public List<DayData> days = new(10);
 
     public void CreateNewSave()

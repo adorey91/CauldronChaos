@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -6,23 +7,26 @@ public class SettingsManager : MonoBehaviour
 {
     [Header("Settings Panels")]
     [SerializeField] private GameObject settingsPanel;
-    [SerializeField] private GameObject audioPanel;
-    [SerializeField] private GameObject videoPanel;
+    [SerializeField] private GameObject audioVideoPanel;
     [SerializeField] private GameObject controlsPanel;
+    [SerializeField] private GameObject deleteFilePanel;
+    [SerializeField] private GameObject debugPanel;
 
     [Header("Settings Buttons")]
     [SerializeField] private Button[] settingsButton;
-    [SerializeField] private Button audioButton;
-    [SerializeField] private Button videoButton;
+    [SerializeField] private Button audioVideoButton;
     [SerializeField] private Button controlsButton;
+    [SerializeField] private Button deleteFileButton;
+    [SerializeField] private Button debugButton;
 
     [Header("Settings Back Buttons")]
     [SerializeField] private Button settingsBack;
-    [SerializeField] private Button audioBack;
-    [SerializeField] private Button videoBack;
+    [SerializeField] private Button audioVideoBack;
     [SerializeField] private Button controlsBack;
     [SerializeField] private Button deleteYes;
     [SerializeField] private Button deleteNo;
+
+    public static Action OpenSettingsAction;
 
     private void Start()
     {
@@ -30,25 +34,35 @@ public class SettingsManager : MonoBehaviour
         {
             settings.onClick.AddListener(OpenSettings);
         }
-        audioButton.onClick.AddListener(OpenAudio);
-        videoButton.onClick.AddListener(OpenVideo);
+        audioVideoButton.onClick.AddListener(OpenAudio);
         controlsButton.onClick.AddListener(OpenControls);
+        deleteFileButton.onClick.AddListener(OpenDeleteFile);
+        debugButton.onClick.AddListener(OpenDebug);
 
         settingsBack.onClick.AddListener(ReturnFromSettings);
-        audioBack.onClick.AddListener(OpenSettings);
-        videoBack.onClick.AddListener(OpenSettings);
+        audioVideoBack.onClick.AddListener(OpenSettings);
         controlsBack.onClick.AddListener(OpenSettings);
-        deleteYes.onClick.AddListener(OpenSettings);
+        deleteYes.onClick.AddListener(DeleteFileYesButton);
         deleteNo.onClick.AddListener(OpenSettings);
+    }
+
+    private void OnEnable()
+    {
+        OpenSettingsAction += OpenSettings;
+    }
+
+    private void OnDisable()
+    {
+        OpenSettingsAction -= OpenSettings;
     }
 
 
     private void ActivatePanel(GameObject _panel)
     {
         settingsPanel.SetActive(false);
-        audioPanel.SetActive(false);
-        videoPanel.SetActive(false);
+        audioVideoPanel.SetActive(false);
         controlsPanel.SetActive(false);
+        deleteFilePanel.SetActive(false);
 
         _panel.SetActive(true);
     }
@@ -62,19 +76,32 @@ public class SettingsManager : MonoBehaviour
 
     private void OpenAudio()
     {
-        ActivatePanel(audioPanel);
+        ActivatePanel(audioVideoPanel);
         ControllerSelect.OnFirstSelect?.Invoke("Audio");
     }
-
-    private void OpenVideo()
-    {
-        ActivatePanel(videoPanel);
-        ControllerSelect.OnFirstSelect?.Invoke("Video");
-    }
+  
     private void OpenControls()
     {
         ActivatePanel(controlsPanel);
         ControllerSelect.OnFirstSelect?.Invoke("Controls");
+    }
+
+    private void OpenDeleteFile()
+    {
+        ActivatePanel(deleteFilePanel);
+        ControllerSelect.OnFirstSelect?.Invoke("DeleteFile");
+    }
+
+    private void OpenDebug()
+    {
+        ActivatePanel(debugPanel);
+        //ControllerSelect.OnFirstSelect?.Invoke("Debug");
+    }
+
+    private void DeleteFileYesButton()
+    {
+        SaveManager.OnDeleteSaveFile?.Invoke();
+        OpenSettings();
     }
 
     private void ReturnFromSettings()

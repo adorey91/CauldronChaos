@@ -139,11 +139,13 @@ public class InputManager : MonoBehaviour
 
     internal void TurnOffInteraction()
     {
+        MoveInputAction.Disable();
         playerControls.SwitchCurrentActionMap("UI");
     }
 
     internal void TurnOnInteraction()
     {
+        MoveInputAction.Enable();
         playerControls.SwitchCurrentActionMap("Player");
     }
 

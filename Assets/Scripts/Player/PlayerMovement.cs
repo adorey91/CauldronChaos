@@ -26,11 +26,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float deceleration = 2f;
     [SerializeField] private float maxSpeed = 6f;
 
+    private GameObject playerModel;
+    private Transform spawnPosition;
 
-    public static Action <bool> OnIceDay;
+    public static Action<bool> OnIceDay;
 
     private void Awake()
     {
+        spawnPosition = transform;
         playerAnimation = GetComponentInChildren<Animator>();
     }
 
@@ -52,13 +55,9 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         if (!isOnIce)
-        {
             NormalMovement();
-        }
         else
-        {
             IceMovement();
-        }
     }
 
     public void ToggleIceMode(bool isIcy)
@@ -163,7 +162,7 @@ public class PlayerMovement : MonoBehaviour
         //allow original move
         else
         {
-            legalMove = move; 
+            legalMove = move;
         }
 
         return legalMove;

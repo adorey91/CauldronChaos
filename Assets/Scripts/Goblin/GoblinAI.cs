@@ -9,7 +9,7 @@ public class GoblinAI : MonoBehaviour
     [Header("Goblin Behaviour Settings")]
     [SerializeField] private float actionCooldown = 5f;
     [SerializeField] private Transform goblinHands;
-    private NavMeshAgent agent;
+    [SerializeField] private NavMeshAgent agent;
     private bool isPerformingAction = false;
     private bool isScared = false;
 
@@ -35,7 +35,6 @@ public class GoblinAI : MonoBehaviour
 
     private void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
         crates = FindObjectsOfType<CrateHolder>();
         queue = FindObjectOfType<QueueManager>();
         cauldrons = FindObjectsOfType<CauldronInteraction>();
@@ -55,6 +54,10 @@ public class GoblinAI : MonoBehaviour
 
     private void StartChaos(bool isChallengeDay)
     {
+        transform.position = Vector3.zero;
+        transform.rotation = Quaternion.identity;
+
+        agent.enabled = true;
         goblinBehaviour = StartCoroutine(BehaviourLoop(isChallengeDay));
     }
 
