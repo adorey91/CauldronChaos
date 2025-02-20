@@ -27,10 +27,13 @@ public class CauldronInteraction : MonoBehaviour
     private GameObject ingredientGO;
     private int curStepIndex = 0;
     private bool canInteract;
-
     private bool potionCompleted;
     private int potionIndex;
+
+    [Header("Cauldron Fill")]
     [SerializeField] private Transform cauldronFill;
+    private Color cauldronFillDefaultColor;
+    private Material cauldronFillMaterial;
     private Vector3 cauldronStartingPosition;
 
     [Header("Potion Insert Spot")]
@@ -58,6 +61,9 @@ public class CauldronInteraction : MonoBehaviour
     {
         // Set the starting position of the cauldron
         cauldronStartingPosition = cauldronFill.transform.localPosition;
+
+        cauldronFillMaterial = cauldronFill.GetComponent<MeshRenderer>().material;
+        cauldronFillDefaultColor = cauldronFillMaterial.color;
 
         // Get the incorrect step particles
         incorrectStep = GetComponentInChildren<VisualEffect>();
@@ -191,6 +197,7 @@ public class CauldronInteraction : MonoBehaviour
 
         curStepIndex++;
 
+        // if there's only one possible recipe, set it as the recipe
         if (possibleRecipes.Count == 1)
         {
             recipe = possibleRecipes[0];
@@ -208,6 +215,10 @@ public class CauldronInteraction : MonoBehaviour
         possibleRecipes.Clear();
         possibleNextSteps.Clear();
 
+        //cauldronFillMaterial.color = ingredientGO.GetComponent<PickupObject>().ingredientColor;
+        cauldronFillMaterial.color = Color.Lerp(cauldronFillMaterial.color, ingredientGO.GetComponent<PickupObject>().ingredientColor, 3f);
+
+        // Loop through all possible recipes
         foreach (RecipeSO recipe in craftableRecipes)
         {
             if (recipe.steps.Length > 0 && recipe.steps[0].stepName == currentStep)
@@ -218,6 +229,7 @@ public class CauldronInteraction : MonoBehaviour
             }
         }
 
+        // If no possible recipes were found, handle the incorrect step
         if (possibleRecipes.Count == 0)
         {
             HandleIncorrectStep();
@@ -226,6 +238,7 @@ public class CauldronInteraction : MonoBehaviour
 
         curStepIndex = 1; // Move to next step
 
+        // if there's only one possible recipe, set it as the recipe
         if (possibleRecipes.Count == 1)
         {
             recipe = possibleRecipes[0];
@@ -245,12 +258,14 @@ public class CauldronInteraction : MonoBehaviour
     // Advance to the next step in the recipe
     private void AdvanceToNextStep()
     {
+        // If the recipe is null, find the possible recipes
         if (recipe == null)
         {
             FindPossibleRecipes();
             return;
         }
 
+        // Ensure the current step index is within the bounds of the recipe steps
         if (curStepIndex >= recipe.steps.Length)
         {
             HandleIncorrectStep();
@@ -267,6 +282,7 @@ public class CauldronInteraction : MonoBehaviour
             return;
         }
 
+        // Check if it's the final step
         if (recipe.steps[curStepIndex].stepName == "Bottle_Potion")
         {
             CompletePotion();
@@ -275,6 +291,7 @@ public class CauldronInteraction : MonoBehaviour
 
         curStepIndex++;
 
+        // Set the next step
         if (curStepIndex < recipe.steps.Length)
         {
             nextStep = recipe.steps[curStepIndex].stepName;
@@ -328,36 +345,17 @@ public class CauldronInteraction : MonoBehaviour
 
     }
 
-
+    // Count the potions and reset the values
     private void CountPotions()
     {
-        if (recipe != null && recipe.steps[0].ingredient == RecipeStepSO.Ingredient.Bottle)
-        {
-            if (potionIndex < 3) // Ensure we don't reset too soon
-                potionIndex++;
-            else
-                ResetValues();
-        }
-
-        cauldronFill.DOLocalMove(cauldronFill.localPosition - new Vector3(0, 0.11f, 0), 0.8f).OnComplete(CheckPotionCount);
-    }
-
-
-    private void CheckPotionCount()
-    {
-        if (!potionCompleted)
+        Debug.Log("Potion Counted " + potionIndex);
+        if (potionIndex < 2) // Ensure we don't reset too soon
         {
             potionIndex++;
-            potionCompleted = true;
+            cauldronFill.DOLocalMove(cauldronFill.localPosition - new Vector3(0, 0.11f, 0), 0.8f);
         }
         else
-        {
-            potionIndex++;
-
-            // Ensure we only reset if all 3 potions were pulled
-            if (potionIndex == 3)
-                ResetValues();
-        }
+            ResetValues();
     }
     #endregion
 
@@ -374,21 +372,26 @@ public class CauldronInteraction : MonoBehaviour
 
     internal void GoblinInteraction()
     {
+        recipe = null;
         cauldronFill.DOLocalMove(cauldronFill.localPosition - new Vector3(0, 0.11f * 2, 0), 1f).SetEase(Ease.InOutSine).OnComplete(ResetValues);
     }
 
-
+    // Resets all cauldron values
     internal void ResetValues()
     {
-        cauldronFill.DOLocalMove(cauldronStartingPosition, 1f);
+        cauldronFillMaterial.color = cauldronFillDefaultColor;
+        possibleRecipes.Clear();
+        possibleNextSteps.Clear();
         potionCompleted = false;
         potionIndex = 0;
         curStepIndex = 0;
         recipe = null;
         nextStep = null;
+        cauldronFill.DOLocalMove(cauldronStartingPosition, 0.5f);
     }
 
     #region Stirring
+    // Stir the cauldron clockwise
     private void StirClockwise(InputAction.CallbackContext input)
     {
         if (input.performed)
@@ -401,6 +404,7 @@ public class CauldronInteraction : MonoBehaviour
         }
     }
 
+    // Stir the cauldron counter-clockwise
     private void StirCounterClockwise(InputAction.CallbackContext input)
     {
         if (input.performed)

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e56910449f3720b4dad1eb0a0678303c
+guid: df715b75355627d40a01a8fc4faca8a8
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -37,8 +37,8 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 1
-    wrapV: 1
+    wrapU: 0
+    wrapV: 0
     wrapW: 0
   nPOTScale: 0
   lightmap: 0
@@ -49,7 +49,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 385, y: 229, z: 405, w: 255}
+  spriteBorder: {x: 200, y: 205, z: 200, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -147,40 +147,18 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: QuotaUI-1_0
-      rect:
-        serializedVersion: 2
-        x: 313
-        y: 75
-        width: 1735
-        height: 617
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 240, y: 280, z: 280, w: 280}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4da494c4dad4014448a0ff008d5f4675
-      internalID: 1488764229
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: e5095e5680efd6f4895b3ec72e404f87
-    internalID: -2078758668
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      QuotaUI-1_0: 1488764229
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

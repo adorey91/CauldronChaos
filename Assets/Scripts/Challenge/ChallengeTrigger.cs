@@ -74,10 +74,9 @@ public class ChallengeTrigger : MonoBehaviour
                 CauldronMovement.OnStartChallenge?.Invoke (); 
                 break;
             case ChallengeType.GoblinUnleashed: 
-                GoblinAI.StartGoblinChaos?.Invoke(); 
+                GoblinAI.StartGoblinChaos?.Invoke(true); 
                 break;
             case ChallengeType.WindyDay: 
-                GoblinAI.StartGoblinChaos?.Invoke(); 
                 break;
             default: ResetChallenges(); break;
         }

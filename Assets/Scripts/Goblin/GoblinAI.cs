@@ -29,7 +29,7 @@ public class GoblinAI : MonoBehaviour
 
     // Action to start the goblin chaos
     /// <summary> Event to start the goblin chaos </summary>
-    public static System.Action StartGoblinChaos;
+    public static System.Action <bool> StartGoblinChaos;
     /// <summary> Event to end the goblin chaos </summary>
     public static System.Action EndGoblinChaos;
 
@@ -53,9 +53,9 @@ public class GoblinAI : MonoBehaviour
         EndGoblinChaos -= EndChaos;
     }
 
-    private void StartChaos()
+    private void StartChaos(bool isChallengeDay)
     {
-        goblinBehaviour = StartCoroutine(BehaviourLoop());
+        goblinBehaviour = StartCoroutine(BehaviourLoop(isChallengeDay));
     }
 
     private void EndChaos()
@@ -64,8 +64,9 @@ public class GoblinAI : MonoBehaviour
             StopCoroutine(goblinBehaviour);
     }
 
-    private IEnumerator BehaviourLoop()
+    private IEnumerator BehaviourLoop(bool isChallengeDay)
     {
+        // if its a challenge day goblin will be more active. else they need a wandering time
         currentAction = null;
         while (true)
         {

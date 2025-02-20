@@ -7,6 +7,7 @@ public class PickupObject : MonoBehaviour
 {
     [Header("Ingredient")]
     public RecipeStepSO recipeIngredient;
+    public Color ingredientColor;
 
     [Header("Pick Up")]
     public bool isHeld = false; //bool tracking if the pickup is held

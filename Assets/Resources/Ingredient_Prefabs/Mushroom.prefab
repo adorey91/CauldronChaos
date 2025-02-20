@@ -202,6 +202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recipeIngredient: {fileID: 11400000, guid: 1263d1af773c1934389a86be3ac2a831, type: 2}
+  ingredientColor: {r: 0.7607844, g: 0.050980397, b: 0.011764707, a: 1}
   isHeld: 0
   pickUpSFX: {fileID: 8300000, guid: 28ab638ca864b3d45afa85039f2c9c25, type: 3}
   dropSFX: {fileID: 8300000, guid: 958eab05f15fc7b4f842e5ec094944d6, type: 3}

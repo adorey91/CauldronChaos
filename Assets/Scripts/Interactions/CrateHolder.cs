@@ -10,6 +10,7 @@ public class CrateHolder : Interactable
 
     public void Start()
     {
+        // If no ingredient prefab is assigned, load the default prefab based on the crate type
         if (ingredientPrefab == null)
         {
             switch (crateType)
@@ -30,7 +31,7 @@ public class CrateHolder : Interactable
         throw new System.NotImplementedException();
     }
 
-    //Function that holds interact functionality for the ingedient crate
+    //Function that holds interact functionality for the ingedient crate - Interaction between player and crate
     public override void Interact(PickupBehaviour playerPickup)
     {
         //Debug.Log("Create Interact called");
@@ -47,17 +48,19 @@ public class CrateHolder : Interactable
         playerPickup.SetHeldObject(newIngredient.GetComponent<PickupObject>()); //adding manually to player's held slot
     }
 
+    // Function that handles the interaction between the goblin and the crate
     internal void GoblinInteraction(Transform goblin)
     {
         GameObject ingredient;
         ingredient = Instantiate(ingredientPrefab, goblin.position, Quaternion.identity);
 
-        Vector3 randomPosition = new(UnityEngine.Random.Range(-1, 1), 0, UnityEngine.Random.Range(-1, 1));
+        Vector3 randomPosition = new(Random.Range(-1, 1), 0, Random.Range(-1, 1));
 
         ingredient.transform.DOScale(new Vector3(1f, 1f, 1f), 1f); //DOTween animation for scaling the ingredient
         ingredient.transform.DOJump(goblin.position + randomPosition, 1, 1, 1); //DOTween animation for jumping the ingredient
     }
 
+    // Function that loads a prefab from the resources folder
     private GameObject LoadPrefab(string path)
     {
         GameObject prefab = Resources.Load<GameObject>(path);
