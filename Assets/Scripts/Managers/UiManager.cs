@@ -46,12 +46,16 @@ public class UiManager : MonoBehaviour
     {
         if (timerStarted)
         {
+            // If the timer has reached 0 then start the day
             if (dayTimer.UpdateTimer())
             {
+                //playing day start SFX
+                AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ShopSounds, dayStartSFX, true);
                 dayStartPanel.SetActive(false); // Disable the day start panel
                 dayTimer.ResetTimer();
                 Actions.OnStartDay?.Invoke(); // Invoke the StartDay action
                 timerStarted = false;
+
             }
             else
             {
@@ -115,7 +119,7 @@ public class UiManager : MonoBehaviour
     {
         MenuVirtualCamera.TurnCameraBrainOn?.Invoke();
         SetActiveUI(mainMenu);
-        Actions.OnFirstSelect("Menu");
+        ControllerSelect.OnFirstSelect("Menu");
         Time.timeScale = 1;
         SetCursor(true);
     }
@@ -125,7 +129,7 @@ public class UiManager : MonoBehaviour
         if (waypoint == "Door")
         {
             SetActiveUI(intro);
-            Actions.OnFirstSelect("Intro");
+            ControllerSelect.OnFirstSelect("Intro");
             scoreManager.SetCurrentDay(1);
             return;
         }
@@ -141,10 +145,11 @@ public class UiManager : MonoBehaviour
     {
         LevelSelect.UpdateLevelButtons();
         Cursor.lockState = CursorLockMode.None;
+        Time.timeScale = 1;
 
         Actions.OnResetValues?.Invoke();
         SetActiveUI(levelSelect);
-        Actions.OnFirstSelect("LevelSelect");
+        ControllerSelect.OnFirstSelect("LevelSelect");
         MenuVirtualCamera.OnResetCamera?.Invoke();
     }
 
@@ -152,7 +157,7 @@ public class UiManager : MonoBehaviour
     private void Gameplay()
     {
         MenuVirtualCamera.OnResetCamera?.Invoke();
-        Actions.OnFirstSelect("Gameplay");
+        ControllerSelect.OnFirstSelect("Gameplay");
         SetActiveUI(gameplay);
         Time.timeScale = 1;
 
@@ -164,7 +169,7 @@ public class UiManager : MonoBehaviour
     private void EndOfDay()
     {
         SetActiveUI(endOfDay);
-        Actions.OnFirstSelect("EndOfDay");
+        ControllerSelect.OnFirstSelect("EndOfDay");
 
         SetCursor(true);
     }
@@ -172,7 +177,7 @@ public class UiManager : MonoBehaviour
     private void Pause()
     {
         SetActiveUI(pause);
-        Actions.OnFirstSelect("Pause");
+        ControllerSelect.OnFirstSelect("Pause");
         Time.timeScale = 0;
         SetCursor(true);
     }
@@ -184,19 +189,17 @@ public class UiManager : MonoBehaviour
     }
     #endregion
 
-
+    // Starts the countdown for the day to start
     private void StartDayCountdown()
     {
         Debug.Log("Start Day Countdown");
         ScoreManager.OnChallengeDay?.Invoke();
-        Actions.OnFirstSelect("Gameplay");
+        ControllerSelect.OnFirstSelect("Gameplay");
         dayStartPanel.SetActive(true);
+        dayTimer = new(secondsToStart, false);
         dayTimer.StartTimer();
 
         timerStarted = true;
-
-        //playing day start SFX
-        AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ShopSounds, dayStartSFX, true);
     }
 
     private void ResetTimer()

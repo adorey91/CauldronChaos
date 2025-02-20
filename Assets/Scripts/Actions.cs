@@ -21,7 +21,6 @@ public static class Actions
     // Menu Actions
     public static Action<string> OnForceStateChange;
     public static Action<GameManager.GameState> OnStateChange; // used for UI changes
-    public static Action<string> OnFirstSelect;
 
     public static Action OnResetValues;
 }

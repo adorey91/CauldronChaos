@@ -1,6 +1,4 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CrateHolder : Interactable
@@ -12,16 +10,17 @@ public class CrateHolder : Interactable
 
     public void Start()
     {
+        // If no ingredient prefab is assigned, load the default prefab based on the crate type
         if (ingredientPrefab == null)
         {
             switch (crateType)
             {
-                case CrateType.Bottle: ingredientPrefab = LoadPrefab("Assets/Prefabs/Ingredient_Prefabs/Bottle_Prefab.prefab"); break;
-                case CrateType.Mushroom: ingredientPrefab = LoadPrefab("Assets/Prefabs/Ingredient_Prefabs/Mushroom.prefab"); break;
-                case CrateType.RabbitFoot: ingredientPrefab = LoadPrefab("Assets/Prefabs/Ingredient_Prefabs/Rabbit_Foot_Prefab.prefab"); break;
-                case CrateType.EyeOfBasilisk: ingredientPrefab = LoadPrefab("Assets/Prefabs/Ingredient_Prefabs/Eye_of_Basilisk_Prefab.prefab"); break;
-                case CrateType.Mandrake: ingredientPrefab = LoadPrefab("Assets/Prefabs/Ingredient_Prefabs/Mandrake.prefab"); break;
-                case CrateType.TrollBone: ingredientPrefab = LoadPrefab("Assets/Prefabs/Ingredient_Prefabs/Troll_Bone.prefab"); break;
+                case CrateType.Bottle: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Bottle_Prefab"); break;
+                case CrateType.Mushroom: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Mushroom"); break;
+                case CrateType.RabbitFoot: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Rabbit_Foot_Prefab"); break;
+                case CrateType.EyeOfBasilisk: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Eye_of_Basilisk_Prefab"); break;
+                case CrateType.Mandrake: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Mandrake"); break;
+                case CrateType.TrollBone: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Troll_Bone"); break;
             }
         }
     }
@@ -32,7 +31,7 @@ public class CrateHolder : Interactable
         throw new System.NotImplementedException();
     }
 
-    //Function that holds interact functionality for the ingedient crate
+    //Function that holds interact functionality for the ingedient crate - Interaction between player and crate
     public override void Interact(PickupBehaviour playerPickup)
     {
         //Debug.Log("Create Interact called");
@@ -49,20 +48,22 @@ public class CrateHolder : Interactable
         playerPickup.SetHeldObject(newIngredient.GetComponent<PickupObject>()); //adding manually to player's held slot
     }
 
+    // Function that handles the interaction between the goblin and the crate
     internal void GoblinInteraction(Transform goblin)
     {
         GameObject ingredient;
         ingredient = Instantiate(ingredientPrefab, goblin.position, Quaternion.identity);
 
-        Vector3 randomPosition = new(UnityEngine.Random.Range(-1, 1), 0, UnityEngine.Random.Range(-1, 1));
+        Vector3 randomPosition = new(Random.Range(-1, 1), 0, Random.Range(-1, 1));
 
         ingredient.transform.DOScale(new Vector3(1f, 1f, 1f), 1f); //DOTween animation for scaling the ingredient
         ingredient.transform.DOJump(goblin.position + randomPosition, 1, 1, 1); //DOTween animation for jumping the ingredient
     }
 
+    // Function that loads a prefab from the resources folder
     private GameObject LoadPrefab(string path)
     {
-        GameObject prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(path);
+        GameObject prefab = Resources.Load<GameObject>(path);
 
         if (prefab == null)
         {

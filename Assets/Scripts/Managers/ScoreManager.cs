@@ -1,17 +1,14 @@
 using DG.Tweening;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-using System.Runtime.CompilerServices;
 
 public class ScoreManager : MonoBehaviour
 {
     [Header("Gameplay UI")]
-    [SerializeField] private TextMeshProUGUI dayText;
-    [SerializeField] private TextMeshProUGUI peopleServedText;
-    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private Image quotaFill;
+    [SerializeField] private GameObject coinImage;
 
     [Header("Day Timer")]
     [SerializeField] private int minutesPerDay = 5;
@@ -22,7 +19,6 @@ public class ScoreManager : MonoBehaviour
 
     [Header("EOD UI")]
     [SerializeField] private TextMeshProUGUI eodTitle;
-    [SerializeField] private TextMeshProUGUI peopleServedEOD;
     [SerializeField] private TextMeshProUGUI eodScoreText;
 
     [Header("EOD Win Lose Sprite")]
@@ -39,7 +35,6 @@ public class ScoreManager : MonoBehaviour
 
     // keeps track of current day / day score
     private int score = 0;
-    private int people = 0;
     private int currentDay = 0;
 
     public static Action OnChallengeDay;
@@ -48,10 +43,11 @@ public class ScoreManager : MonoBehaviour
     {
         dayTimer = new CustomTimer(minutesPerDay, true);
         
+        quotaFill.fillAmount = 0;
 
-        dayText.text = $"Day: {currentDay + 1}";
-        scoreText.text = $"Score: {score} / {scorePerLevel[currentDay]}";
-        peopleServedText.text = $"People Served: {people}";
+        //dayText.text = $"Day: {currentDay + 1}";
+        //scoreText.text = $"Score: {score} / {scorePerLevel[currentDay]}";
+        //peopleServedText.text = $"People Served: {people}";
     }
 
     private void OnEnable()
@@ -95,9 +91,9 @@ public class ScoreManager : MonoBehaviour
     {
         currentDay = day;
 
-        dayText.text = $"Day: {currentDay + 1}";
-        scoreText.text = $"Score: {score} / {scorePerLevel[currentDay]}";
-        peopleServedText.text = $"People Served: {people}";
+        //dayText.text = $"Day: {currentDay + 1}";
+        //scoreText.text = $"Score: {score} / {scorePerLevel[currentDay]}";
+        //peopleServedText.text = $"People Served: {people}";
     }
 
     private void CheckChallengeDay()
@@ -111,7 +107,7 @@ public class ScoreManager : MonoBehaviour
         {
             if((currentDay +1) > 5)
             {
-                GoblinAI.StartGoblinChaos?.Invoke();
+                GoblinAI.StartGoblinChaos?.Invoke(false);
                 Debug.Log("Goblin Chaos");
             }
             Debug.Log("Not a challenge day");
@@ -163,10 +159,10 @@ public class ScoreManager : MonoBehaviour
             _addToTotalScore = regularScore;
         }
 
-        people++;
-
-        scoreText.text = $"Score: {score} / {scorePerLevel[currentDay]}";
-        peopleServedText.text = "People Served: " + people;
+        quotaFill.fillAmount = (float)score / (float)scorePerLevel[currentDay];
+        coinImage.transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0.2f), 0.5f, 1, 0.5f);
+        //scoreText.text = $"Score: {score} / {scorePerLevel[currentDay]}";
+        //peopleServedText.text = "People Served: " + people;
     }
 
     private void UpdateEODText()
@@ -180,11 +176,11 @@ public class ScoreManager : MonoBehaviour
             increaseDayCount = true;
 
         // Save the current day's score and people served
-        SaveManager.OnSaveDay(currentDay, score, people, increaseDayCount);
+        SaveManager.OnSaveDay(currentDay, score, increaseDayCount);
 
         // Sets the EOD text
-        eodTitle.text = $"End of Day {currentDay}";
-        peopleServedEOD.text = $"People Served: {people}";
+        eodTitle.text = $"End of Day {currentDay + 1}";
+        //peopleServedEOD.text = $"People Served: {people}";
 
         // Sets the EOD win/lose sprite and score text
         if (!increaseDayCount)
@@ -201,19 +197,19 @@ public class ScoreManager : MonoBehaviour
 
         }
 
-        people = 0;
         score = 0;
     }
 
 
     public void ResetValues()
     {
+        quotaFill.fillAmount = 0;
         dayTimerText.text = null;
         timerStarted = false;
         timerHand.rotation = Quaternion.Euler(0, 0, 0);
         dayTimer = new CustomTimer(minutesPerDay, true);
-        dayText.text = $"Day: {currentDay}";
-        scoreText.text = $"Score: {score}";
-        peopleServedText.text = $"People Served: {people}";
+        //dayText.text = $"Day: {currentDay}";
+        //scoreText.text = $"Score: {score}";
+        //peopleServedText.text = $"People Served: {people}";
     }
 }

@@ -28,13 +28,11 @@ public class DayData
     public int dayNumber;
     public bool isUnlocked;
     public int bestScore;
-    public int peopleServed;
 
-    public DayData(bool unlocked = false, int score = 0, int people = 0)
+    public DayData(bool unlocked = false, int score = 0)
     {
         isUnlocked = unlocked;
         bestScore = score;
-        peopleServed = people;
     }
 }
 

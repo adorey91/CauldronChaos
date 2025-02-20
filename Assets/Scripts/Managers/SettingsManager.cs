@@ -6,7 +6,7 @@ public class SettingsManager : MonoBehaviour
 {
     [Header("Settings Panels")]
     [SerializeField] private GameObject settingsPanel;
-    [SerializeField] private GameObject audioPanel; 
+    [SerializeField] private GameObject audioPanel;
     [SerializeField] private GameObject videoPanel;
     [SerializeField] private GameObject controlsPanel;
 
@@ -24,9 +24,9 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private Button deleteYes;
     [SerializeField] private Button deleteNo;
 
-     private void Start()
+    private void Start()
     {
-        foreach(Button settings in settingsButton)
+        foreach (Button settings in settingsButton)
         {
             settings.onClick.AddListener(OpenSettings);
         }
@@ -57,24 +57,24 @@ public class SettingsManager : MonoBehaviour
     internal void OpenSettings()
     {
         ActivatePanel(settingsPanel);
-        Actions.OnFirstSelect?.Invoke("Settings");
+        ControllerSelect.OnFirstSelect?.Invoke("Settings");
     }
 
     private void OpenAudio()
     {
         ActivatePanel(audioPanel);
-        Actions.OnFirstSelect?.Invoke("Audio");
+        ControllerSelect.OnFirstSelect?.Invoke("Audio");
     }
 
     private void OpenVideo()
     {
         ActivatePanel(videoPanel);
-        Actions.OnFirstSelect?.Invoke("Video");
+        ControllerSelect.OnFirstSelect?.Invoke("Video");
     }
     private void OpenControls()
     {
         ActivatePanel(controlsPanel);
-        Actions.OnFirstSelect?.Invoke("Controls");
+        ControllerSelect.OnFirstSelect?.Invoke("Controls");
     }
 
     private void ReturnFromSettings()

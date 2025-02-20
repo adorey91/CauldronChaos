@@ -24,20 +24,23 @@ public class ControllerSelect : MonoBehaviour
 
     private GameObject _firstSelected;
 
+    // Actions for controller select
     public static Action <GameObject> SelectRecipeButton;
+    public static Action<string> OnFirstSelect;
 
     private void OnEnable()
     {
-        Actions.OnFirstSelect += SetFirstSelect;
+        OnFirstSelect += SetFirstSelect;
         SelectRecipeButton += SetRecipeBookButton;
     }
 
     private void OnDisable()
     {
-        Actions.OnFirstSelect -= SetFirstSelect;
+        OnFirstSelect -= SetFirstSelect;
         SelectRecipeButton -= SetRecipeBookButton;
     }
 
+    // Sets the recipe book button for the controller
     private void SetRecipeBookButton(GameObject button)
     {
         eventSystem.SetSelectedGameObject(null);
@@ -48,17 +51,19 @@ public class ControllerSelect : MonoBehaviour
         eventSystem.SetSelectedGameObject(button, new BaseEventData(eventSystem));
     }
 
-
+    // Checks if controller is connected
     internal bool IsControllerConnected()
     {
         return Gamepad.all.Count > 0;
     }
 
+    // Sets the first selected button for the controller for the delete file menu
     public void SetControllerFirstSelect()
     {
         SetFirstSelect("DeleteFile");
     }
 
+    // Sets the first selected button for the controller depending on the string
     public void SetFirstSelect(string menu)
     {
         eventSystem.SetSelectedGameObject(null);

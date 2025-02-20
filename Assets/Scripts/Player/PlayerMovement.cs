@@ -26,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float deceleration = 2f;
     [SerializeField] private float maxSpeed = 6f;
 
+
     public static Action <bool> OnIceDay;
 
     private void Awake()
@@ -109,9 +110,16 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 targetVelocity = new Vector3(moveDir.x, 0, moveDir.y) * maxSpeed;
 
-        // Only rotate if the player is actually moving
-        if (playerRB.velocity.sqrMagnitude > 0.01f)
+        // Allow rotation even if standing still
+        if (moveDir.sqrMagnitude > 0.001f)
         {
+            // Rotate towards input direction
+            Quaternion toRotation = Quaternion.LookRotation(targetVelocity.normalized, Vector3.up);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.fixedDeltaTime);
+        }
+        else if (playerRB.velocity.sqrMagnitude > 0.01f)
+        {
+            // Otherwise, rotate based on movement direction
             Quaternion toRotation = Quaternion.LookRotation(playerRB.velocity.normalized, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.fixedDeltaTime);
         }
@@ -128,6 +136,7 @@ public class PlayerMovement : MonoBehaviour
             playerAnimation.SetBool("isMoving", playerRB.velocity.sqrMagnitude > 0.01f);
         }
     }
+
 
 
     //Function that tries to detect any collisions and modify the move to account for them

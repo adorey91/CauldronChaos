@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4642725207006823632
 RectTransform:
   m_ObjectHideFlags: 0
@@ -164,6 +164,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   playerRB: {fileID: 7643185493547467135}
+  isOnIce: 0
+  acceleration: 5
+  deceleration: 2
+  maxSpeed: 6
 --- !u!54 &7643185493547467135
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -603,11 +607,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4642725207006823632}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 38.100098, y: -9}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 50, y: 50}
   m_SizeDelta: {x: 200, y: 200}
-  m_Pivot: {x: 0, y: 1}
+  m_Pivot: {x: 0, y: 0}
 --- !u!222 &4556150308961408617
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -744,7 +748,7 @@ GameObject:
   - component: {fileID: 750985275758200532}
   m_Layer: 7
   m_Name: ObjectDetector
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

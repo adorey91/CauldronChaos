@@ -1,8 +1,6 @@
 using DG.Tweening;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -25,12 +23,15 @@ public class GoblinAI : MonoBehaviour
     private CauldronInteraction[] cauldrons;
     private QueueManager queue;
 
+    // Coroutines to handle the goblin behaviour
     private Coroutine goblinBehaviour;
     private Coroutine currentAction;
 
     // Action to start the goblin chaos
-    public static Action StartGoblinChaos;
-    public static Action EndGoblinChaos;
+    /// <summary> Event to start the goblin chaos </summary>
+    public static System.Action <bool> StartGoblinChaos;
+    /// <summary> Event to end the goblin chaos </summary>
+    public static System.Action EndGoblinChaos;
 
     private void Start()
     {
@@ -52,9 +53,9 @@ public class GoblinAI : MonoBehaviour
         EndGoblinChaos -= EndChaos;
     }
 
-    private void StartChaos()
+    private void StartChaos(bool isChallengeDay)
     {
-        goblinBehaviour = StartCoroutine(BehaviourLoop());
+        goblinBehaviour = StartCoroutine(BehaviourLoop(isChallengeDay));
     }
 
     private void EndChaos()
@@ -63,8 +64,9 @@ public class GoblinAI : MonoBehaviour
             StopCoroutine(goblinBehaviour);
     }
 
-    private IEnumerator BehaviourLoop()
+    private IEnumerator BehaviourLoop(bool isChallengeDay)
     {
+        // if its a challenge day goblin will be more active. else they need a wandering time
         currentAction = null;
         while (true)
         {
@@ -85,7 +87,6 @@ public class GoblinAI : MonoBehaviour
                     FindFloorItems();
                     if (ingredients.Count > 0)
                         currentAction = StartCoroutine(ThrowItems());
-                    
                     break;
                 case float n when n < 0.7f: 
                     currentAction = StartCoroutine(ThrowIngredients()); 
@@ -102,17 +103,15 @@ public class GoblinAI : MonoBehaviour
     }
 
     #region Goblin Actions
-
+    // Throwing items on the floor
     private IEnumerator ThrowItems()
     {
         isPerformingAction = true;
 
-        PickupObject item = ingredients[UnityEngine.Random.Range(0, ingredients.Count)];
+        PickupObject item = ingredients[Random.Range(0, ingredients.Count)];
 
         if (item == null)
-        {
             yield break;
-        }
 
         agent.SetDestination(item.transform.position);
 
@@ -120,7 +119,8 @@ public class GoblinAI : MonoBehaviour
         {
             yield return null;
         }
-        Vector3 randomDir = new Vector3(UnityEngine.Random.Range(-1f, 1f), 1, UnityEngine.Random.Range(-1f, 1f)).normalized;
+
+        Vector3 randomDir = new Vector3(Random.Range(-1f, 1f), 1, Random.Range(-1f, 1f)).normalized;
         item.transform.DOJump(randomDir, 1, 1, 0.5f);
         yield return new WaitForSeconds(throwFloorIngredient); // Simulated action time
         isPerformingAction = false;
@@ -130,10 +130,10 @@ public class GoblinAI : MonoBehaviour
     {
         isPerformingAction = true;
 
-        CrateHolder crate = crates[UnityEngine.Random.Range(0, crates.Length)];
+        CrateHolder crate = crates[Random.Range(0, crates.Length)];
 
         agent.SetDestination(crate.transform.position);
-        int amount = UnityEngine.Random.Range(1, 4);
+        int amount = Random.Range(1, 4);
 
         while (!ReachedTarget())
         {
@@ -153,7 +153,7 @@ public class GoblinAI : MonoBehaviour
     {
         isPerformingAction = true;
 
-        CauldronInteraction cauldron = cauldrons[UnityEngine.Random.Range(0, cauldrons.Length)];
+        CauldronInteraction cauldron = cauldrons[Random.Range(0, cauldrons.Length)];
 
         agent.SetDestination(cauldron.transform.position);
         while (!ReachedTarget())
@@ -199,7 +199,7 @@ public class GoblinAI : MonoBehaviour
         isScared = false;
     }
 
-    // Used to find all the ingredients on the floor
+    /// <summary> Used to find all the ingredients on the floor </summary>
     private void FindFloorItems()
     {
         ingredients = new List<PickupObject>();
@@ -212,7 +212,7 @@ public class GoblinAI : MonoBehaviour
         }
     }
 
-    // Check if the goblin has reached the target
+    /// <summary> Check if the agent has reached the target </summary>
     private bool ReachedTarget()
     {
         return !agent.pathPending &&
