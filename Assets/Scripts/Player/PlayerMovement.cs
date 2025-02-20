@@ -26,14 +26,16 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float deceleration = 2f;
     [SerializeField] private float maxSpeed = 6f;
 
-    private GameObject playerModel;
-    private Transform spawnPosition;
+    private Vector3 spawnPosition;
+    private Quaternion spawnRotation;
+    private bool canMove = false;
 
     public static Action<bool> OnIceDay;
 
     private void Awake()
     {
-        spawnPosition = transform;
+        spawnPosition = transform.position;
+        spawnRotation = transform.rotation;
         playerAnimation = GetComponentInChildren<Animator>();
     }
 
@@ -42,6 +44,9 @@ public class PlayerMovement : MonoBehaviour
     {
         InputManager.MoveAction += GetMove;
         OnIceDay += ToggleIceMode;
+        DayManager.OnStartDayCountdown += EnableMovement;
+        Actions.OnEndDay += DisableMovement;
+        Actions.OnResetValues += ResetPosition;
     }
 
     //Called when object is disabled
@@ -49,15 +54,38 @@ public class PlayerMovement : MonoBehaviour
     {
         InputManager.MoveAction -= GetMove;
         OnIceDay -= ToggleIceMode;
+        DayManager.OnStartDayCountdown -= EnableMovement;
+        Actions.OnEndDay -= DisableMovement;
+        Actions.OnResetValues -= ResetPosition;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!isOnIce)
-            NormalMovement();
-        else
-            IceMovement();
+        if(canMove)
+        {
+            if (!isOnIce)
+                NormalMovement();
+            else
+                IceMovement();
+        }
+    }
+
+    private void ResetPosition()
+    {
+        transform.position = spawnPosition;
+        transform.rotation = spawnRotation;
+        canMove = false;
+    }
+
+    private void EnableMovement()
+    {
+        canMove = true;
+    }
+
+    private void DisableMovement()
+    {
+        canMove = false;
     }
 
     public void ToggleIceMode(bool isIcy)

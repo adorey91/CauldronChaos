@@ -20,6 +20,7 @@ public class DebugMode : MonoBehaviour
         passwordInput.onEndEdit.AddListener(delegate { CheckPassword(); });
         backButton.onClick.AddListener(BackButton);
 
+        debugToggle.isOn = false;
         debugToggle.gameObject.SetActive(false);
         debugText.enabled = false;
     }
@@ -35,6 +36,8 @@ public class DebugMode : MonoBehaviour
             textCoroutine = StartCoroutine(VisualText("Debug Mode Unlocked"));
 
             debugToggle.gameObject.SetActive(true);
+            // Clear password input field if the password is incorrect
+            passwordInput.text = "";
             passwordInput.gameObject.SetActive(false);
         }
         else
@@ -43,6 +46,8 @@ public class DebugMode : MonoBehaviour
                 StopCoroutine(textCoroutine);
 
             textCoroutine = StartCoroutine(VisualText("Incorrect Password"));
+            // Clear password input field if the password is incorrect
+            passwordInput.text = "";
         }
     }
 
@@ -51,7 +56,6 @@ public class DebugMode : MonoBehaviour
         debugToggle.gameObject.SetActive(false);
         passwordInput.gameObject.SetActive(true);
         debugTitle.text = "Enter Debug Password";
-        this.gameObject.SetActive(false);
         SettingsManager.OpenSettingsAction?.Invoke();
     }
 
