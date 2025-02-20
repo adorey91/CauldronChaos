@@ -99,7 +99,7 @@ public class CauldronInteraction : MonoBehaviour
         // grabs the ingredient from the _recipes step that's holding it.
         Sequence ingredientSequence = DOTween.Sequence();
 
-        ingredientSequence.Append(ingredientGO.transform.DOJump(ingredientInsertPoint.position, 1f, 1, 0.5f).SetEase(Ease.InOutSine))
+        ingredientSequence.Append(ingredientGO.transform.DOLocalJump(ingredientInsertPoint.position, 1f, 1, 0.5f).SetEase(Ease.InOutSine))
                          .Join(ingredientGO.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InOutSine))
                          .OnComplete(SetInactive); // Call SetInactive after both tweens finish
 
@@ -324,7 +324,7 @@ public class CauldronInteraction : MonoBehaviour
 
         // Scale and throw at the same time
         throwSequence.Append(thrownPotion.transform.DOScale(new Vector3(1f, 1f, 1f), 1f).SetEase(Ease.InOutSine))
-                     .Join(thrownPotion.transform.DOJump(targetPosition, throwHeight, 1, throwDuration));
+                     .Join(thrownPotion.transform.DOLocalJump(targetPosition, throwHeight, 1, throwDuration));
 
     }
 
