@@ -34,9 +34,9 @@ public class LevelSelect : MonoBehaviour
     private void OnDisable()
     {
         UpdateLevelButtons -= UpdateButtons;
-        OnSetUnlockedDays += SetUnlockedDays;
-        OnSetScore += SetScore;
-        OnSetPeopleServed += SetPeopleServed;
+        OnSetUnlockedDays -= SetUnlockedDays;
+        OnSetScore -= SetScore;
+        OnSetPeopleServed -= SetPeopleServed;
         SaveManager.OnDeleteGame -= ResetButtonLabels;
     }
 
@@ -53,10 +53,21 @@ public class LevelSelect : MonoBehaviour
     {
         for (int i = 0; i < levelSelection.Length; i++)
         {
+            if (levelSelection[i].button == null || levelSelection[i].dayImage == null || levelSelection[i].buttonText == null)
+            {
+                Debug.LogWarning($"LevelSelectionButtons[{i}] has a null reference.");
+                continue; // Skip this iteration if any component is missing
+            }
+
             if (i < unlockedDays)
             {
                 levelSelection[i].button.interactable = true;
-                levelSelection[i].dayImage.enabled = true;
+
+                // Check if dayImage is still valid before enabling it
+                if (levelSelection[i].dayImage != null)
+                {
+                    levelSelection[i].dayImage.enabled = true;
+                }
 
                 if (score == null) break;
                 if (score[i] == 0) continue;
@@ -66,10 +77,16 @@ public class LevelSelect : MonoBehaviour
             else
             {
                 levelSelection[i].button.interactable = false;
-                levelSelection[i].dayImage.enabled = false;
+
+                // Check if dayImage is still valid before disabling it
+                if (levelSelection[i].dayImage != null)
+                {
+                    levelSelection[i].dayImage.enabled = false;
+                }
             }
         }
     }
+
 
 
     public void SetUnlockedDays(int days)

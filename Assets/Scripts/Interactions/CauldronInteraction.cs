@@ -12,9 +12,11 @@ public class CauldronInteraction : MonoBehaviour
 
     // Holds all the recipes that can be crafted in this Cauldron
     private RecipeSO[] craftableRecipes;
+    // List of possible recipes
     private List<RecipeSO> possibleRecipes = new();
     private string nextStep;
     private string currentStep;
+    // List of possible next steps
     private List<string> possibleNextSteps = new();
 
     // Particles for incorrect step
@@ -24,7 +26,6 @@ public class CauldronInteraction : MonoBehaviour
     private RecipeSO recipe;
     private GameObject ingredientGO;
     private int curStepIndex = 0;
-    private int curStirAmount = 0;
     private bool canInteract;
 
     private bool potionCompleted;
@@ -55,13 +56,15 @@ public class CauldronInteraction : MonoBehaviour
 
     public void Start()
     {
+        // Set the starting position of the cauldron
         cauldronStartingPosition = cauldronFill.transform.localPosition;
+
+        // Get the incorrect step particles
         incorrectStep = GetComponentInChildren<VisualEffect>();
 
+        // Get the RecipeManager script & set the craftable recipes
         recipeManager = FindObjectOfType<RecipeManager>();
-
         craftableRecipes = recipeManager.FindAvailableRecipes();
-        //ResetValues();
     }
 
     #region Events
@@ -69,14 +72,12 @@ public class CauldronInteraction : MonoBehaviour
     {
         InputManager.StirClockwiseAction += StirClockwise;
         InputManager.StirCounterClockwiseAction += StirCounterClockwise;
-        //Actions.OnResetValues += ResetValues;
     }
 
     private void OnDisable()
     {
         InputManager.StirClockwiseAction -= StirClockwise;
         InputManager.StirCounterClockwiseAction -= StirCounterClockwise;
-        //Actions.OnResetValues -= ResetValues;
     }
 
     private void OnDestroy()
@@ -96,8 +97,12 @@ public class CauldronInteraction : MonoBehaviour
         currentStep = ingredientHolder.recipeIngredient.stepName;
 
         // grabs the ingredient from the _recipes step that's holding it.
-        ingredientGO.transform.DOJump(ingredientInsertPoint.position, 1f, 1, 0.5f).SetEase(Ease.InOutSine);
-        ingredientGO.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InOutSine).OnComplete(SetInactive);
+        Sequence ingredientSequence = DOTween.Sequence();
+
+        ingredientSequence.Append(ingredientGO.transform.DOJump(ingredientInsertPoint.position, 1f, 1, 0.5f).SetEase(Ease.InOutSine))
+                         .Join(ingredientGO.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InOutSine))
+                         .OnComplete(SetInactive); // Call SetInactive after both tweens finish
+
 
         // Play a sound here
         AudioManager.instance.sfxManager.PlaySFX(SFX_Type.StationSounds, addIngredientSounds.PickAudioClip(), true);
@@ -130,7 +135,7 @@ public class CauldronInteraction : MonoBehaviour
     {
         // Play a sound here
         //AudioManager.instance.sfxManager.playSFX()
-        if(ingredientGO != null)
+        if (ingredientGO != null)
             ingredientGO.GetComponent<Rigidbody>().isKinematic = true;
 
         incorrectStep.Play();
@@ -143,15 +148,17 @@ public class CauldronInteraction : MonoBehaviour
         List<RecipeSO> filterRecipes = new();
         possibleNextSteps.Clear();
 
+        // Loop through all possible recipes
         foreach (RecipeSO _recipes in possibleRecipes)
         {
+            // Ensure the current step index is within the bounds of the recipe steps
             if (curStepIndex >= _recipes.steps.Length)
                 continue;
 
+            // Check if the current step matches the recipe step
             if (_recipes.steps[curStepIndex].stepName == currentStep)
             {
                 filterRecipes.Add(_recipes);
-                curStirAmount = 0;
 
                 // Ensure next step exists
                 if (curStepIndex + 1 < _recipes.steps.Length)
@@ -266,7 +273,6 @@ public class CauldronInteraction : MonoBehaviour
             return;
         }
 
-        curStirAmount = 0;
         curStepIndex++;
 
         if (curStepIndex < recipe.steps.Length)
@@ -294,8 +300,12 @@ public class CauldronInteraction : MonoBehaviour
 
     private IEnumerator ThrowPotion()
     {
+        GameObject thrownPotion;
+        thrownPotion = ingredientGO;
+        ingredientGO = null;
+
         yield return new WaitForSeconds(0.3f);
-        ingredientGO.GetComponent<PotionOutput>().SetPotionColor();
+        thrownPotion.GetComponent<PotionOutput>().SetPotionColor();
 
         // Play a sound here
         //AudioManager.instance.sfxManager.PlaySFX(SFX_Type.StationSounds, FinishPotionSounds.PickAudioClip(), true);
@@ -305,13 +315,17 @@ public class CauldronInteraction : MonoBehaviour
         Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 1, Random.Range(-1f, 1f)).normalized;
         Vector3 targetPosition = startPosition + randomDirection * throwStrength;
 
-        if(recipe.recipeName != "Potion of Hydration")
+        if (recipe.recipeName != "Potion of Hydration")
             CountPotions();
         else
             ResetValues();
 
-        ingredientGO.transform.DOScale(new Vector3(1f, 1f, 1f), 1f).SetEase(Ease.InOutSine);
-        ingredientGO.transform.DOJump(targetPosition, throwHeight, 1, throwDuration);
+        Sequence throwSequence = DOTween.Sequence();
+
+        // Scale and throw at the same time
+        throwSequence.Append(thrownPotion.transform.DOScale(new Vector3(1f, 1f, 1f), 1f).SetEase(Ease.InOutSine))
+                     .Join(thrownPotion.transform.DOJump(targetPosition, throwHeight, 1, throwDuration));
+
     }
 
 
@@ -351,8 +365,11 @@ public class CauldronInteraction : MonoBehaviour
     {
         if (currentStep == "Bottle_Potion") return;
 
-        DOTween.Kill(ingredientGO.transform);
-        Destroy(ingredientGO);
+        if (ingredientGO != null)
+        {
+            DOTween.Kill(ingredientGO.transform);
+            Destroy(ingredientGO);
+        }
     }
 
     internal void GoblinInteraction()
@@ -365,7 +382,6 @@ public class CauldronInteraction : MonoBehaviour
     {
         cauldronFill.DOLocalMove(cauldronStartingPosition, 1f);
         potionCompleted = false;
-        curStirAmount = 0;
         potionIndex = 0;
         curStepIndex = 0;
         recipe = null;
@@ -379,8 +395,6 @@ public class CauldronInteraction : MonoBehaviour
         {
             if (!canInteract) return;
 
-            curStirAmount++;
-
             currentStep = "Stir_C_1";
             spoon.DOLocalRotate(new Vector3(0, 360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
             Stir();
@@ -393,9 +407,7 @@ public class CauldronInteraction : MonoBehaviour
         {
             if (!canInteract) return;
 
-            curStirAmount++;
-
-            currentStep = "Stir_CC_1"; 
+            currentStep = "Stir_CC_1";
             spoon.DOLocalRotate(new Vector3(0, -360, 16), spoonRotationSpeed, RotateMode.FastBeyond360);
             Stir();
         }
@@ -409,6 +421,7 @@ public class CauldronInteraction : MonoBehaviour
             canInteract = true;
     }
 
+    // using this to check if the player has left the range to stir the cauldron
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))

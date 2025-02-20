@@ -3,8 +3,8 @@ using System;
 
 public class Floor : MonoBehaviour
 {
-    private PhysicMaterial slipperyMaterial;
-    public static Action <PhysicMaterial> OnApplyMaterial;
+    /// <summary> Event to apply material to the floor object </summary>
+    public static Action <PhysicMaterial, Texture> OnApplyMaterial;
 
     private void OnEnable()
     {
@@ -16,9 +16,9 @@ public class Floor : MonoBehaviour
         OnApplyMaterial -= ApplyMaterial;
     }
 
-    private void ApplyMaterial(PhysicMaterial material)
+    private void ApplyMaterial(PhysicMaterial material, Texture texture)
     {
-        slipperyMaterial = material;
-        GetComponent<Collider>().material = slipperyMaterial;
+        GetComponent<Collider>().material = material;
+        GetComponent<Renderer>().material.mainTexture = texture;
     }
 }

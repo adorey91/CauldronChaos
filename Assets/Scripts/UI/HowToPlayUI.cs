@@ -11,7 +11,7 @@ public class HowToPlayUI : MonoBehaviour
     [SerializeField] private Image howToPlayImage;
     [SerializeField] private Image imageBG;
     private CustomTimer imageTimer;
-    private float _imageTime = 6f;
+    private float _imageTime = 3f;
     [SerializeField] private GameObject backButton;
     private bool pressedButton;
 
@@ -54,11 +54,13 @@ public class HowToPlayUI : MonoBehaviour
         }
     }
 
+    // Activates the HowToPlay canvas
     public void ActivateHowToPlay(bool isLoading)
     {
+        // Sets the first image in the array
         pressedButton = false;
         howToPlayCanvas.enabled = true;
-        Actions.OnFirstSelect?.Invoke("HowToPlay");
+        ControllerSelect.OnFirstSelect?.Invoke("HowToPlay");
         howToPlayImage.sprite = _howToPlayImages[0];
 
         if(isLoading)
