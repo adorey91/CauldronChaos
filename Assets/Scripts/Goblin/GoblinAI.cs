@@ -17,6 +17,15 @@ public class GoblinAI : MonoBehaviour
     [SerializeField] private float throwFromCrate;
     [SerializeField] private float throwFloorIngredient;
 
+    [Header("SFX")]
+    [SerializeField] private SFXLibrary goblinIdle;
+    [SerializeField] private SFXLibrary goblinCry;
+    [SerializeField] private SFXLibrary goblinScream;
+    [SerializeField] private SFXLibrary goblinSlurp;
+    [SerializeField] private SFXLibrary rummageStings;
+    [SerializeField] private AudioClip rummageSound;
+    [SerializeField] private AudioClip goblinMovement;
+
     // References to the things the goblin can interact with - the only thing that changes is ingredients.
     private CrateHolder[] crates;
     private List<PickupObject> ingredients;

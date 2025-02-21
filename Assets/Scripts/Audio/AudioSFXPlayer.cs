@@ -8,7 +8,9 @@ public enum SFX_Type
     ShopSounds,
     StationSounds,
     ItemInteraction,
-    UISounds
+    UISounds,
+    GoblinSounds,
+    ConstantSounds
 }
 
 [System.Serializable]
@@ -18,6 +20,7 @@ public class AudioSFXPlayer : MonoBehaviour
     [SerializeField] public AudioSource audioSource;
     [SerializeField] public float pitchVariance;
     [SerializeField] private float cooldownTime;
+    [SerializeField] private float fadeTime;
     private bool played;  
 
     //Function to call audio SFX that does not inturrupt playing clip (can overlap)
