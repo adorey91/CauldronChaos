@@ -12,6 +12,11 @@ public class GoblinAI : MonoBehaviour
     [SerializeField] private NavMeshAgent agent;
     private bool isPerformingAction = false;
     private bool isScared = false;
+    [SerializeField] private float wanderRadius = 5f;
+    [SerializeField] private float minWanderTime = 2f;
+    [SerializeField] private float maxWanderTime = 5f;
+    private Vector3 currentDestination;
+
 
     [Header("Time Between Action")]
     [SerializeField] private float throwFromCrate;
@@ -29,9 +34,12 @@ public class GoblinAI : MonoBehaviour
 
     // Action to start the goblin chaos
     /// <summary> Event to start the goblin chaos </summary>
-    public static System.Action <bool> StartGoblinChaos;
+    public static System.Action<bool> StartGoblinChaos;
     /// <summary> Event to end the goblin chaos </summary>
     public static System.Action EndGoblinChaos;
+    /// <summary> Event called when goblin is hit </summary>
+    public static System.Action ScareGoblin;
+
 
     private void Start()
     {
@@ -44,12 +52,14 @@ public class GoblinAI : MonoBehaviour
     {
         StartGoblinChaos += StartChaos;
         EndGoblinChaos += EndChaos;
+        ScareGoblin += ScareAway;
     }
 
     private void OnDisable()
     {
         StartGoblinChaos -= StartChaos;
         EndGoblinChaos -= EndChaos;
+        ScareGoblin -= ScareAway;
     }
 
     private void StartChaos(bool isChallengeDay)
@@ -63,7 +73,7 @@ public class GoblinAI : MonoBehaviour
 
     private void EndChaos()
     {
-        if(goblinBehaviour != null)
+        if (goblinBehaviour != null)
             StopCoroutine(goblinBehaviour);
     }
 
@@ -77,31 +87,71 @@ public class GoblinAI : MonoBehaviour
 
             if (isScared) continue;
 
-            float roll = UnityEngine.Random.Range(0f, 1f);
+            float roll = Random.Range(0f, 1f);
 
-            if(currentAction != null)
+            if (currentAction != null)
             {
                 StopCoroutine(currentAction);
             }
 
-            switch (roll)
+            if (isChallengeDay)
             {
-                case float n when n < 0.4f:
-                    FindFloorItems();
-                    if (ingredients.Count > 0)
-                        currentAction = StartCoroutine(ThrowItems());
-                    break;
-                case float n when n < 0.7f: 
-                    currentAction = StartCoroutine(ThrowIngredients()); 
-                    break;
-                case float n when n < 0.9f: 
-                    currentAction = StartCoroutine(SlurpCauldron()); 
-                    break;
-                case float n when n < 1f:
-                    if (queue.AreThereCustomers() != 0)
-                        currentAction = StartCoroutine(ScareCustomer());
-                    break;
+                PickWhatAction(roll);
             }
+            else
+            {
+                // if roll is less than or equal to this number the goblin will wander - if not, they will pick a new action to do.
+                if (roll <= 0.3f)
+                    currentAction = StartCoroutine(GoblinWanders());
+                else
+                {
+                    float newRoll = Random.Range(0f, 1f);
+                    PickWhatAction(newRoll);
+                }
+            }
+
+        }
+    }
+
+    private void PickWhatAction(float roll)
+    {
+        switch (roll)
+        {
+            case float n when n < 0.4f:
+                FindFloorItems();
+                if (ingredients.Count > 0)
+                    currentAction = StartCoroutine(ThrowItems());
+                break;
+            case float n when n < 0.7f:
+                currentAction = StartCoroutine(ThrowIngredients());
+                break;
+            case float n when n < 0.9f:
+                currentAction = StartCoroutine(SlurpCauldron());
+                break;
+            case float n when n < 1f:
+                if (queue.AreThereCustomers() != 0)
+                    currentAction = StartCoroutine(ScareCustomer());
+                break;
+        }
+    }
+
+    private IEnumerator GoblinWanders()
+    {
+        Debug.Log("Goblin Wandering");
+        if (!isScared && !isPerformingAction)
+        {
+            PickNewDestination();
+
+            while (!ReachedTarget())
+            {
+                yield return null;
+            }
+
+            // random delay before next move
+            yield return new WaitForSeconds(Random.Range(minWanderTime, maxWanderTime));
+
+
+
         }
     }
 
@@ -110,7 +160,7 @@ public class GoblinAI : MonoBehaviour
     private IEnumerator ThrowItems()
     {
         isPerformingAction = true;
-
+        // finds a random action from the ingredients list
         PickupObject item = ingredients[Random.Range(0, ingredients.Count)];
 
         if (item == null)
@@ -143,7 +193,7 @@ public class GoblinAI : MonoBehaviour
             yield return null;
         }
 
-        for(int i = 0; i < amount; i++)
+        for (int i = 0; i < amount; i++)
         {
             crate.GoblinInteraction(goblinHands);
         }
@@ -183,9 +233,9 @@ public class GoblinAI : MonoBehaviour
         yield return new WaitForSeconds(2f);
         isPerformingAction = false;
     }
-    #endregion
 
-    public void ScareAway()
+    /// <summary> Scares goblin, this should be called from when  </summary>
+    private void ScareAway()
     {
         if (isPerformingAction)
         {
@@ -197,10 +247,33 @@ public class GoblinAI : MonoBehaviour
         }
     }
 
+    /// <summary> Resets the scare bool to allow the goblin to go back to his antics </summary>
     private void ResetScare()
     {
         isScared = false;
     }
+    #endregion
+
+    #region Wandering Action
+    private void PickNewDestination()
+    {
+        currentDestination = RandomNavSphere(transform.position, wanderRadius, -1);
+        agent.SetDestination(currentDestination);
+    }
+
+    private Vector3 RandomNavSphere(Vector3 origin, float distance, int layermask)
+    {
+        Vector3 randomDirection = Random.insideUnitSphere * distance;
+        randomDirection += origin;
+
+        NavMeshHit navHit;
+        if (NavMesh.SamplePosition(randomDirection, out navHit, distance, layermask))
+        {
+            return navHit.position;
+        }
+        return origin; // If no valid point found, stay put
+    }
+    #endregion
 
     /// <summary> Used to find all the ingredients on the floor </summary>
     private void FindFloorItems()
