@@ -49,6 +49,7 @@ MonoBehaviour:
   audioSource: {fileID: 4627674926881532888}
   pitchVariance: 0
   cooldownTime: 0
+  fadeTime: 0
 --- !u!82 &4627674926881532888
 AudioSource:
   m_ObjectHideFlags: 0
@@ -194,6 +195,7 @@ MonoBehaviour:
   audioSource: {fileID: 5270476254455450068}
   pitchVariance: 0.1
   cooldownTime: 0
+  fadeTime: 0
 --- !u!82 &5270476254455450068
 AudioSource:
   m_ObjectHideFlags: 0
@@ -340,6 +342,7 @@ MonoBehaviour:
   audioSource: {fileID: 8931936024556628766}
   pitchVariance: 0
   cooldownTime: 0
+  fadeTime: 0
 --- !u!82 &8931936024556628766
 AudioSource:
   m_ObjectHideFlags: 0
@@ -538,6 +541,7 @@ MonoBehaviour:
   audioSource: {fileID: 3274780881685749514}
   pitchVariance: 0.1
   cooldownTime: 0
+  fadeTime: 0
 --- !u!82 &3274780881685749514
 AudioSource:
   m_ObjectHideFlags: 0
@@ -692,6 +696,8 @@ MonoBehaviour:
   - {fileID: 4357930900587110218}
   - {fileID: 3948714443740498794}
   - {fileID: 4120243450129099540}
+  - {fileID: 9202233521063260373}
+  constantSFX_Player: {fileID: 4074717111688436428}
 --- !u!1 &7877876166395633485
 GameObject:
   m_ObjectHideFlags: 0
@@ -885,6 +891,7 @@ MonoBehaviour:
   audioSource: {fileID: 724405729574158209}
   pitchVariance: 0
   cooldownTime: 0
+  fadeTime: 0
 --- !u!82 &724405729574158209
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1031,6 +1038,7 @@ MonoBehaviour:
   audioSource: {fileID: 591294602562877759}
   pitchVariance: 0.1
   cooldownTime: 0
+  fadeTime: 0
 --- !u!82 &591294602562877759
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1177,6 +1185,7 @@ MonoBehaviour:
   audioSource: {fileID: 7845139073261536450}
   pitchVariance: 0.05
   cooldownTime: 0
+  fadeTime: 0
 --- !u!82 &7845139073261536450
 AudioSource:
   m_ObjectHideFlags: 0

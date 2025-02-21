@@ -8,6 +8,7 @@ public class SFXManager : MonoBehaviour
 {
     [Header("SFX Output")]
     [SerializeField] private List<AudioSFXPlayer> sfx_Players;
+    [SerializeField] private AudioSFXPlayer constantSFX_Player;
 
     //Function that finds the target SFX player and makes it play specified audio-clip
     public void PlaySFX(SFX_Type targetSFX, AudioClip clip, bool oneShot)
@@ -35,6 +36,19 @@ public class SFXManager : MonoBehaviour
         }
     }
 
+    //Wrapper Method for AudioSFXPlayer's start constant SFX method
+    public void StartConstantSFX(AudioClip sfx)
+    {
+        constantSFX_Player.StartConstantSFX(sfx);
+    }
+
+    //Wrapper Method for AudioSFXPlayer's stop constant SFX method
+    public void StopConstantSFX()
+    {
+        constantSFX_Player.StopConstantSFX();
+    }
+
+    //Method used to player Menu SFX to make it easier to call
     public void PlayMenuSFX(AudioClip clip)
     {
         PlaySFX(SFX_Type.UISounds, clip, true);
