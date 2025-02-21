@@ -57,8 +57,10 @@ public class ScoreManager : MonoBehaviour
 
     private void CheckChallengeDay()
     {
+        
         if ((currentDay + 1) % 2 == 0)
         {
+            Debug.Log("Challenge Day");
             Debug.Log(currentDay +1);
             ChallengeManager.OnStartChallenge?.Invoke((currentDay +1) / 2);
         }

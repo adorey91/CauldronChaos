@@ -143,7 +143,8 @@ public class DayManager : MonoBehaviour
 
     private void StartDayCountdown()
     {
-        ChallengeManager.CheckChallengeDay?.Invoke();
+        Debug.Log("Day Countdown Started");
+        ChallengeManager.OnStartChallenge?.Invoke(currentDay/2);
         ControllerSelect.OnFirstSelect?.Invoke("Gameplay");
 
         dayStartOverlay.SetActive(true);

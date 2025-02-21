@@ -69,7 +69,7 @@ public class ChallengeManager : MonoBehaviour
     // Start the challenge based on the challenge type
     private void StartChallenge(int challenge)
     {
-        
+        Debug.Log("Challenge Started:   " + challenge);
 
         switch (challenge)
         {
