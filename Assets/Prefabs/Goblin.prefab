@@ -75,8 +75,14 @@ MonoBehaviour:
   actionCooldown: 4
   goblinHands: {fileID: 3411744906653277463}
   agent: {fileID: 7947374703834326683}
+  wanderRadius: 5
+  minWanderTime: 2
+  maxWanderTime: 5
   throwFromCrate: 2
   throwFloorIngredient: 2
+  enableSFX: 1
+  noiseTimerMin: 5
+  noiseTimerMax: 20
   goblinIdle: {fileID: 6392678485550906933}
   goblinCry: {fileID: 7182133667722688875}
   goblinScream: {fileID: 2345831572467556206}
@@ -305,7 +311,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 953697c0e7782b748887310ece8ca880, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioClips: []
+  audioClips:
+  - {fileID: 8300000, guid: 47f9c4bec602ba743b2d03027ca51195, type: 3}
+  - {fileID: 8300000, guid: 1f2585c8cd34df046ac2b4a1d99fe738, type: 3}
+  - {fileID: 8300000, guid: f1d42e36e3e2ca94caa471d2b8902d4e, type: 3}
+  - {fileID: 8300000, guid: a7df87bbf47f36346aa5d9313f94b7b0, type: 3}
+  - {fileID: 8300000, guid: 513f7b931c1604743ab70722e7d4bf85, type: 3}
+  - {fileID: 8300000, guid: c53adf69ce4af224486116fa77c87a4d, type: 3}
+  - {fileID: 8300000, guid: f5af073447fda7d4fb6ef5ecc829c1af, type: 3}
+  - {fileID: 8300000, guid: 84ec315c25b8a7e438e52c9f686ce92b, type: 3}
+  - {fileID: 8300000, guid: 5a80d9c4a5aa4064c8436430b737aea7, type: 3}
+  - {fileID: 8300000, guid: cdfe110485ddc6841a9c37bbfa88555f, type: 3}
+  - {fileID: 8300000, guid: 700de81b3d4ad2340bff96a63d154636, type: 3}
+  - {fileID: 8300000, guid: f85961e9bc3b7df4bbc97f17fd48df9e, type: 3}
+  - {fileID: 8300000, guid: 082708e1796a8774bbf6732e1dce88f9, type: 3}
+  - {fileID: 8300000, guid: 1478cb01e1e6ea8489186d50abe97bf7, type: 3}
 --- !u!1 &6654570659812948188
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,7 +446,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 953697c0e7782b748887310ece8ca880, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioClips: []
+  audioClips:
+  - {fileID: 8300000, guid: 2c652817eb4ab95409f9463e3f2fb59f, type: 3}
+  - {fileID: 8300000, guid: 4a674ff4e2aa11b4cb2ae12ba3242c07, type: 3}
+  - {fileID: 8300000, guid: 55717fa48e3087044b17f69273d2304a, type: 3}
+  - {fileID: 8300000, guid: 6a045a0510184054088e3890c3a74b14, type: 3}
+  - {fileID: 8300000, guid: 95cbcdf3fad6222419debb57138bc7ba, type: 3}
+  - {fileID: 8300000, guid: 69fa7f6c34e9601468da7e7a29d76b8a, type: 3}
+  - {fileID: 8300000, guid: afaeebce0d8146949b7fb9b9f8cde082, type: 3}
+  - {fileID: 8300000, guid: 100f961cf9fbe9c43b355414581204f9, type: 3}
 --- !u!1001 &916858044385679533
 PrefabInstance:
   m_ObjectHideFlags: 0

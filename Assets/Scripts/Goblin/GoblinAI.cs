@@ -23,6 +23,9 @@ public class GoblinAI : MonoBehaviour
     [SerializeField] private float throwFloorIngredient;
 
     [Header("SFX")]
+    [SerializeField] private bool enableSFX;
+    [SerializeField] private float noiseTimerMin;
+    [SerializeField] private float noiseTimerMax; 
     [SerializeField] private SFXLibrary goblinIdle;
     [SerializeField] private SFXLibrary goblinCry;
     [SerializeField] private SFXLibrary goblinScream;
@@ -30,6 +33,10 @@ public class GoblinAI : MonoBehaviour
     [SerializeField] private SFXLibrary rummageStings;
     [SerializeField] private AudioClip rummageSound;
     [SerializeField] private AudioClip goblinMovement;
+
+    //Idle SFX variables
+    private bool isFree = false;
+    private float noiseTimer;
 
     // References to the things the goblin can interact with - the only thing that changes is ingredients.
     private CrateHolder[] crates;
@@ -52,9 +59,38 @@ public class GoblinAI : MonoBehaviour
 
     private void Start()
     {
+        noiseTimer = Random.Range(noiseTimerMin, noiseTimerMax);
         crates = FindObjectsOfType<CrateHolder>();
         queue = FindObjectOfType<QueueManager>();
         cauldrons = FindObjectsOfType<CauldronInteraction>();
+    }
+
+    //update loop to handle playing of idle sounds
+    private void Update()
+    {
+        if (noiseTimer < 0 && enableSFX)
+        {
+            SFXLibrary goblinSounds;
+
+            if (isFree)
+            {
+                goblinSounds = goblinIdle;
+            }
+            else
+            {
+                goblinSounds = goblinCry;
+            }
+
+            AudioManager.instance.sfxManager.PlaySFX(SFX_Type.GoblinSounds, goblinSounds.PickAudioClip(), true); //play audio clip
+            noiseTimer = Random.Range(noiseTimerMin, noiseTimerMax); //reset timer
+        }
+
+        if (enableSFX)
+        {
+            noiseTimer -= Time.deltaTime;
+        }
+
+        Debug.Log(noiseTimer);
     }
 
     private void OnEnable()
