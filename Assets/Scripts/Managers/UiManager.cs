@@ -19,16 +19,8 @@ public class UiManager : MonoBehaviour
     [SerializeField] private Canvas settings;
     [SerializeField] private Canvas pause;
 
-    [Header("Day Start Overlay")]
-    [SerializeField] private GameObject dayStartPanel;
-    [SerializeField] private TextMeshProUGUI dayStartText;
-    [SerializeField] private int secondsToStart;
-
     [Header("SFX")]
     [SerializeField] private AudioClip dayStartSFX;
-
-    private CustomTimer dayTimer;
-    private bool timerStarted = false;
 
     private ScoreManager scoreManager;
 
@@ -39,38 +31,12 @@ public class UiManager : MonoBehaviour
     {
         scoreManager = FindObjectOfType<ScoreManager>();
 
-        dayTimer = new(secondsToStart, false);
-    }
-
-    private void Update()
-    {
-        if (timerStarted)
-        {
-            // If the timer has reached 0 then start the day
-            if (dayTimer.UpdateTimer())
-            {
-                //playing day start SFX
-                AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ShopSounds, dayStartSFX, true);
-                dayStartPanel.SetActive(false); // Disable the day start panel
-                dayTimer.ResetTimer();
-                Actions.OnStartDay?.Invoke(); // Invoke the StartDay action
-                timerStarted = false;
-
-            }
-            else
-            {
-                int remaining = Mathf.FloorToInt(dayTimer.GetRemainingTime());
-                dayStartText.text = $"Day Starts In:\n{remaining}";
-            }
-        }
     }
 
     private void OnEnable()
     {
         Actions.OnStateChange += UpdateUIForGameState;
         CameraMenuCollider.ReachedWaypoint += CameraReached;
-        LevelManager.startTimer += StartDayCountdown;
-        Actions.OnResetValues += ResetTimer;
         SetCursorVisibility += SetCursor;
     }
 
@@ -79,8 +45,6 @@ public class UiManager : MonoBehaviour
         SetCursorVisibility -= SetCursor;
         Actions.OnStateChange -= UpdateUIForGameState;
         CameraMenuCollider.ReachedWaypoint -= CameraReached;
-        LevelManager.startTimer -= StartDayCountdown;
-        Actions.OnResetValues -= ResetTimer;
     }
 
     private void UpdateUIForGameState(GameManager.GameState state)
@@ -117,6 +81,7 @@ public class UiManager : MonoBehaviour
     #region State_UI_Changes
     private void MainMenu()
     {
+        InputManager.instance.TurnOnInteraction();
         MenuVirtualCamera.TurnCameraBrainOn?.Invoke();
         SetActiveUI(mainMenu);
         ControllerSelect.OnFirstSelect("Menu");
@@ -189,24 +154,6 @@ public class UiManager : MonoBehaviour
     }
     #endregion
 
-    // Starts the countdown for the day to start
-    private void StartDayCountdown()
-    {
-        Debug.Log("Start Day Countdown");
-        ScoreManager.OnChallengeDay?.Invoke();
-        ControllerSelect.OnFirstSelect("Gameplay");
-        dayStartPanel.SetActive(true);
-        dayTimer = new(secondsToStart, false);
-        dayTimer.StartTimer();
-
-        timerStarted = true;
-    }
-
-    private void ResetTimer()
-    {
-        dayTimer.ResetTimer();
-        timerStarted = false;
-    }
 
     private void SetCursor(bool isVisible)
     {

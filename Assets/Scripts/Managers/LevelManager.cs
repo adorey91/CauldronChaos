@@ -159,7 +159,7 @@ public class LevelManager : MonoBehaviour
 
         if (currentScene.name.StartsWith("Day"))
         {
-            startTimer?.Invoke();
+            DayManager.OnStartDayCountdown?.Invoke();
             InputManager.instance.TurnOnInteraction();
         }
         Fade("FadeIn");

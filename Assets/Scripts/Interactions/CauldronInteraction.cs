@@ -105,10 +105,12 @@ public class CauldronInteraction : MonoBehaviour
         // grabs the ingredient from the _recipes step that's holding it.
         Sequence ingredientSequence = DOTween.Sequence();
 
-        ingredientSequence.Append(ingredientGO.transform.DOLocalJump(ingredientInsertPoint.position, 1f, 1, 0.5f).SetEase(Ease.InOutSine))
+        if (ingredientGO != null)
+        {
+            ingredientSequence.Append(ingredientGO.transform.DOLocalJump(ingredientInsertPoint.position, 1f, 1, 0.5f).SetEase(Ease.InOutSine))
                          .Join(ingredientGO.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InOutSine))
                          .OnComplete(SetInactive); // Call SetInactive after both tweens finish
-
+        }
 
         // Play a sound here
         AudioManager.instance.sfxManager.PlaySFX(SFX_Type.StationSounds, addIngredientSounds.PickAudioClip(), true);
@@ -337,12 +339,14 @@ public class CauldronInteraction : MonoBehaviour
         else
             ResetValues();
 
-        Sequence throwSequence = DOTween.Sequence();
+        if(thrownPotion != null)
+        {
+            Sequence throwSequence = DOTween.Sequence();
 
-        // Scale and throw at the same time
-        throwSequence.Append(thrownPotion.transform.DOScale(new Vector3(1f, 1f, 1f), 1f).SetEase(Ease.InOutSine))
-                     .Join(thrownPotion.transform.DOLocalJump(targetPosition, throwHeight, 1, throwDuration));
-
+            // Scale and throw at the same time
+            throwSequence.Append(thrownPotion.transform.DOScale(new Vector3(1f, 1f, 1f), 1f).SetEase(Ease.InOutSine))
+                         .Join(thrownPotion.transform.DOLocalJump(targetPosition, throwHeight, 1, throwDuration));
+        }
     }
 
     // Count the potions and reset the values
@@ -422,13 +426,19 @@ public class CauldronInteraction : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
+        {
             canInteract = true;
+            InputManager.OnStir?.Invoke();
+        }
     }
 
     // using this to check if the player has left the range to stir the cauldron
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
+        {
             canInteract = false;
+            InputManager.OnHide?.Invoke();
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -26,12 +27,23 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float deceleration = 2f;
     [SerializeField] private float maxSpeed = 6f;
 
+    private Vector3 spawnPosition;
+    private Quaternion spawnRotation;
+    private bool canMove = false;
 
-    public static Action <bool> OnIceDay;
+    public static Action<bool> OnIceDay;
 
     private void Awake()
     {
+        spawnPosition = transform.position;
+        spawnRotation = transform.rotation;
         playerAnimation = GetComponentInChildren<Animator>();
+
+
+        if(SceneManager.GetActiveScene().name != "MainMenu")
+        {
+            canMove = true;
+        }
     }
 
     //Called when object is enabled
@@ -39,6 +51,9 @@ public class PlayerMovement : MonoBehaviour
     {
         InputManager.MoveAction += GetMove;
         OnIceDay += ToggleIceMode;
+        DayManager.OnStartDayCountdown += EnableMovement;
+        Actions.OnEndDay += DisableMovement;
+        Actions.OnResetValues += ResetPosition;
     }
 
     //Called when object is disabled
@@ -46,19 +61,38 @@ public class PlayerMovement : MonoBehaviour
     {
         InputManager.MoveAction -= GetMove;
         OnIceDay -= ToggleIceMode;
+        DayManager.OnStartDayCountdown -= EnableMovement;
+        Actions.OnEndDay -= DisableMovement;
+        Actions.OnResetValues -= ResetPosition;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!isOnIce)
+        if(canMove)
         {
-            NormalMovement();
+            if (!isOnIce)
+                NormalMovement();
+            else
+                IceMovement();
         }
-        else
-        {
-            IceMovement();
-        }
+    }
+
+    private void ResetPosition()
+    {
+        transform.position = spawnPosition;
+        transform.rotation = spawnRotation;
+        canMove = false;
+    }
+
+    private void EnableMovement()
+    {
+        canMove = true;
+    }
+
+    private void DisableMovement()
+    {
+        canMove = false;
     }
 
     public void ToggleIceMode(bool isIcy)
@@ -163,7 +197,7 @@ public class PlayerMovement : MonoBehaviour
         //allow original move
         else
         {
-            legalMove = move; 
+            legalMove = move;
         }
 
         return legalMove;

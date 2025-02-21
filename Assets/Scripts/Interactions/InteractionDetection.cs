@@ -16,6 +16,15 @@ public class InteractionDetection : MonoBehaviour
         if (interactable != null)
         {
             interactables.Add(interactable);
+
+            if (interactable.IsContainer())
+            {
+                InputManager.OnPickup?.Invoke();
+            }
+            else
+            {
+                InputManager.OnInteract?.Invoke();
+            }
         }
     }
 
@@ -29,6 +38,9 @@ public class InteractionDetection : MonoBehaviour
         if (interactable != null)
         {
             interactables.Remove(interactable);
+
+            if (interactables.Count == 0)
+                InputManager.OnHide?.Invoke();
         }
     }
 
@@ -36,7 +48,7 @@ public class InteractionDetection : MonoBehaviour
     public Interactable GetFirstNonHeldInteractable()
     {
         //loop through interactables list
-        for (int i=0; i<interactables.Count; i++)
+        for (int i = 0; i < interactables.Count; i++)
         {
             //if does not require being picked up for use return
             if (!interactables[i].MustBePickedUp() && !interactables[i].IsContainer())

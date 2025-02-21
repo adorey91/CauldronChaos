@@ -45,12 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7765e4370372e4dae7d18acd0d71c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInputControls:
-    m_Name: Player Input Controls
-    m_Id: 19ec0d7e-3969-438f-8fe3-b5a8c54c72e0
-    m_Asset: {fileID: 0}
-    m_Actions: []
-    m_Bindings: []
+  abovePlayerInteraction: {fileID: 0}
+  abovePlayerInteractionText: {fileID: 0}
 --- !u!114 &8336752322149118326
 MonoBehaviour:
   m_ObjectHideFlags: 0

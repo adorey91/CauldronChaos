@@ -7,11 +7,11 @@ using DG.Tweening;
 public class QueueManager : MonoBehaviour
 {
     [Header("Customer Queue Variables")]
-    [SerializeField] private List<GameObject> customerPrefabs; // List of possible customer prefabs
-    [SerializeField] private int maxCustomers = 5;
     [SerializeField] private int timeForCustomer = 1;
-    private CustomTimer newCustomer;
+    [SerializeField] private List<GameObject> customerPrefabs; // List of possible customer prefabs
     private List<GameObject> customers = new();
+    private int maxCustomers = 5;
+    private CustomTimer newCustomer;
     private bool startCustomers = false;
     private bool newDay;
     private int previousIndex;

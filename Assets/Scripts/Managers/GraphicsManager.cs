@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GraphicsManager : MonoBehaviour
 {
@@ -13,9 +14,14 @@ public class GraphicsManager : MonoBehaviour
     private int _currentResolutionIndex;
     private bool _isFullScreen = true;
 
+    [SerializeField] private Canvas abovePlayerUI;
+    [SerializeField] private Toggle abovePlayerUIToggle;
+
     // Start is called before the first frame update
     private void Start()
     {
+        abovePlayerUIToggle.isOn = true;
+
         for (int i = 0; i < Screen.resolutions.Length; i++)
         {
             _resolutionsList.Add(Screen.resolutions[i]);
@@ -76,5 +82,10 @@ public class GraphicsManager : MonoBehaviour
     {
         _isFullScreen = value;
         Screen.fullScreen = value;
+    }
+
+    public void SetAbovePlayerUI()
+    {
+        abovePlayerUI.enabled = abovePlayerUIToggle.isOn;
     }
 }

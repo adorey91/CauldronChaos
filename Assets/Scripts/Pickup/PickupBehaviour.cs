@@ -18,7 +18,8 @@ public class PickupBehaviour : MonoBehaviour
 
     private void Awake()
     {
-        pickupUIHolder.enabled = false;
+        if(pickupUIHolder != null)
+            pickupUIHolder.enabled = false;
     }
 
     //Function that runs when Gameobject script is attached to is enabled

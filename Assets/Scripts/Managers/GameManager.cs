@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     private GameState _previousState;
     private GameState _newState;
 
+    [SerializeField] private bool isInDebugMode = false;
+
 
     private void Awake()
     {
@@ -84,6 +86,16 @@ public class GameManager : MonoBehaviour
                 case GameState.Gameplay: SetState(GameState.Pause); break;
             }
         }
+    }
+
+    internal bool isDebugging()
+    {
+        return isInDebugMode;
+    }
+
+    internal void SetDebugMode(bool debug)
+    {
+        isInDebugMode = debug;
     }
 
     public void QuitGame()

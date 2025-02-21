@@ -44,7 +44,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2864664442665707075}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.15
   m_Speed: 3.5
@@ -73,6 +73,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionCooldown: 4
   goblinHands: {fileID: 3411744906653277463}
+  agent: {fileID: 7947374703834326683}
   throwFromCrate: 2
   throwFloorIngredient: 2
 --- !u!95 &1010409159330157091

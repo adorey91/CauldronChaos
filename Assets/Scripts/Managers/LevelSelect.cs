@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 public class LevelSelect : MonoBehaviour
@@ -26,7 +27,7 @@ public class LevelSelect : MonoBehaviour
         UpdateLevelButtons += UpdateButtons;
         OnSetUnlockedDays += SetUnlockedDays;
         OnSetScore += SetScore;
-        SaveManager.OnDeleteGame += ResetButtonLabels;
+        SaveManager.OnSaveDeleted += ResetButtonLabels;
     }
 
     private void OnDisable()
@@ -34,7 +35,7 @@ public class LevelSelect : MonoBehaviour
         UpdateLevelButtons -= UpdateButtons;
         OnSetUnlockedDays -= SetUnlockedDays;
         OnSetScore -= SetScore;
-        SaveManager.OnDeleteGame -= ResetButtonLabels;
+        SaveManager.OnSaveDeleted -= ResetButtonLabels;
     }
 
     private void ResetButtonLabels()
@@ -67,6 +68,7 @@ public class LevelSelect : MonoBehaviour
                 }
 
                 if (score == null) break;
+                if (GameManager.instance.isDebugging()) continue;
                 if (score[i] == 0) continue;
 
                 levelSelection[i].buttonText.text = $"Day {i + 1}\nScore: {score[i]}";

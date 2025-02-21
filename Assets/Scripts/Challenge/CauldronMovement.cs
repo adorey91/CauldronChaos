@@ -46,7 +46,8 @@ public class CauldronMovement : MonoBehaviour
         {
             if (movementTimer.UpdateTimer())
             {
-                StopCoroutine(movement);
+                if(movement != null)
+                    StopCoroutine(movement);
                 movement = StartCoroutine(MoveCauldron());
             }
         }
