@@ -30,7 +30,6 @@ public class UiManager : MonoBehaviour
     private void Start()
     {
         scoreManager = FindObjectOfType<ScoreManager>();
-
     }
 
     private void OnEnable()
