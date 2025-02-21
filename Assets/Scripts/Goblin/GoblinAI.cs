@@ -90,7 +90,7 @@ public class GoblinAI : MonoBehaviour
             noiseTimer -= Time.deltaTime;
         }
 
-        Debug.Log(noiseTimer);
+        //Debug.Log(noiseTimer);
     }
 
     private void OnEnable()
