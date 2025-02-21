@@ -81,10 +81,16 @@ public class AudioSFXPlayer : MonoBehaviour
             //initiate SFX start
             audioSource.Play();
         }
-        else
+        else if (audioSource.isPlaying)
         {
             startingValue= 1;
             endingValue= 0;
+        }
+        //called to fade when already off
+        else
+        {
+            timer = fadeTime;
+            endingValue = 0f;
         }
 
         //loop through and fade audio source volume

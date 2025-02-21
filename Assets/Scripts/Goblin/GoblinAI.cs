@@ -91,6 +91,7 @@ public class GoblinAI : MonoBehaviour
             if(currentAction != null)
             {
                 StopCoroutine(currentAction);
+                AudioManager.instance.sfxManager.StopConstantSFX(); //stop any constant SFX
             }
 
             switch (roll)
@@ -127,10 +128,12 @@ public class GoblinAI : MonoBehaviour
 
         agent.SetDestination(item.transform.position);
 
+        AudioManager.instance.sfxManager.StartConstantSFX(goblinMovement); //start movement sound
         while (!ReachedTarget())
         {
             yield return null;
         }
+        AudioManager.instance.sfxManager.StopConstantSFX(); // stop movement sound
 
         Vector3 randomDir = new Vector3(Random.Range(-1f, 1f), 1, Random.Range(-1f, 1f)).normalized;
         item.transform.DOJump(randomDir, 1, 1, 0.5f);
@@ -147,12 +150,14 @@ public class GoblinAI : MonoBehaviour
         agent.SetDestination(crate.transform.position);
         int amount = Random.Range(1, 4);
 
+        AudioManager.instance.sfxManager.StartConstantSFX(goblinMovement); //start movement sound
         while (!ReachedTarget())
         {
             yield return null;
         }
+        AudioManager.instance.sfxManager.StopConstantSFX(); // stop movement sound
 
-        for(int i = 0; i < amount; i++)
+        for (int i = 0; i < amount; i++)
         {
             crate.GoblinInteraction(goblinHands);
         }
@@ -168,11 +173,15 @@ public class GoblinAI : MonoBehaviour
         CauldronInteraction cauldron = cauldrons[Random.Range(0, cauldrons.Length)];
 
         agent.SetDestination(cauldron.transform.position);
+        AudioManager.instance.sfxManager.StartConstantSFX(goblinMovement); //start movement sound
         while (!ReachedTarget())
         {
             yield return null;
         }
+        AudioManager.instance.sfxManager.StopConstantSFX(); // stop movement sound
+
         cauldron.GetComponent<CauldronInteraction>().GoblinInteraction();
+        AudioManager.instance.sfxManager.PlaySFX(SFX_Type.GoblinSounds, goblinSlurp.PickAudioClip(), true);
 
         yield return new WaitForSeconds(2f);
         isPerformingAction = false;
@@ -183,11 +192,15 @@ public class GoblinAI : MonoBehaviour
         isPerformingAction = true;
 
         agent.SetDestination(queue.transform.position);
+        AudioManager.instance.sfxManager.StartConstantSFX(goblinMovement); //start movement sound
         while (!ReachedTarget())
         {
             yield return null;
         }
+        AudioManager.instance.sfxManager.StopConstantSFX(); // stop movement sound
+
         queue.ScareCustomer();
+        AudioManager.instance.sfxManager.PlaySFX(SFX_Type.GoblinSounds, goblinScream.PickAudioClip(), true);
 
         yield return new WaitForSeconds(2f);
         isPerformingAction = false;
