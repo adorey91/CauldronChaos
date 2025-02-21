@@ -90,6 +90,7 @@ public class AudioSFXPlayer : MonoBehaviour
         else
         {
             timer = fadeTime;
+            startingValue = 0;
             endingValue = 0f;
         }
 

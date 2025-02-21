@@ -157,11 +157,13 @@ public class GoblinAI : MonoBehaviour
         }
         AudioManager.instance.sfxManager.StopConstantSFX(); // stop movement sound
 
+        AudioManager.instance.sfxManager.StartConstantSFX(rummageSound); //playing the sound for rummaging
         for (int i = 0; i < amount; i++)
         {
             crate.GoblinInteraction(goblinHands);
         }
         yield return new WaitForSeconds(throwFromCrate); // Simulated action time
+        AudioManager.instance.sfxManager.StopConstantSFX(); //stop rummage sound
         isPerformingAction = false;
     }
 
