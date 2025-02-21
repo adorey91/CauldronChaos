@@ -115,7 +115,6 @@ public class SaveManager : MonoBehaviour
     {
         if (!GameManager.instance.isDebugging())
         {
-            Debug.Log("saving day score " + day + " Is next day unlocked? " + unlockNext);
             // Update the day data if the day is valid
             if (day < gameData.days.Count)
             {

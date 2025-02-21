@@ -1,6 +1,8 @@
 using TMPro;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class DayManager : MonoBehaviour
 {
@@ -8,8 +10,10 @@ public class DayManager : MonoBehaviour
     [Tooltip("In Minutes")]
     [SerializeField] private float dayLength = 3f;
     [SerializeField] private RectTransform timerHand;
+    [SerializeField] private Image timerFill;
     private CustomTimer gameplayTimer;
     private bool gameplayTimerStarted = false;
+    private float lastPulseTime = -1f; // Track last pulse time
 
     private int currentDay;
 
@@ -68,7 +72,6 @@ public class DayManager : MonoBehaviour
 
         if (gameplayTimerStarted)
         {
-            SetTimerRotation();
 
             if (gameplayTimer.UpdateTimer())
             {
@@ -80,6 +83,7 @@ public class DayManager : MonoBehaviour
                 //playing end of day SFX
                 AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ShopSounds, endDaySFX, true);
             }
+            SetTimerRotation();
         }
     }
 
@@ -104,25 +108,38 @@ public class DayManager : MonoBehaviour
         float remainingTime = gameplayTimer.GetRemainingTime();
         float elapsedTime = gameplayTimer.elapsedTime;
 
+        timerFill.fillAmount =elapsedTime / (dayLength * 60) ;
+
         //// Convert remaining time into minutes and seconds
         //int minutes = Mathf.FloorToInt(remainingTime / 60);
         //int seconds = Mathf.FloorToInt(remainingTime % 60);
 
         //dayTimerText.text = $"{minutes:00}:{seconds:00}";
 
-        // Stop any existing rotation animation
-        //timerHand.DOKill();
-
         // Calculate how far along the rotation should be (0° to -360°)
         float rotationAngle = Mathf.Lerp(0, -360, elapsedTime / (dayLength * 60));
 
         // Apply rotation directly without animation
         timerHand.rotation = Quaternion.Euler(0, 0, rotationAngle);
+        PulseHand();
+
+    }
+
+    private void PulseHand()
+    {
+        int remainingSeconds = Mathf.FloorToInt(gameplayTimer.GetRemainingTime());
+        if (remainingSeconds < 10) return;
+
+        // Check if it's time to pulse and ensure it doesn't repeat in the same second
+        if (remainingSeconds <= 60 && remainingSeconds % 15 == 0 && lastPulseTime != remainingSeconds)
+        {
+            lastPulseTime = remainingSeconds; // Update last pulse time
+            timerHand.DOScale(1.2f, 0.2f).SetLoops(2, LoopType.Yoyo);
+        }
     }
 
     private void StartDayCountdown()
     {
-        Debug.Log("Starting Day Countdown");
         ChallengeManager.CheckChallengeDay?.Invoke();
         ControllerSelect.OnFirstSelect?.Invoke("Gameplay");
 
@@ -135,6 +152,7 @@ public class DayManager : MonoBehaviour
 
     private void ResetValues()
     {
+        timerFill.fillAmount = 0;
         gameplayTimerStarted = false;
         gameplayTimer.ResetTimer();
         dayCountingDown = false;

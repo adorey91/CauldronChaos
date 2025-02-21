@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -37,6 +38,12 @@ public class PlayerMovement : MonoBehaviour
         spawnPosition = transform.position;
         spawnRotation = transform.rotation;
         playerAnimation = GetComponentInChildren<Animator>();
+
+
+        if(SceneManager.GetActiveScene().name != "MainMenu")
+        {
+            canMove = true;
+        }
     }
 
     //Called when object is enabled

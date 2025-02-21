@@ -426,13 +426,19 @@ public class CauldronInteraction : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
+        {
             canInteract = true;
+            InputManager.OnStir?.Invoke();
+        }
     }
 
     // using this to check if the player has left the range to stir the cauldron
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
+        {
             canInteract = false;
+            InputManager.OnHide?.Invoke();
+        }
     }
 }
