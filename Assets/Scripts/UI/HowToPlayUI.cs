@@ -46,13 +46,13 @@ public class HowToPlayUI : MonoBehaviour
         OnDeactivateHowToPlay -= DeactivateHowToPlay;
     }
 
-    private void Update()
-    {
-        if (imageTimer.UpdateTimer() && !pressedButton)
-        {
-            NextImage();
-        }
-    }
+    //private void Update()
+    //{
+    //    if (imageTimer.UpdateTimer() && !pressedButton)
+    //    {
+    //        NextImage();
+    //    }
+    //}
 
     // Activates the HowToPlay canvas
     public void ActivateHowToPlay(bool isLoading)
@@ -60,8 +60,8 @@ public class HowToPlayUI : MonoBehaviour
         // Sets the first image in the array
         pressedButton = false;
         howToPlayCanvas.enabled = true;
-        ControllerSelect.OnFirstSelect?.Invoke("HowToPlay");
-        howToPlayImage.sprite = _howToPlayImages[0];
+        //ControllerSelect.OnFirstSelect?.Invoke("HowToPlay");
+        //howToPlayImage.sprite = _howToPlayImages[0];
 
         if(isLoading)
         {
@@ -74,7 +74,7 @@ public class HowToPlayUI : MonoBehaviour
             backButton.SetActive(true);
         }
         
-        imageTimer.StartTimer();
+        //imageTimer.StartTimer();
     }
 
     public void DeactivateHowToPlay()
@@ -83,27 +83,27 @@ public class HowToPlayUI : MonoBehaviour
         imageTimer = new CustomTimer(_imageTime, false);
     }
 
-    public void NextImage()
-    {
-        int currentIndex = System.Array.IndexOf(_howToPlayImages, howToPlayImage.sprite);
+    //public void NextImage()
+    //{
+    //    int currentIndex = System.Array.IndexOf(_howToPlayImages, howToPlayImage.sprite);
 
-        // Move to next image, or loop back to the first if at the end
-        int nextIndex = (currentIndex + 1) % _howToPlayImages.Length;
-        howToPlayImage.sprite = _howToPlayImages[nextIndex];
+    //    // Move to next image, or loop back to the first if at the end
+    //    int nextIndex = (currentIndex + 1) % _howToPlayImages.Length;
+    //    howToPlayImage.sprite = _howToPlayImages[nextIndex];
 
-        imageTimer.ResetTimer();
-    }
+    //    imageTimer.ResetTimer();
+    //}
 
-    public void PreviousImage()
-    {
-        int currentIndex = System.Array.IndexOf(_howToPlayImages, howToPlayImage.sprite);
+    //public void PreviousImage()
+    //{
+    //    int currentIndex = System.Array.IndexOf(_howToPlayImages, howToPlayImage.sprite);
 
-        // Move to previous image, or loop back to the last if at the beginning
-        int prevIndex = (currentIndex - 1 + _howToPlayImages.Length) % _howToPlayImages.Length;
-        howToPlayImage.sprite = _howToPlayImages[prevIndex];
+    //    // Move to previous image, or loop back to the last if at the beginning
+    //    int prevIndex = (currentIndex - 1 + _howToPlayImages.Length) % _howToPlayImages.Length;
+    //    howToPlayImage.sprite = _howToPlayImages[prevIndex];
 
-        imageTimer.ResetTimer();
-    }
+    //    imageTimer.ResetTimer();
+    //}
 
     public void PressedButton()
     {

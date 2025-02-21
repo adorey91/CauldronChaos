@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SettingsManager : MonoBehaviour
@@ -70,6 +71,21 @@ public class SettingsManager : MonoBehaviour
     // Settings UI Changes. Made public so they can be accessed in the inspector.
     internal void OpenSettings()
     {
+        if(SceneManager.GetActiveScene().name != "MainMenu")
+        {
+            deleteFileButton.gameObject.SetActive(false);
+            debugButton.gameObject.SetActive(false);
+            //deleteFileButton.interactable = false;
+            //debugButton.interactable = false;
+        }
+        else
+        {
+            deleteFileButton.gameObject.SetActive(true);
+            debugButton.gameObject.SetActive(true);
+            //deleteFileButton.interactable = true;
+            //debugButton.interactable = true;
+        }
+
         ActivatePanel(settingsPanel);
         ControllerSelect.OnFirstSelect?.Invoke("Settings");
     }

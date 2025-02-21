@@ -60,6 +60,7 @@ public class SaveManager : MonoBehaviour
             {
                 OnSaveExist?.Invoke(false);
                 LevelSelect.OnSetUnlockedDays?.Invoke(1);
+                DayManager.OnSetDay(1);
                 gameData = new GameData();
                 gameData.CreateNewSave();
             }

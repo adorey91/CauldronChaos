@@ -9,8 +9,8 @@ public class GameManager : MonoBehaviour
 
     public enum GameState { MainMenu, Loading, Intro, LevelSelect, Gameplay, EndOfDay, Pause, Settings}
     public GameState gameState;
-    private GameState _previousState;
-    private GameState _newState;
+    internal GameState previousState;
+    private GameState newState;
 
     [SerializeField] private bool isInDebugMode = false;
 
@@ -51,23 +51,23 @@ public class GameManager : MonoBehaviour
     public void LoadState(string state)
     {
         if (state == "previousState")
-            _newState = _previousState;
+            newState = previousState;
         else
         {
             if (Enum.TryParse(state, out GameState gamestate))
-                _newState = gamestate;
+                newState = gamestate;
             else
                 Debug.LogError(state + " doesn't exist");
         }
 
-        SetState(_newState);
+        SetState(newState);
     }
 
 
     private void SetState(GameState state)
     {
         if (state == GameState.Settings)
-            _previousState = gameState;
+            previousState = gameState;
 
         gameState = state;
 

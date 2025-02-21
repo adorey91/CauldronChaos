@@ -9,52 +9,69 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 {
     private GameObject button;
     [SerializeField] private bool isLevelSelectButton;
+    private Button thisButton;
 
     private void Awake()
     {
         button = this.gameObject;
+        thisButton = GetComponent<Button>();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        button.transform.DOKill();
-        button.transform.DOScale(1.3f, 0.2f).SetUpdate(true).OnComplete(() =>
+        if (thisButton.interactable)
         {
-            if(isLevelSelectButton)
+            button.transform.DOKill();
+            // Ensure independent updates and smoother scaling.
+            button.transform.DOScale(1.3f, 0.2f).SetUpdate(true).SetEase(Ease.OutBack).OnComplete(() =>
             {
-                button.transform.SetAsLastSibling();
-            }
-        });
+                if (isLevelSelectButton)
+                {
+                    button.transform.SetAsLastSibling();
+                }
+            });
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if(isLevelSelectButton)
-            button.transform.SetAsFirstSibling();
-        
-        button.transform.DOKill();
-        button.transform.DOScale(1f, 0.2f);
-        button.transform.DOLocalMoveZ(0f, 0.2f).SetUpdate(true); // Moves back
+        if (thisButton.interactable)
+        {
+            if (isLevelSelectButton)
+                button.transform.SetAsFirstSibling();
+
+            button.transform.DOKill();
+            // Ensure independent updates and smoother scaling.
+            button.transform.DOScale(1f, 0.2f).SetUpdate(true).SetEase(Ease.OutBack);
+        }
     }
 
     public void OnSelect(BaseEventData eventData)
     {
-        button.transform.DOKill();
-        button.transform.DOScale(1.3f, 0.2f).SetUpdate(true).OnComplete(() =>
+        if (thisButton.interactable)
         {
-            if (isLevelSelectButton)
+            button.transform.DOKill();
+            // Ensure independent updates and smoother scaling.
+            button.transform.DOScale(1.3f, 0.2f).SetUpdate(true).SetEase(Ease.OutBack).OnComplete(() =>
             {
-                button.transform.SetAsLastSibling();
-            }
-        });
+                if (isLevelSelectButton)
+                {
+                    button.transform.SetAsLastSibling();
+                }
+            });
+        }
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
-        if (isLevelSelectButton)
-            button.transform.SetAsFirstSibling();
+        if (thisButton.interactable)
+        {
+            if (isLevelSelectButton)
+                button.transform.SetAsFirstSibling();
 
-        button.transform.DOKill();
-        button.transform.DOScale(1f, 0.2f).SetUpdate(true);
+            button.transform.DOKill();
+            // Ensure independent updates and smoother scaling.
+            button.transform.DOScale(1f, 0.2f).SetUpdate(true).SetEase(Ease.OutBack);
+        }
     }
 }

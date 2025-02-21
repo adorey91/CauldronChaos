@@ -31,6 +31,7 @@ public class DayManager : MonoBehaviour
 
     public static Action<string> dayText;
     public static Action OnStartDayCountdown;
+    public static Action<int> OnSetDay;
 
 
     // Start is called before the first frame update
@@ -45,6 +46,7 @@ public class DayManager : MonoBehaviour
         Actions.OnResetValues += ResetValues;
         dayText += SetDayText;
         OnStartDayCountdown += StartDayCountdown;
+        OnSetDay += SetDay;
     }
 
     private void OnDisable()
@@ -52,6 +54,7 @@ public class DayManager : MonoBehaviour
         Actions.OnResetValues -= ResetValues;
         dayText -= SetDayText;
         OnStartDayCountdown -= StartDayCountdown;
+        OnSetDay -= SetDay;
     }
 
     private void Update()
