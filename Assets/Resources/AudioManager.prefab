@@ -49,7 +49,7 @@ MonoBehaviour:
   audioSource: {fileID: 4627674926881532888}
   pitchVariance: 0
   cooldownTime: 0
-  fadeTime: 0
+  fadeTime: 0.05
 --- !u!82 &4627674926881532888
 AudioSource:
   m_ObjectHideFlags: 0
@@ -59,9 +59,10 @@ AudioSource:
   m_GameObject: {fileID: 261076963432202979}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -1286298449707706937, guid: 193ec6afe61047f4494f354986ce01af,
+    type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -1195,9 +1196,10 @@ AudioSource:
   m_GameObject: {fileID: 8277805666933023909}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -1286298449707706937, guid: 193ec6afe61047f4494f354986ce01af,
+    type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
