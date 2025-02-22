@@ -48,15 +48,6 @@ public class GoblinAI : MonoBehaviour
     private Coroutine goblinBehaviour;
     private Coroutine currentAction;
 
-    // Action to start the goblin chaos
-    /// <summary> Event to start the goblin chaos </summary>
-    public static System.Action<bool> StartGoblinChaos;
-    /// <summary> Event to end the goblin chaos </summary>
-    public static System.Action EndGoblinChaos;
-    /// <summary> Event called when goblin is hit </summary>
-    public static System.Action ScareGoblin;
-
-
     private void Start()
     {
         noiseTimer = Random.Range(noiseTimerMin, noiseTimerMax);
@@ -95,16 +86,16 @@ public class GoblinAI : MonoBehaviour
 
     private void OnEnable()
     {
-        StartGoblinChaos += StartChaos;
-        EndGoblinChaos += EndChaos;
-        ScareGoblin += ScareAway;
+        Actions.OnStartGoblin += StartChaos;
+        Actions.OnEndGoblin += EndChaos;
+        Actions.OnScareGoblin += ScareAway;
     }
 
     private void OnDisable()
     {
-        StartGoblinChaos -= StartChaos;
-        EndGoblinChaos -= EndChaos;
-        ScareGoblin -= ScareAway;
+        Actions.OnStartGoblin -= StartChaos;
+        Actions.OnEndGoblin -= EndChaos;
+        Actions.OnScareGoblin -= ScareAway;
     }
 
     private void StartChaos(bool isChallengeDay)

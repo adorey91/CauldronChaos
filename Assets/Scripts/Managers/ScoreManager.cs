@@ -27,8 +27,6 @@ public class ScoreManager : MonoBehaviour
     private int score = 0;
     private int currentDay = 0;
 
-    public static Action OnChallengeDay;
-
     private void Start()
     {
         quotaFill.fillAmount = 0;
@@ -39,7 +37,7 @@ public class ScoreManager : MonoBehaviour
         Actions.OnCustomerServed += UpdateScore;
         Actions.OnEndDay += UpdateEODText;
         Actions.OnResetValues += ResetValues;
-        OnChallengeDay += CheckChallengeDay;
+        Actions.OnSetDay += SetCurrentDay;
     }
 
     private void OnDisable()
@@ -47,40 +45,13 @@ public class ScoreManager : MonoBehaviour
         Actions.OnCustomerServed -= UpdateScore;
         Actions.OnEndDay -= UpdateEODText;
         Actions.OnResetValues -= ResetValues;
-        OnChallengeDay -= CheckChallengeDay;
+        Actions.OnSetDay -= SetCurrentDay;
     }
 
-    public void SetCurrentDay(int day)
+    private void SetCurrentDay(int day)
     {
         currentDay = day;
     }
-
-    private void CheckChallengeDay()
-    {
-        
-        if ((currentDay + 1) % 2 == 0)
-        {
-            Debug.Log("Challenge Day");
-            Debug.Log(currentDay +1);
-            ChallengeManager.OnStartChallenge?.Invoke((currentDay +1) / 2);
-        }
-        else
-        {
-            Debug.Log("Not a challenge day");
-        }
-            if((currentDay +1) > 5)
-            {
-                GoblinAI.StartGoblinChaos?.Invoke(false);
-                Debug.Log("Goblin Chaos");
-            }
-    }
-
-
-   
-
-   
-
-
 
     private void UpdateScore(bool wasGivenOnTime, int regularScore)
     {
@@ -112,7 +83,7 @@ public class ScoreManager : MonoBehaviour
             increaseDayCount = true;
 
         // Save the current day's score and people served
-        SaveManager.OnSaveDay(currentDay, score, increaseDayCount);
+        Actions.OnSaveDay(currentDay, score, increaseDayCount);
 
         // Sets the EOD text
         eodTitle.text = $"End of Day {currentDay + 1}";

@@ -7,19 +7,13 @@ public class CauldronMovement : MonoBehaviour
     private NavMeshAgent agent;
     private float movementTime;
     private Vector3 currentDestination;
+    private bool isMoving = false;
+    private CustomTimer movementTimer;
 
-    [SerializeField] private bool isMoving = false;
     [SerializeField] private float wanderRadius = 5f;
     [SerializeField] private float minMovementTime = 5f;
     [SerializeField] private float maxMovementTime = 20f;
-    [SerializeField] private CustomTimer movementTimer;
-
-    // Events
-    /// <summary> Event to start the challenge </summary>
-    public static System.Action OnStartChallenge;
-    /// <summary> Event to end the challenge </summary>
-    public static System.Action OnEndChallenge;
-
+   
     private Coroutine movement;
 
     private void Start()
@@ -29,14 +23,14 @@ public class CauldronMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        OnStartChallenge += StartCauldronMovement;
-        OnEndChallenge += () => isMoving = false;
+        Actions.OnStartCauldron += StartCauldronMovement;
+        Actions.OnEndCauldron += () => isMoving = false;
     }
 
     private void OnDisable()
     {
-        OnStartChallenge -= StartCauldronMovement;
-        OnEndChallenge -= () => isMoving = false;
+        Actions.OnStartCauldron -= StartCauldronMovement;
+        Actions.OnEndCauldron -= () => isMoving = false;
         StopAllCoroutines();
     }
 

@@ -25,7 +25,6 @@ public class LevelManager : MonoBehaviour
 
     // Callback function to be invoked adter fade animation completes
     private Action fadeCallback;
-    public static Action startTimer;
 
     public void Start()
     {
@@ -44,7 +43,7 @@ public class LevelManager : MonoBehaviour
         }
 
         InputManager.instance.TurnOffInteraction();
-        ControllerSelect.OnFirstSelect(null);
+        Actions.OnFirstSelect(null);
 
 
         Fade("FadeOut", () =>
@@ -65,7 +64,7 @@ public class LevelManager : MonoBehaviour
 
             if (sceneName.StartsWith("Day"))
             {
-                HowToPlayUI.OnActivateHowToPlay?.Invoke(true);
+                Actions.OnActivateHowToPlay?.Invoke(true);
                 fakeProgressSpeed = 0.2f;
             }
             else
@@ -117,7 +116,7 @@ public class LevelManager : MonoBehaviour
         yield return WaitForAnyKeyPress();
 
         if (sceneName.StartsWith("Day"))
-            HowToPlayUI.OnDeactivateHowToPlay?.Invoke();
+            Actions.OnDeactivateHowToPlay?.Invoke();
 
         loadingScreen.enabled = false;
         loadOperation.allowSceneActivation = true;
@@ -159,7 +158,7 @@ public class LevelManager : MonoBehaviour
 
         if (currentScene.name.StartsWith("Day"))
         {
-            DayManager.OnStartDayCountdown?.Invoke();
+            Actions.OnStartDayCountdown?.Invoke();
             InputManager.instance.TurnOnInteraction();
         }
         Fade("FadeIn");

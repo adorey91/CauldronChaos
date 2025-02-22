@@ -3,8 +3,6 @@ using System;
 
 public class OrderCounter : MonoBehaviour
 {
-    public static Action FilledOrder;
-    
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent<PickupObject>(out PickupObject pickUp))
@@ -13,8 +11,8 @@ public class OrderCounter : MonoBehaviour
             {
                 if (potion.givenToCustomer) return;
 
-                FilledOrder?.Invoke();
-                QueueManager.OnCheckCustomers?.Invoke(potion);
+                Actions.FilledOrder?.Invoke();
+                Actions.OnCheckCustomers?.Invoke(potion);
             }
         }
     }

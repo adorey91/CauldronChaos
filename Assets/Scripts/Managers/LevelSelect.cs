@@ -12,9 +12,6 @@ public class LevelSelect : MonoBehaviour
     private int[] score;
     private int[] peopleServed;
 
-    public static Action UpdateLevelButtons;
-    public static Action<int> OnSetUnlockedDays;
-    public static Action<int[]> OnSetScore;
 
     private void Start()
     {
@@ -24,18 +21,18 @@ public class LevelSelect : MonoBehaviour
 
     private void OnEnable()
     {
-        UpdateLevelButtons += UpdateButtons;
-        OnSetUnlockedDays += SetUnlockedDays;
-        OnSetScore += SetScore;
-        SaveManager.OnSaveDeleted += ResetButtonLabels;
+        Actions.UpdateLevelButtons += UpdateButtons;
+        Actions.OnSetUnlockedDays += SetUnlockedDays;
+        Actions.OnSetScore += SetScore;
+        Actions.OnSaveDeleted += ResetButtonLabels;
     }
 
     private void OnDisable()
     {
-        UpdateLevelButtons -= UpdateButtons;
-        OnSetUnlockedDays -= SetUnlockedDays;
-        OnSetScore -= SetScore;
-        SaveManager.OnSaveDeleted -= ResetButtonLabels;
+        Actions.UpdateLevelButtons -= UpdateButtons;
+        Actions.OnSetUnlockedDays -= SetUnlockedDays;
+        Actions.OnSetScore -= SetScore;
+        Actions.OnSaveDeleted -= ResetButtonLabels;
     }
 
     private void ResetButtonLabels()
@@ -87,11 +84,9 @@ public class LevelSelect : MonoBehaviour
     }
 
 
-
     public void SetUnlockedDays(int days)
     {
         unlockedDays = days;
-
         UpdateButtons();
     }
 

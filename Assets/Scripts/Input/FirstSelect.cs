@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class ControllerSelect : MonoBehaviour
+public class FirstSelect : MonoBehaviour
 {
     [Header("Ui First Selected")]
     [SerializeField] private GameObject menuFirstSelect;
@@ -21,47 +21,31 @@ public class ControllerSelect : MonoBehaviour
     [SerializeField] private EventSystem eventSystem;
 
     private GameObject _firstSelected;
-
-    // Actions for controller select
-    public static Action<GameObject> SelectRecipeButton;
-    public static Action<string> OnFirstSelect;
-
+    
     private void OnEnable()
     {
-        OnFirstSelect += SetFirstSelect;
-        SelectRecipeButton += SetRecipeBookButton;
+        Actions.OnFirstSelect += SetFirstSelect;
+        Actions.OnSelectRecipeButton += SetRecipeBookButton;
     }
 
     private void OnDisable()
     {
-        OnFirstSelect -= SetFirstSelect;
-        SelectRecipeButton -= SetRecipeBookButton;
+        Actions.OnFirstSelect -= SetFirstSelect;
+        Actions.OnSelectRecipeButton -= SetRecipeBookButton;
     }
 
     // Sets the recipe book button for the controller
     private void SetRecipeBookButton(GameObject button)
     {
         eventSystem.SetSelectedGameObject(null);
-
-        if (!IsControllerConnected())
-            return;
-
         eventSystem.SetSelectedGameObject(button, new BaseEventData(eventSystem));
     }
 
-    // Checks if controller is connected
-    internal bool IsControllerConnected()
-    {
-        return Gamepad.all.Count > 0;
-    }
-
+  
     // Sets the first selected button for the controller depending on the string
     public void SetFirstSelect(string menu)
     {
         eventSystem.SetSelectedGameObject(null);
-
-        if (!IsControllerConnected())
-            return;
 
         switch (menu)
         {

@@ -8,11 +8,10 @@ public class DoorInteraction : MonoBehaviour
     [Header("SFX")]
     [SerializeField] private SFXLibrary newCustomerSFX;
 
-
     private void OpenDoor()
     {
         //playing SFX for new customer arriving
-        Debug.Log("Opening Door");
+        //Debug.Log("Opening Door");
         AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ShopSounds, newCustomerSFX.PickAudioClip(), true);
     }
 

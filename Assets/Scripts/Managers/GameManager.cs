@@ -26,13 +26,13 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    //private void Start()
-    //{
-    //    if(SceneManager.GetActiveScene().name == "MainMenu")
-    //        SetState(GameState.MainMenu);
-    //    else
-    //        SetState(GameState.Gameplay);
-    //}
+    private void Start()
+    {
+        if (SceneManager.GetActiveScene().name == "MainMenu")
+            SetState(GameState.MainMenu);
+        else
+            SetState(GameState.Gameplay);
+    }
 
 
     private void OnEnable()

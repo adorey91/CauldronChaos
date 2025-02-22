@@ -31,11 +31,9 @@ public class PlayerMovement : MonoBehaviour
     private Quaternion spawnRotation;
     private bool canMove = false;
 
-    public static Action<bool> OnIceDay;
-
     private void Awake()
     {
-        spawnPosition = transform.position;
+        spawnPosition = transform.localPosition;
         spawnRotation = transform.rotation;
         playerAnimation = GetComponentInChildren<Animator>();
 
@@ -50,8 +48,8 @@ public class PlayerMovement : MonoBehaviour
     private void OnEnable()
     {
         InputManager.MoveAction += GetMove;
-        OnIceDay += ToggleIceMode;
-        DayManager.OnStartDayCountdown += EnableMovement;
+        Actions.OnIceDay += ToggleIceMode;
+        Actions.OnStartDayCountdown += EnableMovement;
         Actions.OnEndDay += DisableMovement;
         Actions.OnResetValues += ResetPosition;
     }
@@ -60,8 +58,8 @@ public class PlayerMovement : MonoBehaviour
     private void OnDisable()
     {
         InputManager.MoveAction -= GetMove;
-        OnIceDay -= ToggleIceMode;
-        DayManager.OnStartDayCountdown -= EnableMovement;
+        Actions.OnIceDay -= ToggleIceMode;
+        Actions.OnStartDayCountdown -= EnableMovement;
         Actions.OnEndDay -= DisableMovement;
         Actions.OnResetValues -= ResetPosition;
     }
@@ -80,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ResetPosition()
     {
-        transform.position = spawnPosition;
+        transform.localPosition = spawnPosition;
         transform.rotation = spawnRotation;
         canMove = false;
     }

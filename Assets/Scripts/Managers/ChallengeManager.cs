@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
 public class ChallengeManager : MonoBehaviour
 {
@@ -22,9 +23,6 @@ public class ChallengeManager : MonoBehaviour
         "Windy Day",
         "Slimey Trail"
     };
-    /// <summary> Event to start the challenge </summary>
-    public static System.Action<int> OnStartChallenge;
-    public static System.Action CheckChallengeDay;
 
     private void Start()
     {
@@ -38,16 +36,18 @@ public class ChallengeManager : MonoBehaviour
 
     private void OnEnable()
     {
-        OnStartChallenge += StartChallenge;
+        Actions.OnStartChallenge += StartChallenge;
+        Actions.OnSetDay += CheckChallengeDay;
         Actions.OnEndDay += ResetChallenges;
     }
 
     private void OnDisable()
     {
-        OnStartChallenge -= StartChallenge;
+        Actions.OnStartChallenge -= StartChallenge;
+        Actions.OnSetDay -= CheckChallengeDay;
         Actions.OnEndDay -= ResetChallenges;
     }
-
+    #region Dropdown for Testing Scene
     // used in testing scene only, to change the challenge type
     private void InitializeDropdown()
     {
@@ -65,24 +65,48 @@ public class ChallengeManager : MonoBehaviour
         ResetChallenges();
         StartChallenge(index);
     }
+    #endregion
 
-    // Start the challenge based on the challenge type
-    private void StartChallenge(int challenge)
+    private void CheckChallengeDay(int currentDay)
+    {
+        //    Debug.Log("Current Day: " + currentDay);
+        //    if (currentDay == 0) return;
+
+        //    if ((currentDay) % 2 == 0)
+        //    {
+        //        Debug.Log("Challenge Day");
+        //        Debug.Log(currentDay + 1);
+        //        Actions.OnStartChallenge?.Invoke((currentDay + 1) / 2);
+        //    }
+        //    else
+        //    {
+        //        Debug.Log("Not a challenge day");
+        //    }
+        //    if ((currentDay + 1) > 5)
+        //    {
+        //        Actions.OnStartGoblin?.Invoke(false);
+        //        Debug.Log("Goblin Chaos");
+        //    }
+    }
+
+
+// Start the challenge based on the challenge type
+private void StartChallenge(int challenge)
     {
         Debug.Log("Challenge Started:   " + challenge);
-
+        ResetChallenges();
         switch (challenge)
         {
-            case 0: ResetChallenges(); break;
+            case 0: Debug.Log("No Challenges"); break;
             case 1:
-                PlayerMovement.OnIceDay?.Invoke(true);
-                Floor.OnApplyMaterial?.Invoke(slipperyMaterial, icyTexture);
+                Actions.OnIceDay?.Invoke(true);
+                Actions.OnApplyFoorMaterial?.Invoke(slipperyMaterial, icyTexture);
                 break;
             case 2:
-                CauldronMovement.OnStartChallenge?.Invoke();
+                Actions.OnStartCauldron?.Invoke();
                 break;
             case 3:
-                GoblinAI.StartGoblinChaos?.Invoke(true);
+                Actions.OnStartGoblin?.Invoke(true);
                 break;
             case 4:
                 break;
@@ -95,9 +119,9 @@ public class ChallengeManager : MonoBehaviour
     // Reset all challenges
     private void ResetChallenges()
     {
-        Floor.OnApplyMaterial?.Invoke(defaultMaterial, defaultTexture);
-        CauldronMovement.OnEndChallenge?.Invoke();
-        PlayerMovement.OnIceDay?.Invoke(false);
-        GoblinAI.EndGoblinChaos?.Invoke();
+        Actions.OnApplyFoorMaterial?.Invoke(defaultMaterial, defaultTexture);
+        Actions.OnEndCauldron?.Invoke();
+        Actions.OnIceDay?.Invoke(false);
+        Actions.OnEndGoblin?.Invoke();
     }
 }

@@ -15,10 +15,6 @@ public class HowToPlayUI : MonoBehaviour
     [SerializeField] private GameObject backButton;
     private bool pressedButton;
 
-    public static Action<bool> OnActivateHowToPlay;
-    public static Action OnDeactivateHowToPlay;
-
-
     private void Awake()
     {
         howToPlayCanvas = GetComponent<Canvas>();
@@ -36,14 +32,14 @@ public class HowToPlayUI : MonoBehaviour
 
     private void OnEnable()
     {
-        OnActivateHowToPlay += ActivateHowToPlay;
-        OnDeactivateHowToPlay += DeactivateHowToPlay;
+        Actions.OnActivateHowToPlay += ActivateHowToPlay;
+        Actions.OnDeactivateHowToPlay += DeactivateHowToPlay;
     }
 
     private void OnDisable()
     {
-        OnActivateHowToPlay -= ActivateHowToPlay;
-        OnDeactivateHowToPlay -= DeactivateHowToPlay;
+        Actions.OnActivateHowToPlay -= ActivateHowToPlay;
+        Actions.OnDeactivateHowToPlay -= DeactivateHowToPlay;
     }
 
     //private void Update()
@@ -60,7 +56,6 @@ public class HowToPlayUI : MonoBehaviour
         // Sets the first image in the array
         pressedButton = false;
         howToPlayCanvas.enabled = true;
-        //ControllerSelect.OnFirstSelect?.Invoke("HowToPlay");
         //howToPlayImage.sprite = _howToPlayImages[0];
 
         if(isLoading)
@@ -71,6 +66,7 @@ public class HowToPlayUI : MonoBehaviour
         else
         {
             imageBG.enabled = true;
+            Actions.OnFirstSelect?.Invoke("HowToPlay");
             backButton.SetActive(true);
         }
         

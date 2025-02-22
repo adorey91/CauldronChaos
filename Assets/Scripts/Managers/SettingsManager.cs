@@ -27,8 +27,6 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private Button deleteYes;
     [SerializeField] private Button deleteNo;
 
-    public static Action OpenSettingsAction;
-
     private void Start()
     {
         foreach (Button settings in settingsButton)
@@ -49,12 +47,12 @@ public class SettingsManager : MonoBehaviour
 
     private void OnEnable()
     {
-        OpenSettingsAction += OpenSettings;
+        Actions.OnOpenSettingsAction += OpenSettings;
     }
 
     private void OnDisable()
     {
-        OpenSettingsAction -= OpenSettings;
+        Actions.OnOpenSettingsAction -= OpenSettings;
     }
 
 
@@ -87,36 +85,36 @@ public class SettingsManager : MonoBehaviour
         }
 
         ActivatePanel(settingsPanel);
-        ControllerSelect.OnFirstSelect?.Invoke("Settings");
+        Actions.OnFirstSelect?.Invoke("Settings");
     }
 
     private void OpenAudio()
     {
         ActivatePanel(audioVideoPanel);
-        ControllerSelect.OnFirstSelect?.Invoke("Audio");
+        Actions.OnFirstSelect?.Invoke("Audio");
     }
   
     private void OpenControls()
     {
         ActivatePanel(controlsPanel);
-        ControllerSelect.OnFirstSelect?.Invoke("Controls");
+        Actions.OnFirstSelect?.Invoke("Controls");
     }
 
     private void OpenDeleteFile()
     {
         ActivatePanel(deleteFilePanel);
-        ControllerSelect.OnFirstSelect?.Invoke("DeleteFile");
+        Actions.OnFirstSelect?.Invoke("DeleteFile");
     }
 
     private void OpenDebug()
     {
         ActivatePanel(debugPanel);
-        //ControllerSelect.OnFirstSelect?.Invoke("Debug");
+        Actions.OnFirstSelect?.Invoke("Debug");
     }
 
     private void DeleteFileYesButton()
     {
-        SaveManager.OnDeleteSaveFile?.Invoke();
+        Actions.OnDeleteSaveFile?.Invoke();
         OpenSettings();
     }
 

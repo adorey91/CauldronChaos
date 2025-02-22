@@ -56,7 +56,7 @@ public class DebugMode : MonoBehaviour
         debugToggle.gameObject.SetActive(false);
         passwordInput.gameObject.SetActive(true);
         debugTitle.text = "Enter Debug Password";
-        SettingsManager.OpenSettingsAction?.Invoke();
+        Actions.OnOpenSettingsAction?.Invoke();
     }
 
     public void ToggleDebugMode()

@@ -5,18 +5,16 @@ using System;
 
 public class CameraMenuCollider : MonoBehaviour
 {
-    public static Action<string> ReachedWaypoint;
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Door"))
+        switch(other.tag)
         {
-            ReachedWaypoint?.Invoke("Door");
-        }
-        if(other.CompareTag("Calendar"))
-        {
-            ReachedWaypoint?.Invoke("Calendar");
+            case "Door":
+                Actions.ReachedWaypoint?.Invoke("Door");
+                break;
+            case "Calendar":
+                Actions.ReachedWaypoint?.Invoke("Calendar");
+                break;
         }
     }
-
 }

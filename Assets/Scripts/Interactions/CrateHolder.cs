@@ -6,10 +6,13 @@ public class CrateHolder : Interactable
     public GameObject ingredientPrefab;
     public enum CrateType { Bottle, Mushroom, RabbitFoot, EyeOfBasilisk, Mandrake, TrollBone };
     public CrateType crateType;
+    private Vector3 originalScale;
 
 
     public void Start()
     {
+        originalScale = transform.localScale;
+
         // If no ingredient prefab is assigned, load the default prefab based on the crate type
         if (ingredientPrefab == null)
         {
@@ -44,6 +47,11 @@ public class CrateHolder : Interactable
         }
 
         GameObject newIngredient;
+
+        transform.DOScale(1.2f, 0.2f).SetLoops(2, LoopType.Yoyo);
+
+
+
         newIngredient = Instantiate(ingredientPrefab, playerPickup.GetHolderLocation()); //spawning new ingredient
         playerPickup.SetHeldObject(newIngredient.GetComponent<PickupObject>()); //adding manually to player's held slot
     }
@@ -52,6 +60,10 @@ public class CrateHolder : Interactable
     internal void GoblinInteraction(Transform goblin)
     {
         GameObject ingredient;
+
+        transform.DOScale(1.2f, 0.2f).SetLoops(2, LoopType.Yoyo);
+
+
         ingredient = Instantiate(ingredientPrefab, goblin.position, Quaternion.identity);
 
         Vector3 randomPosition = new(Random.Range(-1, 1), 0, Random.Range(-1, 1));
@@ -72,4 +84,5 @@ public class CrateHolder : Interactable
         }
         return prefab;
     }
+   
 }

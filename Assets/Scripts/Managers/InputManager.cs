@@ -15,6 +15,7 @@ public class InputManager : MonoBehaviour
     private static InputManager _instance;
 
     //input actions
+    #region Input Actions Callbacks
     public static Action<InputAction.CallbackContext> MoveAction;
     public static Action<InputAction.CallbackContext> InteractAction;
     public static Action<InputAction.CallbackContext> PickupAction;
@@ -23,6 +24,7 @@ public class InputManager : MonoBehaviour
     public static Action<InputAction.CallbackContext> PauseAction;
     public static Action<InputAction.CallbackContext> NextPageAction;
     public static Action<InputAction.CallbackContext> PreviousPageAction;
+    #endregion
 
     // actions for above player interaction
     public static Action OnInteract;
@@ -30,16 +32,20 @@ public class InputManager : MonoBehaviour
     public static Action OnStir;
     public static Action OnHide;
 
+    public static Action OnGameplayInputs;
+    public static Action OnRecipeBookInputs;
+
+    #region Input Actions
     private PlayerInput playerControls;
     private InputAction InteractInputAction;
     private InputAction PickupInputAction;
     private InputAction StirCAction;
     private InputAction StirCCAction;
-    internal InputAction MoveInputAction;
-    internal InputAction PauseInputAction;
-    internal InputAction NextPageInputAction;
-    internal InputAction PreviousPageInputAction;
-
+    private InputAction MoveInputAction;
+    private InputAction PauseInputAction;
+    private InputAction NextPageInputAction;
+    private InputAction PreviousPageInputAction;
+    #endregion
 
 
     //function that checks if instance exists and spawns one if it does not
@@ -101,6 +107,8 @@ public class InputManager : MonoBehaviour
         OnPickup += ShowPickup;
         OnStir += ShowStir;
         OnHide+= HideInteractionPickup;
+        OnRecipeBookInputs += RecipeBookInputs;
+        OnGameplayInputs += GameplayInputs;
     }
 
     private void OnDisable()
@@ -110,8 +118,9 @@ public class InputManager : MonoBehaviour
         OnInteract -= ShowInteraction;
         OnPickup -= ShowPickup;
         OnStir -= ShowStir;
-
         OnHide-= HideInteractionPickup;
+        OnRecipeBookInputs -= RecipeBookInputs;
+        OnGameplayInputs -= GameplayInputs;
     }
 
     #region Player Controls
@@ -218,4 +227,20 @@ public class InputManager : MonoBehaviour
     }
 
     #endregion
+
+    private void GameplayInputs()
+    {
+        MoveInputAction.Enable();
+        PauseInputAction.Enable();
+        NextPageInputAction.Disable();
+        PreviousPageInputAction.Disable();
+    }
+
+    private void RecipeBookInputs()
+    {
+        MoveInputAction.Disable();
+        PauseInputAction.Disable();
+        NextPageInputAction.Enable();
+        PreviousPageInputAction.Enable();
+    }
 }

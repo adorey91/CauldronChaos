@@ -7,8 +7,8 @@ using UnityEngine.UI;
 
 public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
-    private GameObject button;
     [SerializeField] private bool isLevelSelectButton;
+    private GameObject button;
     private Button thisButton;
 
     private void Awake()

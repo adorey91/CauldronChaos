@@ -29,11 +29,6 @@ public class DayManager : MonoBehaviour
     [SerializeField] private AudioClip startDaySFX;
     [SerializeField] private AudioClip endDaySFX;
 
-    public static Action<string> dayText;
-    public static Action OnStartDayCountdown;
-    public static Action<int> OnSetDay;
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -44,17 +39,15 @@ public class DayManager : MonoBehaviour
     private void OnEnable()
     {
         Actions.OnResetValues += ResetValues;
-        dayText += SetDayText;
-        OnStartDayCountdown += StartDayCountdown;
-        OnSetDay += SetDay;
+        Actions.OnDayText += SetDayText;
+        Actions.OnStartDayCountdown += StartDayCountdown;
     }
 
     private void OnDisable()
     {
         Actions.OnResetValues -= ResetValues;
-        dayText -= SetDayText;
-        OnStartDayCountdown -= StartDayCountdown;
-        OnSetDay -= SetDay;
+        Actions.OnDayText -= SetDayText;
+        Actions.OnStartDayCountdown -= StartDayCountdown;
     }
 
     private void Update()
@@ -104,6 +97,7 @@ public class DayManager : MonoBehaviour
     public void SetDay(int day)
     {
         currentDay = day;
+        Actions.OnSetDay?.Invoke(currentDay - 1);
     }
 
     private void SetTimerRotation()
@@ -144,8 +138,8 @@ public class DayManager : MonoBehaviour
     private void StartDayCountdown()
     {
         Debug.Log("Day Countdown Started");
-        ChallengeManager.OnStartChallenge?.Invoke(currentDay/2);
-        ControllerSelect.OnFirstSelect?.Invoke("Gameplay");
+        Actions.OnStartChallenge?.Invoke(currentDay/2);
+        Actions.OnFirstSelect?.Invoke("Gameplay");
 
         dayStartOverlay.SetActive(true);
         dayCountdownTimer = new(secondsToStart, false);

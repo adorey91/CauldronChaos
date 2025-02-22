@@ -1,11 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-/// <summary>
-/// This manager will need to be reworked later as I think this should only handle the recipes and telling the cauldron / recipe book which recipes they can use
-/// </summary>
 public class RecipeManager : MonoBehaviour
 {
     [Header("Available Recipes")]
@@ -19,7 +13,7 @@ public class RecipeManager : MonoBehaviour
 
     private void OnEnable()
     {
-        Actions.OnToggleRecipeBook += ToggleRecipeBook;   
+        Actions.OnToggleRecipeBook += ToggleRecipeBook;
     }
 
     private void OnDisable()
@@ -37,12 +31,12 @@ public class RecipeManager : MonoBehaviour
         }
         else
         {
-            for(int i = 0; i < numberOfRecipes; i++)
+            for (int i = 0; i < numberOfRecipes; i++)
             {
                 availableRecipes[i] = allRecipes[i];
             }
         }
-           
+
 
         return availableRecipes;
     }
@@ -67,24 +61,14 @@ public class RecipeManager : MonoBehaviour
 
         if (recipeBookUi.activeSelf)
         {
-            UiManager.SetCursorVisibility(false);
-
             recipeBookUi.SetActive(false);
-            InputManager.instance.MoveInputAction.Enable();
-            InputManager.instance.PauseInputAction.Enable();
-            InputManager.instance.NextPageInputAction.Disable();
-            InputManager.instance.PreviousPageInputAction.Disable();
+           InputManager.OnGameplayInputs();
         }
         else
         {
-            UiManager.SetCursorVisibility(true);
-
             recipeBookUi.SetActive(true);
-            ControllerSelect.SelectRecipeButton(closeButton);
-            InputManager.instance.MoveInputAction.Disable();
-            InputManager.instance.PauseInputAction.Disable();
-            InputManager.instance.NextPageInputAction.Enable();
-            InputManager.instance.PreviousPageInputAction.Enable();
+            Actions.OnSelectRecipeButton(closeButton);
+            InputManager.OnRecipeBookInputs();
         }
     }
 }

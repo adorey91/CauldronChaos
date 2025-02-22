@@ -31,7 +31,6 @@ public class QueueManager : MonoBehaviour
     [Header("SFX")]
     [SerializeField] private AudioClip potionSaleSFX;
 
-    public static Action<PotionOutput> OnCheckCustomers;
 
     public void Start()
     {
@@ -47,10 +46,10 @@ public class QueueManager : MonoBehaviour
     private void Update()
     {
         // For testing purposes
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            StartCustomers();
-        }
+        //if (Input.GetKeyDown(KeyCode.Tab))
+        //{
+        //    StartCustomers();
+        //}
 
         if (startCustomers == true)
         {
@@ -66,7 +65,7 @@ public class QueueManager : MonoBehaviour
     {
         Actions.OnEndDay += RemoveAllCustomers;
         Actions.OnStartDay += StartCustomers;
-        OnCheckCustomers += CheckCustomerRecipes;
+        Actions.OnCheckCustomers += CheckCustomerRecipes;
         Actions.OnResetValues += RemoveAllCustomers;
     }
 
@@ -74,7 +73,7 @@ public class QueueManager : MonoBehaviour
     {
         Actions.OnEndDay -= RemoveAllCustomers;
         Actions.OnStartDay -= StartCustomers;
-        OnCheckCustomers -= CheckCustomerRecipes;
+        Actions.OnCheckCustomers -= CheckCustomerRecipes;
         Actions.OnResetValues -= RemoveAllCustomers;
     }
 

@@ -22,28 +22,18 @@ public class UiManager : MonoBehaviour
     [Header("SFX")]
     [SerializeField] private AudioClip dayStartSFX;
 
-    private ScoreManager scoreManager;
-
-    public static Action<bool> SetCursorVisibility;
-
-
-    private void Start()
-    {
-        scoreManager = FindObjectOfType<ScoreManager>();
-    }
-
     private void OnEnable()
     {
         Actions.OnStateChange += UpdateUIForGameState;
-        CameraMenuCollider.ReachedWaypoint += CameraReached;
-        SetCursorVisibility += SetCursor;
+        Actions.ReachedWaypoint += CameraReached;
+        Actions.SetCursorVisibility += SetCursor;
     }
 
     private void OnDisable()
     {
-        SetCursorVisibility -= SetCursor;
+        Actions.SetCursorVisibility -= SetCursor;
         Actions.OnStateChange -= UpdateUIForGameState;
-        CameraMenuCollider.ReachedWaypoint -= CameraReached;
+        Actions.ReachedWaypoint -= CameraReached;
     }
 
     private void UpdateUIForGameState(GameManager.GameState state)
@@ -83,9 +73,8 @@ public class UiManager : MonoBehaviour
         InputManager.instance.TurnOnInteraction();
         MenuVirtualCamera.TurnCameraBrainOn?.Invoke();
         SetActiveUI(mainMenu);
-        ControllerSelect.OnFirstSelect("Menu");
+        Actions.OnFirstSelect("Menu");
         Time.timeScale = 1;
-        SetCursor(true);
     }
 
     private void CameraReached(string waypoint)
@@ -93,8 +82,7 @@ public class UiManager : MonoBehaviour
         if (waypoint == "Door")
         {
             SetActiveUI(intro);
-            ControllerSelect.OnFirstSelect("Intro");
-            scoreManager.SetCurrentDay(1);
+            Actions.OnFirstSelect("Intro");
             return;
         }
 
@@ -107,13 +95,12 @@ public class UiManager : MonoBehaviour
 
     private void SelectLevel()
     {
-        LevelSelect.UpdateLevelButtons();
-        Cursor.lockState = CursorLockMode.None;
+        Actions.UpdateLevelButtons();
         Time.timeScale = 1;
 
         Actions.OnResetValues?.Invoke();
         SetActiveUI(levelSelect);
-        ControllerSelect.OnFirstSelect("LevelSelect");
+        Actions.OnFirstSelect("LevelSelect");
         MenuVirtualCamera.OnResetCamera?.Invoke();
     }
 
@@ -121,29 +108,22 @@ public class UiManager : MonoBehaviour
     private void Gameplay()
     {
         MenuVirtualCamera.OnResetCamera?.Invoke();
-        ControllerSelect.OnFirstSelect("Gameplay");
+        Actions.OnFirstSelect("Gameplay");
         SetActiveUI(gameplay);
         Time.timeScale = 1;
-
-
-        SetCursor(true);
-        //SetCursor(false);
     }
 
     private void EndOfDay()
     {
         SetActiveUI(endOfDay);
-        ControllerSelect.OnFirstSelect("EndOfDay");
-
-        SetCursor(true);
+        Actions.OnFirstSelect("EndOfDay");
     }
 
     private void Pause()
     {
         SetActiveUI(pause);
-        ControllerSelect.OnFirstSelect("Pause");
+        Actions.OnFirstSelect("Pause");
         Time.timeScale = 0;
-        SetCursor(true);
     }
 
     private void Settings()
@@ -159,12 +139,10 @@ public class UiManager : MonoBehaviour
         if (isVisible)
         {
             Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
         }
         else
         {
             Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
         }
     }
 }

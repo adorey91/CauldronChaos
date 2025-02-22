@@ -48,7 +48,6 @@ public class CustomerBehaviour : MonoBehaviour
     #region Order Events
     internal void AssignOrder(RecipeSO order, Transform parent)
     {
-        //Debug.Log("Customer assigned order: " + order.recipeName);
         this.requestedOrder = order;
         orderUiParent = parent;
         giveTip = true;
