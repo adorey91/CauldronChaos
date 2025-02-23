@@ -82,7 +82,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""PreviousPage"",
+                    ""name"": ""Previous Page"",
                     ""type"": ""Button"",
                     ""id"": ""a316ca22-ca9a-41a8-ba14-c312fe36b393"",
                     ""expectedControlType"": """",
@@ -91,7 +91,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""NextPage"",
+                    ""name"": ""Next Page"",
                     ""type"": ""Button"",
                     ""id"": ""b7b41fea-2e99-4bbf-a76e-a53c285e4c2a"",
                     ""expectedControlType"": """",
@@ -361,7 +361,29 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""PreviousPage"",
+                    ""action"": ""Previous Page"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d5cc954f-fca2-44a0-a362-0ce609a5e1dd"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Previous Page"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aa9fa6ab-cd93-498c-b8fb-99f68dbc1f69"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Previous Page"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -372,7 +394,29 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""NextPage"",
+                    ""action"": ""Next Page"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a90f52d6-adb0-4aaf-b3b3-3e9b0851eb5c"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Next Page"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b380cc06-f7f6-4479-9347-c2dc1b630222"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Next Page"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -966,8 +1010,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_StirClockwise = m_Player.FindAction("StirClockwise", throwIfNotFound: true);
         m_Player_StirCounterClockwise = m_Player.FindAction("StirCounterClockwise", throwIfNotFound: true);
-        m_Player_PreviousPage = m_Player.FindAction("PreviousPage", throwIfNotFound: true);
-        m_Player_NextPage = m_Player.FindAction("NextPage", throwIfNotFound: true);
+        m_Player_PreviousPage = m_Player.FindAction("Previous Page", throwIfNotFound: true);
+        m_Player_NextPage = m_Player.FindAction("Next Page", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);

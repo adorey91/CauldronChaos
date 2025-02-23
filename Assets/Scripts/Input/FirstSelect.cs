@@ -17,6 +17,7 @@ public class FirstSelect : MonoBehaviour
     [SerializeField] private GameObject deleteFileFirstSelect;
     [SerializeField] private GameObject howToPlayFirstSelect;
     [SerializeField] private GameObject debugFirstSelect;
+    [SerializeField] private GameObject debugToggleSelect;
 
     [SerializeField] private EventSystem eventSystem;
 
@@ -61,6 +62,7 @@ public class FirstSelect : MonoBehaviour
             case "DeleteFile": _firstSelected = deleteFileFirstSelect; break;
             case "HowToPlay": _firstSelected = howToPlayFirstSelect; break;
             case "Debug": _firstSelected = debugFirstSelect; break;
+            case "DebugToggle": _firstSelected = debugToggleSelect; break;
             default:
                 _firstSelected = null;
                 break;

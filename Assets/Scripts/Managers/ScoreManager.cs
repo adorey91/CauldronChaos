@@ -9,6 +9,7 @@ public class ScoreManager : MonoBehaviour
     [Header("Gameplay UI")]
     [SerializeField] private Image quotaFill;
     [SerializeField] private GameObject coinImage;
+    [SerializeField] private ParticleSystem coinParticles;
 
     [Header("EOD UI")]
     [SerializeField] private TextMeshProUGUI eodTitle;
@@ -68,6 +69,11 @@ public class ScoreManager : MonoBehaviour
             _addToTotalScore = regularScore;
         }
 
+        if(score > scorePerLevel[currentDay] && !coinParticles.isPlaying)
+        {
+            coinParticles.Play();
+        }
+
         quotaFill.fillAmount = (float)score / (float)scorePerLevel[currentDay];
         coinImage.transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0.2f), 0.5f, 1, 0.5f);
     }
@@ -110,6 +116,7 @@ public class ScoreManager : MonoBehaviour
 
     public void ResetValues()
     {
+        coinParticles.Stop();
         quotaFill.fillAmount = 0;
         score = 0;
     }

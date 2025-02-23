@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7425839841108751484}
   - component: {fileID: 3366724433988752219}
   - component: {fileID: 6086303484669358140}
+  - component: {fileID: 45149461245217000}
   m_Layer: 0
   m_Name: Btn_Menu
   m_TagString: Untagged
@@ -122,7 +123,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7425839841108751484}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6086303484669358140}
+        m_TargetAssemblyTypeName: ButtonHover, Assembly-CSharp
+        m_MethodName: ResizeButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &6086303484669358140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,6 +149,119 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLevelSelectButton: 0
+--- !u!114 &45149461245217000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554563386701119602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e20b5a23b039248bbf0f036dc23067, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  m_ConfigLeft:
+    m_Type: 0
+    m_wrapAround: 0
+    m_UseEdges: 0
+    m_Omnidirectional: 0
+    m_Directivity: 0
+    m_Anchor:
+      m_Type: 0
+      m_Shift: {x: 0, y: 0, z: 0}
+      m_RectTransform: {fileID: 0}
+    m_Sector:
+      m_MinAngle: -25
+      m_MaxAngle: 25
+      m_Radius: 500
+    m_Rectangle:
+      m_Verts:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    m_RectTransform:
+      m_RectTransform: {fileID: 0}
+    m_SelectableList:
+      m_SelectableList: []
+      m_UseListOrder: 0
+  m_ConfigRight:
+    m_Type: 0
+    m_wrapAround: 0
+    m_UseEdges: 0
+    m_Omnidirectional: 0
+    m_Directivity: 0
+    m_Anchor:
+      m_Type: 0
+      m_Shift: {x: 0, y: 0, z: 0}
+      m_RectTransform: {fileID: 0}
+    m_Sector:
+      m_MinAngle: -25
+      m_MaxAngle: 25
+      m_Radius: 500
+    m_Rectangle:
+      m_Verts:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    m_RectTransform:
+      m_RectTransform: {fileID: 0}
+    m_SelectableList:
+      m_SelectableList: []
+      m_UseListOrder: 0
+  m_ConfigUp:
+    m_Type: 1
+    m_wrapAround: 0
+    m_UseEdges: 0
+    m_Omnidirectional: 0
+    m_Directivity: 0
+    m_Anchor:
+      m_Type: 0
+      m_Shift: {x: 0, y: 0, z: 0}
+      m_RectTransform: {fileID: 0}
+    m_Sector:
+      m_MinAngle: -25
+      m_MaxAngle: 25
+      m_Radius: 500
+    m_Rectangle:
+      m_Verts:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    m_RectTransform:
+      m_RectTransform: {fileID: 0}
+    m_SelectableList:
+      m_SelectableList: []
+      m_UseListOrder: 0
+  m_ConfigDown:
+    m_Type: 1
+    m_wrapAround: 0
+    m_UseEdges: 0
+    m_Omnidirectional: 0
+    m_Directivity: 0
+    m_Anchor:
+      m_Type: 0
+      m_Shift: {x: 0, y: 0, z: 0}
+      m_RectTransform: {fileID: 0}
+    m_Sector:
+      m_MinAngle: -25
+      m_MaxAngle: 25
+      m_Radius: 500
+    m_Rectangle:
+      m_Verts:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    m_RectTransform:
+      m_RectTransform: {fileID: 0}
+    m_SelectableList:
+      m_SelectableList: []
+      m_UseListOrder: 0
 --- !u!1 &8110147024225277126
 GameObject:
   m_ObjectHideFlags: 0

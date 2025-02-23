@@ -62,6 +62,7 @@ public class SettingsManager : MonoBehaviour
         audioVideoPanel.SetActive(false);
         controlsPanel.SetActive(false);
         deleteFilePanel.SetActive(false);
+        debugPanel.SetActive(false);
 
         _panel.SetActive(true);
     }

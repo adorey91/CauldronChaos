@@ -36,6 +36,7 @@ public class DebugMode : MonoBehaviour
             textCoroutine = StartCoroutine(VisualText("Debug Mode Unlocked"));
 
             debugToggle.gameObject.SetActive(true);
+            Actions.OnFirstSelect?.Invoke("DebugToggle");
             // Clear password input field if the password is incorrect
             passwordInput.text = "";
             passwordInput.gameObject.SetActive(false);
@@ -64,11 +65,21 @@ public class DebugMode : MonoBehaviour
         if (debugToggle.isOn)
         {
             Debug.Log("Debug Mode Enabled");
+            if (textCoroutine != null)
+                StopCoroutine(textCoroutine);
+
+            textCoroutine = StartCoroutine(VisualText("Debug Mode Enabled"));
+            BackButton();
             GameManager.instance.SetDebugMode(true);
         }
         else
         {
             Debug.Log("Debug Mode Disabled");
+            if (textCoroutine != null)
+                StopCoroutine(textCoroutine);
+
+            textCoroutine = StartCoroutine(VisualText("Debug Mode Disabled"));
+            BackButton();
             GameManager.instance.SetDebugMode(false);
         }
     }

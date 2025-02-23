@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4997300647705143695}
   - component: {fileID: 5024266567257472466}
   - component: {fileID: 8639393807372666833}
+  - component: {fileID: 2013245041951926252}
   m_Layer: 5
   m_Name: ResetToDefaultButton
   m_TagString: Untagged
@@ -91,11 +92,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnLeft: {fileID: 4168522202458225171}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 2
   m_Colors:
@@ -147,6 +148,120 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2add2d16620012146a49087406c73a68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLevelSelectButton: 0
+--- !u!114 &2013245041951926252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 723199622616807248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e20b5a23b039248bbf0f036dc23067, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  m_ConfigLeft:
+    m_Type: 1
+    m_wrapAround: 0
+    m_UseEdges: 0
+    m_Omnidirectional: 0
+    m_Directivity: 12
+    m_Anchor:
+      m_Type: 0
+      m_Shift: {x: 0, y: 0, z: 0}
+      m_RectTransform: {fileID: 0}
+    m_Sector:
+      m_MinAngle: -25
+      m_MaxAngle: 25
+      m_Radius: 500
+    m_Rectangle:
+      m_Verts:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    m_RectTransform:
+      m_RectTransform: {fileID: 0}
+    m_SelectableList:
+      m_SelectableList: []
+      m_UseListOrder: 0
+  m_ConfigRight:
+    m_Type: 1
+    m_wrapAround: 0
+    m_UseEdges: 0
+    m_Omnidirectional: 0
+    m_Directivity: 12
+    m_Anchor:
+      m_Type: 0
+      m_Shift: {x: 0, y: 0, z: 0}
+      m_RectTransform: {fileID: 0}
+    m_Sector:
+      m_MinAngle: -25
+      m_MaxAngle: 25
+      m_Radius: 500
+    m_Rectangle:
+      m_Verts:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    m_RectTransform:
+      m_RectTransform: {fileID: 0}
+    m_SelectableList:
+      m_SelectableList: []
+      m_UseListOrder: 0
+  m_ConfigUp:
+    m_Type: 1
+    m_wrapAround: 0
+    m_UseEdges: 0
+    m_Omnidirectional: 0
+    m_Directivity: 12
+    m_Anchor:
+      m_Type: 0
+      m_Shift: {x: 0, y: 0, z: 0}
+      m_RectTransform: {fileID: 0}
+    m_Sector:
+      m_MinAngle: -25
+      m_MaxAngle: 25
+      m_Radius: 500
+    m_Rectangle:
+      m_Verts:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    m_RectTransform:
+      m_RectTransform: {fileID: 0}
+    m_SelectableList:
+      m_SelectableList: []
+      m_UseListOrder: 0
+  m_ConfigDown:
+    m_Type: 1
+    m_wrapAround: 0
+    m_UseEdges: 0
+    m_Omnidirectional: 0
+    m_Directivity: 12
+    m_Anchor:
+      m_Type: 0
+      m_Shift: {x: 0, y: 0, z: 0}
+      m_RectTransform: {fileID: 0}
+    m_Sector:
+      m_MinAngle: -25
+      m_MaxAngle: 25
+      m_Radius: 500
+    m_Rectangle:
+      m_Verts:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    m_RectTransform:
+      m_RectTransform: {fileID: 0}
+    m_SelectableList:
+      m_SelectableList: []
+      m_UseListOrder: 0
 --- !u!1 &779897523683302945
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,6 +652,7 @@ GameObject:
   - component: {fileID: 3573462795036708828}
   - component: {fileID: 6562243507651565417}
   - component: {fileID: 4168522202458225171}
+  - component: {fileID: 4070680279136368377}
   m_Layer: 5
   m_Name: TriggerRebindButton
   m_TagString: Untagged
@@ -615,12 +731,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
+    m_SelectOnRight: {fileID: 5024266567257472466}
   m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -659,3 +775,116 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4070680279136368377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8384654220190448158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e20b5a23b039248bbf0f036dc23067, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  m_ConfigLeft:
+    m_Type: 1
+    m_wrapAround: 0
+    m_UseEdges: 0
+    m_Omnidirectional: 0
+    m_Directivity: 12
+    m_Anchor:
+      m_Type: 0
+      m_Shift: {x: 0, y: 0, z: 0}
+      m_RectTransform: {fileID: 0}
+    m_Sector:
+      m_MinAngle: -25
+      m_MaxAngle: 25
+      m_Radius: 500
+    m_Rectangle:
+      m_Verts:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    m_RectTransform:
+      m_RectTransform: {fileID: 0}
+    m_SelectableList:
+      m_SelectableList: []
+      m_UseListOrder: 0
+  m_ConfigRight:
+    m_Type: 1
+    m_wrapAround: 0
+    m_UseEdges: 0
+    m_Omnidirectional: 0
+    m_Directivity: 12
+    m_Anchor:
+      m_Type: 0
+      m_Shift: {x: 0, y: 0, z: 0}
+      m_RectTransform: {fileID: 0}
+    m_Sector:
+      m_MinAngle: -25
+      m_MaxAngle: 25
+      m_Radius: 500
+    m_Rectangle:
+      m_Verts:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    m_RectTransform:
+      m_RectTransform: {fileID: 0}
+    m_SelectableList:
+      m_SelectableList: []
+      m_UseListOrder: 0
+  m_ConfigUp:
+    m_Type: 1
+    m_wrapAround: 0
+    m_UseEdges: 0
+    m_Omnidirectional: 0
+    m_Directivity: 12
+    m_Anchor:
+      m_Type: 0
+      m_Shift: {x: 0, y: 0, z: 0}
+      m_RectTransform: {fileID: 0}
+    m_Sector:
+      m_MinAngle: -25
+      m_MaxAngle: 25
+      m_Radius: 500
+    m_Rectangle:
+      m_Verts:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    m_RectTransform:
+      m_RectTransform: {fileID: 0}
+    m_SelectableList:
+      m_SelectableList: []
+      m_UseListOrder: 0
+  m_ConfigDown:
+    m_Type: 1
+    m_wrapAround: 0
+    m_UseEdges: 0
+    m_Omnidirectional: 0
+    m_Directivity: 12
+    m_Anchor:
+      m_Type: 0
+      m_Shift: {x: 0, y: 0, z: 0}
+      m_RectTransform: {fileID: 0}
+    m_Sector:
+      m_MinAngle: -25
+      m_MaxAngle: 25
+      m_Radius: 500
+    m_Rectangle:
+      m_Verts:
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+      - {x: 0, y: 0, z: 0}
+    m_RectTransform:
+      m_RectTransform: {fileID: 0}
+    m_SelectableList:
+      m_SelectableList: []
+      m_UseListOrder: 0

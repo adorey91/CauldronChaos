@@ -66,6 +66,7 @@ public static class Actions
     public static Action<bool> OnActivateHowToPlay;
     public static Action OnDeactivateHowToPlay;
     public static Action<string> ReachedWaypoint;
+    public static Action OnCloseDebugMenu;
     #endregion
 
     // Challenge Actions

@@ -11,6 +11,17 @@ public class RecipeManager : MonoBehaviour
     [SerializeField] private bool useAllRecipes;
     [SerializeField] private GameObject closeButton;
 
+    private void Update()
+    {
+        if(recipeBookUi.activeSelf)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                ToggleRecipeBook();
+            }
+        }
+    }
+
     private void OnEnable()
     {
         Actions.OnToggleRecipeBook += ToggleRecipeBook;

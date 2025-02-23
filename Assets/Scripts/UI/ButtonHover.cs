@@ -17,6 +17,16 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         thisButton = GetComponent<Button>();
     }
 
+    private void OnEnable()
+    {
+        thisButton.onClick.AddListener(ResizeButton);
+    }
+
+    private void OnDisable()
+    {
+        thisButton.onClick.RemoveListener(ResizeButton);
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (thisButton.interactable)
@@ -73,5 +83,15 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             // Ensure independent updates and smoother scaling.
             button.transform.DOScale(1f, 0.2f).SetUpdate(true).SetEase(Ease.OutBack);
         }
+    }
+
+    public void ResizeButton()
+    {
+        if (isLevelSelectButton)
+            button.transform.SetAsFirstSibling();
+
+        button.transform.DOKill();
+        // Ensure independent updates and smoother scaling.
+        button.transform.DOScale(1f, 0.2f).SetUpdate(true).SetEase(Ease.OutBack);
     }
 }

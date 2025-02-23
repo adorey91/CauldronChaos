@@ -11,13 +11,13 @@ public class UiManager : MonoBehaviour
     [SerializeField] private SettingsManager settingsManager;
 
     [Header("Ui Canvas")]
-    [SerializeField] private Canvas mainMenu;
-    [SerializeField] private Canvas gameplay;
-    [SerializeField] private Canvas intro;
-    [SerializeField] private Canvas levelSelect;
-    [SerializeField] private Canvas endOfDay;
-    [SerializeField] private Canvas settings;
-    [SerializeField] private Canvas pause;
+    [SerializeField] private GameObject mainMenu;
+    [SerializeField] private GameObject gameplay;
+    [SerializeField] private GameObject intro;
+    [SerializeField] private GameObject levelSelect;
+    [SerializeField] private GameObject endOfDay;
+    [SerializeField] private GameObject settings;
+    [SerializeField] private GameObject pause;
 
     [Header("SFX")]
     [SerializeField] private AudioClip dayStartSFX;
@@ -51,18 +51,18 @@ public class UiManager : MonoBehaviour
         }
     }
 
-    // Toggles the current active canvas
-    public void SetActiveUI(Canvas canvas)
+    // Toggles the current active panel
+    public void SetActiveUI(GameObject panel)
     {
-        mainMenu.enabled = false;
-        intro.enabled = false;
-        levelSelect.enabled = false;
-        gameplay.enabled = false;
-        pause.enabled = false;
-        settings.enabled = false;
-        endOfDay.enabled = false;
+        mainMenu.SetActive(false);
+        intro.SetActive(false);
+        levelSelect.SetActive(false);
+        gameplay.SetActive(false);
+        pause.SetActive(false);
+        settings.SetActive(false);
+        endOfDay.SetActive(false);
 
-        canvas.enabled = true;
+        panel.SetActive(true);
     }
 
 

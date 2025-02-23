@@ -352,7 +352,7 @@ public class CauldronInteraction : MonoBehaviour
     // Count the potions and reset the values
     private void CountPotions()
     {
-        Debug.Log("Potion Counted " + potionIndex);
+        //Debug.Log("Potion Counted " + potionIndex);
         if (potionIndex < 2) // Ensure we don't reset too soon
         {
             potionIndex++;

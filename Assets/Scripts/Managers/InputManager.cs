@@ -210,9 +210,9 @@ public class InputManager : MonoBehaviour
     {
         abovePlayerInteraction.enabled = true;
         if (IsControllerConnected())
-            abovePlayerInteractionText.text = StirCAction.GetBindingDisplayString(1) + " / " + StirCCAction.GetBindingDisplayString(1);
+            abovePlayerInteractionText.text = StirCCAction.GetBindingDisplayString(1) + " / " + StirCAction.GetBindingDisplayString(1);
         else
-            abovePlayerInteractionText.text = StirCAction.GetBindingDisplayString(0) + " / " + StirCCAction.GetBindingDisplayString(0);
+            abovePlayerInteractionText.text = StirCCAction.GetBindingDisplayString(0) + " / " + StirCAction.GetBindingDisplayString(0);
     }
 
     private void HideInteractionPickup()
