@@ -33,13 +33,12 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         {
             button.transform.DOKill();
             // Ensure independent updates and smoother scaling.
-            button.transform.DOScale(1.3f, 0.2f).SetUpdate(true).SetEase(Ease.OutBack).OnComplete(() =>
+
+            if (isLevelSelectButton)
             {
-                if (isLevelSelectButton)
-                {
-                    button.transform.SetAsLastSibling();
-                }
-            });
+                button.transform.SetAsLastSibling();
+            }
+            button.transform.DOScale(1.3f, 0.2f).SetUpdate(true).SetEase(Ease.OutBack);
         }
     }
 
@@ -62,13 +61,12 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         {
             button.transform.DOKill();
             // Ensure independent updates and smoother scaling.
-            button.transform.DOScale(1.3f, 0.2f).SetUpdate(true).SetEase(Ease.OutBack).OnComplete(() =>
+            if (isLevelSelectButton)
             {
-                if (isLevelSelectButton)
-                {
-                    button.transform.SetAsLastSibling();
-                }
-            });
+                button.transform.SetAsLastSibling();
+            }
+
+            button.transform.DOScale(1.3f, 0.2f).SetUpdate(true).SetEase(Ease.OutBack);
         }
     }
 

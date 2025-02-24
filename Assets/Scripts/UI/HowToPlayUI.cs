@@ -13,7 +13,6 @@ public class HowToPlayUI : MonoBehaviour
     private CustomTimer imageTimer;
     private float _imageTime = 3f;
     [SerializeField] private GameObject backButton;
-    private bool pressedButton;
 
     private void Awake()
     {
@@ -54,7 +53,6 @@ public class HowToPlayUI : MonoBehaviour
     public void ActivateHowToPlay(bool isLoading)
     {
         // Sets the first image in the array
-        pressedButton = false;
         howToPlayCanvas.enabled = true;
         //howToPlayImage.sprite = _howToPlayImages[0];
 
@@ -100,9 +98,4 @@ public class HowToPlayUI : MonoBehaviour
 
     //    imageTimer.ResetTimer();
     //}
-
-    public void PressedButton()
-    {
-        pressedButton = true;
-    }
 }
