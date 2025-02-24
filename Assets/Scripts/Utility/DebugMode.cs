@@ -9,6 +9,7 @@ public class DebugMode : MonoBehaviour
     
     [SerializeField] private TMP_InputField passwordInput;
     [SerializeField] private Toggle debugToggle;
+    [SerializeField] private Toggle debugMenuToggle;
     [SerializeField] private Button backButton;
     [SerializeField] private TextMeshProUGUI debugText;
     [SerializeField] private TextMeshProUGUI debugTitle;
@@ -64,6 +65,7 @@ public class DebugMode : MonoBehaviour
     {
         if (debugToggle.isOn)
         {
+            debugMenuToggle.isOn = true;
             Debug.Log("Debug Mode Enabled");
             if (textCoroutine != null)
                 StopCoroutine(textCoroutine);
@@ -74,12 +76,37 @@ public class DebugMode : MonoBehaviour
         }
         else
         {
+            debugMenuToggle.isOn = false;
             Debug.Log("Debug Mode Disabled");
             if (textCoroutine != null)
                 StopCoroutine(textCoroutine);
 
             textCoroutine = StartCoroutine(VisualText("Debug Mode Disabled"));
             BackButton();
+            GameManager.instance.SetDebugMode(false);
+        }
+    }
+
+    public void ToggleMenuDebugMode()
+    {
+        if(debugMenuToggle.isOn)
+        {
+            debugToggle.isOn = true;
+            Debug.Log("Debug Mode Enabled");
+            if (textCoroutine != null)
+                StopCoroutine(textCoroutine);
+
+            textCoroutine = StartCoroutine(VisualText("Debug Mode Enabled"));
+            GameManager.instance.SetDebugMode(true);
+        }
+        else
+        {
+            Debug.Log("Debug Mode Disabled");
+            debugToggle.isOn = false;
+            if (textCoroutine != null)
+                StopCoroutine(textCoroutine);
+
+            textCoroutine = StartCoroutine(VisualText("Debug Mode Disabled"));
             GameManager.instance.SetDebugMode(false);
         }
     }

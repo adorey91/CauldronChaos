@@ -31,6 +31,7 @@ public class ScoreManager : MonoBehaviour
     private void Start()
     {
         quotaFill.fillAmount = 0;
+        coinParticles.Stop();
     }
 
     private void OnEnable()
