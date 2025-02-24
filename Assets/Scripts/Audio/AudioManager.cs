@@ -46,10 +46,10 @@ public class AudioManager : MonoBehaviour
     void Awake()
     {
         //check if this is the active instance
-        if (_instance == null || _instance == this)
+        if (_instance == null)
         {
             _instance = this;
-            //DontDestroyOnLoad(this);
+            DontDestroyOnLoad(this);
         }
         else
         {
