@@ -6,6 +6,8 @@ public class UIAudioSounds : MonoBehaviour
 {
     [SerializeField] private AudioClip selectClip;
     [SerializeField] private AudioClip pressClip;
+    [SerializeField] private AudioClip increaseClip;
+    [SerializeField] private AudioClip decreaseClip;
 
     public void PlayPressSound()
     {
@@ -15,5 +17,15 @@ public class UIAudioSounds : MonoBehaviour
     public void PlaySelectSound()
     {
         AudioManager.instance.sfxManager.PlayMenuSFX(selectClip);
+    }
+
+    public void PlayIncreaseSound()
+    {
+        AudioManager.instance.sfxManager.PlayMenuSFX(increaseClip);
+    }
+
+    public void PlayDecreaseSound()
+    {
+        AudioManager.instance.sfxManager.PlayMenuSFX(decreaseClip);
     }
 }
