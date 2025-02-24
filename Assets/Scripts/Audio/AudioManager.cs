@@ -49,14 +49,12 @@ public class AudioManager : MonoBehaviour
         if (_instance == null || _instance == this)
         {
             _instance = this;
-            //Debug.Log("Instance Audio Manager: " + gameObject.GetInstanceID());
             //DontDestroyOnLoad(this);
         }
         else
         {
             //remove copy
             Destroy(gameObject);
-            //Debug.Log("New Instance Destroyed");
         }
     }
 
@@ -66,10 +64,6 @@ public class AudioManager : MonoBehaviour
         SetVolume(MixerGroup.Master, masterMixerDefaultVolume);
         SetVolume(MixerGroup.Music, musicMixerDefaultVolume);
         SetVolume(MixerGroup.SFX, sfxMixerDefaultVolume);
-
-        //Debug.Log("MasterGroup =" + GetVolume(MixerGroup.Master));
-        //Debug.Log("MusicGroup =" + GetVolume(MixerGroup.Music));
-        //Debug.Log("SFXGroup =" + GetVolume(MixerGroup.SFX));
     }
 
     //function that sets volume of mixers
@@ -111,7 +105,6 @@ public class AudioManager : MonoBehaviour
                 break;
         }
 
-        //Debug.Log(value);
         value = ConvertFromDB(value);
         return value;
     }
@@ -125,7 +118,6 @@ public class AudioManager : MonoBehaviour
     //utility function for converting DB to a linear float
     private float ConvertFromDB(float db)
     {
-        //Debug.Log((db / 20f));
         return Mathf.Pow(10, (db / 20f));
     }
 }
