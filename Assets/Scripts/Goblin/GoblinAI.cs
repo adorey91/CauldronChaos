@@ -16,6 +16,7 @@ public class GoblinAI : MonoBehaviour
     [SerializeField] private float minWanderTime = 2f;
     [SerializeField] private float maxWanderTime = 5f;
     private Vector3 currentDestination;
+    [SerializeField] private bool goblinActive = false;
 
 
     [Header("Time Between Action")]
@@ -100,6 +101,7 @@ public class GoblinAI : MonoBehaviour
 
     private void StartChaos(bool isChallengeDay)
     {
+        goblinActive = true;
         transform.position = Vector3.zero;
         transform.rotation = Quaternion.identity;
 
@@ -109,6 +111,7 @@ public class GoblinAI : MonoBehaviour
 
     private void EndChaos()
     {
+        goblinActive = false;
         if (goblinBehaviour != null)
             StopCoroutine(goblinBehaviour);
     }
