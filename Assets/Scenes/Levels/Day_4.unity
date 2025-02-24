@@ -1397,7 +1397,7 @@ GameObject:
   - component: {fileID: 108736332}
   m_Layer: 0
   m_Name: WindZoneGoingRight
-  m_TagString: Untagged
+  m_TagString: WindArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1501,6 +1501,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   windDirect: 2
+  strength: 4.19
+  direction: {x: 0, y: 0, z: 0}
 --- !u!1 &112595020
 GameObject:
   m_ObjectHideFlags: 0
@@ -9022,7 +9024,7 @@ GameObject:
   - component: {fileID: 578676644}
   m_Layer: 0
   m_Name: WindZoneGoingLeft
-  m_TagString: Untagged
+  m_TagString: WindArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9126,6 +9128,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   windDirect: 1
+  strength: 0
+  direction: {x: 0, y: 0, z: 0}
 --- !u!1 &585047992
 GameObject:
   m_ObjectHideFlags: 0
@@ -23688,7 +23692,7 @@ GameObject:
   - component: {fileID: 1562182980}
   m_Layer: 0
   m_Name: WindZoneDown
-  m_TagString: Untagged
+  m_TagString: WindArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -23792,6 +23796,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   windDirect: 3
+  strength: 0
+  direction: {x: 0, y: 0, z: 0}
 --- !u!1 &1562483614
 GameObject:
   m_ObjectHideFlags: 0

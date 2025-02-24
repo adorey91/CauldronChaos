@@ -17,15 +17,9 @@ public class WindyDay : MonoBehaviour
     public Vector3 direction;
 
 
-
-    private void OnTriggerEnter(Collider other)
+    private void Start()
     {
-        
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        
+        direction = Vector3.forward;
     }
 
     public void OnDrawGizmos()

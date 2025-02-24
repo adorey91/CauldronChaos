@@ -29,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
 
     // Wind Movement
     internal bool isInWindZone = false;
+    private WindyDay windArea;
 
     private Vector3 spawnPosition;
     private Quaternion spawnRotation;
@@ -72,6 +73,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if(canMove)
         {
+            if(isInWindZone)
+            {
+                playerRB.AddForce(windArea.direction * windArea.strength);
+            }
+
             if (!isOnIce)
                 NormalMovement();
             else
@@ -208,5 +214,23 @@ public class PlayerMovement : MonoBehaviour
     private bool DetectCollisions(Vector3 move)
     {
         return Physics.Raycast(castPos.position, move.normalized, move.magnitude + playerRadius, collisionsLayers);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("WindArea"))
+        {
+            isInWindZone = true;
+            windArea = other.GetComponent<WindyDay>();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.CompareTag("WindArea"))
+        {
+            isInWindZone = false;
+            windArea = null;
+        }
     }
 }
