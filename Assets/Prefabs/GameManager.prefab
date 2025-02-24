@@ -229,7 +229,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &7302462734775249086
 MonoBehaviour:
@@ -13109,13 +13109,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7026116933703042474}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -971.5923, y: -535.8081, z: 4.6414447}
+  m_LocalRotation: {x: 0.46329606, y: 0, z: 0, w: 0.8862036}
+  m_LocalPosition: {x: -967.898, y: -536.633, z: 3.455}
   m_LocalScale: {x: 1.3537017, y: 1.3537018, z: 1.3537018}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6964602591167929303}
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 55.2, y: 0, z: 0}
 --- !u!198 &7120001694041607543
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -13199,7 +13199,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.62
+      scalar: 0.78
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -13751,7 +13751,7 @@ ParticleSystem:
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
-    radiusThickness: 1
+    radiusThickness: 0.24
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
@@ -13834,7 +13834,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 1.1
+      value: 0.57
       mode: 0
       spread: 0
       speed:
@@ -22552,7 +22552,7 @@ PrefabInstance:
     - target: {fileID: 3366724433988752219, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Day_7
+      value: Day_4
       objectReference: {fileID: 0}
     - target: {fileID: 3366724433988752219, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
@@ -23346,7 +23346,7 @@ PrefabInstance:
     - target: {fileID: 3366724433988752219, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Day_10
+      value: Day_5
       objectReference: {fileID: 0}
     - target: {fileID: 3366724433988752219, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
@@ -28541,7 +28541,7 @@ PrefabInstance:
     - target: {fileID: 3366724433988752219, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Day_5
+      value: Day_3
       objectReference: {fileID: 0}
     - target: {fileID: 3366724433988752219, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
@@ -29793,7 +29793,7 @@ PrefabInstance:
     - target: {fileID: 3366724433988752219, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Day_3
+      value: Day_2
       objectReference: {fileID: 0}
     - target: {fileID: 3366724433988752219, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
@@ -30629,7 +30629,7 @@ PrefabInstance:
     - target: {fileID: 3366724433988752219, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Day_8
+      value: Day_4
       objectReference: {fileID: 0}
     - target: {fileID: 3366724433988752219, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
@@ -31602,7 +31602,7 @@ PrefabInstance:
     - target: {fileID: 3366724433988752219, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Day_6
+      value: Day_3
       objectReference: {fileID: 0}
     - target: {fileID: 3366724433988752219, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
@@ -31943,7 +31943,7 @@ PrefabInstance:
     - target: {fileID: 3366724433988752219, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Day_4
+      value: Day_2
       objectReference: {fileID: 0}
     - target: {fileID: 3366724433988752219, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
@@ -34073,7 +34073,7 @@ PrefabInstance:
     - target: {fileID: 3366724433988752219, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Day_9
+      value: Day_5
       objectReference: {fileID: 0}
     - target: {fileID: 3366724433988752219, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
@@ -35872,7 +35872,7 @@ PrefabInstance:
     - target: {fileID: 3366724433988752219, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Day_2
+      value: Day_1
       objectReference: {fileID: 0}
     - target: {fileID: 3366724433988752219, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
