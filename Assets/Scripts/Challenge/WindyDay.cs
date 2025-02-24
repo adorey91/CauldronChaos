@@ -4,18 +4,42 @@ using UnityEngine;
 
 public class WindyDay : MonoBehaviour
 {
-    [SerializeField] private GameObject windTowardsScreen;
-    [SerializeField] private GameObject windGoesLeft;
-    [SerializeField] private GameObject windGoesRight;
+    public enum WindDirection
+    {
+        None,
+        GoingLeft,
+        GoingRight,
+        TowardsScreen,
+    }
+    public WindDirection windDirect;
 
+    public float strength;
+    public Vector3 direction;
+
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        
+    }
 
     public void OnDrawGizmos()
     {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawRay(windTowardsScreen.transform.position, windTowardsScreen.transform.forward * 5f);
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(windGoesLeft.transform.position, windGoesLeft.transform.right * 5f);
-        Gizmos.color = Color.green;
-        Gizmos.DrawRay(windGoesRight.transform.position, windGoesRight.transform.right * 5f);
+        Color gizmoColor;
+        switch(windDirect)
+        {
+            case WindDirection.GoingLeft:  gizmoColor = Color.blue; break;
+            case WindDirection.GoingRight: gizmoColor = Color.red; break;
+            case WindDirection.TowardsScreen: gizmoColor = Color.green; break;
+            default: gizmoColor = Color.cyan; break;
+        }
+
+        Gizmos.color = gizmoColor;
+        Gizmos.DrawRay(transform.position, transform.forward * 5f);
     }
 }

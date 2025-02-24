@@ -27,6 +27,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float deceleration = 2f;
     [SerializeField] private float maxSpeed = 6f;
 
+    // Wind Movement
+    internal bool isInWindZone = false;
+
     private Vector3 spawnPosition;
     private Quaternion spawnRotation;
     private bool canMove = false;
