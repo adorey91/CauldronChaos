@@ -21,6 +21,7 @@ public class CauldronMovement : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
     }
 
+    #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
     {
         Actions.OnStartCauldron += StartCauldronMovement;
@@ -33,6 +34,15 @@ public class CauldronMovement : MonoBehaviour
         Actions.OnEndCauldron -= () => isMoving = false;
         StopAllCoroutines();
     }
+
+    private void OnDestroy()
+    {
+        Actions.OnStartCauldron -= StartCauldronMovement;
+        Actions.OnEndCauldron -= () => isMoving = false;
+        StopAllCoroutines();
+    }
+
+    #endregion
 
     private void FixedUpdate()
     {
@@ -77,7 +87,7 @@ public class CauldronMovement : MonoBehaviour
     private void PickNewDestination()
     {
         Vector3 newDestination;
-        bool validPosition = false;
+        bool validPosition;
 
         int maxAttempts = 10;
         int attempts = 0;
@@ -113,11 +123,10 @@ public class CauldronMovement : MonoBehaviour
     // Get a random position on the navmesh
     private Vector3 RandomNavSphere(Vector3 origin, float distance)
     {
-        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * distance;
+        Vector3 randomDirection = Random.insideUnitSphere * distance;
         randomDirection += origin;
 
-        NavMeshHit navHit;
-        if (NavMesh.SamplePosition(randomDirection, out navHit, distance, -1))
+        if (NavMesh.SamplePosition(randomDirection, out NavMeshHit navHit, distance, -1))
         {
             return navHit.position;
         }

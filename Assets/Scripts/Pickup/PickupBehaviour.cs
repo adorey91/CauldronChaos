@@ -22,6 +22,7 @@ public class PickupBehaviour : MonoBehaviour
             pickupUIHolder.enabled = false;
     }
 
+    #region OnEnable / OnDisable / OnDestroy Events
     //Function that runs when Gameobject script is attached to is enabled
     private void OnEnable()
     {
@@ -33,6 +34,13 @@ public class PickupBehaviour : MonoBehaviour
     {
         InputManager.PickupAction -= Pickup; //un-subscribing to the action for picking up
     }
+
+    private void OnDestroy()
+    {
+        InputManager.PickupAction -= Pickup;
+    }
+
+    #endregion
 
 
     //function that handles picking up an object
@@ -79,8 +87,7 @@ public class PickupBehaviour : MonoBehaviour
                     }
 
                     //try to get interactable component of the held object
-                    Interactable interactable = heldObject.GetComponent<Interactable>();
-                    if (interactable != null)
+                    if (heldObject.TryGetComponent<Interactable>(out var interactable))
                     {
                         //add interactable as being held
                         interactionBehaviour.UpdateHeldInteractable(interactable);

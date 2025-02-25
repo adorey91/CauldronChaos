@@ -11,7 +11,7 @@ public class InputManager : MonoBehaviour
     [SerializeField] private Image abovePlayerInteraction;
     [SerializeField] private TextMeshProUGUI abovePlayerInteractionText;
 
-    //static variable holding an instance of the InputManager;
+    //static variable holding an Instance of the InputManager;
     private static InputManager _instance;
 
     //input actions
@@ -48,16 +48,16 @@ public class InputManager : MonoBehaviour
     #endregion
 
 
-    //function that checks if instance exists and spawns one if it does not
+    //function that checks if Instance exists and spawns one if it does not
     // this is spawning a new input manager when quitting play
-    public static InputManager instance
+    public static InputManager Instance
     {
         get
         {
-            //check if instance is null
+            //check if Instance is null
             if (_instance == null)
             {
-                //spawn instance
+                //spawn Instance
                 _instance = Instantiate(Resources.Load("InputManager") as GameObject).GetComponent<InputManager>();
                 _instance.name = "InputManager"; //renames the game object to InputManager
             }
@@ -68,7 +68,7 @@ public class InputManager : MonoBehaviour
     // Awake is called before the first frame update and before start
     void Awake()
     {
-        //check if this is the active instance
+        //check if this is the active Instance
         if (!_instance || _instance == this)
         {
             _instance = this;
@@ -99,6 +99,8 @@ public class InputManager : MonoBehaviour
         NextPageInputAction.Disable();
     }
 
+    #region OnEnable / OnDisable / OnDestroy Events
+
     private void OnEnable()
     {
         Actions.OnEndDay += TurnOffInteraction;
@@ -122,6 +124,19 @@ public class InputManager : MonoBehaviour
         OnRecipeBookInputs -= RecipeBookInputs;
         OnGameplayInputs -= GameplayInputs;
     }
+
+    private void OnDestroy()
+    {
+        Actions.OnEndDay -= TurnOffInteraction;
+        Actions.OnStartDay -= TurnOnInteraction;
+        OnInteract -= ShowInteraction;
+        OnPickup -= ShowPickup;
+        OnStir -= ShowStir;
+        OnHide -= HideInteractionPickup;
+        OnRecipeBookInputs -= RecipeBookInputs;
+        OnGameplayInputs -= GameplayInputs;
+    }
+    #endregion
 
     #region Player Controls
     //function that reads the move input

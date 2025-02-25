@@ -9,7 +9,8 @@ public class InteractionBehaviour : MonoBehaviour
     [SerializeField] private InteractionDetection interactionVolume;
     private Interactable heldInteractable = null;
 
-   //Function that runs when Gameobject script is attached to is enabled
+    #region OnEnable / OnDisable / OnDestroy Events
+    //Function that runs when Gameobject script is attached to is enabled
     private void OnEnable()
     {
         InputManager.InteractAction += TryInteract; //subscribing to the action for interacting
@@ -20,6 +21,12 @@ public class InteractionBehaviour : MonoBehaviour
     {
         InputManager.InteractAction -= TryInteract; //un-subscribing to the action for interacting
     }
+
+    private void OnDestroy()
+    {
+        InputManager.InteractAction -= TryInteract;
+    }
+    #endregion
 
     //Function that tries to use an interactable
     private void TryInteract(InputAction.CallbackContext input)

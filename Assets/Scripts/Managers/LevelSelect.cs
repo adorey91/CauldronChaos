@@ -10,15 +10,14 @@ public class LevelSelect : MonoBehaviour
 
     private int unlockedDays;
     private int[] score;
-    private int[] peopleServed;
 
 
     private void Start()
     {
         score = new int[levelSelection.Length];
-        peopleServed = new int[levelSelection.Length];
     }
 
+    #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
     {
         Actions.UpdateLevelButtons += UpdateButtons;
@@ -35,6 +34,15 @@ public class LevelSelect : MonoBehaviour
         Actions.OnSaveDeleted -= ResetButtonLabels;
     }
 
+    private void OnDestroy()
+    {
+        Actions.UpdateLevelButtons -= UpdateButtons;
+        Actions.OnSetUnlockedDays -= SetUnlockedDays;
+        Actions.OnSetScore -= SetScore;
+        Actions.OnSaveDeleted -= ResetButtonLabels;
+    }
+    #endregion
+    
     private void ResetButtonLabels()
     {
         for(int i = 0; i < levelSelection.Length; i++)
@@ -65,7 +73,7 @@ public class LevelSelect : MonoBehaviour
                 }
 
                 if (score == null) break;
-                if (GameManager.instance.isDebugging()) continue;
+                if (GameManager.instance.IsDebugging()) continue;
                 if (score[i] == 0) continue;
 
                 levelSelection[i].buttonText.text = $"Day {i + 1}\nScore: {score[i]}";

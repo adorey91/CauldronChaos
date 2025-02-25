@@ -34,6 +34,7 @@ public class ScoreManager : MonoBehaviour
         coinParticles.Stop();
     }
 
+    #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
     {
         Actions.OnCustomerServed += UpdateScore;
@@ -50,6 +51,15 @@ public class ScoreManager : MonoBehaviour
         Actions.OnSetDay -= SetCurrentDay;
     }
 
+    private void OnDestroy()
+    {
+        Actions.OnCustomerServed -= UpdateScore;
+        Actions.OnEndDay -= UpdateEODText;
+        Actions.OnResetValues -= ResetValues;
+        Actions.OnSetDay -= SetCurrentDay;
+    }
+    #endregion
+
     private void SetCurrentDay(int day)
     {
         currentDay = day;
@@ -57,17 +67,14 @@ public class ScoreManager : MonoBehaviour
 
     private void UpdateScore(bool wasGivenOnTime, int regularScore)
     {
-        int _addToTotalScore;
         if (wasGivenOnTime)
         {
             int addedScore = regularScore * tipMultiplier;
             score += addedScore;
-            _addToTotalScore = addedScore;
         }
         else
         {
             score += regularScore;
-            _addToTotalScore = regularScore;
         }
 
         if(score > scorePerLevel[currentDay] && !coinParticles.isPlaying)

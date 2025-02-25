@@ -22,6 +22,7 @@ public class RecipeManager : MonoBehaviour
         }
     }
 
+    #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
     {
         Actions.OnToggleRecipeBook += ToggleRecipeBook;
@@ -31,6 +32,12 @@ public class RecipeManager : MonoBehaviour
     {
         Actions.OnToggleRecipeBook -= ToggleRecipeBook;
     }
+
+    private void OnDestroy()
+    {
+        Actions.OnToggleRecipeBook -= ToggleRecipeBook;
+    }
+    #endregion
 
     public RecipeSO[] FindAvailableRecipes()
     {
