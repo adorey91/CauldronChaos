@@ -22,6 +22,7 @@ public class FirstSelect : MonoBehaviour
     [SerializeField] private EventSystem eventSystem;
 
     private GameObject _firstSelected;
+    private GameObject currentlySelected;
 
     #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()

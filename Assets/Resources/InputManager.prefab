@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4412442630158283917}
   - component: {fileID: 5769185560601970}
   - component: {fileID: 8336752322149118326}
+  - component: {fileID: 7203466815922852159}
   m_Layer: 0
   m_Name: InputManager
   m_TagString: Untagged
@@ -241,8 +242,28 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: b7b41fea-2e99-4bbf-a76e-a53c285e4c2a
     m_ActionName: Player/NextPage
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 26842e92-da7b-48a7-984e-2eeb8f42ee46
+    m_ActionName: Player/MouseUsed[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b89f8c6a-db50-4cf2-9232-9c97783fd867
+    m_ActionName: Player/KeyboardUsed[/Keyboard/anyKey]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &7203466815922852159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7572925034354115313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eafb23124b6532644ad62790786d3273, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

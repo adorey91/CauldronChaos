@@ -24,6 +24,9 @@ public class InputManager : MonoBehaviour
     public static Action<InputAction.CallbackContext> PauseAction;
     public static Action<InputAction.CallbackContext> NextPageAction;
     public static Action<InputAction.CallbackContext> PreviousPageAction;
+
+    public static Action<InputAction.CallbackContext> MouseAction;
+    public static Action<InputAction.CallbackContext> KeyboardAction;
     #endregion
 
     // actions for above player interaction
@@ -45,7 +48,13 @@ public class InputManager : MonoBehaviour
     private InputAction PauseInputAction;
     private InputAction NextPageInputAction;
     private InputAction PreviousPageInputAction;
+    private InputAction MouseInputAction;
+    private InputAction KeyboardInputAction;
     #endregion
+
+    private bool isKeyboardControlling = false;
+    private bool isMouseControlling = false;
+    //private bool isControllerControlling = false;
 
 
     //function that checks if Instance exists and spawns one if it does not
@@ -94,6 +103,8 @@ public class InputManager : MonoBehaviour
         PickupInputAction = playerControls.actions.FindAction("Pickup");
         StirCAction = playerControls.actions.FindAction("StirClockwise");
         StirCCAction = playerControls.actions.FindAction("StirCounterClockwise");
+        MouseInputAction = playerControls.actions.FindAction("MouseUsed");
+        KeyboardInputAction = playerControls.actions.FindAction("KeyboardUsed");
 
         PreviousPageInputAction.Disable();
         NextPageInputAction.Disable();
@@ -186,6 +197,31 @@ public class InputManager : MonoBehaviour
     public void TurnPreviousPage(InputAction.CallbackContext input)
     {
         PreviousPageAction?.Invoke(input);
+    }
+
+    public void CheckForMouse(InputAction.CallbackContext input)
+    {
+        if(input.performed)
+        {
+            if (isMouseControlling) return;
+
+            Debug.Log("Mouse is now navigating");
+            isMouseControlling = true;
+            isKeyboardControlling = false;
+            Actions.OnFirstSelect(null);
+        }
+    }
+
+    public void CheckForKeyboard(InputAction.CallbackContext input)
+    {
+        if (input.performed)
+        {
+            if (isKeyboardControlling) return;
+
+            Debug.Log("Keyboard is now navigating");
+            isKeyboardControlling = true;
+            isMouseControlling = false;
+        }
     }
 
     internal void TurnOffInteraction()

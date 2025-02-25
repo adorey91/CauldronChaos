@@ -93,6 +93,7 @@ public class DebugMode : MonoBehaviour
         {
             debugToggle.isOn = true;
             Debug.Log("Debug Mode Enabled");
+            Actions.OnFirstSelect("MainMenu");
             if (textCoroutine != null)
                 StopCoroutine(textCoroutine);
 
