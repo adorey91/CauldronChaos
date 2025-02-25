@@ -80,43 +80,38 @@ public class SettingsManager : MonoBehaviour
         {
             deleteFileButton.gameObject.SetActive(false);
             debugButton.gameObject.SetActive(false);
-            //deleteFileButton.interactable = false;
-            //debugButton.interactable = false;
         }
         else
         {
             deleteFileButton.gameObject.SetActive(true);
             debugButton.gameObject.SetActive(true);
-            //deleteFileButton.interactable = true;
-            //debugButton.interactable = true;
         }
-
+        Actions.OnSetUiLocation(UiObject.Page.Settings);
         ActivatePanel(settingsPanel);
-        Actions.OnFirstSelect?.Invoke("Settings");
     }
 
     private void OpenAudio()
     {
         ActivatePanel(audioVideoPanel);
-        Actions.OnFirstSelect?.Invoke("Audio");
+        Actions.OnSetUiLocation(UiObject.Page.Audio);
     }
   
     private void OpenControls()
     {
         ActivatePanel(controlsPanel);
-        Actions.OnFirstSelect?.Invoke("Controls");
+        Actions.OnSetUiLocation(UiObject.Page.ControlsKeyboard);
     }
 
     private void OpenDeleteFile()
     {
         ActivatePanel(deleteFilePanel);
-        Actions.OnFirstSelect?.Invoke("DeleteFile");
+        Actions.OnSetUiLocation(UiObject.Page.DeleteFile);
     }
 
     private void OpenDebug()
     {
         ActivatePanel(debugPanel);
-        Actions.OnFirstSelect?.Invoke("Debug");
+        Actions.OnSetUiLocation(UiObject.Page.DebugInput);
     }
 
     private void DeleteFileYesButton()

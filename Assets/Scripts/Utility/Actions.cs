@@ -55,14 +55,16 @@ public static class Actions
 
     // Actions for First Select
     #region First Select Actions
+    public static Action OnFirstSelect;
+    public static Action OnRemoveSelection;
     public static Action<GameObject> OnSelectRecipeButton;
-    public static Action<string> OnFirstSelect;
+    public static Action<UiObject.Page> OnSetUiLocation;
     #endregion
 
     // Actions for Menu
     #region Menu Actions
     public static Action OnOpenSettingsAction;
-    public static Action <bool> SetCursorVisibility;
+    public static Action<bool> SetCursorVisibility;
     public static Action<bool> OnActivateHowToPlay;
     public static Action OnDeactivateHowToPlay;
     public static Action<string> ReachedWaypoint;
@@ -72,12 +74,12 @@ public static class Actions
     // Challenge Actions
     #region Challenge Actions
     public static Action<int> OnStartChallenge; // used for ChallengeManager.cs
-    public static Action OnResetChallenge; 
-    public static Action <PhysicMaterial, Texture> OnApplyFoorMaterial; // used for Challenge 1 - Floor.cs
-    public static Action <bool> OnIceDay; // used for Challenge 1 - Floor.cs
+    public static Action OnResetChallenge;
+    public static Action<PhysicMaterial, Texture> OnApplyFoorMaterial; // used for Challenge 1 - Floor.cs
+    public static Action<bool> OnIceDay; // used for Challenge 1 - Floor.cs
     public static Action OnStartCauldron; // used for Challenge 2 - CauldronMovement.cs
     public static Action OnEndCauldron; // used for Challenge 2 - CauldronMovement.cs
-    public static Action <bool> OnStartGoblin; // used for Challenge 3 - GoblinAI.cs - set if it's the first challenge day or not.
+    public static Action<bool> OnStartGoblin; // used for Challenge 3 - GoblinAI.cs - set if it's the first challenge day or not.
     public static Action OnEndGoblin; // used for Challenge 3 - GoblinAI.cs
     public static Action OnScareGoblin; // used for Challenge 3 - GoblinAI.cs
     public static Action OnStartWindy; // used for Challenge 4 - WindyDay.cs

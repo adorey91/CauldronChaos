@@ -1,34 +1,78 @@
+using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class UiSwitchInput : MonoBehaviour
 {
+    private UiObject.Page currentLocation;
+
+    public static Action<InputAction.CallbackContext> MouseAction;
+    public static Action<InputAction.CallbackContext> KeyboardAction;
+
+    private PlayerInput playerControls;
+    private InputAction MouseInputAction;
+    private InputAction KeyboardInputAction;
+
+    private bool isKeyboardControlling = false;
+    private bool isMouseControlling = false;
+    private bool isControllerControlling = false;
+
     private void Awake()
     {
-        InputSystem.onDeviceChange += OnDeviceChange;
+        Actions.OnSetUiLocation += SetCurrentLocation;
     }
 
     private void OnDestroy()
     {
-        InputSystem.onDeviceChange -= OnDeviceChange;
+        Actions.OnSetUiLocation -= SetCurrentLocation;
     }
 
     private void Start()
     {
-        foreach(InputDevice input in InputSystem.devices)
+        playerControls = GetComponent<PlayerInput>();
+        MouseInputAction = playerControls.actions.FindAction("MouseUsed");
+        KeyboardInputAction = playerControls.actions.FindAction("KeyboardUsed");
+    }
+
+    
+
+    private void SetCurrentLocation(UiObject.Page newLocation)
+    {
+        currentLocation = newLocation;
+    }
+
+    public void CheckForMouse(InputAction.CallbackContext input)
+    {
+        if (input.performed)
         {
-            Debug.Log(input);
+            if (isMouseControlling) return;
+            if (currentLocation == UiObject.Page.Gameplay) return;
+
+            Debug.Log("Mouse is now navigating");
+
+            isMouseControlling = true;
+            isKeyboardControlling = false;
+
+            Cursor.lockState = CursorLockMode.None;
+
+            Actions.OnRemoveSelection?.Invoke();
         }
     }
 
-    private void OnDeviceChange(InputDevice input, InputDeviceChange change)
+    public void CheckForKeyboard(InputAction.CallbackContext input)
     {
-        switch(change)
+        if (input.performed)
         {
-            case InputDeviceChange.Added:
-                break;
-            case InputDeviceChange.Disconnected:
-                break;
+            if (isKeyboardControlling) return;
+
+            Cursor.lockState = CursorLockMode.Locked;
+
+            Debug.Log("Keyboard is now navigating");
+            isKeyboardControlling = true;
+            isMouseControlling = false;
+
+            Actions.OnFirstSelect?.Invoke();
         }
     }
 }

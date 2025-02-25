@@ -147,8 +147,6 @@ public class DayManager : MonoBehaviour
             Actions.OnStartGoblin?.Invoke(false);
 
 
-        Actions.OnFirstSelect?.Invoke("Gameplay");
-
         dayStartOverlay.SetActive(true);
         dayCountdownTimer = new(secondsToStart, false);
         dayCountdownTimer.StartTimer();

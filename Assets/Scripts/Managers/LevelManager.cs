@@ -48,7 +48,6 @@ public class LevelManager : MonoBehaviour
         }
 
         InputManager.Instance.TurnOffInteraction();
-        Actions.OnFirstSelect(null);
 
 
         Fade("FadeOut", () =>

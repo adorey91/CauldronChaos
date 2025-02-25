@@ -11,7 +11,8 @@ public class FirstSelect : MonoBehaviour
     [SerializeField] private GameObject settingsFirstSelect;
     [SerializeField] private GameObject levelSelectFirstSelect;
     [SerializeField] private GameObject audioFirstSelect;
-    [SerializeField] private GameObject controlsFirstSelect;
+    [SerializeField] private GameObject controlsKeyFirstSelect;
+    [SerializeField] private GameObject controlsGameFirstSelect;
     [SerializeField] private GameObject endOfDayFirstSelect;
     [SerializeField] private GameObject introFirstSelect;
     [SerializeField] private GameObject deleteFileFirstSelect;
@@ -21,26 +22,32 @@ public class FirstSelect : MonoBehaviour
 
     [SerializeField] private EventSystem eventSystem;
 
-    private GameObject _firstSelected;
-    private GameObject currentlySelected;
+    private GameObject firstSelected;
+    private UiObject.Page currentLocation;
 
     #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
     {
-        Actions.OnFirstSelect += SetFirstSelect;
         Actions.OnSelectRecipeButton += SetRecipeBookButton;
+        Actions.OnSetUiLocation += SetUiLocation;
+        Actions.OnFirstSelect += SetFirstSelect;
+        Actions.OnRemoveSelection += OnRemoveSelection;
     }
 
     private void OnDisable()
     {
-        Actions.OnFirstSelect -= SetFirstSelect;
         Actions.OnSelectRecipeButton -= SetRecipeBookButton;
+        Actions.OnSetUiLocation -= SetUiLocation;
+        Actions.OnFirstSelect -= SetFirstSelect;
+        Actions.OnRemoveSelection -= OnRemoveSelection;
     }
 
     private void OnDestroy()
     {
-        Actions.OnFirstSelect -= SetFirstSelect;
         Actions.OnSelectRecipeButton -= SetRecipeBookButton;
+        Actions.OnSetUiLocation -= SetUiLocation;
+        Actions.OnFirstSelect -= SetFirstSelect;
+        Actions.OnRemoveSelection -= OnRemoveSelection;
     }
     #endregion
 
@@ -51,29 +58,40 @@ public class FirstSelect : MonoBehaviour
         eventSystem.SetSelectedGameObject(button, new BaseEventData(eventSystem));
     }
 
-  
+
     // Sets the first selected button for the controller depending on the string
-    public void SetFirstSelect(string menu)
+    public void SetFirstSelect()
     {
         eventSystem.SetSelectedGameObject(null);
 
-        _firstSelected = menu switch
+        switch (currentLocation)
         {
-            "Menu" => menuFirstSelect,
-            "Pause" => pauseFirstSelect,
-            "LevelSelect" => levelSelectFirstSelect,
-            "Settings" => settingsFirstSelect,
-            "Audio" => audioFirstSelect,
-            "Gameplay" => null,
-            "Intro" => introFirstSelect,
-            "Controls" => controlsFirstSelect,
-            "EndOfDay" => endOfDayFirstSelect,
-            "DeleteFile" => deleteFileFirstSelect,
-            "HowToPlay" => howToPlayFirstSelect,
-            "Debug" => debugFirstSelect,
-            "DebugToggle" => debugToggleSelect,
-            _ => null,
-        };
-        eventSystem.SetSelectedGameObject(_firstSelected, new BaseEventData(eventSystem));
+            case UiObject.Page.MainMenu: firstSelected = menuFirstSelect; break;
+            case UiObject.Page.Intro: firstSelected = introFirstSelect; break;
+            case UiObject.Page.LevelSelect: firstSelected = levelSelectFirstSelect; break;
+            case UiObject.Page.Pause: firstSelected = pauseFirstSelect; break;
+            case UiObject.Page.Settings: firstSelected = settingsFirstSelect; break;
+            case UiObject.Page.EndOfDay: firstSelected = endOfDayFirstSelect; break;
+            case UiObject.Page.Audio: firstSelected = audioFirstSelect; break;
+            case UiObject.Page.ControlsKeyboard: firstSelected = controlsKeyFirstSelect; break;
+            case UiObject.Page.ControlsGamepad: firstSelected = controlsGameFirstSelect; break;
+            case UiObject.Page.DeleteFile: firstSelected = deleteFileFirstSelect; break;
+            case UiObject.Page.HowToPlay: firstSelected = howToPlayFirstSelect; break;
+            case UiObject.Page.DebugInput: firstSelected = debugFirstSelect; break;
+            case UiObject.Page.DebugToggle: firstSelected = debugToggleSelect; break;
+        }
+
+
+        eventSystem.SetSelectedGameObject(firstSelected, new BaseEventData(eventSystem));
+    }
+
+    private void OnRemoveSelection()
+    {
+        eventSystem.SetSelectedGameObject(null);
+    }
+
+    private void SetUiLocation(UiObject.Page newLocation)
+    {
+        currentLocation = newLocation;
     }
 }

@@ -61,7 +61,6 @@ public class HowToPlayUI : MonoBehaviour
         else
         {
             imageBG.enabled = true;
-            Actions.OnFirstSelect?.Invoke("HowToPlay");
             backButton.SetActive(true);
         }
         

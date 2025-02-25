@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 
 public class UiManager : MonoBehaviour
 {
+    public UiObject currentLocation;
+
     [Header("Settings")]
     [SerializeField] private SettingsManager settingsManager;
 
@@ -23,25 +25,21 @@ public class UiManager : MonoBehaviour
     [SerializeField] private AudioClip dayStartSFX;
 
 
-
     #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
     {
         Actions.OnStateChange += UpdateUIForGameState;
         Actions.ReachedWaypoint += CameraReached;
-        Actions.SetCursorVisibility += SetCursor;
     }
 
     private void OnDisable()
     {
-        Actions.SetCursorVisibility -= SetCursor;
         Actions.OnStateChange -= UpdateUIForGameState;
         Actions.ReachedWaypoint -= CameraReached;
     }
 
     private void OnDestroy()
     {
-        Actions.SetCursorVisibility -= SetCursor;
         Actions.OnStateChange -= UpdateUIForGameState;
         Actions.ReachedWaypoint -= CameraReached;
     }
@@ -84,7 +82,7 @@ public class UiManager : MonoBehaviour
         InputManager.Instance.TurnOnInteraction();
         MenuVirtualCamera.TurnCameraBrainOn?.Invoke();
         SetActiveUI(mainMenu);
-        Actions.OnFirstSelect("Menu");
+        Actions.OnSetUiLocation(UiObject.Page.MainMenu);
         Time.timeScale = 1;
     }
 
@@ -93,7 +91,7 @@ public class UiManager : MonoBehaviour
         if (waypoint == "Door")
         {
             SetActiveUI(intro);
-            Actions.OnFirstSelect("Intro");
+            Actions.OnSetUiLocation(UiObject.Page.Intro);
             return;
         }
 
@@ -111,7 +109,7 @@ public class UiManager : MonoBehaviour
 
         Actions.OnResetValues?.Invoke();
         SetActiveUI(levelSelect);
-        Actions.OnFirstSelect("LevelSelect");
+        Actions.OnSetUiLocation(UiObject.Page.LevelSelect);
         MenuVirtualCamera.OnResetCamera?.Invoke();
     }
 
@@ -119,21 +117,21 @@ public class UiManager : MonoBehaviour
     private void Gameplay()
     {
         MenuVirtualCamera.OnResetCamera?.Invoke();
-        Actions.OnFirstSelect("Gameplay");
         SetActiveUI(gameplay);
+        Actions.OnSetUiLocation(UiObject.Page.Gameplay);
         Time.timeScale = 1;
     }
 
     private void EndOfDay()
     {
         SetActiveUI(endOfDay);
-        Actions.OnFirstSelect("EndOfDay");
+        Actions.OnSetUiLocation(UiObject.Page.EndOfDay);
     }
 
     private void Pause()
     {
         SetActiveUI(pause);
-        Actions.OnFirstSelect("Pause");
+        Actions.OnSetUiLocation(UiObject.Page.Pause);
         Time.timeScale = 0;
     }
 
@@ -143,17 +141,28 @@ public class UiManager : MonoBehaviour
         settingsManager.OpenSettings();
     }
     #endregion
+}
 
-
-    private void SetCursor(bool isVisible)
+[Serializable]
+public class UiObject
+{
+    public enum Page
     {
-        if (isVisible)
-        {
-            Cursor.lockState = CursorLockMode.None;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
+        MainMenu,
+        Intro,
+        LevelSelect,
+        Pause,
+        Gameplay,
+        Settings,
+        EndOfDay,
+        Audio,
+        ControlsKeyboard,
+        ControlsGamepad,
+        DeleteFile,
+        HowToPlay,
+        DebugInput,
+        DebugToggle
     }
+
+    public Page location;
 }

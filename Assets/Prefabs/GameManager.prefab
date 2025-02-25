@@ -4241,7 +4241,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3512618148565503981}
-  - component: {fileID: 4532357121232981002}
   m_Layer: 0
   m_Name: Main_Menu
   m_TagString: Untagged
@@ -4270,19 +4269,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4532357121232981002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2630196236207211068}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94948c2c60748ed4f8b908d95a6e240e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  firstButtonSelected: {fileID: 3800580743673263103}
 --- !u!1 &2676264898344278815
 GameObject:
   m_ObjectHideFlags: 0
@@ -8163,6 +8149,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea0a3bdb8c07c554381135ef6b18e591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentLocation:
+    location: 0
   settingsManager: {fileID: 8259654593687155785}
   mainMenu: {fileID: 2630196236207211068}
   gameplay: {fileID: 7602155856343570783}
@@ -18369,8 +18357,8 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 350, y: 100}
-  m_Spacing: {x: 0, y: 50}
+  m_CellSize: {x: 350, y: 101.55}
+  m_Spacing: {x: 0, y: 19.9}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!1 &7269214538218223041
@@ -20771,7 +20759,8 @@ MonoBehaviour:
   settingsFirstSelect: {fileID: 1458502022497901545}
   levelSelectFirstSelect: {fileID: 6405615203239979920}
   audioFirstSelect: {fileID: 2734919301508257250}
-  controlsFirstSelect: {fileID: 6775654043609891429}
+  controlsKeyFirstSelect: {fileID: 6775654043609891429}
+  controlsGameFirstSelect: {fileID: 4994430621850766081}
   endOfDayFirstSelect: {fileID: 200931299381056261}
   introFirstSelect: {fileID: 4387097230986915782}
   deleteFileFirstSelect: {fileID: 7021991564026175178}
@@ -26581,12 +26570,18 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 3536326979124064543}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 4994430621850766081}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &4994430621850766081 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8384654220190448158, guid: f25dcd618d3acd64795bf8bb32edb6c9,
+    type: 3}
+  m_PrefabInstance: {fileID: 3536326979124064543}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &7901183341992762166 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6680292650503350825, guid: f25dcd618d3acd64795bf8bb32edb6c9,
@@ -29378,12 +29373,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ActionEvents.Array.data[18].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 4867065457762540960}
+      objectReference: {fileID: 2335380097803774445}
     - target: {fileID: 8336752322149118326, guid: 157c5cbd7ac637c498c031106675a261,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 4867065457762540960}
+      objectReference: {fileID: 2335380097803774445}
     - target: {fileID: 8336752322149118326, guid: 157c5cbd7ac637c498c031106675a261,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[18].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -29407,12 +29402,12 @@ PrefabInstance:
     - target: {fileID: 8336752322149118326, guid: 157c5cbd7ac637c498c031106675a261,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[18].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: InputManager, Assembly-CSharp
+      value: UiSwitchInput, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8336752322149118326, guid: 157c5cbd7ac637c498c031106675a261,
         type: 3}
       propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: InputManager, Assembly-CSharp
+      value: UiSwitchInput, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8336752322149118326, guid: 157c5cbd7ac637c498c031106675a261,
         type: 3}
@@ -29429,16 +29424,16 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 157c5cbd7ac637c498c031106675a261, type: 3}
---- !u!114 &4867065457762540960 stripped
+--- !u!114 &2335380097803774445 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5769185560601970, guid: 157c5cbd7ac637c498c031106675a261,
+  m_CorrespondingSourceObject: {fileID: 7203466815922852159, guid: 157c5cbd7ac637c498c031106675a261,
     type: 3}
   m_PrefabInstance: {fileID: 4872671819619449042}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc7765e4370372e4dae7d18acd0d71c1, type: 3}
+  m_Script: {fileID: 11500000, guid: eafb23124b6532644ad62790786d3273, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &9125154886749965407 stripped
