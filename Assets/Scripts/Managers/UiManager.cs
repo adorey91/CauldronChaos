@@ -22,6 +22,9 @@ public class UiManager : MonoBehaviour
     [Header("SFX")]
     [SerializeField] private AudioClip dayStartSFX;
 
+
+
+    #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
     {
         Actions.OnStateChange += UpdateUIForGameState;
@@ -35,6 +38,14 @@ public class UiManager : MonoBehaviour
         Actions.OnStateChange -= UpdateUIForGameState;
         Actions.ReachedWaypoint -= CameraReached;
     }
+
+    private void OnDestroy()
+    {
+        Actions.SetCursorVisibility -= SetCursor;
+        Actions.OnStateChange -= UpdateUIForGameState;
+        Actions.ReachedWaypoint -= CameraReached;
+    }
+    #endregion
 
     private void UpdateUIForGameState(GameManager.GameState state)
     {
@@ -70,7 +81,7 @@ public class UiManager : MonoBehaviour
     #region State_UI_Changes
     private void MainMenu()
     {
-        InputManager.instance.TurnOnInteraction();
+        InputManager.Instance.TurnOnInteraction();
         MenuVirtualCamera.TurnCameraBrainOn?.Invoke();
         SetActiveUI(mainMenu);
         Actions.OnFirstSelect("Menu");

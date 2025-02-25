@@ -3,6 +3,7 @@ using System;
 
 public class Floor : MonoBehaviour
 {
+    #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
     {
         Actions.OnApplyFoorMaterial += ApplyMaterial;
@@ -12,6 +13,12 @@ public class Floor : MonoBehaviour
     {
         Actions.OnApplyFoorMaterial -= ApplyMaterial;
     }
+
+    private void OnDestroy()
+    {
+        Actions.OnApplyFoorMaterial -= ApplyMaterial;
+    }
+    #endregion
 
     private void ApplyMaterial(PhysicMaterial material, Texture texture)
     {

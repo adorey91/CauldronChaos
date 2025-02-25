@@ -23,6 +23,7 @@ public class SaveManager : MonoBehaviour
         LoadGame();
     }
 
+    #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
     {
         Actions.OnSaveDay += SaveDayScore;
@@ -35,9 +36,16 @@ public class SaveManager : MonoBehaviour
         Actions.OnDeleteSaveFile -= DeleteSave;
     }
 
+    private void OnDestroy()
+    {
+        Actions.OnSaveDay -= SaveDayScore;
+        Actions.OnDeleteSaveFile -= DeleteSave;
+    }
+    #endregion
+
     public void CheckSaveFile()
     {
-        if (gameData.isValidSave && !GameManager.instance.isDebugging())
+        if (gameData.isValidSave && !GameManager.instance.IsDebugging())
         {
             Actions.OnSetUnlockedDays?.Invoke(GetUnlockedDaysCount());
             Actions.OnSetScore?.Invoke(GetAllScores());
@@ -45,7 +53,7 @@ public class SaveManager : MonoBehaviour
         }
         else
         {
-            if(GameManager.instance.isDebugging())
+            if(GameManager.instance.IsDebugging())
             {
                 Actions.OnSaveExist?.Invoke(true);
                 Actions.OnSetUnlockedDays?.Invoke(10);
@@ -65,7 +73,7 @@ public class SaveManager : MonoBehaviour
 
     public void SaveGame()
     {
-        if(!GameManager.instance.isDebugging())
+        if(!GameManager.instance.IsDebugging())
         {
             gameData.isValidSave = true;
 
@@ -94,7 +102,7 @@ public class SaveManager : MonoBehaviour
 
     public void SaveAbovePlayerUI(Toggle abovePlayer)
     {
-        if (!GameManager.instance.isDebugging())
+        if (!GameManager.instance.IsDebugging())
         {
             gameData.abovePlayerUI = abovePlayer.isOn;
 
@@ -109,7 +117,7 @@ public class SaveManager : MonoBehaviour
 
     private void SaveDayScore(int day, int score, bool unlockNext)
     {
-        if (!GameManager.instance.isDebugging())
+        if (!GameManager.instance.IsDebugging())
         {
             // Update the day data if the day is valid
             if (day < gameData.days.Count)

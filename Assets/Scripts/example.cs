@@ -5,7 +5,7 @@ using UnityEngine;
 public class example : MonoBehaviour
 {
     //called uasing
-    //example.instance.TestDebug();
+    //example.Instance.TestDebug();
 
     private static example _instance;
     public static example instance

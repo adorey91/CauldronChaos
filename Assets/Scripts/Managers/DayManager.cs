@@ -36,6 +36,7 @@ public class DayManager : MonoBehaviour
         dayCountdownTimer = new CustomTimer(secondsToStart, false);
     }
 
+    #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
     {
         Actions.OnResetValues += ResetValues;
@@ -49,6 +50,14 @@ public class DayManager : MonoBehaviour
         Actions.OnDayText -= SetDayText;
         Actions.OnStartDayCountdown -= StartDayCountdown;
     }
+
+    private void OnDestroy()
+    {
+        Actions.OnResetValues -= ResetValues;
+        Actions.OnDayText -= SetDayText;
+        Actions.OnStartDayCountdown -= StartDayCountdown;
+    }
+    #endregion
 
     private void Update()
     {
@@ -102,16 +111,9 @@ public class DayManager : MonoBehaviour
 
     private void SetTimerRotation()
     {
-        float remainingTime = gameplayTimer.GetRemainingTime();
         float elapsedTime = gameplayTimer.elapsedTime;
 
-        timerFill.fillAmount =elapsedTime / (dayLength * 60) ;
-
-        //// Convert remaining time into minutes and seconds
-        //int minutes = Mathf.FloorToInt(remainingTime / 60);
-        //int seconds = Mathf.FloorToInt(remainingTime % 60);
-
-        //dayTimerText.text = $"{minutes:00}:{seconds:00}";
+        timerFill.fillAmount = elapsedTime / (dayLength * 60) ;
 
         // Calculate how far along the rotation should be (0° to -360°)
         float rotationAngle = Mathf.Lerp(0, -360, elapsedTime / (dayLength * 60));
@@ -119,7 +121,6 @@ public class DayManager : MonoBehaviour
         // Apply rotation directly without animation
         timerHand.rotation = Quaternion.Euler(0, 0, rotationAngle);
         PulseHand();
-
     }
 
     private void PulseHand()
@@ -138,7 +139,14 @@ public class DayManager : MonoBehaviour
     private void StartDayCountdown()
     {
         Debug.Log("Day Countdown Started");
-        Actions.OnStartChallenge?.Invoke(currentDay/2);
+
+        if(currentDay % 2 == 0)
+            Actions.OnStartChallenge?.Invoke(currentDay / 2);
+
+        if(currentDay > 6)
+            Actions.OnStartGoblin?.Invoke(false);
+
+
         Actions.OnFirstSelect?.Invoke("Gameplay");
 
         dayStartOverlay.SetActive(true);

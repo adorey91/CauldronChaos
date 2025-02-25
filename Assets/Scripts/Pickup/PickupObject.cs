@@ -1,4 +1,5 @@
 using UnityEngine;
+using static WindyDay;
 
 public class PickupObject : MonoBehaviour
 {
@@ -16,6 +17,12 @@ public class PickupObject : MonoBehaviour
     [SerializeField] private AudioClip pickUpSFX;
     [SerializeField] private AudioClip dropSFX;
 
+    // Windy Day Variables
+    private bool inWindZone = false;
+    private Vector3 windDirection;
+    private WindyDay windArea;
+    private WindyDay.WindDirection windDir;
+
     // Start is called before the first frame update
     private void Awake()
     {
@@ -29,6 +36,14 @@ public class PickupObject : MonoBehaviour
         if (isHeld && rb.position != targetPos.position)
         {
             rb.MovePosition(targetPos.position);
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (inWindZone && !addedToCauldron && !isHeld)
+        {
+            rb.AddForce(windDirection * windArea.strength);
         }
     }
 
@@ -75,4 +90,36 @@ public class PickupObject : MonoBehaviour
     {
         addedToCauldron = true;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("WindArea"))
+        {
+            inWindZone = true;
+            windArea = other.GetComponent<WindyDay>();
+            windDir = windArea.windDirect;
+            windDirection = windArea.direction;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if(windArea != null)
+        {
+            if (windArea.windDirect != windDir)
+            {
+                windDirection = windArea.direction;
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("WindArea"))
+        {
+            inWindZone = false;
+            windArea = null;
+        }
+    }
+
 }

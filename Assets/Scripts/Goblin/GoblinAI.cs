@@ -18,7 +18,6 @@ public class GoblinAI : MonoBehaviour
     private Vector3 currentDestination;
     [SerializeField] private bool goblinActive = false;
 
-
     [Header("Time Between Action")]
     [SerializeField] private float throwFromCrate;
     [SerializeField] private float throwFloorIngredient;
@@ -41,9 +40,23 @@ public class GoblinAI : MonoBehaviour
 
     // References to the things the goblin can interact with - the only thing that changes is ingredients.
     private CrateHolder[] crates;
-    private List<PickupObject> ingredients;
+    private List<GameObject> ingredients;
     private CauldronInteraction[] cauldrons;
     private QueueManager queue;
+
+    // Windy Day Variables
+    private bool inWindZone = false;
+    private Vector3 windDirection;
+    private WindyDay windArea;
+    private WindyDay.WindDirection windDir;
+    private Rigidbody rb;
+
+    [Header("Slime Movement")]
+    [SerializeField] private LayerMask slime;
+    [SerializeField] private float slowMultiplier = 0.5f;
+    private bool isInSlime = false;
+    private float defaultSpeed;
+    public Vector3 slimeDirection;
 
     // Coroutines to handle the goblin behaviour
     private Coroutine goblinBehaviour;
@@ -51,6 +64,9 @@ public class GoblinAI : MonoBehaviour
 
     private void Start()
     {
+        if(agent != null)
+            defaultSpeed = agent.speed;
+
         noiseTimer = Random.Range(noiseTimerMin, noiseTimerMax);
         crates = FindObjectsOfType<CrateHolder>();
         queue = FindObjectOfType<QueueManager>();
@@ -83,8 +99,34 @@ public class GoblinAI : MonoBehaviour
         }
 
         //Debug.Log(noiseTimer);
+
+        if(Physics.Raycast(transform.position, Vector3.right, out RaycastHit hit, 1f, slime))
+        {
+            if (!isInSlime)
+            {
+                isInSlime = true;
+                agent.speed *= slowMultiplier;
+            }
+        }
+        else
+        {
+            if (isInSlime)
+            {
+                isInSlime = false;
+                agent.speed = defaultSpeed;
+            }
+        }
     }
 
+    private void FixedUpdate()
+    {
+        if(inWindZone)
+        {
+            rb.AddForce(windDirection * windArea.strength);
+        }
+    }
+
+    #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
     {
         Actions.OnStartGoblin += StartChaos;
@@ -99,12 +141,18 @@ public class GoblinAI : MonoBehaviour
         Actions.OnScareGoblin -= ScareAway;
     }
 
+    private void OnDestroy()
+    {
+        Actions.OnStartGoblin -= StartChaos;
+        Actions.OnEndGoblin -= EndChaos;
+        Actions.OnScareGoblin -= ScareAway;
+    }
+    #endregion
+
     private void StartChaos(bool isChallengeDay)
     {
         goblinActive = true;
-        transform.position = Vector3.zero;
-        transform.rotation = Quaternion.identity;
-
+        transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
         agent.enabled = true;
         goblinBehaviour = StartCoroutine(BehaviourLoop(isChallengeDay));
     }
@@ -201,7 +249,7 @@ public class GoblinAI : MonoBehaviour
     {
         isPerformingAction = true;
         // finds a random action from the ingredients list
-        PickupObject item = ingredients[Random.Range(0, ingredients.Count)];
+        GameObject item = ingredients[Random.Range(0, ingredients.Count)];
 
         if (item == null)
             yield break;
@@ -213,6 +261,7 @@ public class GoblinAI : MonoBehaviour
         {
             yield return null;
         }
+
         AudioManager.instance.sfxManager.StopConstantSFX(); // stop movement sound
 
         Vector3 randomDir = new Vector3(Random.Range(-1f, 1f), 1, Random.Range(-1f, 1f)).normalized;
@@ -320,8 +369,7 @@ public class GoblinAI : MonoBehaviour
         Vector3 randomDirection = Random.insideUnitSphere * distance;
         randomDirection += origin;
 
-        NavMeshHit navHit;
-        if (NavMesh.SamplePosition(randomDirection, out navHit, distance, layermask))
+        if (NavMesh.SamplePosition(randomDirection, out NavMeshHit navHit, distance, layermask))
         {
             return navHit.position;
         }
@@ -332,13 +380,22 @@ public class GoblinAI : MonoBehaviour
     /// <summary> Used to find all the ingredients on the floor </summary>
     private void FindFloorItems()
     {
-        ingredients = new List<PickupObject>();
+        ingredients = new List<GameObject>();
         PickupObject[] ing = FindObjectsOfType<PickupObject>();
+        PotionOutput[] potions = FindObjectsOfType<PotionOutput>();
 
         foreach (PickupObject ingredient in ing)
         {
-            if (!ingredient.AddedToCauldron())
-                ingredients.Add(ingredient);
+            if (!ingredient.AddedToCauldron() && !ingredient.isHeld)
+                ingredients.Add(ingredient.gameObject);
+        }
+
+        foreach (PotionOutput potion in potions)
+        {
+            PickupObject pickup = potion.GetComponent<PickupObject>();
+
+            if (!potion.givenToCustomer && !pickup.isHeld)
+                ingredients.Add(potion.gameObject);
         }
     }
 
@@ -348,5 +405,36 @@ public class GoblinAI : MonoBehaviour
         return !agent.pathPending &&
                agent.remainingDistance <= agent.stoppingDistance &&
                (!agent.hasPath || agent.velocity.sqrMagnitude < 0.1f);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("WindArea"))
+        {
+            inWindZone = true;
+            windArea = other.GetComponent<WindyDay>();
+            windDir = windArea.windDirect;
+            windDirection = windArea.direction;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (windArea != null)
+        {
+            if (windArea.windDirect != windDir)
+            {
+                windDirection = windArea.direction;
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("WindArea"))
+        {
+            inWindZone = false;
+            windArea = null;
+        }
     }
 }

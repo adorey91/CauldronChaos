@@ -32,6 +32,11 @@ public class LevelManager : MonoBehaviour
         fadeAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
     }
 
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
 
     public void LoadScene(string sceneName)
     {
@@ -42,7 +47,7 @@ public class LevelManager : MonoBehaviour
             return;
         }
 
-        InputManager.instance.TurnOffInteraction();
+        InputManager.Instance.TurnOffInteraction();
         Actions.OnFirstSelect(null);
 
 
@@ -159,7 +164,7 @@ public class LevelManager : MonoBehaviour
         if (currentScene.name.StartsWith("Day"))
         {
             Actions.OnStartDayCountdown?.Invoke();
-            InputManager.instance.TurnOnInteraction();
+            InputManager.Instance.TurnOnInteraction();
         }
         Fade("FadeIn");
     }

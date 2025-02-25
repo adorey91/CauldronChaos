@@ -1,4 +1,5 @@
 using UnityEngine;
+using static WindyDay;
 
 public class PotionOutput : MonoBehaviour
 {
@@ -45,6 +46,7 @@ public class PotionOutput : MonoBehaviour
         if (!wasPaused && addedWobble)
             Wobble();
     }
+
 
     public void SetPotionColor()
     {

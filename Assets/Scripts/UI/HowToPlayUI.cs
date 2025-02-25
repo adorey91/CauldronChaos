@@ -10,14 +10,11 @@ public class HowToPlayUI : MonoBehaviour
     [SerializeField] private Sprite[] _howToPlayImages;
     [SerializeField] private Image howToPlayImage;
     [SerializeField] private Image imageBG;
-    private CustomTimer imageTimer;
-    private float _imageTime = 3f;
     [SerializeField] private GameObject backButton;
 
     private void Awake()
     {
         howToPlayCanvas = GetComponent<Canvas>();
-        imageTimer = new CustomTimer(_imageTime, false);
     }
 
     private void Start()
@@ -29,6 +26,7 @@ public class HowToPlayUI : MonoBehaviour
         }
     }
 
+    #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
     {
         Actions.OnActivateHowToPlay += ActivateHowToPlay;
@@ -41,20 +39,19 @@ public class HowToPlayUI : MonoBehaviour
         Actions.OnDeactivateHowToPlay -= DeactivateHowToPlay;
     }
 
-    //private void Update()
-    //{
-    //    if (imageTimer.UpdateTimer() && !pressedButton)
-    //    {
-    //        NextImage();
-    //    }
-    //}
+    private void OnDestroy()
+    {
+        Actions.OnActivateHowToPlay -= ActivateHowToPlay;
+        Actions.OnDeactivateHowToPlay -= DeactivateHowToPlay;
+    }
+    #endregion
+
 
     // Activates the HowToPlay canvas
     public void ActivateHowToPlay(bool isLoading)
     {
         // Sets the first image in the array
         howToPlayCanvas.enabled = true;
-        //howToPlayImage.sprite = _howToPlayImages[0];
 
         if(isLoading)
         {
@@ -68,34 +65,10 @@ public class HowToPlayUI : MonoBehaviour
             backButton.SetActive(true);
         }
         
-        //imageTimer.StartTimer();
     }
 
     public void DeactivateHowToPlay()
     {
         howToPlayCanvas.enabled = false;
-        imageTimer = new CustomTimer(_imageTime, false);
     }
-
-    //public void NextImage()
-    //{
-    //    int currentIndex = System.Array.IndexOf(_howToPlayImages, howToPlayImage.sprite);
-
-    //    // Move to next image, or loop back to the first if at the end
-    //    int nextIndex = (currentIndex + 1) % _howToPlayImages.Length;
-    //    howToPlayImage.sprite = _howToPlayImages[nextIndex];
-
-    //    imageTimer.ResetTimer();
-    //}
-
-    //public void PreviousImage()
-    //{
-    //    int currentIndex = System.Array.IndexOf(_howToPlayImages, howToPlayImage.sprite);
-
-    //    // Move to previous image, or loop back to the last if at the beginning
-    //    int prevIndex = (currentIndex - 1 + _howToPlayImages.Length) % _howToPlayImages.Length;
-    //    howToPlayImage.sprite = _howToPlayImages[prevIndex];
-
-    //    imageTimer.ResetTimer();
-    //}
 }

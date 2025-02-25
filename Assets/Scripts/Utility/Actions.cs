@@ -72,6 +72,7 @@ public static class Actions
     // Challenge Actions
     #region Challenge Actions
     public static Action<int> OnStartChallenge; // used for ChallengeManager.cs
+    public static Action OnResetChallenge; 
     public static Action <PhysicMaterial, Texture> OnApplyFoorMaterial; // used for Challenge 1 - Floor.cs
     public static Action <bool> OnIceDay; // used for Challenge 1 - Floor.cs
     public static Action OnStartCauldron; // used for Challenge 2 - CauldronMovement.cs
@@ -80,7 +81,7 @@ public static class Actions
     public static Action OnEndGoblin; // used for Challenge 3 - GoblinAI.cs
     public static Action OnScareGoblin; // used for Challenge 3 - GoblinAI.cs
     public static Action OnStartWindy; // used for Challenge 4 - WindyDay.cs
-    public static Action OnEndWindy; // used for Challenge 4 - WindyDay.cs
+    public static Action OnStopWindy; // used for Challenge 4 - WindyDay.cs
     public static Action OnStartSlime;  // used for Challenge 5 - SlimeTrail.cs
     public static Action OnEndSlime; // used for Challenge 5 - SlimeTrail.cs
     #endregion

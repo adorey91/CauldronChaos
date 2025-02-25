@@ -45,6 +45,7 @@ public class SettingsManager : MonoBehaviour
         deleteNo.onClick.AddListener(OpenSettings);
     }
 
+    #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
     {
         Actions.OnOpenSettingsAction += OpenSettings;
@@ -55,6 +56,11 @@ public class SettingsManager : MonoBehaviour
         Actions.OnOpenSettingsAction -= OpenSettings;
     }
 
+    private void OnDestroy()
+    {
+        Actions.OnOpenSettingsAction -= OpenSettings;
+    }
+    #endregion
 
     private void ActivatePanel(GameObject _panel)
     {

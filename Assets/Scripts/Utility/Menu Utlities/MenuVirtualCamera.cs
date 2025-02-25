@@ -15,6 +15,8 @@ public class MenuVirtualCamera : MonoBehaviour
     public static Action OnResetCamera;
     public static Action TurnCameraBrainOn;
 
+
+    #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
     {
         Actions.OnSaveExist += MoveMainMenuCamera;
@@ -28,6 +30,14 @@ public class MenuVirtualCamera : MonoBehaviour
         OnResetCamera -= ResetCamera;
         TurnCameraBrainOn -= TurnOnCameraBrain;
     }
+
+    private void OnDestroy()
+    {
+        Actions.OnSaveExist -= MoveMainMenuCamera;
+        OnResetCamera -= ResetCamera;
+        TurnCameraBrainOn -= TurnOnCameraBrain;
+    }
+    #endregion
 
     private void TurnOnCameraBrain()
     {

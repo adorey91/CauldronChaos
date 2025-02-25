@@ -22,7 +22,8 @@ public class FirstSelect : MonoBehaviour
     [SerializeField] private EventSystem eventSystem;
 
     private GameObject _firstSelected;
-    
+
+    #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
     {
         Actions.OnFirstSelect += SetFirstSelect;
@@ -34,6 +35,13 @@ public class FirstSelect : MonoBehaviour
         Actions.OnFirstSelect -= SetFirstSelect;
         Actions.OnSelectRecipeButton -= SetRecipeBookButton;
     }
+
+    private void OnDestroy()
+    {
+        Actions.OnFirstSelect -= SetFirstSelect;
+        Actions.OnSelectRecipeButton -= SetRecipeBookButton;
+    }
+    #endregion
 
     // Sets the recipe book button for the controller
     private void SetRecipeBookButton(GameObject button)
@@ -48,26 +56,23 @@ public class FirstSelect : MonoBehaviour
     {
         eventSystem.SetSelectedGameObject(null);
 
-        switch (menu)
+        _firstSelected = menu switch
         {
-            case "Menu": _firstSelected = menuFirstSelect; break;
-            case "Pause": _firstSelected = pauseFirstSelect; break;
-            case "LevelSelect": _firstSelected = levelSelectFirstSelect; break;
-            case "Settings": _firstSelected = settingsFirstSelect; break;
-            case "Audio": _firstSelected = audioFirstSelect; break;
-            case "Gameplay": _firstSelected = null; break;
-            case "Intro": _firstSelected = introFirstSelect; break;
-            case "Controls": _firstSelected = controlsFirstSelect; break;
-            case "EndOfDay": _firstSelected = endOfDayFirstSelect; break;
-            case "DeleteFile": _firstSelected = deleteFileFirstSelect; break;
-            case "HowToPlay": _firstSelected = howToPlayFirstSelect; break;
-            case "Debug": _firstSelected = debugFirstSelect; break;
-            case "DebugToggle": _firstSelected = debugToggleSelect; break;
-            default:
-                _firstSelected = null;
-                break;
-        }
-
+            "Menu" => menuFirstSelect,
+            "Pause" => pauseFirstSelect,
+            "LevelSelect" => levelSelectFirstSelect,
+            "Settings" => settingsFirstSelect,
+            "Audio" => audioFirstSelect,
+            "Gameplay" => null,
+            "Intro" => introFirstSelect,
+            "Controls" => controlsFirstSelect,
+            "EndOfDay" => endOfDayFirstSelect,
+            "DeleteFile" => deleteFileFirstSelect,
+            "HowToPlay" => howToPlayFirstSelect,
+            "Debug" => debugFirstSelect,
+            "DebugToggle" => debugToggleSelect,
+            _ => null,
+        };
         eventSystem.SetSelectedGameObject(_firstSelected, new BaseEventData(eventSystem));
     }
 }
