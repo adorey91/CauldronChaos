@@ -97,9 +97,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recipeIngredient: {fileID: 11400000, guid: 610915c10d0751b44b86fdcd1393864f, type: 2}
+  ingredientColor: {r: 0, g: 0, b: 0, a: 0}
   isHeld: 0
-  pickUpSFX: {fileID: 8300000, guid: 28ab638ca864b3d45afa85039f2c9c25, type: 3}
-  dropSFX: {fileID: 8300000, guid: 958eab05f15fc7b4f842e5ec094944d6, type: 3}
+  pickUpSFX: {fileID: 8300000, guid: 53488736876667e49a3e8144163d9b48, type: 3}
+  dropSFX: {fileID: 8300000, guid: 39511eee0f93ee94fa41b9d4fe597b1f, type: 3}
 --- !u!136 &7276789477590418464
 CapsuleCollider:
   m_ObjectHideFlags: 0

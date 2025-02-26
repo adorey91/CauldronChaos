@@ -334,7 +334,7 @@ public class CauldronInteraction : MonoBehaviour
             Debug.LogError("PotionOutput script not found on the potion");
 
         // Play a sound here
-        //AudioManager.Instance.sfxManager.PlaySFX(SFX_Type.StationSounds, FinishPotionSounds.PickAudioClip(), true);
+        AudioManager.instance.sfxManager.PlaySFX(SFX_Type.StationSounds, FinishPotionSounds.PickAudioClip(), true);
 
         // throw the potion from the cauldron in a random direction
         Vector3 startPosition = ingredientInsertPoint.position;
