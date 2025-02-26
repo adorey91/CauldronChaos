@@ -87,6 +87,8 @@ GameObject:
   - component: {fileID: 8284238835207843048}
   - component: {fileID: 7425839841108751484}
   - component: {fileID: 3366724433988752219}
+  - component: {fileID: 8456965203722854532}
+  - component: {fileID: 8411872375789574203}
   - component: {fileID: 318711883439628376}
   - component: {fileID: 2986350167445360487}
   m_Layer: 0
@@ -211,6 +213,63 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8456965203722854532}
+        m_TargetAssemblyTypeName: UIAudioSounds, Assembly-CSharp
+        m_MethodName: PlayPressSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &8456965203722854532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554563386701119602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4176aa481cbb2704f8ef5d42b5055cfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectClip: {fileID: 8300000, guid: 5d4ac07aa104b034d83d55999044e771, type: 3}
+  pressClip: {fileID: 8300000, guid: 378e1e61844a3bd49b7d611af76acac9, type: 3}
+  increaseClip: {fileID: 8300000, guid: c4af25d5648b12547a537161c5aaf962, type: 3}
+  decreaseClip: {fileID: 8300000, guid: 9c4abc7b88aba274994f5e95aa425e0d, type: 3}
+--- !u!114 &8411872375789574203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554563386701119602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 9
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8456965203722854532}
+          m_TargetAssemblyTypeName: UIAudioSounds, Assembly-CSharp
+          m_MethodName: PlaySelectSound
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &318711883439628376
 MonoBehaviour:
   m_ObjectHideFlags: 0

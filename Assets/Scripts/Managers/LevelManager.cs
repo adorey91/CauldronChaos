@@ -32,6 +32,11 @@ public class LevelManager : MonoBehaviour
         fadeAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
     }
 
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
 
     public void LoadScene(string sceneName)
     {
@@ -42,8 +47,7 @@ public class LevelManager : MonoBehaviour
             return;
         }
 
-        InputManager.instance.TurnOffInteraction();
-        Actions.OnFirstSelect(null);
+        InputManager.Instance.TurnOffInteraction();
 
 
         Fade("FadeOut", () =>
@@ -140,7 +144,13 @@ public class LevelManager : MonoBehaviour
             // Check for any button press on the gamepad
             if (gamepad != null)
             {
-                if (gamepad.allControls.OfType<ButtonControl>().Any(button => button.wasPressedThisFrame))
+                if (gamepad.buttonSouth.wasPressedThisFrame ||
+            gamepad.buttonNorth.wasPressedThisFrame ||
+            gamepad.buttonEast.wasPressedThisFrame ||
+            gamepad.buttonWest.wasPressedThisFrame ||
+            gamepad.leftStick.ReadValue().magnitude > 0.1f ||
+            gamepad.rightStick.ReadValue().magnitude > 0.1f ||
+            gamepad.dpad.ReadValue().magnitude > 0.1f)
                 {
                     yield break; // Exit the loop and the coroutine
                 }
@@ -159,7 +169,7 @@ public class LevelManager : MonoBehaviour
         if (currentScene.name.StartsWith("Day"))
         {
             Actions.OnStartDayCountdown?.Invoke();
-            InputManager.instance.TurnOnInteraction();
+            InputManager.Instance.TurnOnInteraction();
         }
         Fade("FadeIn");
     }

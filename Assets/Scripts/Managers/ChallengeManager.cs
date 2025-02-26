@@ -12,106 +12,41 @@ public class ChallengeManager : MonoBehaviour
     [SerializeField] private Texture icyTexture;
     [SerializeField] private Texture defaultTexture;
 
-    [Header("Dropdown used for Testing Scene Only")]
-    [SerializeField] private TMP_Dropdown dropdown;
-    private readonly List<string> challengeOptions = new()
-    {
-        "None",
-        "Slippery Floor",
-        "Moving Cauldron",
-        "Goblin Unleashed",
-        "Windy Day",
-        "Slimey Trail"
-    };
-
-    private void Start()
-    {
-        // used in testing scene only
-        if (SceneManager.GetActiveScene().name == "TestScene")
-        {
-            dropdown = GameObject.Find("Dropdown_Event").GetComponent<TMP_Dropdown>();
-            InitializeDropdown();
-        }
-    }
-
+    #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
     {
         Actions.OnStartChallenge += StartChallenge;
-        Actions.OnSetDay += CheckChallengeDay;
-        Actions.OnEndDay += ResetChallenges;
+        Actions.OnResetChallenge += ResetChallenges;
     }
 
     private void OnDisable()
     {
         Actions.OnStartChallenge -= StartChallenge;
-        Actions.OnSetDay -= CheckChallengeDay;
-        Actions.OnEndDay -= ResetChallenges;
-    }
-    #region Dropdown for Testing Scene
-    // used in testing scene only, to change the challenge type
-    private void InitializeDropdown()
-    {
-        if (dropdown != null)
-        {
-            dropdown.ClearOptions();
-            dropdown.AddOptions(challengeOptions);
-            dropdown.onValueChanged.AddListener(OnDropdownChanged);
-        }
+        Actions.OnResetChallenge -= ResetChallenges;
     }
 
-    // used in testing scene only, to change the challenge type
-    private void OnDropdownChanged(int index)
+    private void OnDestroy()
     {
-        ResetChallenges();
-        StartChallenge(index);
+        Actions.OnStartChallenge -= StartChallenge;
+        Actions.OnResetChallenge -= ResetChallenges;
     }
     #endregion
 
-    private void CheckChallengeDay(int currentDay)
-    {
-        //    Debug.Log("Current Day: " + currentDay);
-        //    if (currentDay == 0) return;
-
-        //    if ((currentDay) % 2 == 0)
-        //    {
-        //        Debug.Log("Challenge Day");
-        //        Debug.Log(currentDay + 1);
-        //        Actions.OnStartChallenge?.Invoke((currentDay + 1) / 2);
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("Not a challenge day");
-        //    }
-        //    if ((currentDay + 1) > 5)
-        //    {
-        //        Actions.OnStartGoblin?.Invoke(false);
-        //        Debug.Log("Goblin Chaos");
-        //    }
-    }
-
-
-// Start the challenge based on the challenge type
-private void StartChallenge(int challenge)
+    // Start the challenge based on the challenge type
+    private void StartChallenge(int challenge)
     {
         Debug.Log("Challenge Started:   " + challenge);
         ResetChallenges();
         switch (challenge)
         {
             case 0: Debug.Log("No Challenges"); break;
-            case 1:
-                Actions.OnIceDay?.Invoke(true);
+            case 1: Actions.OnIceDay?.Invoke(true);
                 Actions.OnApplyFoorMaterial?.Invoke(slipperyMaterial, icyTexture);
                 break;
-            case 2:
-                Actions.OnStartCauldron?.Invoke();
-                break;
-            case 3:
-                Actions.OnStartGoblin?.Invoke(true);
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
+            case 2: Actions.OnStartCauldron?.Invoke(); break;
+            case 3: Actions.OnStartGoblin?.Invoke(true); break;
+            case 4: Actions.OnStartWindy?.Invoke(); break;
+            case 5: Actions.OnStartSlime?.Invoke(); break;
             default: ResetChallenges(); break;
         }
     }
@@ -123,5 +58,6 @@ private void StartChallenge(int challenge)
         Actions.OnEndCauldron?.Invoke();
         Actions.OnIceDay?.Invoke(false);
         Actions.OnEndGoblin?.Invoke();
+        Actions.OnStopWindy?.Invoke();
     }
 }

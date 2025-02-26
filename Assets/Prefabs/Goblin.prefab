@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 751202463998919567}
   - component: {fileID: 1010409159330157091}
   - component: {fileID: 4557893527993127726}
+  - component: {fileID: 3767445584782535463}
   m_Layer: 0
   m_Name: Goblin
   m_TagString: Untagged
@@ -78,6 +79,7 @@ MonoBehaviour:
   wanderRadius: 5
   minWanderTime: 2
   maxWanderTime: 5
+  goblinActive: 0
   throwFromCrate: 2
   throwFloorIngredient: 2
   enableSFX: 1
@@ -90,6 +92,10 @@ MonoBehaviour:
   rummageStings: {fileID: 8806996821599909531}
   rummageSound: {fileID: 8300000, guid: 4a3be15eb5e0a154ea2c3bc7447cefe8, type: 3}
   goblinMovement: {fileID: 8300000, guid: 4d9ad6f17003e9348b4c061386bff4d9, type: 3}
+  slime:
+    serializedVersion: 2
+    m_Bits: 4096
+  slowMultiplier: 0.5
 --- !u!95 &1010409159330157091
 Animator:
   serializedVersion: 5
@@ -134,6 +140,33 @@ CapsuleCollider:
   m_Height: 0.66081274
   m_Direction: 1
   m_Center: {x: 0, y: 0.3221625, z: 0}
+--- !u!54 &3767445584782535463
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2864664442665707075}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &4030997694519271253
 GameObject:
   m_ObjectHideFlags: 0

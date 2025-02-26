@@ -73,7 +73,7 @@ public class CauldronInteraction : MonoBehaviour
         craftableRecipes = recipeManager.FindAvailableRecipes();
     }
 
-    #region Events
+    #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
     {
         InputManager.StirClockwiseAction += StirClockwise;
@@ -88,6 +88,8 @@ public class CauldronInteraction : MonoBehaviour
 
     private void OnDestroy()
     {
+        InputManager.StirClockwiseAction -= StirClockwise;
+        InputManager.StirCounterClockwiseAction -= StirCounterClockwise;
         DOTween.KillAll();
     }
     #endregion
@@ -142,7 +144,7 @@ public class CauldronInteraction : MonoBehaviour
     private void HandleIncorrectStep()
     {
         // Play a sound here
-        //AudioManager.instance.sfxManager.playSFX()
+        //AudioManager.Instance.sfxManager.playSFX()
         if (ingredientGO != null)
             ingredientGO.GetComponent<Rigidbody>().isKinematic = true;
 
@@ -324,10 +326,15 @@ public class CauldronInteraction : MonoBehaviour
         ingredientGO = null;
 
         yield return new WaitForSeconds(0.3f);
-        thrownPotion.GetComponent<PotionOutput>().SetPotionColor();
+        
+        
+        if(thrownPotion.TryGetComponent<PotionOutput>(out var potionOutput))
+            potionOutput.SetPotionColor();
+        else
+            Debug.LogError("PotionOutput script not found on the potion");
 
         // Play a sound here
-        //AudioManager.instance.sfxManager.PlaySFX(SFX_Type.StationSounds, FinishPotionSounds.PickAudioClip(), true);
+        AudioManager.instance.sfxManager.PlaySFX(SFX_Type.StationSounds, FinishPotionSounds.PickAudioClip(), true);
 
         // throw the potion from the cauldron in a random direction
         Vector3 startPosition = ingredientInsertPoint.position;

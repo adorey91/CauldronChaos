@@ -4,18 +4,80 @@ using UnityEngine;
 
 public class WindyDay : MonoBehaviour
 {
-    [SerializeField] private GameObject windTowardsScreen;
-    [SerializeField] private GameObject windGoesLeft;
-    [SerializeField] private GameObject windGoesRight;
-
-
-    public void OnDrawGizmos()
+    public enum WindDirection
     {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawRay(windTowardsScreen.transform.position, windTowardsScreen.transform.forward * 5f);
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(windGoesLeft.transform.position, windGoesLeft.transform.right * 5f);
-        Gizmos.color = Color.green;
-        Gizmos.DrawRay(windGoesRight.transform.position, windGoesRight.transform.right * 5f);
+        GoingLeft,
+        GoingRight,
+        TowardsScreen,
+        AwayFromScreen
+    }
+    public WindDirection windDirect;
+
+    public float strength = 5;
+    private float defaultWindStrength;
+    public Vector3 direction;
+    private CustomTimer windDirectionChange;
+    private readonly float windChangeTime = 30f;
+
+
+    private void Awake()
+    {
+        defaultWindStrength = strength;
+        windDirectionChange = new(windChangeTime, false);
+    }
+
+    #region OnEnable / OnDisable / OnDestroy Events
+    private void OnEnable()
+    {
+        Actions.OnStartWindy += StartWind;
+        Actions.OnStopWindy += StopWind;
+    }
+
+    private void OnDisable()
+    {
+        Actions.OnStartWindy -= StartWind;
+        Actions.OnStopWindy -= StopWind;
+    }
+
+    private void OnDestroy()
+    {
+        Actions.OnStartWindy -= StartWind;
+        Actions.OnStopWindy -= StopWind;
+    }
+    #endregion
+
+    private void Update()
+    {
+        if(windDirectionChange.UpdateTimer())
+        {
+            ChangeWindDirection();
+        }
+    }
+
+    internal void StartWind()
+    {
+        strength = defaultWindStrength;
+        ChangeWindDirection();
+    }
+
+    private void StopWind()
+    {
+        strength = 0;
+    }
+
+    private void ChangeWindDirection()
+    {
+        windDirect = (WindDirection)Random.Range(0, 4);
+        
+        switch (windDirect)
+        {
+            case WindDirection.GoingLeft: direction = -transform.right; break;
+            case WindDirection.GoingRight: direction = transform.right; break;
+            case WindDirection.TowardsScreen: direction = -transform.forward; break;
+            case WindDirection.AwayFromScreen: direction = transform.forward; break;
+        }
+        Debug.Log("Wind Direction Changed to: " + windDirect);
+
+        windDirectionChange.ResetTimer();
     }
 }

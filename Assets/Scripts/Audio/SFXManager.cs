@@ -40,13 +40,13 @@ public class SFXManager : MonoBehaviour
     public void StartConstantSFX(AudioClip sfx)
     {
         // causing a null reference exception
-        //constantSFX_Player.StartConstantSFX(sfx);
+        constantSFX_Player.StartConstantSFX(sfx);
     }
 
     //Wrapper Method for AudioSFXPlayer's stop constant SFX method
     public void StopConstantSFX()
     {
-        //constantSFX_Player.StopConstantSFX();
+        constantSFX_Player.StopConstantSFX();
     }
 
     //Method used to player Menu SFX to make it easier to call

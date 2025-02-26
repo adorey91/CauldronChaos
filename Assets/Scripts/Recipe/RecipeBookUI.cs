@@ -38,6 +38,7 @@ public class RecipeBookUI : MonoBehaviour
         SetRecipes();
     }
 
+    #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
     {
         InputManager.NextPageAction += NextPage;
@@ -49,6 +50,14 @@ public class RecipeBookUI : MonoBehaviour
         InputManager.NextPageAction -= NextPage;
         InputManager.PreviousPageAction -= PreviousPage;
     }
+
+    private void OnDestroy()
+    {
+        InputManager.NextPageAction -= NextPage;
+        InputManager.PreviousPageAction -= PreviousPage;
+    }
+    #endregion
+
 
     public void SetRecipes()
     {
@@ -183,11 +192,6 @@ public class RecipeBookUI : MonoBehaviour
         nextPage.SetActive((_pageNumber + 1) * 2 < availableRecipes.Length);
     }
     #endregion
-
-    private IEnumerator PageDelay()
-    {
-        yield return new WaitForSeconds(0.4f);
-    }
 }
 
 [Serializable]

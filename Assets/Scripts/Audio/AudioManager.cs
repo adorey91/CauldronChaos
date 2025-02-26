@@ -24,17 +24,17 @@ public class AudioManager : MonoBehaviour
 
     private static AudioManager _instance;
 
-    //function that checks if instance exists and spawns one if it does not
+    //function that checks if Instance exists and spawns one if it does not
     public static AudioManager instance
     {
         get
         {
             _instance = FindObjectOfType<AudioManager>();  // Try to find an existing AudioManager in the scene
 
-            //check if instance is null
+            //check if Instance is null
             if (_instance == null)
             {
-                // If no instance exists, instantiate it
+                // If no Instance exists, instantiate it
                 _instance = Instantiate(Resources.Load("AudioManager") as GameObject).GetComponent<AudioManager>();
                 _instance.name = "AudioManager";
             }
@@ -45,18 +45,16 @@ public class AudioManager : MonoBehaviour
     // Awake is called before the first frame update and before start
     void Awake()
     {
-        //check if this is the active instance
-        if (_instance == null || _instance == this)
+        //check if this is the active Instance
+        if (_instance == null)
         {
             _instance = this;
-            //Debug.Log("Instance Audio Manager: " + gameObject.GetInstanceID());
-            //DontDestroyOnLoad(this);
+            DontDestroyOnLoad(this);
         }
         else
         {
             //remove copy
             Destroy(gameObject);
-            //Debug.Log("New Instance Destroyed");
         }
     }
 
@@ -66,10 +64,6 @@ public class AudioManager : MonoBehaviour
         SetVolume(MixerGroup.Master, masterMixerDefaultVolume);
         SetVolume(MixerGroup.Music, musicMixerDefaultVolume);
         SetVolume(MixerGroup.SFX, sfxMixerDefaultVolume);
-
-        //Debug.Log("MasterGroup =" + GetVolume(MixerGroup.Master));
-        //Debug.Log("MusicGroup =" + GetVolume(MixerGroup.Music));
-        //Debug.Log("SFXGroup =" + GetVolume(MixerGroup.SFX));
     }
 
     //function that sets volume of mixers
@@ -111,7 +105,6 @@ public class AudioManager : MonoBehaviour
                 break;
         }
 
-        //Debug.Log(value);
         value = ConvertFromDB(value);
         return value;
     }
@@ -125,7 +118,6 @@ public class AudioManager : MonoBehaviour
     //utility function for converting DB to a linear float
     private float ConvertFromDB(float db)
     {
-        //Debug.Log((db / 20f));
         return Mathf.Pow(10, (db / 20f));
     }
 }

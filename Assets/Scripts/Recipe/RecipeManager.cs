@@ -22,6 +22,7 @@ public class RecipeManager : MonoBehaviour
         }
     }
 
+    #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
     {
         Actions.OnToggleRecipeBook += ToggleRecipeBook;
@@ -31,6 +32,12 @@ public class RecipeManager : MonoBehaviour
     {
         Actions.OnToggleRecipeBook -= ToggleRecipeBook;
     }
+
+    private void OnDestroy()
+    {
+        Actions.OnToggleRecipeBook -= ToggleRecipeBook;
+    }
+    #endregion
 
     public RecipeSO[] FindAvailableRecipes()
     {
@@ -72,12 +79,14 @@ public class RecipeManager : MonoBehaviour
 
         if (recipeBookUi.activeSelf)
         {
+            
             recipeBookUi.SetActive(false);
            InputManager.OnGameplayInputs();
         }
         else
         {
             recipeBookUi.SetActive(true);
+            Actions.OnSetUiLocation(UiObject.Page.RecipeBook);
             Actions.OnSelectRecipeButton(closeButton);
             InputManager.OnRecipeBookInputs();
         }

@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
             SetState(GameState.Gameplay);
     }
 
-
+    #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
     {
         Actions.OnForceStateChange += LoadState;
@@ -46,6 +46,13 @@ public class GameManager : MonoBehaviour
         Actions.OnForceStateChange -= LoadState;
         InputManager.PauseAction -= EscapeState;
     }
+
+    private void OnDestroy()
+    {
+        Actions.OnForceStateChange -= LoadState;
+        InputManager.PauseAction -= EscapeState;
+    }
+    #endregion
 
     // This should be used for buttons
     public void LoadState(string state)
@@ -88,7 +95,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    internal bool isDebugging()
+    internal bool IsDebugging()
     {
         return isInDebugMode;
     }

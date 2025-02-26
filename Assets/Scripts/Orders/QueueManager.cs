@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 using DG.Tweening;
 
 public class QueueManager : MonoBehaviour
@@ -61,6 +60,7 @@ public class QueueManager : MonoBehaviour
         }
     }
 
+    #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
     {
         Actions.OnEndDay += RemoveAllCustomers;
@@ -76,6 +76,15 @@ public class QueueManager : MonoBehaviour
         Actions.OnCheckCustomers -= CheckCustomerRecipes;
         Actions.OnResetValues -= RemoveAllCustomers;
     }
+
+    private void OnDestroy()
+    {
+        Actions.OnEndDay -= RemoveAllCustomers;
+        Actions.OnStartDay -= StartCustomers;
+        Actions.OnCheckCustomers -= CheckCustomerRecipes;
+        Actions.OnResetValues -= RemoveAllCustomers;
+    }
+    #endregion
 
     private void StartCustomers()
     {
@@ -104,18 +113,18 @@ public class QueueManager : MonoBehaviour
                 CustomerBehaviour servingCustomer = customers[i].GetComponent<CustomerBehaviour>();
 
                 potionObj.transform.SetParent(servingCustomer.customerHands);
-                potionObj.transform.DOJump(servingCustomer.customerHands.position, 1, 1, 0.3f).OnComplete(() => FinishOrder(servingCustomer, potionObj));
+                potionObj.transform.DOJump(servingCustomer.customerHands.position, 1, 1, 0.3f).OnComplete(() => FinishOrder(servingCustomer));
                 return;
             }
         }
 
         Vector3 startPos = potionObj.transform.position;
-        Vector3 randomDirection = new Vector3(UnityEngine.Random.Range(-1f, 1f), 0, UnityEngine.Random.Range(0.5f, 2f));
+        Vector3 randomDirection = new (Random.Range(-1f, 1f), 0, Random.Range(0.5f, 2f));
         Vector3 endPos = startPos + randomDirection * 3f;
         potionObj.transform.DOJump(endPos, 2, 1, 1);
     }
 
-    private void FinishOrder(CustomerBehaviour servingCustomer, GameObject obj)
+    private void FinishOrder(CustomerBehaviour servingCustomer)
     {
         servingCustomer.OrderComplete();
 
@@ -192,7 +201,7 @@ public class QueueManager : MonoBehaviour
 
     internal void ScareCustomer()
     {
-        List<GameObject> customersInQueue = new List<GameObject>();
+        List<GameObject> customersInQueue = new();
 
         foreach (GameObject customer in customers)
         {
@@ -204,7 +213,7 @@ public class QueueManager : MonoBehaviour
 
         if (customersInQueue.Count > 0)
         {
-            int random = UnityEngine.Random.Range(0, customersInQueue.Count);
+            int random = Random.Range(0, customersInQueue.Count);
             CustomerBehaviour scaredCustomer = customersInQueue[random].GetComponent<CustomerBehaviour>();
             scaredCustomer.ScareAway();
             RemoveCustomer(customers[random]);

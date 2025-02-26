@@ -14,8 +14,11 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private void Awake()
     {
         button = this.gameObject;
-        thisButton = GetComponent<Button>();
+        thisButton = button.GetComponent<Button>();
+        if (thisButton == null)
+            Debug.LogError("Button component missing on " + gameObject.name);
     }
+
 
     private void OnEnable()
     {
@@ -29,60 +32,54 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (thisButton.interactable)
-        {
-            button.transform.DOKill();
-            // Ensure independent updates and smoother scaling.
-            button.transform.DOScale(1.3f, 0.2f).SetUpdate(true).SetEase(Ease.OutBack).OnComplete(() =>
-            {
-                if (isLevelSelectButton)
-                {
-                    button.transform.SetAsLastSibling();
-                }
-            });
-        }
+        if (thisButton == null || button == null) return; // Prevent null reference
+        if (!thisButton.interactable) return; // Prevent interaction with disabled buttons
+
+        button.transform.DOKill();
+        // Ensure independent updates and smoother scaling.
+
+        if (isLevelSelectButton)
+            button.transform.SetAsLastSibling();
+
+        button.transform.DOScale(1.3f, 0.2f).SetUpdate(true).SetEase(Ease.OutBack);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (thisButton.interactable)
-        {
-            if (isLevelSelectButton)
-                button.transform.SetAsFirstSibling();
+        if (thisButton == null || button == null) return; // Prevent null reference
+        if (!thisButton.interactable) return; // Prevent interaction with disabled buttons
 
-            button.transform.DOKill();
-            // Ensure independent updates and smoother scaling.
-            button.transform.DOScale(1f, 0.2f).SetUpdate(true).SetEase(Ease.OutBack);
-        }
+        if (isLevelSelectButton)
+            button.transform.SetAsFirstSibling();
+
+        button.transform.DOKill();
+        // Ensure independent updates and smoother scaling.
+        button.transform.DOScale(1f, 0.2f).SetUpdate(true).SetEase(Ease.OutBack);
     }
 
     public void OnSelect(BaseEventData eventData)
     {
-        if (thisButton.interactable)
-        {
-            button.transform.DOKill();
-            // Ensure independent updates and smoother scaling.
-            button.transform.DOScale(1.3f, 0.2f).SetUpdate(true).SetEase(Ease.OutBack).OnComplete(() =>
-            {
-                if (isLevelSelectButton)
-                {
-                    button.transform.SetAsLastSibling();
-                }
-            });
-        }
+        if (thisButton == null || button == null) return; // Prevent null reference
+        if (!thisButton.interactable) return; // Prevent interaction with disabled buttons
+        button.transform.DOKill();
+        // Ensure independent updates and smoother scaling.
+        if (isLevelSelectButton)
+            button.transform.SetAsLastSibling();
+
+        button.transform.DOScale(1.3f, 0.2f).SetUpdate(true).SetEase(Ease.OutBack);
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
-        if (thisButton.interactable)
-        {
-            if (isLevelSelectButton)
-                button.transform.SetAsFirstSibling();
+        if (thisButton == null || button == null) return; // Prevent null reference
+        if (!thisButton.interactable) return; // Prevent interaction with disabled buttons
 
-            button.transform.DOKill();
-            // Ensure independent updates and smoother scaling.
-            button.transform.DOScale(1f, 0.2f).SetUpdate(true).SetEase(Ease.OutBack);
-        }
+        if (isLevelSelectButton)
+            button.transform.SetAsFirstSibling();
+
+        button.transform.DOKill();
+        // Ensure independent updates and smoother scaling.
+        button.transform.DOScale(1f, 0.2f).SetUpdate(true).SetEase(Ease.OutBack);
     }
 
     public void ResizeButton()

@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Player Movement Variables")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float rotationSpeed = 180;
+    private float defaultSpeed;
 
     [Header("Collision Detection")]
     [SerializeField] private Transform castPos; //position to do raycasts from
@@ -27,12 +28,26 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float deceleration = 2f;
     [SerializeField] private float maxSpeed = 6f;
 
+    [Header("Slime Movement")]
+    [SerializeField] private LayerMask slime;
+    [SerializeField] private float slowMultiplier = 0.5f;
+    private bool isInSlime = false;
+
+
+    // Wind Movement
+    private bool isInWindZone = false;
+    private Vector3 windDirection;
+    private WindyDay windArea;
+    private WindyDay.WindDirection windDir;
+
     private Vector3 spawnPosition;
     private Quaternion spawnRotation;
     private bool canMove = false;
+    
 
     private void Awake()
     {
+        defaultSpeed = moveSpeed;
         spawnPosition = transform.localPosition;
         spawnRotation = transform.rotation;
         playerAnimation = GetComponentInChildren<Animator>();
@@ -44,6 +59,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    #region OnEnable / OnDisable / OnDestroy Events
     //Called when object is enabled
     private void OnEnable()
     {
@@ -64,11 +80,42 @@ public class PlayerMovement : MonoBehaviour
         Actions.OnResetValues -= ResetPosition;
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    private void OnDestroy()
+    {
+        InputManager.MoveAction -= GetMove;
+        Actions.OnIceDay -= ToggleIceMode;
+        Actions.OnStartDayCountdown -= EnableMovement;
+        Actions.OnEndDay -= DisableMovement;
+        Actions.OnResetValues -= ResetPosition;
+    }
+    #endregion
+
+    private void Update()
+    {
+        if(Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1f, slime))
+        {
+            if(!isInSlime)
+            {
+                isInSlime = true;
+                moveSpeed *= slowMultiplier;
+            }
+        }
+        else
+        {
+            isInSlime = false;
+            moveSpeed = defaultSpeed;
+        }
+    }
+
+    private void FixedUpdate()
     {
         if(canMove)
         {
+            if(isInWindZone)
+            {
+                playerRB.AddForce(windDirection * windArea.strength);
+            }
+
             if (!isOnIce)
                 NormalMovement();
             else
@@ -82,6 +129,7 @@ public class PlayerMovement : MonoBehaviour
         transform.rotation = spawnRotation;
         canMove = false;
     }
+
 
     private void EnableMovement()
     {
@@ -113,7 +161,7 @@ public class PlayerMovement : MonoBehaviour
     private void NormalMovement()
     {
         //translate Vector2 to Vector3
-        Vector3 movement = new Vector3(moveDir.x, 0, moveDir.y);
+        Vector3 movement = new (moveDir.x, 0, moveDir.y);
 
         //rotate towards direction
         if (movement != Vector3.zero)
@@ -205,5 +253,36 @@ public class PlayerMovement : MonoBehaviour
     private bool DetectCollisions(Vector3 move)
     {
         return Physics.Raycast(castPos.position, move.normalized, move.magnitude + playerRadius, collisionsLayers);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("WindArea"))
+        {
+            isInWindZone = true;
+            windArea = other.GetComponent<WindyDay>();
+            windDir = windArea.windDirect;
+            windDirection = windArea.direction;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if(windArea != null)
+        {
+            if(windArea.windDirect != windDir)
+            {
+                windDirection = windArea.direction;
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.CompareTag("WindArea"))
+        {
+            isInWindZone = false;
+            windArea = null;
+        }
     }
 }
