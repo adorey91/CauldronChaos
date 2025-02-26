@@ -98,24 +98,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""MouseUsed"",
-                    ""type"": ""Value"",
-                    ""id"": ""26842e92-da7b-48a7-984e-2eeb8f42ee46"",
-                    ""expectedControlType"": ""Delta"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""KeyboardUsed"",
-                    ""type"": ""Button"",
-                    ""id"": ""b89f8c6a-db50-4cf2-9232-9c97783fd867"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -435,28 +417,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Next Page"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""56ad4b22-e4c5-4321-a664-a440d985ae49"",
-                    ""path"": ""<Mouse>/delta"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""MouseUsed"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e99758fe-1d6f-4676-be12-1a2c48b3fc20"",
-                    ""path"": ""<Keyboard>/anyKey"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""KeyboardUsed"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1052,8 +1012,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_StirCounterClockwise = m_Player.FindAction("StirCounterClockwise", throwIfNotFound: true);
         m_Player_PreviousPage = m_Player.FindAction("Previous Page", throwIfNotFound: true);
         m_Player_NextPage = m_Player.FindAction("Next Page", throwIfNotFound: true);
-        m_Player_MouseUsed = m_Player.FindAction("MouseUsed", throwIfNotFound: true);
-        m_Player_KeyboardUsed = m_Player.FindAction("KeyboardUsed", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1135,8 +1093,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_StirCounterClockwise;
     private readonly InputAction m_Player_PreviousPage;
     private readonly InputAction m_Player_NextPage;
-    private readonly InputAction m_Player_MouseUsed;
-    private readonly InputAction m_Player_KeyboardUsed;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1149,8 +1105,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @StirCounterClockwise => m_Wrapper.m_Player_StirCounterClockwise;
         public InputAction @PreviousPage => m_Wrapper.m_Player_PreviousPage;
         public InputAction @NextPage => m_Wrapper.m_Player_NextPage;
-        public InputAction @MouseUsed => m_Wrapper.m_Player_MouseUsed;
-        public InputAction @KeyboardUsed => m_Wrapper.m_Player_KeyboardUsed;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1184,12 +1138,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @NextPage.started += instance.OnNextPage;
             @NextPage.performed += instance.OnNextPage;
             @NextPage.canceled += instance.OnNextPage;
-            @MouseUsed.started += instance.OnMouseUsed;
-            @MouseUsed.performed += instance.OnMouseUsed;
-            @MouseUsed.canceled += instance.OnMouseUsed;
-            @KeyboardUsed.started += instance.OnKeyboardUsed;
-            @KeyboardUsed.performed += instance.OnKeyboardUsed;
-            @KeyboardUsed.canceled += instance.OnKeyboardUsed;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1218,12 +1166,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @NextPage.started -= instance.OnNextPage;
             @NextPage.performed -= instance.OnNextPage;
             @NextPage.canceled -= instance.OnNextPage;
-            @MouseUsed.started -= instance.OnMouseUsed;
-            @MouseUsed.performed -= instance.OnMouseUsed;
-            @MouseUsed.canceled -= instance.OnMouseUsed;
-            @KeyboardUsed.started -= instance.OnKeyboardUsed;
-            @KeyboardUsed.performed -= instance.OnKeyboardUsed;
-            @KeyboardUsed.canceled -= instance.OnKeyboardUsed;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1414,8 +1356,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnStirCounterClockwise(InputAction.CallbackContext context);
         void OnPreviousPage(InputAction.CallbackContext context);
         void OnNextPage(InputAction.CallbackContext context);
-        void OnMouseUsed(InputAction.CallbackContext context);
-        void OnKeyboardUsed(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

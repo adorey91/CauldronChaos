@@ -79,12 +79,14 @@ public class RecipeManager : MonoBehaviour
 
         if (recipeBookUi.activeSelf)
         {
+            
             recipeBookUi.SetActive(false);
            InputManager.OnGameplayInputs();
         }
         else
         {
             recipeBookUi.SetActive(true);
+            Actions.OnSetUiLocation(UiObject.Page.RecipeBook);
             Actions.OnSelectRecipeButton(closeButton);
             InputManager.OnRecipeBookInputs();
         }

@@ -55,8 +55,6 @@ public static class Actions
 
     // Actions for First Select
     #region First Select Actions
-    public static Action OnFirstSelect;
-    public static Action OnRemoveSelection;
     public static Action<GameObject> OnSelectRecipeButton;
     public static Action<UiObject.Page> OnSetUiLocation;
     #endregion

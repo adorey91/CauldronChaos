@@ -161,7 +161,8 @@ public class UiObject
         DeleteFile,
         HowToPlay,
         DebugInput,
-        DebugToggle
+        DebugToggle,
+        RecipeBook
     }
 
     public Page location;

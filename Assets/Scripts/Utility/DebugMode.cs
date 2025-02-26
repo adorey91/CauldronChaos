@@ -13,6 +13,8 @@ public class DebugMode : MonoBehaviour
     [SerializeField] private Button backButton;
     [SerializeField] private TextMeshProUGUI debugText;
     [SerializeField] private TextMeshProUGUI debugTitle;
+    
+    private bool isManuallyToggling = false; // Prevents unwanted function calls
 
     private Coroutine textCoroutine;
 
@@ -21,9 +23,14 @@ public class DebugMode : MonoBehaviour
         passwordInput.onEndEdit.AddListener(delegate { CheckPassword(); });
         backButton.onClick.AddListener(BackButton);
 
+
         debugToggle.isOn = false;
+        debugMenuToggle.isOn = false;
         debugToggle.gameObject.SetActive(false);
         debugText.enabled = false;
+
+        debugMenuToggle.onValueChanged.AddListener(delegate { ToggleMenuDebugMode(); });
+        debugToggle.onValueChanged.AddListener(delegate { ToggleDebugMode(); });
     }
 
     private void CheckPassword()
@@ -62,9 +69,14 @@ public class DebugMode : MonoBehaviour
 
     public void ToggleDebugMode()
     {
+        if(isManuallyToggling) return; // Prevent function from being triggered by value change
+
+        isManuallyToggling = true;
+        debugMenuToggle.isOn = debugToggle.isOn; // Update UI without triggering function
+        isManuallyToggling = false;
+
         if (debugToggle.isOn)
         {
-            debugMenuToggle.isOn = true;
             Debug.Log("Debug Mode Enabled");
             if (textCoroutine != null)
                 StopCoroutine(textCoroutine);
@@ -88,15 +100,21 @@ public class DebugMode : MonoBehaviour
 
     public void ToggleMenuDebugMode()
     {
-        if(debugMenuToggle.isOn)
+        if (isManuallyToggling) return; // Prevent execution when toggling programmatically
+
+        isManuallyToggling = true;
+        debugToggle.isOn = debugMenuToggle.isOn; // Update the other toggle
+        isManuallyToggling = false;
+
+        if (debugMenuToggle.isOn)
         {
-            debugToggle.isOn = true;
             Debug.Log("Debug Mode Enabled");
             if (textCoroutine != null)
                 StopCoroutine(textCoroutine);
 
             textCoroutine = StartCoroutine(VisualText("Debug Mode Enabled"));
             GameManager.instance.SetDebugMode(true);
+
         }
         else
         {
