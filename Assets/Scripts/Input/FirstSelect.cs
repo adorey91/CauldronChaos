@@ -1,7 +1,7 @@
-using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+
 
 public class FirstSelect : MonoBehaviour
 {
@@ -31,6 +31,9 @@ public class FirstSelect : MonoBehaviour
     private bool isMouseControlling = false;
     private bool isControllerControlling = false;
 
+    private bool isInRecipeBook = false;
+    private GameObject recipeBookButton;
+
     private void Start()
     {
         if (eventSystem == null)
@@ -58,6 +61,7 @@ public class FirstSelect : MonoBehaviour
     {
         Actions.OnSelectRecipeButton += SetRecipeBookButton;
         Actions.OnSetUiLocation += SetUiLocation;
+
     }
 
     private void OnDisable()
@@ -79,20 +83,30 @@ public class FirstSelect : MonoBehaviour
     // Sets the recipe book button for the controller
     private void SetRecipeBookButton(GameObject button)
     {
+        isInRecipeBook = true;
+        recipeBookButton = button;
+
+        if (isKeyboardControlling || isControllerControlling)
+        {
+            eventSystem.SetSelectedGameObject(null);
+            eventSystem.SetSelectedGameObject(button, new BaseEventData(eventSystem));
+        }
+    }
+
+    private void SetInsideRecipeBook()
+    {
+        if (recipeBookButton == null) return;
+
         eventSystem.SetSelectedGameObject(null);
-        eventSystem.SetSelectedGameObject(button, new BaseEventData(eventSystem));
+        eventSystem.SetSelectedGameObject(recipeBookButton, new BaseEventData(eventSystem));
     }
 
     // Sets the first selected button for the controller depending on the string
     public void SetFirstSelect()
     {
-        if (currentLocation == UiObject.Page.Gameplay)
-        {
-            OnRemoveSelection();
-            return;
-        }
-
-        eventSystem.SetSelectedGameObject(null);
+        OnRemoveSelection();
+        if (isMouseControlling) return;
+        if (currentLocation == UiObject.Page.Gameplay) return;
 
         switch (currentLocation)
         {
@@ -115,7 +129,7 @@ public class FirstSelect : MonoBehaviour
                 break;
         }
 
-        Debug.Log($"First Selected: {firstSelected} for location {currentLocation}");
+        //Debug.Log($"First Selected: {firstSelected} for location {currentLocation}");
 
         if (firstSelected != null)
         {
@@ -130,6 +144,7 @@ public class FirstSelect : MonoBehaviour
 
     private void OnRemoveSelection()
     {
+        isInRecipeBook = false;
         eventSystem.SetSelectedGameObject(null);
     }
     #endregion
@@ -142,10 +157,7 @@ public class FirstSelect : MonoBehaviour
         OnRemoveSelection();
 
         if (isKeyboardControlling || isControllerControlling)
-        {
-            Debug.Log("Calling SetFirstSelect()");
             SetFirstSelect();
-        }
     }
 
 
@@ -189,7 +201,15 @@ public class FirstSelect : MonoBehaviour
             isMouseControlling = false;
             isControllerControlling = false;
 
-            SetFirstSelect();
+            if (isInRecipeBook)
+            {
+                SetInsideRecipeBook();
+                return;
+            }
+            else
+            {
+                SetFirstSelect();
+            }
         }
     }
 
