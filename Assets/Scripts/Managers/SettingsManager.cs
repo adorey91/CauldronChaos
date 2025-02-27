@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -14,6 +15,8 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private GameObject systemPanel;
     [SerializeField] private GameObject deleteFilePanel;
     [SerializeField] private GameObject debugPanel;
+    private GameObject[] menuPanels;
+    private int currentMenuIndex = 0;
 
     [Header("Controls")]
     [SerializeField] private GameObject controllerPanel;
@@ -28,6 +31,7 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private Button systemButton;
     [SerializeField] private Button deleteFileButton;
     [SerializeField] private Button debugButton;
+    private Button[] menuButtons;
 
     [Header("Settings Back Buttons")]
     [SerializeField] private Button settingsBack;
@@ -35,8 +39,14 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private Button deleteYes;
     [SerializeField] private Button deleteNo;
 
+    private bool inSettings = false;
+
     private void Start()
     {
+        menuPanels = new GameObject[] { audioPanel, videoPanel, controlsPanel, systemPanel};
+        menuButtons = new Button[] { audioButton, videoButton, controlsButton, systemButton };
+
+
         foreach (Button settings in settingsButton)
         {
             settings.onClick.AddListener(OpenSettings);
@@ -54,6 +64,19 @@ public class SettingsManager : MonoBehaviour
         debugBack.onClick.AddListener(OpenSystem);
         deleteYes.onClick.AddListener(DeleteFileYesButton);
         deleteNo.onClick.AddListener(OpenSystem);
+    }
+
+    private void Update()
+    {
+        if(!inSettings) return;
+        if (Gamepad.current.rightShoulder.wasPressedThisFrame)
+        {
+            CycleMenu(1);
+        }
+        if (Gamepad.current.leftShoulder.wasPressedThisFrame)
+        {
+            CycleMenu(-1);
+        }
     }
 
     #region OnEnable / OnDisable / OnDestroy Events
@@ -86,6 +109,29 @@ public class SettingsManager : MonoBehaviour
         _panel.SetActive(true);
     }
 
+    private void CycleMenu(int direction)
+    {
+        int previousIndex = currentMenuIndex;
+
+        do
+        {
+            currentMenuIndex += direction;
+
+            if(currentMenuIndex >= menuPanels.Length) currentMenuIndex = 0;
+            if(currentMenuIndex < 0) currentMenuIndex = menuPanels.Length - 1;
+        } while (!ShouldShowMenu(currentMenuIndex));
+
+        // activate the new panel
+        ActivatePanel(menuPanels[currentMenuIndex]);
+        menuButtons[currentMenuIndex].Select();
+    }
+
+    private bool ShouldShowMenu(int index)
+    {
+        // if system panel is selected but the scene isnt the main menu, dont show it
+        return !(menuPanels[index] == systemPanel && SceneManager.GetActiveScene().name != "MainMenu");
+    }
+
     // Settings UI Changes. Made public so they can be accessed in the inspector.
     internal void OpenSettings()
     {
@@ -96,6 +142,8 @@ public class SettingsManager : MonoBehaviour
 
         Actions.OnSetUiLocation(UiObject.Page.Settings);
         ActivatePanel(audioPanel);
+        currentMenuIndex = 0;
+        inSettings = true;
     }
 
     private void OpenAudio()
@@ -166,5 +214,6 @@ public class SettingsManager : MonoBehaviour
     private void ReturnFromSettings()
     {
         Actions.OnForceStateChange("previousState");
+        inSettings = false;
     }
 }
