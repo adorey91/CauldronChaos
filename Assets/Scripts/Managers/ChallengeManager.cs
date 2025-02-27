@@ -16,19 +16,19 @@ public class ChallengeManager : MonoBehaviour
     private void OnEnable()
     {
         Actions.OnStartChallenge += StartChallenge;
-        Actions.OnResetChallenge += ResetChallenges;
+        Actions.OnResetValues += ResetChallenges;
     }
 
     private void OnDisable()
     {
         Actions.OnStartChallenge -= StartChallenge;
-        Actions.OnResetChallenge -= ResetChallenges;
+        Actions.OnResetValues -= ResetChallenges;
     }
 
     private void OnDestroy()
     {
         Actions.OnStartChallenge -= StartChallenge;
-        Actions.OnResetChallenge -= ResetChallenges;
+        Actions.OnResetValues -= ResetChallenges;
     }
     #endregion
 

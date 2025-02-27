@@ -12,6 +12,7 @@ public class FirstSelect : MonoBehaviour
     [SerializeField] private GameObject settingsFirstSelect;
     [SerializeField] private GameObject levelSelectFirstSelect;
     [SerializeField] private GameObject audioFirstSelect;
+    [SerializeField] private GameObject videoFirstSelect;
     [SerializeField] private GameObject controlsKeyFirstSelect;
     [SerializeField] private GameObject controlsGameFirstSelect;
     [SerializeField] private GameObject endOfDayFirstSelect;
@@ -20,6 +21,7 @@ public class FirstSelect : MonoBehaviour
     [SerializeField] private GameObject howToPlayFirstSelect;
     [SerializeField] private GameObject debugFirstSelect;
     [SerializeField] private GameObject debugToggleSelect;
+    [SerializeField] private GameObject systemFirstSelect;
     #endregion
 
     [SerializeField] private EventSystem eventSystem;
@@ -123,6 +125,8 @@ public class FirstSelect : MonoBehaviour
             case UiObject.Page.HowToPlay: firstSelected = howToPlayFirstSelect; break;
             case UiObject.Page.DebugInput: firstSelected = debugFirstSelect; break;
             case UiObject.Page.DebugToggle: firstSelected = debugToggleSelect; break;
+            case UiObject.Page.System: firstSelected = systemFirstSelect; break;
+            case UiObject.Page.Video: firstSelected = videoFirstSelect; break;
             default:
                 Debug.LogWarning("No matching case for currentLocation: " + currentLocation);
                 firstSelected = null;

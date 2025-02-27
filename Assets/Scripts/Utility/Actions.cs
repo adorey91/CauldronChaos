@@ -72,7 +72,6 @@ public static class Actions
     // Challenge Actions
     #region Challenge Actions
     public static Action<int> OnStartChallenge; // used for ChallengeManager.cs
-    public static Action OnResetChallenge;
     public static Action<PhysicMaterial, Texture> OnApplyFoorMaterial; // used for Challenge 1 - Floor.cs
     public static Action<bool> OnIceDay; // used for Challenge 1 - Floor.cs
     public static Action OnStartCauldron; // used for Challenge 2 - CauldronMovement.cs

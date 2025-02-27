@@ -4,6 +4,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour
 {
@@ -20,9 +21,11 @@ public class UiManager : MonoBehaviour
     [SerializeField] private GameObject endOfDay;
     [SerializeField] private GameObject settings;
     [SerializeField] private GameObject pause;
+    [SerializeField] private GameObject howToPlay;
 
-    [Header("SFX")]
-    [SerializeField] private AudioClip dayStartSFX;
+    [Header("How To Play")]
+    [SerializeField] private Image howToPlayBG;
+    [SerializeField] private Button howToPlayBack;
 
 
     #region OnEnable / OnDisable / OnDestroy Events
@@ -30,16 +33,22 @@ public class UiManager : MonoBehaviour
     {
         Actions.OnStateChange += UpdateUIForGameState;
         Actions.ReachedWaypoint += CameraReached;
+        Actions.OnActivateHowToPlay += ActivateHowToPlay;
+        Actions.OnDeactivateHowToPlay += DeactivateHowToPlay;
     }
 
     private void OnDisable()
     {
+        Actions.OnActivateHowToPlay -= ActivateHowToPlay;
+        Actions.OnDeactivateHowToPlay -= DeactivateHowToPlay;
         Actions.OnStateChange -= UpdateUIForGameState;
         Actions.ReachedWaypoint -= CameraReached;
     }
 
     private void OnDestroy()
     {
+        Actions.OnActivateHowToPlay -= ActivateHowToPlay;
+        Actions.OnDeactivateHowToPlay -= DeactivateHowToPlay;
         Actions.OnStateChange -= UpdateUIForGameState;
         Actions.ReachedWaypoint -= CameraReached;
     }
@@ -48,6 +57,7 @@ public class UiManager : MonoBehaviour
     private void UpdateUIForGameState(GameManager.GameState state)
     {
         //LevelSelect.UpdateLevelButtons?.Invoke();
+        Debug.Log("Setting gamestate for " + state);
 
         switch (state)
         {
@@ -63,6 +73,8 @@ public class UiManager : MonoBehaviour
     // Toggles the current active panel
     public void SetActiveUI(GameObject panel)
     {
+        Debug.Log("Setting activate panel" + panel);
+
         mainMenu.SetActive(false);
         intro.SetActive(false);
         levelSelect.SetActive(false);
@@ -70,6 +82,7 @@ public class UiManager : MonoBehaviour
         pause.SetActive(false);
         settings.SetActive(false);
         endOfDay.SetActive(false);
+        howToPlay.SetActive(false);
 
         panel.SetActive(true);
     }
@@ -141,6 +154,28 @@ public class UiManager : MonoBehaviour
         settingsManager.OpenSettings();
     }
     #endregion
+
+    // How to play
+    public void ActivateHowToPlay(bool isLoading)
+    {
+        if (isLoading)
+        {
+            howToPlay.SetActive(true);
+            howToPlayBG.enabled = false;
+            howToPlayBack.gameObject.SetActive(false);
+        }
+        else
+        {
+            SetActiveUI(howToPlay);
+            howToPlayBG.enabled = true;
+            howToPlayBack.gameObject.SetActive(true);
+        }
+    }
+
+    private void DeactivateHowToPlay()
+    {
+        howToPlay.SetActive(false);
+    }
 }
 
 [Serializable]
@@ -156,6 +191,8 @@ public class UiObject
         Settings,
         EndOfDay,
         Audio,
+        Video,
+        System,
         ControlsKeyboard,
         ControlsGamepad,
         DeleteFile,
