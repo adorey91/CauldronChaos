@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     internal GameState previousState;
     private GameState newState;
 
-    [SerializeField] private bool isInDebugMode = false;
+    private bool isInDebugMode = false;
 
 
     private void Awake()

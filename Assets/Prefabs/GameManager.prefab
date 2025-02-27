@@ -18355,7 +18355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameState: 0
-  isInDebugMode: 0
+  crateBounce: 0.3
 --- !u!114 &2782254875333257349
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -48,9 +48,7 @@ public class CrateHolder : Interactable
 
         GameObject newIngredient;
 
-        transform.DOScale(1.2f, 0.2f).SetLoops(2, LoopType.Yoyo);
-
-
+        transform.DOScale(1.2f, 0.08f).SetLoops(2, LoopType.Yoyo);
 
         newIngredient = Instantiate(ingredientPrefab, playerPickup.GetHolderLocation()); //spawning new ingredient
         playerPickup.SetHeldObject(newIngredient.GetComponent<PickupObject>()); //adding manually to player's held slot
@@ -61,11 +59,11 @@ public class CrateHolder : Interactable
     {
         GameObject ingredient;
 
-        transform.DOScale(1.2f, 0.2f).SetLoops(2, LoopType.Yoyo);
+        transform.DOScale(1.2f, 0.08f).SetLoops(2, LoopType.Yoyo);
 
 
         ingredient = Instantiate(ingredientPrefab, goblin.position, Quaternion.identity);
-
+        ingredient.transform.localScale = Vector3.zero;
         Vector3 randomPosition = new(Random.Range(-1, 1), 0, Random.Range(-1, 1));
 
         ingredient.transform.DOScale(new Vector3(1f, 1f, 1f), 1f); //DOTween animation for scaling the ingredient
