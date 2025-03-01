@@ -34,7 +34,7 @@ public static class Actions
     // Game Manager Actions
     #region Game Manager Actions
     public static Action<string> OnForceStateChange;
-    public static Action<GameManager.GameState> OnStateChange; // used for UI changes
+    public static Action<GameState> OnStateChange; // used for UI changes
     #endregion
 
     // Gameplay Actions

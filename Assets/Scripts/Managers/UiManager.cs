@@ -54,19 +54,19 @@ public class UiManager : MonoBehaviour
     }
     #endregion
 
-    private void UpdateUIForGameState(GameManager.GameState state)
+    private void UpdateUIForGameState(GameState state)
     {
         //LevelSelect.UpdateLevelButtons?.Invoke();
         Debug.Log("Setting gamestate for " + state);
 
         switch (state)
         {
-            case GameManager.GameState.MainMenu: MainMenu(); break;
-            case GameManager.GameState.Gameplay: Gameplay(); break;
-            case GameManager.GameState.LevelSelect: SelectLevel(); break;
-            case GameManager.GameState.EndOfDay: EndOfDay(); break;
-            case GameManager.GameState.Pause: Pause(); break;
-            case GameManager.GameState.Settings: Settings(); break;
+            case GameState.MainMenu: MainMenu(); break;
+            case GameState.Gameplay: Gameplay(); break;
+            case GameState.LevelSelect: SelectLevel(); break;
+            case GameState.EndOfDay: EndOfDay(); break;
+            case GameState.Pause: Pause(); break;
+            case GameState.Settings: Settings(); break;
         }
     }
 

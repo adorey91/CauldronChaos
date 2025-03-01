@@ -3,11 +3,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
+public enum GameState {MainMenu, Loading, Intro, LevelSelect, Gameplay, EndOfDay, Pause, Settings}
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public enum GameState { MainMenu, Loading, Intro, LevelSelect, Gameplay, EndOfDay, Pause, Settings}
     public GameState gameState;
     internal GameState previousState;
     private GameState newState;
