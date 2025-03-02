@@ -118,13 +118,13 @@ public class GoblinAI : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
-    {
-        if(inWindZone)
-        {
-            rb.AddForce(windDirection * windArea.strength);
-        }
-    }
+    //private void FixedUpdate()
+    //{
+    //    if(inWindZone)
+    //    {
+    //        rb.AddForce(windDirection * windArea.strength);
+    //    }
+    //}
 
     #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
