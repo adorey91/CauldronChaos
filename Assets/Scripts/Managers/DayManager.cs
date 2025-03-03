@@ -24,6 +24,7 @@ public class DayManager : MonoBehaviour
     [SerializeField] private float secondsToStart = 4f;
     private CustomTimer dayCountdownTimer;
     private bool dayCountingDown = false;
+    public Day day;
 
     [Header("SFX")]
     [SerializeField] private AudioClip startDaySFX;
@@ -162,4 +163,10 @@ public class DayManager : MonoBehaviour
         dayCountingDown = false;
         dayCountdownTimer.ResetTimer();
     }
+}
+
+public struct Day
+{
+    [TextArea]
+    public string explaination;
 }
