@@ -176,7 +176,7 @@ public class FirstSelect : MonoBehaviour
         {
             if (currentLocation == UiObject.Page.Gameplay) return;
 
-            Debug.Log("Mouse is now navigating");
+            //Debug.Log("Mouse is now navigating");
 
             isMouseControlling = true;
             isKeyboardControlling = false;
@@ -200,7 +200,7 @@ public class FirstSelect : MonoBehaviour
 
             Cursor.lockState = CursorLockMode.Locked;
 
-            Debug.Log("Keyboard is now navigating");
+            //Debug.Log("Keyboard is now navigating");
             isKeyboardControlling = true;
             isMouseControlling = false;
             isControllerControlling = false;
@@ -234,7 +234,7 @@ public class FirstSelect : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
 
-            Debug.Log("Controller is now navigating");
+            //Debug.Log("Controller is now navigating");
             isControllerControlling = true;
             isMouseControlling = false;
             isKeyboardControlling = false;

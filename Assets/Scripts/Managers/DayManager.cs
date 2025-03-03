@@ -24,7 +24,8 @@ public class DayManager : MonoBehaviour
     [SerializeField] private float secondsToStart = 4f;
     private CustomTimer dayCountdownTimer;
     private bool dayCountingDown = false;
-    public Day day;
+    [TextArea]
+    [SerializeField] private string[] dayExplaination;
 
     [Header("SFX")]
     [SerializeField] private AudioClip startDaySFX;
@@ -140,14 +141,14 @@ public class DayManager : MonoBehaviour
     private void StartDayCountdown()
     {
         Debug.Log("Day Countdown Started");
-
-        if(currentDay % 2 == 0)
+        if (currentDay % 2 == 0)
             Actions.OnStartChallenge?.Invoke(currentDay / 2);
 
         if(currentDay > 6)
             Actions.OnStartGoblin?.Invoke(false);
 
 
+        dayStartExplain.text = dayExplaination[currentDay - 1];
         dayStartOverlay.SetActive(true);
         dayCountdownTimer = new(secondsToStart, false);
         dayCountdownTimer.StartTimer();
@@ -163,10 +164,4 @@ public class DayManager : MonoBehaviour
         dayCountingDown = false;
         dayCountdownTimer.ResetTimer();
     }
-}
-
-public struct Day
-{
-    [TextArea]
-    public string explaination;
 }

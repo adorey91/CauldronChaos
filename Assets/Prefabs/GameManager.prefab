@@ -2307,7 +2307,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &608735107130685221
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2322,11 +2322,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4212449420062427112}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 107.5}
-  m_SizeDelta: {x: 732.7704, y: 181.5942}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -130}
+  m_SizeDelta: {x: 875, y: 150}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &3088889738815002450
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2355,7 +2355,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Placeholder. Description of Day
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 635f57001bcc2e34da00b581c9c554e4, type: 2}
   m_sharedMaterial: {fileID: 499737633317735900, guid: 635f57001bcc2e34da00b581c9c554e4,
@@ -4793,7 +4793,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3512618148565503981
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6022,6 +6022,25 @@ MonoBehaviour:
   dayStartText: {fileID: 3883012617718671555}
   dayStartExplain: {fileID: 995177306874361535}
   secondsToStart: 4
+  dayExplaination:
+  - "A simple start\u2014fresh mushrooms for your first brew!\nCheck the recipe book
+    to begin!"
+  - "Oh no! A cooling potion spilled overnight\u2014now the floor's pure ice! Customers
+    are here, no time to clean!"
+  - "Yikes! This mandrake root's a screamer! \nCheck the recipe book for new potions!"
+  - Gah! Your cauldrons gained sentience and are running wild! Chase them down if
+    you want to brew anything!
+  - "Blink and you'll miss it\u2014an Eye of Basilisk! \nPeek at the recipe book
+    for new potions!"
+  - "What?! You swore you locked the goblin's cage last night! \nNow he's loose,
+    causing chaos while you need to make potions!"
+  - "Hop to it! A Rabbit Foot just rolled in. \nCheck the recipe book for fresh brews!"
+  - Brrr! A windstorm tore your shutters off, sending gusts that toss you and your
+    ingredients around!
+  - "Clonk! A Troll Bone lands in your stash. \nCrack open the recipe book for new
+    potions!"
+  - "Yuck! Master's snail in-laws gave you a hug, leaving you covered in sticky slime\u2014right
+    as the shop opens!"
   startDaySFX: {fileID: 8300000, guid: da32e896bb83a1a4a922b1eb83cb258d, type: 3}
   endDaySFX: {fileID: 8300000, guid: 232f504a7739c1f429065a8f60337c66, type: 3}
 --- !u!1 &3267590629316510435
@@ -6056,11 +6075,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4212449420062427112}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 600, y: 388.1163}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 110}
+  m_SizeDelta: {x: 600, y: 180}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &3228117432963696019
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8498,8 +8517,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1000, y: 760}
+  m_AnchoredPosition: {x: 77.20654, y: -55.0383}
+  m_SizeDelta: {x: 1154.4131, y: 589.9235}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8215427815860542761
 CanvasRenderer:
@@ -19456,7 +19475,7 @@ PrefabInstance:
     - target: {fileID: 6391333154800664166, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}
       propertyPath: m_text
-      value: X
+      value: Button West
       objectReference: {fileID: 0}
     - target: {fileID: 6391333154800664166, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}
@@ -19700,7 +19719,7 @@ PrefabInstance:
     - target: {fileID: 6391333154800664166, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}
       propertyPath: m_text
-      value: Right Bumper
+      value: Right Shoulder
       objectReference: {fileID: 0}
     - target: {fileID: 6391333154800664166, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}
@@ -25283,7 +25302,7 @@ PrefabInstance:
     - target: {fileID: 6391333154800664166, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}
       propertyPath: m_text
-      value: Left Bumper
+      value: Left Shoulder
       objectReference: {fileID: 0}
     - target: {fileID: 6391333154800664166, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}
@@ -27277,7 +27296,7 @@ PrefabInstance:
     - target: {fileID: 6391333154800664166, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}
       propertyPath: m_text
-      value: A
+      value: Button South
       objectReference: {fileID: 0}
     - target: {fileID: 6391333154800664166, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}

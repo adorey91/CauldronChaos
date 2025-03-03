@@ -23,10 +23,10 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveDir = Vector2.zero;
 
     [Header("Ice Movement")]
-    [SerializeField] private bool isOnIce = false;
     [SerializeField] private float acceleration = 5f;
     [SerializeField] private float deceleration = 2f;
     [SerializeField] private float maxSpeed = 6f;
+    private bool isOnIce = false;
 
     [Header("Slime Movement")]
     [SerializeField] private LayerMask slime;
