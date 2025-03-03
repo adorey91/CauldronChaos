@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -9,15 +10,19 @@ public class CauldronMovement : MonoBehaviour
     private Vector3 currentDestination;
     private bool isMoving = false;
     private CustomTimer movementTimer;
+    [SerializeField] private Transform cauldronModel;
 
     [SerializeField] private float wanderRadius = 5f;
     [SerializeField] private float minMovementTime = 5f;
     [SerializeField] private float maxMovementTime = 20f;
-   
+    [SerializeField] private float liftAmount = 0.1f;
+    private Vector3 _startingPos;
+
     private Coroutine movement;
 
     private void Start()
     {
+        _startingPos = cauldronModel.transform.localPosition;
         agent = GetComponent<NavMeshAgent>();
     }
 
@@ -50,7 +55,7 @@ public class CauldronMovement : MonoBehaviour
         {
             if (movementTimer.UpdateTimer())
             {
-                if(movement != null)
+                if (movement != null)
                     StopCoroutine(movement);
                 movement = StartCoroutine(MoveCauldron());
             }
@@ -70,7 +75,7 @@ public class CauldronMovement : MonoBehaviour
     private IEnumerator MoveCauldron()
     {
         PickNewDestination();
-
+        cauldronModel.DOLocalMoveY(liftAmount, 0.5f);
         // Wait until the cauldron reaches the destination
         while (!ReachedTarget())
         {
@@ -78,6 +83,7 @@ public class CauldronMovement : MonoBehaviour
         }
 
         // Start the timer again
+        cauldronModel.DOLocalMove(_startingPos, 0.5f);
         movementTime = Random.Range(minMovementTime, maxMovementTime);
         movementTimer = new CustomTimer(movementTime, false);
         movementTimer.StartTimer();

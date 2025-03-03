@@ -109,6 +109,7 @@ public class CauldronInteraction : MonoBehaviour
 
         if (ingredientGO != null)
         {
+            transform.DOScale(1.2f, 0.08f).SetLoops(2, LoopType.Yoyo);
             ingredientSequence.Append(ingredientGO.transform.DOLocalJump(ingredientInsertPoint.position, 1f, 1, 0.5f).SetEase(Ease.InOutSine))
                          .Join(ingredientGO.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InOutSine))
                          .OnComplete(SetInactive); // Call SetInactive after both tweens finish
