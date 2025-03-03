@@ -76,6 +76,7 @@ public static class Actions
     public static Action<bool> OnIceDay; // used for Challenge 1 - Floor.cs
     public static Action OnStartCauldron; // used for Challenge 2 - CauldronMovement.cs
     public static Action OnEndCauldron; // used for Challenge 2 - CauldronMovement.cs
+    public static Action<bool> OnMoveCage; // used to move the goblin cage 
     public static Action<bool> OnStartGoblin; // used for Challenge 3 - GoblinAI.cs - set if it's the first challenge day or not.
     public static Action OnEndGoblin; // used for Challenge 3 - GoblinAI.cs
     public static Action OnScareGoblin; // used for Challenge 3 - GoblinAI.cs

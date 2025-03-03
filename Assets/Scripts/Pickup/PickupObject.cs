@@ -12,6 +12,7 @@ public class PickupObject : MonoBehaviour
     private Transform targetPos = null; //transform tarcking the target position of the pickup
     private Rigidbody rb; //rigidbody component of the pickup
     private bool addedToCauldron = false;
+    private Collider objCollider;
 
     [Header("SFX")]
     [SerializeField] private AudioClip pickUpSFX;
@@ -27,17 +28,18 @@ public class PickupObject : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        objCollider = GetComponent<Collider>();
     }
 
     // Update is called once per frame
-    private void Update()
-    {
-        //moves pickup towards the target position if the positions do not match
-        if (isHeld && rb.position != targetPos.position)
-        {
-            rb.MovePosition(targetPos.position);
-        }
-    }
+    //private void Update()
+    //{
+    //    //moves pickup towards the target position if the positions do not match
+    //    if (isHeld && rb.position != targetPos.position)
+    //    {
+    //        rb.MovePosition(targetPos.position);
+    //    }
+    //}
 
     private void FixedUpdate()
     {
@@ -53,6 +55,7 @@ public class PickupObject : MonoBehaviour
         //setting held to true and removing gravity
         isHeld = true;
         rb.isKinematic = true;
+        objCollider.enabled = false;
         //rb.useGravity = false;
 
         //setting target position & parenting
@@ -70,6 +73,8 @@ public class PickupObject : MonoBehaviour
         //settomg held to false and enabling gravity
         isHeld = false;
         rb.isKinematic = false;
+        objCollider.enabled = true;
+
         //rb.useGravity = true;
 
         //removing target position & parent
