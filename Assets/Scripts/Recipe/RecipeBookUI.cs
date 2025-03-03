@@ -87,6 +87,7 @@ public class RecipeBookUI : MonoBehaviour
         recipeUiLeft.SetActive(true);
         _recipeUiLeft.recipeName.text = availableRecipes[recipeIndex].recipeName;
         _recipeUiLeft.potionIcon.sprite = availableRecipes[recipeIndex].potionIcon;
+        _recipeUiLeft.potionIcon.preserveAspect = true;
         CreateIngredientUI(_recipeUiLeft, recipeIndex);
     }
 
@@ -95,6 +96,7 @@ public class RecipeBookUI : MonoBehaviour
         recipeUiRight.SetActive(true);
         _recipeUiRight.recipeName.text = availableRecipes[recipeIndex].recipeName;
         _recipeUiRight.potionIcon.sprite = availableRecipes[recipeIndex].potionIcon;
+        _recipeUiRight.potionIcon.preserveAspect = true;
         CreateIngredientUI(_recipeUiRight, recipeIndex);
     }
 

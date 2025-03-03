@@ -39,10 +39,14 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private Button deleteYes;
     [SerializeField] private Button deleteNo;
 
+    private Gamepad _gamepad;
+
     private bool inSettings = false;
 
     private void Start()
     {
+        _gamepad = Gamepad.current;
+
         menuPanels = new GameObject[] { audioPanel, videoPanel, controlsPanel, systemPanel};
         menuButtons = new Button[] { audioButton, videoButton, controlsButton, systemButton };
 
@@ -69,11 +73,11 @@ public class SettingsManager : MonoBehaviour
     private void Update()
     {
         if(!inSettings) return;
-        if (Gamepad.current.rightShoulder.wasPressedThisFrame)
+        if (_gamepad.rightShoulder.wasPressedThisFrame && _gamepad != null)
         {
             CycleMenu(1);
         }
-        if (Gamepad.current.leftShoulder.wasPressedThisFrame)
+        if (_gamepad.leftShoulder.wasPressedThisFrame && _gamepad != null)
         {
             CycleMenu(-1);
         }
