@@ -10,7 +10,7 @@ public struct Song
     {
         MainMenuMusic,
         ManagementMusic,
-        PracticeMusic,
+        None,
         GameplayMusic
     }
 
@@ -21,10 +21,16 @@ public struct Song
 public class MusicManager : MonoBehaviour
 {
     [Header("Music Output")]
-    [SerializeField] private AudioSource musicSource;
+    public AudioSource musicSource;
 
     [Header("Songs")]
     [SerializeField] private List<Song> songs;
+    private Song.SongType currentSong = Song.SongType.None;
+
+    private void Awake()
+    {
+        musicSource = GetComponent<AudioSource>();
+    }
 
     public void PlayMusic(Song.SongType songType)
     {
@@ -32,9 +38,18 @@ public class MusicManager : MonoBehaviour
         {
             if (songs[i].type == songType)
             {
-                musicSource.clip = songs[i].song;
-                musicSource.Play();
+                currentSong = songs[i].type;
+                if (musicSource != null)
+                {
+                    musicSource.clip = songs[i].song;
+                    musicSource.Play();
+                }
             }
         }
+    }
+
+    public Song.SongType GetCurrentMusic()
+    {
+        return currentSong;
     }
 }

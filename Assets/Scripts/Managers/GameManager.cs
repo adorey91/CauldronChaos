@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviour
 
     private bool isInDebugMode = false;
 
-
     private void Awake()
     {
         if (instance == null)
@@ -77,7 +76,51 @@ public class GameManager : MonoBehaviour
         if (state == GameState.Settings)
             previousState = gameState;
 
+        //resetting music pitch after pause
+        if (previousState == GameState.Pause && state != GameState.Settings)
+        {
+            AudioManager.instance.musicManager.musicSource.pitch = 1;
+        }
+
         gameState = state;
+
+        Song.SongType curSongType = AudioManager.instance.musicManager.GetCurrentMusic();
+        
+        switch (gameState)
+        {
+            case GameState.MainMenu:
+                if (!(curSongType == Song.SongType.MainMenuMusic))
+                {
+                    AudioManager.instance.musicManager.PlayMusic(Song.SongType.MainMenuMusic);
+                }
+                break;
+
+            case GameState.Gameplay:
+                if (!(curSongType == Song.SongType.GameplayMusic))
+                {
+                    AudioManager.instance.musicManager.PlayMusic(Song.SongType.GameplayMusic);
+                }
+                break;
+
+            case GameState.Pause:
+                AudioManager.instance.musicManager.musicSource.pitch = 0.5f;
+                break;
+
+            case GameState.EndOfDay:
+                if (!(curSongType == Song.SongType.MainMenuMusic))
+                {
+                    AudioManager.instance.musicManager.PlayMusic(Song.SongType.MainMenuMusic);
+                }
+                break;
+
+            case GameState.LevelSelect:
+                if (!(curSongType == Song.SongType.MainMenuMusic))
+                {
+                    AudioManager.instance.musicManager.PlayMusic(Song.SongType.MainMenuMusic);
+                }
+                break;
+        }
+        
 
         Actions.OnStateChange?.Invoke(gameState);
     }
