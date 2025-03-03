@@ -79,6 +79,7 @@ public class PickupBehaviour : MonoBehaviour
                     playerAnimator.SetTrigger("Pickup");
                     heldObject.PickUp(pickupHolder);
                     pickupUIHolder.enabled = true;
+                    SetHeldObject(heldObject);
 
                     if (heldObject.TryGetComponent(out PotionOutput potionOutput) && potionOutput.potionInside != null)
                     {

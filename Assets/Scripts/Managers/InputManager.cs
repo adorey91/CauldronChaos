@@ -96,6 +96,7 @@ public class InputManager : MonoBehaviour
 
         PreviousPageInputAction.Disable();
         NextPageInputAction.Disable();
+        HideInteractionPickup();
     }
 
     #region OnEnable / OnDisable / OnDestroy Events
