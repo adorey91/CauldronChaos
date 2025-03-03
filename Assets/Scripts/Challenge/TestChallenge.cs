@@ -50,7 +50,6 @@ public class TestChallenge : MonoBehaviour
     // used in testing scene only, to change the challenge type
     private void OnDropdownChanged(int index)
     {
-        Actions.OnResetChallenge?.Invoke();
         Actions.OnStartChallenge?.Invoke(index);
     }
 }

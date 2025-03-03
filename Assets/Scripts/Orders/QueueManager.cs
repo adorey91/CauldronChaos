@@ -45,10 +45,10 @@ public class QueueManager : MonoBehaviour
     private void Update()
     {
         // For testing purposes
-        //if (Input.GetKeyDown(KeyCode.Tab))
-        //{
-        //    StartCustomers();
-        //}
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            StartCustomers();
+        }
 
         if (startCustomers == true)
         {

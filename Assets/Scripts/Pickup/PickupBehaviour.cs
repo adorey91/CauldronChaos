@@ -27,17 +27,20 @@ public class PickupBehaviour : MonoBehaviour
     private void OnEnable()
     {
         InputManager.PickupAction += Pickup; //subscribing to the action for picking up
+        Actions.OnResetValues += RemoveItem;
     }
 
     //Function that runs when Gameobject script is attached to is disabled
     private void OnDisable()
     {
         InputManager.PickupAction -= Pickup; //un-subscribing to the action for picking up
+        Actions.OnResetValues -= RemoveItem;
     }
 
     private void OnDestroy()
     {
         InputManager.PickupAction -= Pickup;
+        Actions.OnResetValues -= RemoveItem;
     }
 
     #endregion
@@ -124,6 +127,19 @@ public class PickupBehaviour : MonoBehaviour
         }
 
         heldObject = null;
+    }
+
+    private void RemoveItem()
+    {
+        if(pickupHolder.childCount > 0)
+        {
+            foreach(Transform child in pickupHolder)
+            {
+                Destroy(child.gameObject);
+            }
+            
+            playerAnimator.SetTrigger("Drop");
+        }
     }
 
     public Transform GetHolderLocation()

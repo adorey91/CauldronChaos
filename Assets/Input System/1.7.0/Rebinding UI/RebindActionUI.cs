@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine.Events;
-using UnityEngine.UI;
+
 
 ////TODO: localization support
 
@@ -17,7 +17,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
         /// <summary>
         /// Reference to the action that is to be rebound.
         /// </summary>
-        public InputActionReference actionReference
+        public InputActionReference ActionReference
         {
             get => m_Action;
             set
@@ -32,7 +32,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
         /// ID (in string form) of the binding that is to be rebound on the action.
         /// </summary>
         /// <seealso cref="InputBinding.id"/>
-        public string bindingId
+        public string BindingId
         {
             get => m_BindingId;
             set
@@ -42,7 +42,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             }
         }
 
-        public InputBinding.DisplayStringOptions displayStringOptions
+        public InputBinding.DisplayStringOptions DisplayStringOptions
         {
             get => m_DisplayStringOptions;
             set
@@ -55,7 +55,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
         /// <summary>
         /// Text component that receives the name of the action. Optional.
         /// </summary>
-        public TMPro.TextMeshProUGUI actionLabel
+        public TMPro.TextMeshProUGUI ActionLabel
         {
             get => m_ActionLabel;
             set
@@ -67,9 +67,9 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
 
         /// <summary>
         /// Text component that receives the display string of the binding. Can be <c>null</c> in which
-        /// case the component entirely relies on <see cref="updateBindingUIEvent"/>.
+        /// case the component entirely relies on <see cref="BindingUpdateUIEvent"/>.
         /// </summary>
-        public TMPro.TextMeshProUGUI bindingText
+        public TMPro.TextMeshProUGUI BindingText
         {
             get => m_BindingText;
             set
@@ -82,9 +82,9 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
         /// <summary>
         /// Optional text component that receives a text prompt when waiting for a control to be actuated.
         /// </summary>
-        /// <seealso cref="startRebindEvent"/>
-        /// <seealso cref="rebindOverlay"/>
-        public TMPro.TextMeshProUGUI rebindPrompt
+        /// <seealso cref="StartRebindEvent"/>
+        /// <seealso cref="RebindOverlay"/>
+        public TMPro.TextMeshProUGUI RebindPrompt
         {
             get => m_RebindText;
             set => m_RebindText = value;
@@ -96,12 +96,12 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
         /// waiting for a control to be actuated.
         /// </summary>
         /// <remarks>
-        /// If neither <see cref="rebindPrompt"/> nor <c>rebindOverlay</c> is set, the component will temporarily
-        /// replaced the <see cref="bindingText"/> (if not <c>null</c>) with <c>"Waiting..."</c>.
+        /// If neither <see cref="RebindPrompt"/> nor <c>RebindOverlay</c> is set, the component will temporarily
+        /// replaced the <see cref="BindingText"/> (if not <c>null</c>) with <c>"Waiting..."</c>.
         /// </remarks>
-        /// <seealso cref="startRebindEvent"/>
-        /// <seealso cref="rebindPrompt"/>
-        public GameObject rebindOverlay
+        /// <seealso cref="StartRebindEvent"/>
+        /// <seealso cref="RebindPrompt"/>
+        public GameObject RebindOverlay
         {
             get => m_RebindOverlay;
             set => m_RebindOverlay = value;
@@ -111,7 +111,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
         /// Event that is triggered every time the UI updates to reflect the current binding.
         /// This can be used to tie custom visualizations to bindings.
         /// </summary>
-        public UpdateBindingUIEvent updateBindingUIEvent
+        public UpdateBindingUIEvent BindingUpdateUIEvent
         {
             get
             {
@@ -124,7 +124,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
         /// <summary>
         /// Event that is triggered when an interactive rebind is started on the action.
         /// </summary>
-        public InteractiveRebindEvent startRebindEvent
+        public InteractiveRebindEvent StartRebindEvent
         {
             get
             {
@@ -137,7 +137,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
         /// <summary>
         /// Event that is triggered when an interactive rebind has been completed or canceled.
         /// </summary>
-        public InteractiveRebindEvent stopRebindEvent
+        public InteractiveRebindEvent StopRebindEvent
         {
             get
             {
@@ -147,11 +147,21 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             }
         }
 
+        public EndRebindEvent CompletedRebindEvent
+        {
+            get
+            {
+                if (m_CompletedBindingUIEvent  == null)
+                    m_CompletedBindingUIEvent = new EndRebindEvent();
+                return m_CompletedBindingUIEvent;
+            }
+        }
+
         /// <summary>
         /// When an interactive rebind is in progress, this is the rebind operation controller.
         /// Otherwise, it is <c>null</c>.
         /// </summary>
-        public InputActionRebindingExtensions.RebindingOperation ongoingRebind => m_RebindOperation;
+        public InputActionRebindingExtensions.RebindingOperation OngoingRebind => m_RebindOperation;
 
         /// <summary>
         /// Return the action and binding index for the binding that is targeted by the component
@@ -198,7 +208,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             {
                 var bindingIndex = action.bindings.IndexOf(x => x.id.ToString() == m_BindingId);
                 if (bindingIndex != -1)
-                    displayString = action.GetBindingDisplayString(bindingIndex, out deviceLayoutName, out controlPath, displayStringOptions);
+                    displayString = action.GetBindingDisplayString(bindingIndex, out deviceLayoutName, out controlPath, DisplayStringOptions);
             }
 
             // Set on label (if any).
@@ -218,16 +228,16 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                 return;
 
             ResetBinding(action, bindingIndex);
-            //if (action.bindings[bindingIndex].isComposite)
-            //{
-            //    // It's a composite. Remove overrides from part bindings.
-            //    for (var i = bindingIndex + 1; i < action.bindings.Count && action.bindings[i].isPartOfComposite; ++i)
-            //        action.RemoveBindingOverride(i);
-            //}
-            //else
-            //{
-            //    action.RemoveBindingOverride(bindingIndex);
-            //}
+            if (action.bindings[bindingIndex].isComposite)
+            {
+                // It's a composite. Remove overrides from part bindings.
+                for (var i = bindingIndex + 1; i < action.bindings.Count && action.bindings[i].isPartOfComposite; ++i)
+                    action.RemoveBindingOverride(i);
+            }
+            else
+            {
+                action.RemoveBindingOverride(bindingIndex);
+            }
             UpdateBindingDisplay();
         }
 
@@ -354,6 +364,8 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             m_RebindStartEvent?.Invoke(this, m_RebindOperation);
 
             m_RebindOperation.Start();
+
+            m_CompletedBindingUIEvent?.Invoke();
         }
 
         private bool CheckDuplicateBindings(InputAction action, int bindingIndex, bool allCompositeParts = false)
@@ -423,7 +435,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             for (var i = 0; i < s_RebindActionUIs.Count; ++i)
             {
                 var component = s_RebindActionUIs[i];
-                var referencedAction = component.actionReference?.action;
+                var referencedAction = component.ActionReference?.action;
                 if (referencedAction == null)
                     continue;
 
@@ -483,6 +495,9 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
         [SerializeField]
         private InteractiveRebindEvent m_RebindStopEvent;
 
+        [SerializeField]
+        private EndRebindEvent m_CompletedBindingUIEvent;
+
         private InputActionRebindingExtensions.RebindingOperation m_RebindOperation;
 
         private static List<RebindActionUI> s_RebindActionUIs;
@@ -521,6 +536,11 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
 
         [Serializable]
         public class InteractiveRebindEvent : UnityEvent<RebindActionUI, InputActionRebindingExtensions.RebindingOperation>
+        {
+        }
+
+        [Serializable]
+        public class EndRebindEvent : UnityEvent
         {
         }
     }

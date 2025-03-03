@@ -1,13 +1,13 @@
 using System;
 using UnityEngine.UI;
 
-////TODO: have updateBindingUIEvent receive a control path string, too (in addition to the device layout name)
+////TODO: have BindingUpdateUIEvent receive a control path string, too (in addition to the device layout name)
 
 namespace UnityEngine.InputSystem.Samples.RebindUI
 {
     /// <summary>
     /// This is an example for how to override the default display behavior of bindings. The component
-    /// hooks into <see cref="RebindActionUI.updateBindingUIEvent"/> which is triggered when UI display
+    /// hooks into <see cref="RebindActionUI.BindingUpdateUIEvent"/> which is triggered when UI display
     /// of a binding should be refreshed. It then checks whether we have an icon for the current binding
     /// and if so, replaces the default text display with an icon.
     /// </summary>
@@ -22,7 +22,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             var rebindUIComponents = transform.GetComponentsInChildren<RebindActionUI>();
             foreach (var component in rebindUIComponents)
             {
-                component.updateBindingUIEvent.AddListener(OnUpdateBindingDisplay);
+                component.BindingUpdateUIEvent.AddListener(OnUpdateBindingDisplay);
                 component.UpdateBindingDisplay();
             }
         }
@@ -38,7 +38,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             else if (InputSystem.IsFirstLayoutBasedOnSecond(deviceLayoutName, "Gamepad"))
                 icon = xbox.GetSprite(controlPath);
 
-            var textComponent = component.bindingText;
+            var textComponent = component.BindingText;
 
             // Grab Image component.
             var imageGO = textComponent.transform.parent.Find("ActionBindingIcon");

@@ -15,8 +15,8 @@ public class GoblinAI : MonoBehaviour
     [SerializeField] private float wanderRadius = 5f;
     [SerializeField] private float minWanderTime = 2f;
     [SerializeField] private float maxWanderTime = 5f;
-    private Vector3 currentDestination;
     [SerializeField] private bool goblinActive = false;
+    private Vector3 currentDestination;
 
     [Header("Time Between Action")]
     [SerializeField] private float throwFromCrate;
@@ -44,13 +44,6 @@ public class GoblinAI : MonoBehaviour
     private CauldronInteraction[] cauldrons;
     private QueueManager queue;
 
-    // Windy Day Variables
-    private bool inWindZone = false;
-    private Vector3 windDirection;
-    private WindyDay windArea;
-    private WindyDay.WindDirection windDir;
-    private Rigidbody rb;
-
     [Header("Slime Movement")]
     [SerializeField] private LayerMask slime;
     [SerializeField] private float slowMultiplier = 0.5f;
@@ -76,30 +69,32 @@ public class GoblinAI : MonoBehaviour
     //update loop to handle playing of idle sounds
     private void Update()
     {
-        if (noiseTimer < 0 && enableSFX)
+        if(GameManager.instance.gameState == GameState.Gameplay)
         {
-            SFXLibrary goblinSounds;
-
-            if (isFree)
+            if (noiseTimer < 0 && enableSFX)
             {
-                goblinSounds = goblinIdle;
+                SFXLibrary goblinSounds;
+
+                if (isFree)
+                {
+                    goblinSounds = goblinIdle;
+                }
+                else
+                {
+                    goblinSounds = goblinCry;
+                }
+
+                AudioManager.instance.sfxManager.PlaySFX(SFX_Type.GoblinSounds, goblinSounds.PickAudioClip(), true); //play audio clip
+                noiseTimer = Random.Range(noiseTimerMin, noiseTimerMax); //reset timer
             }
-            else
+
+            if (enableSFX)
             {
-                goblinSounds = goblinCry;
+                noiseTimer -= Time.deltaTime;
             }
-
-            AudioManager.instance.sfxManager.PlaySFX(SFX_Type.GoblinSounds, goblinSounds.PickAudioClip(), true); //play audio clip
-            noiseTimer = Random.Range(noiseTimerMin, noiseTimerMax); //reset timer
-        }
-
-        if (enableSFX)
-        {
-            noiseTimer -= Time.deltaTime;
         }
 
         //Debug.Log(noiseTimer);
-
         if(Physics.Raycast(transform.position, Vector3.right, out RaycastHit hit, 1f, slime))
         {
             if (!isInSlime)
@@ -115,14 +110,6 @@ public class GoblinAI : MonoBehaviour
                 isInSlime = false;
                 agent.speed = defaultSpeed;
             }
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if(inWindZone)
-        {
-            rb.AddForce(windDirection * windArea.strength);
         }
     }
 
@@ -405,36 +392,5 @@ public class GoblinAI : MonoBehaviour
         return !agent.pathPending &&
                agent.remainingDistance <= agent.stoppingDistance &&
                (!agent.hasPath || agent.velocity.sqrMagnitude < 0.1f);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("WindArea"))
-        {
-            inWindZone = true;
-            windArea = other.GetComponent<WindyDay>();
-            windDir = windArea.windDirect;
-            windDirection = windArea.direction;
-        }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (windArea != null)
-        {
-            if (windArea.windDirect != windDir)
-            {
-                windDirection = windArea.direction;
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("WindArea"))
-        {
-            inWindZone = false;
-            windArea = null;
-        }
     }
 }

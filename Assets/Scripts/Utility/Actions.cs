@@ -34,7 +34,7 @@ public static class Actions
     // Game Manager Actions
     #region Game Manager Actions
     public static Action<string> OnForceStateChange;
-    public static Action<GameManager.GameState> OnStateChange; // used for UI changes
+    public static Action<GameState> OnStateChange; // used for UI changes
     #endregion
 
     // Gameplay Actions
@@ -72,11 +72,11 @@ public static class Actions
     // Challenge Actions
     #region Challenge Actions
     public static Action<int> OnStartChallenge; // used for ChallengeManager.cs
-    public static Action OnResetChallenge;
     public static Action<PhysicMaterial, Texture> OnApplyFoorMaterial; // used for Challenge 1 - Floor.cs
     public static Action<bool> OnIceDay; // used for Challenge 1 - Floor.cs
     public static Action OnStartCauldron; // used for Challenge 2 - CauldronMovement.cs
     public static Action OnEndCauldron; // used for Challenge 2 - CauldronMovement.cs
+    public static Action<bool> OnMoveCage; // used to move the goblin cage 
     public static Action<bool> OnStartGoblin; // used for Challenge 3 - GoblinAI.cs - set if it's the first challenge day or not.
     public static Action OnEndGoblin; // used for Challenge 3 - GoblinAI.cs
     public static Action OnScareGoblin; // used for Challenge 3 - GoblinAI.cs
