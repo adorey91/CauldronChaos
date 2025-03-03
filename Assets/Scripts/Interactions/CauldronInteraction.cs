@@ -56,6 +56,8 @@ public class CauldronInteraction : MonoBehaviour
     [SerializeField] private SFXLibrary incorrectStepSounds;
     [SerializeField] private SFXLibrary stirSouds;
 
+    private PickupBehaviour player;
+
 
     public void Start()
     {
@@ -71,6 +73,7 @@ public class CauldronInteraction : MonoBehaviour
         // Get the RecipeManager script & set the craftable recipes
         recipeManager = FindObjectOfType<RecipeManager>();
         craftableRecipes = recipeManager.FindAvailableRecipes();
+        player = FindObjectOfType<PickupBehaviour>();
     }
 
     #region OnEnable / OnDisable / OnDestroy Events
@@ -435,8 +438,14 @@ public class CauldronInteraction : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            canInteract = true;
-            InputManager.OnStir?.Invoke();
+            if (player.isHoldingItem)
+                canInteract = false;
+            else
+            {
+                canInteract = true;
+                InputManager.OnStir?.Invoke();
+            }
+
         }
     }
 
