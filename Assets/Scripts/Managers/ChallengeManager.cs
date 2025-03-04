@@ -44,7 +44,10 @@ public class ChallengeManager : MonoBehaviour
                 Actions.OnApplyFoorMaterial?.Invoke(slipperyMaterial, icyTexture);
                 break;
             case 2: Actions.OnStartCauldron?.Invoke(); break;
-            case 3: Actions.OnStartGoblin?.Invoke(true); break;
+            case 3: 
+                Actions.OnStartGoblin?.Invoke(true);
+                Actions.OnMoveCage?.Invoke(true);
+                break;
             case 4: Actions.OnStartWindy?.Invoke(); break;
             case 5: Actions.OnStartSlime?.Invoke(); break;
             default: ResetChallenges(); break;
@@ -59,5 +62,6 @@ public class ChallengeManager : MonoBehaviour
         Actions.OnIceDay?.Invoke(false);
         Actions.OnEndGoblin?.Invoke();
         Actions.OnStopWindy?.Invoke();
+        Actions.OnMoveCage?.Invoke(false);
     }
 }

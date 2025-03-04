@@ -26,8 +26,10 @@ public class AudioSFXPlayer : MonoBehaviour
     //Function to call audio SFX that does not inturrupt playing clip (can overlap)
     public void PlayOneShot(AudioClip audioClip)
     {
+        Debug.Log("CallingPlayOneshot");
         if (!played)
         {
+            Debug.Log(audioSource.volume);
             audioSource.pitch = 1 + Random.Range(-pitchVariance, pitchVariance);
             audioSource.PlayOneShot(audioClip);
             played = true;
@@ -61,7 +63,7 @@ public class AudioSFXPlayer : MonoBehaviour
     //Coroutine to put audio on cooldown
     private IEnumerator AudioCooldown()
     {
-        yield return new WaitForSeconds(cooldownTime);
+        yield return new WaitForSecondsRealtime(cooldownTime);
         played = false;
     }
 

@@ -18,6 +18,7 @@ public class WindyDay : MonoBehaviour
     public Vector3 direction;
     private CustomTimer windDirectionChange;
     private readonly float windChangeTime = 30f;
+    [SerializeField] private GameObject[] windows;
 
 
     private void Awake()
@@ -56,6 +57,10 @@ public class WindyDay : MonoBehaviour
 
     internal void StartWind()
     {
+        foreach(var window in windows)
+        {
+            window.SetActive(false);
+        }
         strength = defaultWindStrength;
         ChangeWindDirection();
     }
@@ -63,6 +68,10 @@ public class WindyDay : MonoBehaviour
     private void StopWind()
     {
         strength = 0;
+        foreach (var window in windows)
+        {
+            window.SetActive(true);
+        }
     }
 
     private void ChangeWindDirection()

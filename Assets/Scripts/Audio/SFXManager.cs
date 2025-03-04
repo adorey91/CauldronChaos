@@ -52,6 +52,7 @@ public class SFXManager : MonoBehaviour
     //Method used to player Menu SFX to make it easier to call
     public void PlayMenuSFX(AudioClip clip)
     {
+        //Debug.Log("Play Menu SFX called");
         PlaySFX(SFX_Type.UISounds, clip, true);
     }
 }

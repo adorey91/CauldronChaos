@@ -2307,7 +2307,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &608735107130685221
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2322,11 +2322,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4212449420062427112}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 107.5}
-  m_SizeDelta: {x: 732.7704, y: 181.5942}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -130}
+  m_SizeDelta: {x: 875, y: 150}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &3088889738815002450
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2355,7 +2355,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Placeholder. Description of Day
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 635f57001bcc2e34da00b581c9c554e4, type: 2}
   m_sharedMaterial: {fileID: 499737633317735900, guid: 635f57001bcc2e34da00b581c9c554e4,
@@ -4043,8 +4043,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 1e363fe73450095429a48db6901a60ba, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -4793,7 +4793,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3512618148565503981
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5837,7 +5837,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: v 0.2.5
+  m_text: v 0.3.2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 635f57001bcc2e34da00b581c9c554e4, type: 2}
   m_sharedMaterial: {fileID: 499737633317735900, guid: 635f57001bcc2e34da00b581c9c554e4,
@@ -6022,6 +6022,25 @@ MonoBehaviour:
   dayStartText: {fileID: 3883012617718671555}
   dayStartExplain: {fileID: 995177306874361535}
   secondsToStart: 4
+  dayExplaination:
+  - "A simple start\u2014fresh mushrooms for your first brew!\nCheck the recipe book
+    to begin!"
+  - "Oh no! A cooling potion spilled overnight\u2014now the floor's pure ice! Customers
+    are here, no time to clean!"
+  - "Yikes! This mandrake root's a screamer! \nCheck the recipe book for new potions!"
+  - Gah! Your cauldrons gained sentience and are running wild! Chase them down if
+    you want to brew anything!
+  - "Blink and you'll miss it\u2014an Eye of Basilisk! \nPeek at the recipe book
+    for new potions!"
+  - "What?! You swore you locked the goblin's cage last night! \nNow he's loose,
+    causing chaos while you need to make potions!"
+  - "Hop to it! A Rabbit Foot just rolled in. \nCheck the recipe book for fresh brews!"
+  - Brrr! A windstorm tore your shutters off, sending gusts that toss you and your
+    ingredients around!
+  - "Clonk! A Troll Bone lands in your stash. \nCrack open the recipe book for new
+    potions!"
+  - "Yuck! Master's snail in-laws gave you a hug, leaving you covered in sticky slime\u2014right
+    as the shop opens!"
   startDaySFX: {fileID: 8300000, guid: da32e896bb83a1a4a922b1eb83cb258d, type: 3}
   endDaySFX: {fileID: 8300000, guid: 232f504a7739c1f429065a8f60337c66, type: 3}
 --- !u!1 &3267590629316510435
@@ -6056,11 +6075,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4212449420062427112}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 600, y: 388.1163}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 110}
+  m_SizeDelta: {x: 600, y: 180}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &3228117432963696019
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8498,8 +8517,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1000, y: 760}
+  m_AnchoredPosition: {x: 77.20654, y: -55.0383}
+  m_SizeDelta: {x: 1154.4131, y: 589.9235}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8215427815860542761
 CanvasRenderer:
@@ -10298,8 +10317,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 1e363fe73450095429a48db6901a60ba, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -13805,8 +13824,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 1e363fe73450095429a48db6901a60ba, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -16158,8 +16177,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 1e363fe73450095429a48db6901a60ba, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -18205,7 +18224,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 110efd101e1f2464c9791e2e8d0577d0,
+      objectReference: {fileID: 21300000, guid: 84bd927cfcde277459e0146b5ed5fd6b,
         type: 3}
     - target: {fileID: 1409725403462324963, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
@@ -19934,7 +19953,7 @@ PrefabInstance:
     - target: {fileID: 133193148263227849, guid: 1327686e05810384086a86b37347ca59,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 350
+      value: 450
       objectReference: {fileID: 0}
     - target: {fileID: 133193148263227849, guid: 1327686e05810384086a86b37347ca59,
         type: 3}
@@ -20099,7 +20118,7 @@ PrefabInstance:
     - target: {fileID: 6940659338002408103, guid: 1327686e05810384086a86b37347ca59,
         type: 3}
       propertyPath: m_text
-      value: Next Day
+      value: Level Selection
       objectReference: {fileID: 0}
     - target: {fileID: 6940659338002408103, guid: 1327686e05810384086a86b37347ca59,
         type: 3}
@@ -26727,7 +26746,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 110efd101e1f2464c9791e2e8d0577d0,
+      objectReference: {fileID: 21300000, guid: 57293570bc241444bb9c6e0b750d6ccc,
         type: 3}
     - target: {fileID: 1409725403462324963, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
@@ -28080,7 +28099,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 110efd101e1f2464c9791e2e8d0577d0,
+      objectReference: {fileID: 21300000, guid: 5c51419570a464342b8ea6bf37226fb6,
         type: 3}
     - target: {fileID: 1409725403462324963, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
@@ -28546,7 +28565,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: fcceb93c7c5229143aa6f5afd31059f0,
+      objectReference: {fileID: 21300000, guid: 7666b46037a64644d86a76bddb8f8ebd,
         type: 3}
     - target: {fileID: 1409725403462324963, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}
@@ -29605,12 +29624,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 2969715819769166454}
+      objectReference: {fileID: 0}
     - target: {fileID: 3366724433988752219, guid: 1327686e05810384086a86b37347ca59,
         type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 1236711566356038432}
+      objectReference: {fileID: 0}
     - target: {fileID: 3366724433988752219, guid: 1327686e05810384086a86b37347ca59,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -29982,40 +30001,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2610067450764781873}
     m_Modifications:
-    - target: {fileID: 611646195528488856, guid: ced472106d5717446a58a4a8ad5dbb10,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.75
-      objectReference: {fileID: 0}
     - target: {fileID: 946590694165130181, guid: ced472106d5717446a58a4a8ad5dbb10,
         type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 2811057619986588237, guid: ced472106d5717446a58a4a8ad5dbb10,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2915814981407594046, guid: ced472106d5717446a58a4a8ad5dbb10,
-        type: 3}
-      propertyPath: maxTrailDistance
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 2915814981407594046, guid: ced472106d5717446a58a4a8ad5dbb10,
-        type: 3}
-      propertyPath: distanceBetweenPoints
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5461173424016646132, guid: ced472106d5717446a58a4a8ad5dbb10,
-        type: 3}
-      propertyPath: slime.m_Bits
-      value: 4096
-      objectReference: {fileID: 0}
-    - target: {fileID: 5461173424016646132, guid: ced472106d5717446a58a4a8ad5dbb10,
-        type: 3}
-      propertyPath: collisionsLayers.m_Bits
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6248754792270158461, guid: ced472106d5717446a58a4a8ad5dbb10,
         type: 3}
@@ -30084,7 +30073,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 7504587103847771617}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -31531,7 +31520,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 110efd101e1f2464c9791e2e8d0577d0,
+      objectReference: {fileID: 21300000, guid: 056e27ec418356f4cbfd1d364cf22d1f,
         type: 3}
     - target: {fileID: 1409725403462324963, guid: 85549bfd7be029a4a96fe470ac1b7c16,
         type: 3}

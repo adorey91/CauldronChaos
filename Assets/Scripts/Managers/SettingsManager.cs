@@ -73,13 +73,14 @@ public class SettingsManager : MonoBehaviour
     private void Update()
     {
         if(!inSettings) return;
-        if (_gamepad.rightShoulder.wasPressedThisFrame && _gamepad != null)
+
+        if(_gamepad != null)
         {
-            CycleMenu(1);
-        }
-        if (_gamepad.leftShoulder.wasPressedThisFrame && _gamepad != null)
-        {
-            CycleMenu(-1);
+            if (_gamepad.rightShoulder.wasPressedThisFrame)
+                CycleMenu(1);
+         
+            if (_gamepad.leftShoulder.wasPressedThisFrame)
+                CycleMenu(-1);
         }
     }
 
