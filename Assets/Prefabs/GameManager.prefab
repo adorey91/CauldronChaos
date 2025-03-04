@@ -5837,7 +5837,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: v 0.2.5
+  m_text: v 0.3.2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 635f57001bcc2e34da00b581c9c554e4, type: 2}
   m_sharedMaterial: {fileID: 499737633317735900, guid: 635f57001bcc2e34da00b581c9c554e4,
@@ -19475,7 +19475,7 @@ PrefabInstance:
     - target: {fileID: 6391333154800664166, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}
       propertyPath: m_text
-      value: Button West
+      value: X
       objectReference: {fileID: 0}
     - target: {fileID: 6391333154800664166, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}
@@ -19719,7 +19719,7 @@ PrefabInstance:
     - target: {fileID: 6391333154800664166, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}
       propertyPath: m_text
-      value: Right Shoulder
+      value: Right Bumper
       objectReference: {fileID: 0}
     - target: {fileID: 6391333154800664166, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}
@@ -25302,7 +25302,7 @@ PrefabInstance:
     - target: {fileID: 6391333154800664166, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}
       propertyPath: m_text
-      value: Left Shoulder
+      value: Left Bumper
       objectReference: {fileID: 0}
     - target: {fileID: 6391333154800664166, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}
@@ -27296,7 +27296,7 @@ PrefabInstance:
     - target: {fileID: 6391333154800664166, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}
       propertyPath: m_text
-      value: Button South
+      value: A
       objectReference: {fileID: 0}
     - target: {fileID: 6391333154800664166, guid: f25dcd618d3acd64795bf8bb32edb6c9,
         type: 3}
