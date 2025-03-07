@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeName: Potion of Feather Falling
   weight: 5
-  points: 120
+  sellAmount: 120
   steps:
   - {fileID: 11400000, guid: a23d695515e326b4095b01e42e44051d, type: 2}
   - {fileID: 11400000, guid: 1263d1af773c1934389a86be3ac2a831, type: 2}

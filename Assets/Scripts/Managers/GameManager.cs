@@ -1,152 +1,136 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
-public enum GameState {MainMenu, Loading, Intro, LevelSelect, Gameplay, EndOfDay, Pause, Settings}
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;
+    public static GameManager Instance;
 
     public GameState gameState;
-    internal GameState previousState;
-    private GameState newState;
+    private GameState _previousState;
+    private GameState _newState;
 
-    private bool isInDebugMode = false;
+    private bool _isInDebugMode;
+
+    private Dictionary<GameState, Action> _stateActions;
+    
+    [SerializeField] private bool _debugModetimes23;
 
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else if (instance != this)
+        else if (Instance != this)
             Destroy(gameObject);
+
+        _stateActions = new Dictionary<GameState, Action>
+        {
+            { GameState.MainMenu, () => ChangeMusic(Song.SongType.MainMenuMusic) },
+            { GameState.Loading , () => ChangeMusic(Song.SongType.MainMenuMusic)},
+            { GameState.Gameplay, () => ChangeMusic(Song.SongType.GameplayMusic) },
+            { GameState.Pause, () => AudioManager.instance.musicManager.musicSource.pitch = 0.5f },
+            { GameState.EndOfDay, () => ChangeMusic(Song.SongType.MainMenuMusic) },
+            { GameState.LevelSelect, () => ChangeMusic(Song.SongType.MainMenuMusic) }
+        };
     }
 
     private void Start()
     {
-        if (SceneManager.GetActiveScene().name == "MainMenu")
-            SetState(GameState.MainMenu);
-        else
-            SetState(GameState.Gameplay);
+        SetState(GameState.MainMenu);
     }
 
     #region OnEnable / OnDisable / OnDestroy Events
+
     private void OnEnable()
     {
-        Actions.OnForceStateChange += LoadState;
+        Actions.OnStateChange += LoadState;
         InputManager.PauseAction += EscapeState;
     }
 
     private void OnDisable()
     {
-        Actions.OnForceStateChange -= LoadState;
+        Actions.OnStateChange -= LoadState;
         InputManager.PauseAction -= EscapeState;
     }
 
     private void OnDestroy()
     {
-        Actions.OnForceStateChange -= LoadState;
+        Actions.OnStateChange -= LoadState;
         InputManager.PauseAction -= EscapeState;
     }
+
     #endregion
 
     // This should be used for buttons
     public void LoadState(string state)
     {
         if (state == "previousState")
-            newState = previousState;
+            _newState = _previousState;
         else
         {
             if (Enum.TryParse(state, out GameState gamestate))
-                newState = gamestate;
+                _newState = gamestate;
             else
                 Debug.LogError(state + " doesn't exist");
         }
 
-        SetState(newState);
+        SetState(_newState);
     }
 
 
     private void SetState(GameState state)
     {
         if (state == GameState.Settings)
-            previousState = gameState;
-
-        //resetting music pitch after pause
-        if (previousState == GameState.Pause && state != GameState.Settings)
-        {
-            AudioManager.instance.musicManager.musicSource.pitch = 1;
-        }
+            _previousState = gameState;
 
         gameState = state;
 
-        Song.SongType curSongType = AudioManager.instance.musicManager.GetCurrentMusic();
-        
-        switch (gameState)
+        if (_stateActions.TryGetValue(state, out Action action))
+            action.Invoke();
+
+        if (gameState == GameState.Loading) return;
+
+        Actions.OnChangeUi?.Invoke(gameState);
+    }
+
+    private void ChangeMusic(Song.SongType songType)
+    {
+        if (AudioManager.instance.musicManager.GetCurrentMusic() != songType)
         {
-            case GameState.MainMenu:
-                if (!(curSongType == Song.SongType.MainMenuMusic))
-                {
-                    AudioManager.instance.musicManager.PlayMusic(Song.SongType.MainMenuMusic);
-                }
-                break;
-
-            case GameState.Gameplay:
-                if (!(curSongType == Song.SongType.GameplayMusic))
-                {
-                    AudioManager.instance.musicManager.PlayMusic(Song.SongType.GameplayMusic);
-                }
-                break;
-
-            case GameState.Pause:
-                AudioManager.instance.musicManager.musicSource.pitch = 0.5f;
-                break;
-
-            case GameState.EndOfDay:
-                if (!(curSongType == Song.SongType.MainMenuMusic))
-                {
-                    AudioManager.instance.musicManager.PlayMusic(Song.SongType.MainMenuMusic);
-                }
-                break;
-
-            case GameState.LevelSelect:
-                if (!(curSongType == Song.SongType.MainMenuMusic))
-                {
-                    AudioManager.instance.musicManager.PlayMusic(Song.SongType.MainMenuMusic);
-                }
-                break;
+            AudioManager.instance.musicManager.PlayMusic(songType);
         }
-        
-
-        Actions.OnStateChange?.Invoke(gameState);
     }
 
 
     // this should be called when hitting the pause button. 
     private void EscapeState(InputAction.CallbackContext input)
     {
-        if(input.performed && (gameState == GameState.Gameplay || gameState == GameState.Pause))
+        if (!input.performed || (gameState != GameState.Gameplay && gameState != GameState.Pause)) return;
+        switch (gameState)
         {
-            switch (gameState)
-            {
-                case GameState.Pause: SetState(GameState.Gameplay); break;
-                case GameState.Gameplay: SetState(GameState.Pause); break;
-            }
+            case GameState.Pause: 
+                SetState(GameState.Gameplay);
+                AudioManager.instance.musicManager.musicSource.pitch = 1;
+                break;
+            case GameState.Gameplay: 
+                SetState(GameState.Pause); 
+                break;
         }
     }
 
     internal bool IsDebugging()
     {
-        return isInDebugMode;
+        return _isInDebugMode;
     }
 
     internal void SetDebugMode(bool debug)
     {
-        isInDebugMode = debug;
+        _isInDebugMode = debug;
     }
 
     public void QuitGame()
@@ -154,4 +138,16 @@ public class GameManager : MonoBehaviour
         Debug.Log("Quitting Game");
         Application.Quit();
     }
+}
+
+public enum GameState
+{
+    MainMenu,
+    Loading,
+    Intro,
+    LevelSelect,
+    Gameplay,
+    EndOfDay,
+    Pause,
+    Settings
 }

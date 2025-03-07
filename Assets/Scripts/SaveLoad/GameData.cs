@@ -14,7 +14,7 @@ public class GameData
         isValidSave = false;
         days.Clear();
 
-        for (int i = 0; i < 10; i++)
+        for (var i = 0; i < 10; i++)
         {
             days.Add(new DayData());
             days[i].dayNumber = i + 1;

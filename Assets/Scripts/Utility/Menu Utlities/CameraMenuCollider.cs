@@ -9,12 +9,8 @@ public class CameraMenuCollider : MonoBehaviour
     {
         switch(other.tag)
         {
-            case "Door":
-                Actions.ReachedWaypoint?.Invoke("Door");
-                break;
-            case "Calendar":
-                Actions.ReachedWaypoint?.Invoke("Calendar");
-                break;
+            case "Door": Actions.ReachedWaypoint?.Invoke("Door"); break;
+            case "Calendar": Actions.ReachedWaypoint?.Invoke("Calendar"); break;
         }
     }
 }

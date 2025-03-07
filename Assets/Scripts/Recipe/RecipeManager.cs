@@ -1,28 +1,27 @@
+using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class RecipeManager : MonoBehaviour
 {
     [Header("Available Recipes")]
     [SerializeField] private RecipeSO[] allRecipes;
     [SerializeField] private int numberOfRecipes;
-
     [SerializeField] private GameObject recipeBookUi;
-
     [SerializeField] private bool useAllRecipes;
     [SerializeField] private GameObject closeButton;
 
     private void Update()
     {
-        if(recipeBookUi.activeSelf)
+        if (!recipeBookUi.activeSelf) return;
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                ToggleRecipeBook();
-            }
+            ToggleRecipeBook();
         }
     }
 
     #region OnEnable / OnDisable / OnDestroy Events
+
     private void OnEnable()
     {
         Actions.OnToggleRecipeBook += ToggleRecipeBook;
@@ -37,11 +36,12 @@ public class RecipeManager : MonoBehaviour
     {
         Actions.OnToggleRecipeBook -= ToggleRecipeBook;
     }
+
     #endregion
 
     public RecipeSO[] FindAvailableRecipes()
     {
-        RecipeSO[] availableRecipes = new RecipeSO[numberOfRecipes];
+        var availableRecipes = new RecipeSO[numberOfRecipes];
 
         if (useAllRecipes)
         {
@@ -49,12 +49,11 @@ public class RecipeManager : MonoBehaviour
         }
         else
         {
-            for (int i = 0; i < numberOfRecipes; i++)
+            for (var i = 0; i < numberOfRecipes; i++)
             {
                 availableRecipes[i] = allRecipes[i];
             }
         }
-
 
         return availableRecipes;
     }
@@ -66,27 +65,23 @@ public class RecipeManager : MonoBehaviour
 
     internal RecipeSO GetRecipeByName(string recipeName)
     {
-        foreach (RecipeSO recipe in allRecipes)
-        {
-            if (recipe.recipeName == recipeName)
-                return recipe;
-        }
-        return null;
+        return allRecipes.FirstOrDefault(recipe => recipe.recipeName == recipeName);
     }
 
     public void ToggleRecipeBook()
     {
-
         if (recipeBookUi.activeSelf)
         {
-            
+            Time.timeScale = 1;
             recipeBookUi.SetActive(false);
-           InputManager.OnGameplayInputs();
+            Actions.OnSetUiLocation(Page.Gameplay);
+            InputManager.OnGameplayInputs();
         }
         else
         {
+            Time.timeScale = 0;
             recipeBookUi.SetActive(true);
-            Actions.OnSetUiLocation(UiObject.Page.RecipeBook);
+            Actions.OnSetUiLocation(Page.RecipeBook);
             Actions.OnSelectRecipeButton(closeButton);
             InputManager.OnRecipeBookInputs();
         }

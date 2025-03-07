@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -8,18 +7,18 @@ public class QueueManager : MonoBehaviour
     [Header("Customer Queue Variables")]
     [SerializeField] private int timeForCustomer = 1;
     [SerializeField] private List<GameObject> customerPrefabs; // List of possible customer prefabs
-    private List<GameObject> customers = new();
-    private int maxCustomers = 5;
-    private CustomTimer newCustomer;
-    private bool startCustomers = false;
-    private bool newDay;
-    private int previousIndex;
+    private List<GameObject> _customers = new();
+    private int _maxCustomers = 5;
+    private CustomTimer _newCustomer;
+    private bool _startCustomers;
+    private bool _newDay;
+    private int _previousIndex;
 
     [Header("Customer Queue Positions")]
     [SerializeField] private Transform firstPos;
     [SerializeField] private Transform entryPoint; // Spawn point for new customers
     [SerializeField] private Transform exitPoint; // Spawn point for new customers
-    private Vector3[] queuePositions = new Vector3[5]; //queue positions
+    private Vector3[] _queuePositions = new Vector3[5]; //queue positions
 
     [Header("Order Manager")]
     [SerializeField] private OrderManager orderManager;
@@ -28,17 +27,17 @@ public class QueueManager : MonoBehaviour
     [SerializeField] private GameObject orderHolder;
 
     [Header("SFX")]
-    [SerializeField] private AudioClip potionSaleSFX;
+    [SerializeField] private AudioClip potionSaleSfx;
 
 
     public void Start()
     {
-        newCustomer = new CustomTimer(timeForCustomer, true);
+        _newCustomer = new CustomTimer(timeForCustomer, true);
 
-        queuePositions[0] = firstPos.position;
+        _queuePositions[0] = firstPos.position;
         for (int i = 1; i < 5; i++)
         {
-            queuePositions[i] = firstPos.position + new Vector3(i, 0, 0);
+            _queuePositions[i] = firstPos.position + new Vector3(i, 0, 0);
         }
     }
 
@@ -50,13 +49,11 @@ public class QueueManager : MonoBehaviour
             StartCustomers();
         }
 
-        if (startCustomers == true)
+        if (_startCustomers != true) return;
+        if (_newCustomer.UpdateTimer())
         {
-            if (newCustomer.UpdateTimer())
-            {
-                SpawnNewCustomer();
-                newCustomer.ResetTimer();
-            }
+            SpawnNewCustomer();
+            _newCustomer.ResetTimer();
         }
     }
 
@@ -88,29 +85,29 @@ public class QueueManager : MonoBehaviour
 
     private void StartCustomers()
     {
-        startCustomers = true;
-        newDay = true;
-        newCustomer = new CustomTimer(3, false);
-        newCustomer.StartTimer();
+        _startCustomers = true;
+        _newDay = true;
+        _newCustomer = new CustomTimer(3, false);
+        _newCustomer.StartTimer();
         SpawnNewCustomer();
     }
 
     private void CheckCustomerRecipes(PotionOutput potionOutput)
     {
-        RecipeSO sO = potionOutput.potionInside;
-        GameObject potionObj = potionOutput.gameObject;
+        var sO = potionOutput.potionInside;
+        var potionObj = potionOutput.gameObject;
 
-        for (int i = 0; i < customers.Count; i++)
+        for (var i = 0; i < _customers.Count; i++)
         {
-            CustomerBehaviour customer = customers[i].GetComponent<CustomerBehaviour>();
+            var customer = _customers[i].GetComponent<CustomerBehaviour>();
 
-            if (customer.requestedOrder == sO && customer.hasJoinedQueue)
+            if (customer.RequestedOrder == sO && customer.HasJoinedQueue)
             {
                 potionOutput.givenToCustomer = true;
                 potionObj.GetComponent<Collider>().enabled = false;
                 potionObj.GetComponent<Rigidbody>().isKinematic = true;
 
-                CustomerBehaviour servingCustomer = customers[i].GetComponent<CustomerBehaviour>();
+                CustomerBehaviour servingCustomer = _customers[i].GetComponent<CustomerBehaviour>();
 
                 potionObj.transform.SetParent(servingCustomer.customerHands);
                 potionObj.transform.DOJump(servingCustomer.customerHands.position, 1, 1, 0.3f).OnComplete(() => FinishOrder(servingCustomer));
@@ -118,9 +115,9 @@ public class QueueManager : MonoBehaviour
             }
         }
 
-        Vector3 startPos = potionObj.transform.position;
-        Vector3 randomDirection = new (Random.Range(-1f, 1f), 0, Random.Range(0.5f, 2f));
-        Vector3 endPos = startPos + randomDirection * 3f;
+        var startPos = potionObj.transform.position;
+        var randomDirection = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(0.5f, 2f));
+        var endPos = startPos + randomDirection * 3f;
         potionObj.transform.DOJump(endPos, 2, 1, 1);
     }
 
@@ -129,25 +126,25 @@ public class QueueManager : MonoBehaviour
         servingCustomer.OrderComplete();
 
         //playing SFX for potion sale
-        AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ShopSounds, potionSaleSFX, true);
+        AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ShopSounds, potionSaleSfx, true);
 
         RemoveCustomer(servingCustomer.gameObject);
     }
 
     #region Customer Queue Methods
     // Add a new customer to the end of the queue
-    public void AddCustomer(GameObject customer)
+    private void AddCustomer(GameObject customer)
     {
-        customers.Add(customer);
+        _customers.Add(customer);
         UpdateQueuePositions();
     }
 
     // Remove a customer and spawn a new one
-    public void RemoveCustomer(GameObject customer)
+    private void RemoveCustomer(GameObject customer)
     {
-        if (customers.Contains(customer) && customer.GetComponent<CustomerBehaviour>().hasJoinedQueue)
+        if (_customers.Contains(customer) && customer.GetComponent<CustomerBehaviour>().HasJoinedQueue)
         {
-            customers.Remove(customer);
+            _customers.Remove(customer);
             customer.GetComponent<CustomerBehaviour>().LeaveQueue(exitPoint.position, () =>
             {
                 Destroy(customer);
@@ -160,30 +157,30 @@ public class QueueManager : MonoBehaviour
     // Spawn a new customer at the entry point and add them to the queue
     private void SpawnNewCustomer()
     {
-        if (customerPrefabs.Count > 0 && customers.Count < maxCustomers)
+        if (customerPrefabs.Count > 0 && _customers.Count < _maxCustomers)
         {
-            int randomIndex = UnityEngine.Random.Range(0, customerPrefabs.Count);
+            int randomIndex = Random.Range(0, customerPrefabs.Count);
 
-            while(randomIndex == previousIndex)
+            while(randomIndex == _previousIndex)
             {
-                randomIndex = UnityEngine.Random.Range(0, customerPrefabs.Count);
+                randomIndex = Random.Range(0, customerPrefabs.Count);
             }
 
-            previousIndex = randomIndex;
-            GameObject newCustomer = Instantiate(customerPrefabs[randomIndex], entryPoint.position, Quaternion.identity);
+            _previousIndex = randomIndex;
+            var newCustomer = Instantiate(customerPrefabs[randomIndex], entryPoint.position, Quaternion.identity);
 
-            CustomerBehaviour _newCustomBehav = newCustomer.GetComponent<CustomerBehaviour>();
+            var newCustomBehaviour = newCustomer.GetComponent<CustomerBehaviour>();
 
-            _newCustomBehav.AssignOrder(orderManager.GiveOrder(_newCustomBehav.customerName), orderHolder.transform);
+            newCustomBehaviour.AssignOrder(orderManager.GiveOrder(newCustomBehaviour.customerName), orderHolder.transform);
 
             AddCustomer(newCustomer);
         }
         else
         {
-            if (newDay)
+            if (_newDay)
             {
-                newCustomer = new CustomTimer(timeForCustomer, false);
-                newDay = false;
+                _newCustomer = new CustomTimer(timeForCustomer, false);
+                _newDay = false;
             }
 
         }
@@ -192,9 +189,9 @@ public class QueueManager : MonoBehaviour
     // Update customer positions in the queue
     private void UpdateQueuePositions()
     {
-        for (int i = 0; i < customers.Count; i++)
+        for (int i = 0; i < _customers.Count; i++)
         {
-            customers[i].GetComponent<CustomerBehaviour>().SetTarget(queuePositions[i]);
+            _customers[i].GetComponent<CustomerBehaviour>().SetTarget(_queuePositions[i]);
         }
     }
     #endregion
@@ -203,9 +200,9 @@ public class QueueManager : MonoBehaviour
     {
         List<GameObject> customersInQueue = new();
 
-        foreach (GameObject customer in customers)
+        foreach (var customer in _customers)
         {
-            if (customer.GetComponent<CustomerBehaviour>().hasJoinedQueue)
+            if (customer.GetComponent<CustomerBehaviour>().HasJoinedQueue)
             {
                 customersInQueue.Add(customer);
             }
@@ -213,34 +210,34 @@ public class QueueManager : MonoBehaviour
 
         if (customersInQueue.Count > 0)
         {
-            int random = Random.Range(0, customersInQueue.Count);
-            CustomerBehaviour scaredCustomer = customersInQueue[random].GetComponent<CustomerBehaviour>();
+            var random = Random.Range(0, customersInQueue.Count);
+            var scaredCustomer = customersInQueue[random].GetComponent<CustomerBehaviour>();
             scaredCustomer.ScareAway();
-            RemoveCustomer(customers[random]);
+            RemoveCustomer(_customers[random]);
         }
     }
 
     private void RemoveAllCustomers()
     {
-        startCustomers = false;
+        _startCustomers = false;
 
-        foreach (GameObject customer in customers)
+        foreach (GameObject customer in _customers)
         {
             Destroy(customer);
         }
 
-        newDay = false;
-        customers.Clear();
+        _newDay = false;
+        _customers.Clear();
     }
 
 
     internal int AreThereCustomers()
     {
-        int count = 0;
+        var count = 0;
 
-        foreach (GameObject customer in customers)
+        foreach (var customer in _customers)
         {
-            if (customer.GetComponent<CustomerBehaviour>().hasJoinedQueue)
+            if (customer.GetComponent<CustomerBehaviour>().HasJoinedQueue)
                 count++;
         }
 

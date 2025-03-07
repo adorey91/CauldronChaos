@@ -1,20 +1,19 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 public class LevelSelect : MonoBehaviour
 {
     [SerializeField] private LevelSelectionButtons[] levelSelection;
 
-    private int unlockedDays;
-    private int[] score;
+    private int _unlockedDays;
+    private int[] _score;
 
 
     private void Start()
     {
-        score = new int[levelSelection.Length];
+        _score = new int[levelSelection.Length];
     }
 
     #region OnEnable / OnDisable / OnDestroy Events
@@ -45,7 +44,7 @@ public class LevelSelect : MonoBehaviour
     
     private void ResetButtonLabels()
     {
-        for(int i = 0; i < levelSelection.Length; i++)
+        for(var i = 0; i < levelSelection.Length; i++)
         {
             levelSelection[i].buttonText.text = $"Day {i + 1}";
         }
@@ -54,7 +53,7 @@ public class LevelSelect : MonoBehaviour
 
     private void UpdateButtons()
     {
-        for (int i = 0; i < levelSelection.Length; i++)
+        for (var i = 0; i < levelSelection.Length; i++)
         {
             if (levelSelection[i].button == null || levelSelection[i].dayImage == null || levelSelection[i].buttonText == null)
             {
@@ -62,7 +61,7 @@ public class LevelSelect : MonoBehaviour
                 continue; // Skip this iteration if any component is missing
             }
 
-            if (i < unlockedDays)
+            if (i < _unlockedDays)
             {
                 levelSelection[i].button.interactable = true;
 
@@ -72,11 +71,11 @@ public class LevelSelect : MonoBehaviour
                     levelSelection[i].dayImage.enabled = true;
                 }
 
-                if (score == null) break;
-                if (GameManager.instance.IsDebugging()) continue;
-                if (score[i] == 0) continue;
+                if (_score == null) break;
+                if (GameManager.Instance.IsDebugging()) continue;
+                if (_score[i] == 0) continue;
 
-                levelSelection[i].buttonText.text = $"Day {i + 1}\nScore: {score[i]}";
+                levelSelection[i].buttonText.text = $"Day {i + 1}\nScore: {_score[i]}";
             }
             else
             {
@@ -92,15 +91,15 @@ public class LevelSelect : MonoBehaviour
     }
 
 
-    public void SetUnlockedDays(int days)
+    private void SetUnlockedDays(int days)
     {
-        unlockedDays = days;
+        _unlockedDays = days;
         UpdateButtons();
     }
 
-    public void SetScore(int[] _score)
+    private void SetScore(int[] _score)
     {
-        score = _score;
+        this._score = _score;
     }
 }
 

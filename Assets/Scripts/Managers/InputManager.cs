@@ -148,14 +148,14 @@ public class InputManager : MonoBehaviour
     //function that reads the interact input
     public void InteractInput(InputAction.CallbackContext input)
     {
-        if (Time.timeScale != 0)
+        // if (Time.timeScale != 0)
             InteractAction?.Invoke(input);
     }
 
     //function that reads the interact input
     public void PickupInput(InputAction.CallbackContext input)
     {
-        if (Time.timeScale != 0)
+        // if (Time.timeScale != 0)
             PickupAction?.Invoke(input);
     }
 

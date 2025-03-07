@@ -1,25 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 using DG.Tweening;
 
 public class DoorInteraction : MonoBehaviour
 {
     [Header("SFX")]
-    [SerializeField] private SFXLibrary newCustomerSFX;
+    [SerializeField] private SFXLibrary newCustomerSfx;
+    
+    [Header("Door Object")]
     [SerializeField] private GameObject door;
-    private int customerCount;
+    [SerializeField] private bool isEntrance;
+    private int _customerCount;
 
-    private void OpenDoor(bool isLeft)
+    private void OpenDoor()
     {
-        //playing SFX for new customer arriving
-        //Debug.Log("Opening Door");
-        if (isLeft)
-        {
-            AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ShopSounds, newCustomerSFX.PickAudioClip(), true);
-        }
-
         door.transform.DOKill();
         door.transform.DOLocalRotate(new Vector3(0, 90, 0), 1f);
     }
@@ -33,31 +26,25 @@ public class DoorInteraction : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Customer"))
-        {
-            customerCount++;
-            if (this.gameObject.name == "DoorInTrigger")
-            {
-                OpenDoor(true);
-            }
-            else
-            {
-                OpenDoor(false);
-            }
-        }
+        if (!other.gameObject.CompareTag("Customer")) return;
+
+        _customerCount++;
+        if (isEntrance)
+            AudioManager.instance.sfxManager.PlaySFX(SFX_Type.ShopSounds, newCustomerSfx.PickAudioClip(), true);
+
+        OpenDoor();
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Customer"))
-        {
-            customerCount--; // Decrease count when a customer exits
-            customerCount = Mathf.Max(customerCount, 0); // Ensure it never goes below 0
+        if (!other.gameObject.CompareTag("Customer")) return;
 
-            if (customerCount == 0) // Close door only if no customers are left
-            {
-                CloseDoor();
-            }
+        _customerCount--; // Decrease count when a customer exits
+        _customerCount = Mathf.Max(_customerCount, 0); // Ensure it never goes below 0
+
+        if (_customerCount == 0) // Close door only if no customers are left
+        {
+            CloseDoor();
         }
     }
 }

@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
-using UnityEngine.Events;
-
 
 public static class Actions
 {
@@ -18,8 +14,7 @@ public static class Actions
     #region Shop Actions
     public static Action OnStartDay;
     public static Action OnEndDay;
-    public static Action<bool, int> OnCustomerServed;
-    public static Action OnNoCustomerServed;
+    public static Action<int> OnCustomerServed;
     public static Action FilledOrder;
     public static Action<PotionOutput> OnCheckCustomers;
     #endregion
@@ -27,14 +22,14 @@ public static class Actions
     // Day Actions
     #region Day Actions
     public static Action<int> OnSetDay;
-    public static Action<string> OnDayText; // used for day countdown panel. explaination of the day.
-    public static Action OnStartDayCountdown;
+    public static Action OnDayLoad;
     #endregion
 
     // Game Manager Actions
     #region Game Manager Actions
-    public static Action<string> OnForceStateChange;
-    public static Action<GameState> OnStateChange; // used for UI changes
+    public static Action<string> OnStateChange;
+    public static Action<GameState> OnChangeUi; // used for UI changes
+    public static Action<bool> OnLoading;
     #endregion
 
     // Gameplay Actions
@@ -56,7 +51,7 @@ public static class Actions
     // Actions for First Select
     #region First Select Actions
     public static Action<GameObject> OnSelectRecipeButton;
-    public static Action<UiObject.Page> OnSetUiLocation;
+    public static Action<Page> OnSetUiLocation;
     #endregion
 
     // Actions for Menu

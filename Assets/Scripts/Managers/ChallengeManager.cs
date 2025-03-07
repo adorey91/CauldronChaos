@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using System;
 
 public class ChallengeManager : MonoBehaviour
@@ -11,6 +9,28 @@ public class ChallengeManager : MonoBehaviour
     [SerializeField] private PhysicMaterial defaultMaterial;
     [SerializeField] private Texture icyTexture;
     [SerializeField] private Texture defaultTexture;
+
+    private Dictionary<int, Action> _challengeActions;
+
+    private void Awake()
+    {
+        _challengeActions = new Dictionary<int, Action>
+        {
+            {0, () => Debug.Log("No Challenges")},
+            {1, () =>
+            {
+                Actions.OnIceDay?.Invoke(true);
+                Actions.OnApplyFoorMaterial?.Invoke(slipperyMaterial, icyTexture);
+            }},
+            {2, () => Actions.OnStartCauldron?.Invoke()},
+            { 3, () => { 
+                Actions.OnStartGoblin?.Invoke(true);
+                Actions.OnMoveCage?.Invoke(true);
+            }},
+            { 4, () => Actions.OnStartWindy?.Invoke() },
+            { 5, () => Actions.OnStartSlime?.Invoke() }
+        };
+    }
 
     #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
@@ -35,22 +55,18 @@ public class ChallengeManager : MonoBehaviour
     // Start the challenge based on the challenge type
     private void StartChallenge(int challenge)
     {
-        Debug.Log("Challenge Started:   " + challenge);
+        // Is a backup to make sure that all challenges have been reset before starting a new one
         ResetChallenges();
-        switch (challenge)
+
+        if (_challengeActions.TryGetValue(challenge, out var action))
         {
-            case 0: Debug.Log("No Challenges"); break;
-            case 1: Actions.OnIceDay?.Invoke(true);
-                Actions.OnApplyFoorMaterial?.Invoke(slipperyMaterial, icyTexture);
-                break;
-            case 2: Actions.OnStartCauldron?.Invoke(); break;
-            case 3: 
-                Actions.OnStartGoblin?.Invoke(true);
-                Actions.OnMoveCage?.Invoke(true);
-                break;
-            case 4: Actions.OnStartWindy?.Invoke(); break;
-            case 5: Actions.OnStartSlime?.Invoke(); break;
-            default: ResetChallenges(); break;
+            Debug.Log("Challenge Started: " + challenge);
+            action.Invoke();
+        }
+        else
+        {
+            Debug.LogWarning($"Challenge {challenge} not found, resetting challenges.");
+            ResetChallenges();
         }
     }
 

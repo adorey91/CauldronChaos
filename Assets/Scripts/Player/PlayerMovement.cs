@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System;
 using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
@@ -10,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Player Movement Variables")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float rotationSpeed = 180;
-    private float defaultSpeed;
+    private float _defaultSpeed;
 
     [Header("Collision Detection")]
     [SerializeField] private Transform castPos; //position to do raycasts from
@@ -18,44 +15,45 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask collisionsLayers; //layers on which collisions happen
 
     [Header("Object References")]
-    [SerializeField] private Rigidbody playerRB;
-    private Animator playerAnimation;
-    private Vector2 moveDir = Vector2.zero;
+    private Rigidbody _playerRb;
+    private Animator _playerAnimation;
+    private Vector2 _moveDir = Vector2.zero;
 
     [Header("Ice Movement")]
     [SerializeField] private float acceleration = 5f;
     [SerializeField] private float deceleration = 2f;
     [SerializeField] private float maxSpeed = 6f;
-    private bool isOnIce = false;
+    private bool _isOnIce;
 
     [Header("Slime Movement")]
     [SerializeField] private LayerMask slime;
     [SerializeField] private float slowMultiplier = 0.5f;
-    private bool isInSlime = false;
+    private bool _isInSlime;
 
 
     // Wind Movement
-    private bool isInWindZone = false;
-    private Vector3 windDirection;
-    private WindyDay windArea;
-    private WindyDay.WindDirection windDir;
+    private bool _isInWindZone;
+    private Vector3 _windDirection;
+    private WindyDay _windArea;
+    private WindyDay.WindDirection _windDir;
 
-    private Vector3 spawnPosition;
-    private Quaternion spawnRotation;
-    private bool canMove = false;
+    private Vector3 _spawnPosition;
+    private Quaternion _spawnRotation;
+    private bool _canMove;
     
 
     private void Awake()
     {
-        defaultSpeed = moveSpeed;
-        spawnPosition = transform.localPosition;
-        spawnRotation = transform.rotation;
-        playerAnimation = GetComponentInChildren<Animator>();
+        _playerRb = GetComponent<Rigidbody>();
+        _defaultSpeed = moveSpeed;
+        _spawnPosition = transform.localPosition;
+        _spawnRotation = transform.rotation;
+        _playerAnimation = GetComponentInChildren<Animator>();
 
 
         if(SceneManager.GetActiveScene().name != "MainMenu")
         {
-            canMove = true;
+            _canMove = true;
         }
     }
 
@@ -65,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
     {
         InputManager.MoveAction += GetMove;
         Actions.OnIceDay += ToggleIceMode;
-        Actions.OnStartDayCountdown += EnableMovement;
+        Actions.OnStartDay += EnableMovement;
         Actions.OnEndDay += DisableMovement;
         Actions.OnResetValues += ResetPosition;
     }
@@ -75,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
     {
         InputManager.MoveAction -= GetMove;
         Actions.OnIceDay -= ToggleIceMode;
-        Actions.OnStartDayCountdown -= EnableMovement;
+        Actions.OnStartDay -= EnableMovement;
         Actions.OnEndDay -= DisableMovement;
         Actions.OnResetValues -= ResetPosition;
     }
@@ -84,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
     {
         InputManager.MoveAction -= GetMove;
         Actions.OnIceDay -= ToggleIceMode;
-        Actions.OnStartDayCountdown -= EnableMovement;
+        Actions.OnStartDay -= EnableMovement;
         Actions.OnEndDay -= DisableMovement;
         Actions.OnResetValues -= ResetPosition;
     }
@@ -92,87 +90,88 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if(Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1f, slime))
+        // Check if the player is standing in a slime zone by raycasting downwards
+        var isTouchingSlime = Physics.Raycast(transform.position, Vector3.down,1f, slime);
+
+        switch (isTouchingSlime)
         {
-            if(!isInSlime)
-            {
-                isInSlime = true;
+            // If the player enters a slime zone
+            case true when !_isInSlime:
+                _isInSlime = true;
+                // Apply the slow multiplier to the player's move speed
                 moveSpeed *= slowMultiplier;
-            }
-        }
-        else
-        {
-            isInSlime = false;
-            moveSpeed = defaultSpeed;
+                break;
+            // If the player is no longer in a slime zone
+            case false when _isInSlime:
+                _isInSlime = false;
+                // Reset move speed to default
+                moveSpeed = _defaultSpeed;
+                break;
         }
     }
 
     private void FixedUpdate()
     {
-        if(canMove)
-        {
-            if(isInWindZone)
-            {
-                playerRB.AddForce(windDirection * windArea.strength);
-            }
+        if (!_canMove) return;
+        
+        if(_isInWindZone)
+            _playerRb.AddForce(_windDirection * _windArea.strength);
 
-            if (!isOnIce)
-                NormalMovement();
-            else
-                IceMovement();
-        }
+        if (!_isOnIce)
+            NormalMovement();
+        else
+            IceMovement();
     }
 
     private void ResetPosition()
     {
-        transform.localPosition = spawnPosition;
-        transform.rotation = spawnRotation;
-        canMove = false;
+        transform.localPosition = _spawnPosition;
+        transform.rotation = _spawnRotation;
+        _canMove = false;
     }
-
 
     private void EnableMovement()
     {
-        canMove = true;
+        _canMove = true;
     }
 
     private void DisableMovement()
     {
-        canMove = false;
+        _canMove = false;
     }
 
-    public void ToggleIceMode(bool isIcy)
+    private void ToggleIceMode(bool isIcy)
     {
-        isOnIce = isIcy;
+        _isOnIce = isIcy;
 
         // Reset velocity when switching back to normal movement
         if (!isIcy)
         {
-            playerRB.velocity = Vector3.zero;
+            _playerRb.velocity = Vector3.zero;
         }
     }
 
     private void GetMove(InputAction.CallbackContext input)
     {
-        moveDir = input.ReadValue<Vector2>();
+        _moveDir = input.ReadValue<Vector2>();
     }
 
 
     private void NormalMovement()
     {
         //translate Vector2 to Vector3
-        Vector3 movement = new (moveDir.x, 0, moveDir.y);
+        var movement = new Vector3(_moveDir.x, 0, _moveDir.y);
 
         //rotate towards direction
         if (movement != Vector3.zero)
         {
-            Quaternion toRotation = Quaternion.LookRotation(movement, Vector3.up);
+            var toRotation = Quaternion.LookRotation(movement, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.fixedDeltaTime);
-            playerAnimation.SetBool("isMoving", true);
+            _playerAnimation.SetBool("isMoving", true);
         }
         else
         {
-            playerAnimation.SetBool("isMoving", false);
+            _playerAnimation.SetBool("isMoving", false);
         }
 
         //apply multipliers
@@ -182,38 +181,38 @@ public class PlayerMovement : MonoBehaviour
         movement = CheckMove(movement);
 
         //apply movement
-        playerRB.MovePosition(playerRB.position + movement);
+        _playerRb.MovePosition(_playerRb.position + movement);
 
     }
 
     private void IceMovement()
     {
-        Vector3 targetVelocity = new Vector3(moveDir.x, 0, moveDir.y) * maxSpeed;
+        var targetVelocity = new Vector3(_moveDir.x, 0, _moveDir.y) * maxSpeed;
 
         // Allow rotation even if standing still
-        if (moveDir.sqrMagnitude > 0.001f)
+        if (_moveDir.sqrMagnitude > 0.001f)
         {
             // Rotate towards input direction
-            Quaternion toRotation = Quaternion.LookRotation(targetVelocity.normalized, Vector3.up);
+            var toRotation = Quaternion.LookRotation(targetVelocity.normalized, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.fixedDeltaTime);
         }
-        else if (playerRB.velocity.sqrMagnitude > 0.01f)
+        else if (_playerRb.velocity.sqrMagnitude > 0.01f)
         {
             // Otherwise, rotate based on movement direction
-            Quaternion toRotation = Quaternion.LookRotation(playerRB.velocity.normalized, Vector3.up);
+            var toRotation = Quaternion.LookRotation(_playerRb.velocity.normalized, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.fixedDeltaTime);
         }
 
         // Handle acceleration and deceleration smoothly
-        if (moveDir.sqrMagnitude > 0.001f)
+        if (_moveDir.sqrMagnitude > 0.001f)
         {
-            playerRB.velocity = Vector3.MoveTowards(playerRB.velocity, targetVelocity, acceleration * Time.fixedDeltaTime);
-            playerAnimation.SetBool("isMoving", true);
+            _playerRb.velocity = Vector3.MoveTowards(_playerRb.velocity, targetVelocity, acceleration * Time.fixedDeltaTime);
+            _playerAnimation.SetBool("isMoving", true);
         }
         else
         {
-            playerRB.velocity = Vector3.MoveTowards(playerRB.velocity, Vector3.zero, deceleration * Time.fixedDeltaTime);
-            playerAnimation.SetBool("isMoving", playerRB.velocity.sqrMagnitude > 0.01f);
+            _playerRb.velocity = Vector3.MoveTowards(_playerRb.velocity, Vector3.zero, deceleration * Time.fixedDeltaTime);
+            _playerAnimation.SetBool("isMoving", _playerRb.velocity.sqrMagnitude > 0.01f);
         }
     }
 
@@ -222,7 +221,7 @@ public class PlayerMovement : MonoBehaviour
     //Function that tries to detect any collisions and modify the move to account for them
     private Vector3 CheckMove(Vector3 move)
     {
-        Vector3 legalMove = Vector3.zero; //varaible to store what version of the 
+        Vector3 legalMove; //variable to store what version of the 
 
         //do initial check to see if move will collide with anything
         if (DetectCollisions(move))
@@ -259,20 +258,20 @@ public class PlayerMovement : MonoBehaviour
     {
         if(other.CompareTag("WindArea"))
         {
-            isInWindZone = true;
-            windArea = other.GetComponent<WindyDay>();
-            windDir = windArea.windDirect;
-            windDirection = windArea.direction;
+            _isInWindZone = true;
+            _windArea = other.GetComponent<WindyDay>();
+            _windDir = _windArea.windDirect;
+            _windDirection = _windArea.direction;
         }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if(windArea != null)
+        if(_windArea != null)
         {
-            if(windArea.windDirect != windDir)
+            if(_windArea.windDirect != _windDir)
             {
-                windDirection = windArea.direction;
+                _windDirection = _windArea.direction;
             }
         }
     }
@@ -281,8 +280,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if(other.CompareTag("WindArea"))
         {
-            isInWindZone = false;
-            windArea = null;
+            _isInWindZone = false;
+            _windArea = null;
         }
     }
 }

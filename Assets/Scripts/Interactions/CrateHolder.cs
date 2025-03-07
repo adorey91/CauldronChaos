@@ -6,25 +6,24 @@ public class CrateHolder : Interactable
     public GameObject ingredientPrefab;
     public enum CrateType { Bottle, Mushroom, RabbitFoot, EyeOfBasilisk, Mandrake, TrollBone };
     public CrateType crateType;
-    private Vector3 originalScale;
+    private Vector3 _originalScale;
 
 
     public void Start()
     {
-        originalScale = transform.localScale;
+        _originalScale = transform.localScale;
 
         // If no ingredient prefab is assigned, load the default prefab based on the crate type
-        if (ingredientPrefab == null)
+        if (ingredientPrefab != null) return;
+        
+        switch (crateType)
         {
-            switch (crateType)
-            {
-                case CrateType.Bottle: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Bottle_Prefab"); break;
-                case CrateType.Mushroom: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Mushroom"); break;
-                case CrateType.RabbitFoot: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Rabbit_Foot_Prefab"); break;
-                case CrateType.EyeOfBasilisk: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Eye_of_Basilisk_Prefab"); break;
-                case CrateType.Mandrake: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Mandrake"); break;
-                case CrateType.TrollBone: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Troll_Bone"); break;
-            }
+            case CrateType.Bottle: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Bottle_Prefab"); break;
+            case CrateType.Mushroom: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Mushroom"); break;
+            case CrateType.RabbitFoot: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Rabbit_Foot_Prefab"); break;
+            case CrateType.EyeOfBasilisk: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Eye_of_Basilisk_Prefab"); break;
+            case CrateType.Mandrake: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Mandrake"); break;
+            case CrateType.TrollBone: ingredientPrefab = LoadPrefab("Ingredient_Prefabs/Troll_Bone"); break;
         }
     }
 
@@ -46,23 +45,19 @@ public class CrateHolder : Interactable
             return;
         }
 
-        GameObject newIngredient;
 
         transform.DOScale(1.2f, 0.08f).SetLoops(2, LoopType.Yoyo);
 
-        newIngredient = Instantiate(ingredientPrefab, playerPickup.GetHolderLocation()); //spawning new ingredient
+        var newIngredient = Instantiate(ingredientPrefab, playerPickup.GetHolderLocation()); //spawning new ingredient
         playerPickup.SetHeldObject(newIngredient.GetComponent<PickupObject>()); //adding manually to player's held slot
     }
 
     // Function that handles the interaction between the goblin and the crate
     internal void GoblinInteraction(Transform goblin)
     {
-        GameObject ingredient;
-
         transform.DOScale(1.2f, 0.08f).SetLoops(2, LoopType.Yoyo);
 
-
-        ingredient = Instantiate(ingredientPrefab, goblin.position, Quaternion.identity);
+        var ingredient = Instantiate(ingredientPrefab, goblin.position, Quaternion.identity);
         ingredient.transform.localScale = Vector3.zero;
         Vector3 randomPosition = new(Random.Range(-1, 1), 0, Random.Range(-1, 1));
 
@@ -73,14 +68,12 @@ public class CrateHolder : Interactable
     // Function that loads a prefab from the resources folder
     private GameObject LoadPrefab(string path)
     {
-        GameObject prefab = Resources.Load<GameObject>(path);
+        var prefab = Resources.Load<GameObject>(path);
 
-        if (prefab == null)
-        {
-            Debug.LogError("Prefab not found at path: " + path);
-            return null;
-        }
-        return prefab;
+        if (prefab != null) return prefab;
+        
+        Debug.LogError("Prefab not found at path: " + path);
+        return null;
     }
    
 }

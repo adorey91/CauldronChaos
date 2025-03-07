@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -14,13 +12,15 @@ public class AudioManager : MonoBehaviour
 {
     [Header("Audio Managers")]
     public SFXManager sfxManager;
+
     public MusicManager musicManager;
 
     [Header("Audio Mixers")]
     [SerializeField] private AudioMixer masterMixer;
-    [SerializeField][Range(0.0001f, 1f)] private float masterMixerDefaultVolume = 0.5f;
-    [SerializeField][Range(0.0001f, 1f)] private float sfxMixerDefaultVolume = 0.5f;
-    [SerializeField][Range(0.0001f, 1f)] private float musicMixerDefaultVolume = 0.5f;
+
+    [SerializeField] [Range(0.0001f, 1f)] private float masterMixerDefaultVolume = 0.5f;
+    [SerializeField] [Range(0.0001f, 1f)] private float sfxMixerDefaultVolume = 0.5f;
+    [SerializeField] [Range(0.0001f, 1f)] private float musicMixerDefaultVolume = 0.5f;
 
     private static AudioManager _instance;
 
@@ -29,7 +29,7 @@ public class AudioManager : MonoBehaviour
     {
         get
         {
-            _instance = FindObjectOfType<AudioManager>();  // Try to find an existing AudioManager in the scene
+            _instance = FindObjectOfType<AudioManager>(); // Try to find an existing AudioManager in the scene
 
             //check if Instance is null
             if (_instance == null)
@@ -38,7 +38,8 @@ public class AudioManager : MonoBehaviour
                 _instance = Instantiate(Resources.Load("AudioManager") as GameObject).GetComponent<AudioManager>();
                 _instance.name = "AudioManager";
             }
-        return _instance;
+
+            return _instance;
         }
     }
 

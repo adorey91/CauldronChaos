@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -8,129 +7,104 @@ public class CustomerBehaviour : MonoBehaviour
 {
     // Order details
     [Header("Order Details")]
-    public RecipeSO requestedOrder;
+    internal RecipeSO RequestedOrder;
+
     public string customerName;
     public Transform customerHands;
-    private CustomTimer tipTimer;
-    private bool giveTip;
 
     [Header("UI for Order")]
     [SerializeField] private GameObject orderUiPrefab;
-    private Image orderIcon;
-    private Transform orderUiParent;
-    private bool hasShownOrder;
+
+    private Image _orderIcon;
+    private Transform _orderUiParent;
+    private bool _hasShownOrder;
 
     [Header("Movement Settings")]
     public float moveSpeed = 3f;
-    [SerializeField] private Animator animator;
-    private Vector3 targetPosition;
-    private bool leavingQueue;
-    internal bool hasJoinedQueue;
 
-    private GameObject orderUiInstance;
+    [SerializeField] private Animator animator;
+    private Vector3 _targetPosition;
+    private bool _leavingQueue;
+    internal bool HasJoinedQueue;
+
+    private GameObject _orderUiInstance;
 
     private void Start()
     {
-        tipTimer = new CustomTimer(2, true);
         moveSpeed = 3f;
         animator.speed = 1f;
     }
 
     private void Update()
     {
-        if (tipTimer.UpdateTimer())
-            giveTip = false;
-
-        if (!leavingQueue)
+        if (!_leavingQueue)
             MoveToTarget();
     }
 
     #region Order Events
+
     internal void AssignOrder(RecipeSO order, Transform parent)
     {
-        this.requestedOrder = order;
-        orderUiParent = parent;
-        giveTip = true;
+        this.RequestedOrder = order;
+        _orderUiParent = parent;
     }
 
     private void DisplayOrderUI()
     {
-        orderUiInstance = Instantiate(orderUiPrefab, orderUiParent);
+        _orderUiInstance = Instantiate(orderUiPrefab, _orderUiParent);
         // Find the Image component in the instantiated object, not globally
 
-        Transform child = orderUiInstance.transform.GetChild(0);
-        Transform text = orderUiInstance.transform.GetChild(1); // this is for testing only
-        orderIcon = child.GetComponent<Image>();
-        TextMeshProUGUI order = text.GetComponent<TextMeshProUGUI>();
-
-        if (orderIcon == null)
-        {
-            Debug.LogError("OrderIcon (Image) not found inside orderUiInstance!");
-            return;
-        }
-
-        if (requestedOrder.potionIcon != null)
-        {
-            order.enabled = false;
-            orderIcon.sprite = requestedOrder.potionIcon;
-        }
-        else
-        {
-            order.enabled = true;
-            order.text = requestedOrder.recipeName;
-            orderIcon.enabled = false;
-        }
-        
-        tipTimer.StartTimer();
+        var child = _orderUiInstance.transform.GetChild(0);
+        _orderIcon = child.GetComponent<Image>();
+        _orderIcon.sprite = RequestedOrder.potionIcon;
     }
 
     internal RecipeSO HasOrder()
     {
-        return requestedOrder;
+        return RequestedOrder;
     }
 
     internal void OrderComplete()
     {
-        if (giveTip == true)
-            Actions.OnCustomerServed?.Invoke(true, requestedOrder.points);
-        else
-            Actions.OnCustomerServed?.Invoke(false, requestedOrder.points);
+        Actions.OnCustomerServed?.Invoke(RequestedOrder.sellAmount);
     }
+
     #endregion
 
     #region Positioning
+
     internal void SetTarget(Vector3 position)
     {
         animator.SetBool("isWalking", true);
-        targetPosition = position;
-        leavingQueue = false;
+        _targetPosition = position;
+        _leavingQueue = false;
     }
 
     // Leave the queue and call a callback once finished
     internal void LeaveQueue(Vector3 exitPosition, System.Action onExitComplete)
     {
-        leavingQueue = true;
-        Destroy(orderUiInstance);
+        _leavingQueue = true;
+        Destroy(_orderUiInstance);
         StartCoroutine(LeaveAndExit(exitPosition, onExitComplete));
     }
 
     private void MoveToTarget()
     {
-        if (Vector3.Distance(transform.position, targetPosition) > 0.1f)
+        if (Vector3.Distance(transform.position, _targetPosition) > 0.1f)
         {
             animator.SetBool("isWalking", true);
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, _targetPosition, moveSpeed * Time.deltaTime);
             transform.rotation = Quaternion.Euler(0, 270, 0);
         }
         else
         {
             transform.rotation = Quaternion.identity;
-            hasJoinedQueue = true;
+            HasJoinedQueue = true;
             animator.SetBool("isWalking", false);
 
-            if (!hasShownOrder)
+            if (!_hasShownOrder)
             {
-                hasShownOrder = true;
+                _hasShownOrder = true;
                 DisplayOrderUI();
             }
         }
@@ -139,8 +113,9 @@ public class CustomerBehaviour : MonoBehaviour
     private IEnumerator LeaveAndExit(Vector3 exitPosition, System.Action onExitComplete)
     {
         animator.SetBool("isWalking", true);
-        float stepDistance = 1.2f; // Distance to step back
-        Vector3 backwardStep = transform.position - transform.forward * stepDistance; // Step back 1 unit
+
+        const float stepDistance = 1.2f; // Distance to step back
+        var backwardStep = transform.position - transform.forward * stepDistance; // Step back 1 unit
 
         transform.rotation = Quaternion.Euler(0, 180, 0);
 
@@ -170,5 +145,6 @@ public class CustomerBehaviour : MonoBehaviour
         animator.speed = 2f;
         moveSpeed = 12f;
     }
+
     #endregion
 }

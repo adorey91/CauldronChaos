@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -10,29 +7,29 @@ using UnityEngine.UI;
 public class RecipeBookUI : MonoBehaviour
 {
     [SerializeField] private RecipeManager recipeManager;
-    [SerializeField] private GameObject recipeUiLeft;
-    [SerializeField] private GameObject recipeUiRight;
+    [SerializeField] private GameObject recipeUiLeftObj;
+    [SerializeField] private GameObject recipeUiRightObj;
 
-    private RecipeSO[] availableRecipes;
+    private RecipeSO[] _availableRecipes;
 
     [Header("Page Buttons")]
     [SerializeField] private GameObject previousPage;
     [SerializeField] private GameObject nextPage;
 
-    private int _pageNumber = 0;
+    private int _pageNumber;
 
     // Recipe UI Components
-    [SerializeField] private RecipeUI _recipeUiLeft;
-    [SerializeField] private RecipeUI _recipeUiRight;
+    [SerializeField] private RecipeUI recipeUiLeft;
+    [SerializeField] private RecipeUI recipeUiRight;
 
     private void Start()
     {
-        availableRecipes = recipeManager.FindAvailableRecipes();
+        _availableRecipes = recipeManager.FindAvailableRecipes();
 
         if (_pageNumber == 0)
             previousPage.SetActive(false);
 
-        if (availableRecipes.Length - 1 < 2)
+        if (_availableRecipes.Length - 1 < 2)
             nextPage.SetActive(false);
 
         SetRecipes();
@@ -59,7 +56,7 @@ public class RecipeBookUI : MonoBehaviour
     #endregion
 
 
-    public void SetRecipes()
+    private void SetRecipes()
     {
         ClearPage(); // Clear current UI elements
 
@@ -67,13 +64,13 @@ public class RecipeBookUI : MonoBehaviour
         int secondRecipeIndex = firstRecipeIndex + 1; // Second recipe on the current screen
 
         // Fill left page if a recipe exists
-        if (firstRecipeIndex < availableRecipes.Length)
+        if (firstRecipeIndex < _availableRecipes.Length)
         {
             FillLeftPage(firstRecipeIndex);
         }
 
         // Fill right page if a recipe exists
-        if (secondRecipeIndex < availableRecipes.Length)
+        if (secondRecipeIndex < _availableRecipes.Length)
         {
             FillRightPage(secondRecipeIndex);
         }
@@ -84,31 +81,33 @@ public class RecipeBookUI : MonoBehaviour
 
     private void FillLeftPage(int recipeIndex)
     {
-        recipeUiLeft.SetActive(true);
-        _recipeUiLeft.recipeName.text = availableRecipes[recipeIndex].recipeName;
-        _recipeUiLeft.potionIcon.sprite = availableRecipes[recipeIndex].potionIcon;
-        _recipeUiLeft.potionIcon.preserveAspect = true;
-        CreateIngredientUI(_recipeUiLeft, recipeIndex);
+        recipeUiLeftObj.SetActive(true);
+        recipeUiLeft.recipeName.text = _availableRecipes[recipeIndex].recipeName;
+        recipeUiLeft.potionIcon.sprite = _availableRecipes[recipeIndex].potionIcon;
+        recipeUiLeft.potionIcon.preserveAspect = true;
+        recipeUiLeft.potionPrice.text = _availableRecipes[recipeIndex].sellAmount.ToString();
+        CreateIngredientUI(recipeUiLeft, recipeIndex);
     }
 
     private void FillRightPage(int recipeIndex)
     {
-        recipeUiRight.SetActive(true);
-        _recipeUiRight.recipeName.text = availableRecipes[recipeIndex].recipeName;
-        _recipeUiRight.potionIcon.sprite = availableRecipes[recipeIndex].potionIcon;
-        _recipeUiRight.potionIcon.preserveAspect = true;
-        CreateIngredientUI(_recipeUiRight, recipeIndex);
+        recipeUiRightObj.SetActive(true);
+        recipeUiRight.recipeName.text = _availableRecipes[recipeIndex].recipeName;
+        recipeUiRight.potionIcon.sprite = _availableRecipes[recipeIndex].potionIcon;
+        recipeUiRight.potionIcon.preserveAspect = true;
+        recipeUiRight.potionPrice.text = _availableRecipes[recipeIndex].sellAmount.ToString();
+        CreateIngredientUI(recipeUiRight, recipeIndex);
     }
 
     private void ClearPage()
     {
-        recipeUiRight.SetActive(false);
-        recipeUiLeft.SetActive(false);
+        recipeUiRightObj.SetActive(false);
+        recipeUiLeftObj.SetActive(false);
     }
 
     private void CreateIngredientUI(RecipeUI recipeUI, int recipeIndex)
     {
-        int totalSteps = availableRecipes[recipeIndex].steps.Length;
+        int totalSteps = _availableRecipes[recipeIndex].steps.Length;
 
         for (int i = 0; i < recipeUI.recipeStepUI.Length; i++)
         {
@@ -119,16 +118,16 @@ public class RecipeBookUI : MonoBehaviour
 
                 Sprite stepSprite;
 
-                if (availableRecipes[recipeIndex].steps[i].action == RecipeStepSO.ActionType.AddIngredient)
+                if (_availableRecipes[recipeIndex].steps[i].action == RecipeStepSO.ActionType.AddIngredient)
                 {
-                    stepSprite = availableRecipes[recipeIndex].steps[i].ingredientSprite;
+                    stepSprite = _availableRecipes[recipeIndex].steps[i].ingredientSprite;
                     stirText.enabled = false;
                 }
                 else
                 {
-                    stepSprite = availableRecipes[recipeIndex].steps[i].stirSprite;
+                    stepSprite = _availableRecipes[recipeIndex].steps[i].stirSprite;
                     stirText.enabled = true;
-                    stirText.text = $"{availableRecipes[recipeIndex].steps[i].stirAmount}";
+                    stirText.text = $"{_availableRecipes[recipeIndex].steps[i].stirAmount}";
                 }
 
                 var stepImage = recipeUI.recipeStepUI[i].GetComponent<Image>();
@@ -144,27 +143,24 @@ public class RecipeBookUI : MonoBehaviour
     }
 
     #region Navigation
-    public void NextPage(InputAction.CallbackContext input)
+
+    private void NextPage(InputAction.CallbackContext input)
     {
-        if (input.performed)
+        if (!input.performed) return;
+        if ((_pageNumber + 1) * 2 < _availableRecipes.Length)
         {
-            if ((_pageNumber + 1) * 2 < availableRecipes.Length)
-            {
-                _pageNumber++;
-                SetRecipes();
-            }
+            _pageNumber++;
+            SetRecipes();
         }
     }
 
-    public void PreviousPage(InputAction.CallbackContext input)
+    private void PreviousPage(InputAction.CallbackContext input)
     {
-        if (input.performed)
+        if (!input.performed) return;
+        if (_pageNumber > 0)
         {
-            if (_pageNumber > 0)
-            {
-                _pageNumber--;
-                SetRecipes();
-            }
+            _pageNumber--;
+            SetRecipes();
         }
     }
 
@@ -172,7 +168,7 @@ public class RecipeBookUI : MonoBehaviour
     {
         if(isNext)
         {
-            if ((_pageNumber + 1) * 2 < availableRecipes.Length)
+            if ((_pageNumber + 1) * 2 < _availableRecipes.Length)
             {
                 _pageNumber++;
                 SetRecipes();
@@ -191,7 +187,7 @@ public class RecipeBookUI : MonoBehaviour
     private void UpdatePageButtons()
     {
         previousPage.SetActive(_pageNumber > 0);
-        nextPage.SetActive((_pageNumber + 1) * 2 < availableRecipes.Length);
+        nextPage.SetActive((_pageNumber + 1) * 2 < _availableRecipes.Length);
     }
     #endregion
 }
@@ -201,6 +197,7 @@ public class RecipeUI
 {
     public TextMeshProUGUI recipeName;
     public Image potionIcon;
+    public TextMeshProUGUI potionPrice;
     public GameObject[] recipeStepUI;
 }
 

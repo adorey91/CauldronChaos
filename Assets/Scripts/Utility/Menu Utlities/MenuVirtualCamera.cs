@@ -1,16 +1,14 @@
 using Cinemachine;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 
 public class MenuVirtualCamera : MonoBehaviour
 {
-    [SerializeField] private Cinemachine.CinemachineVirtualCamera cinemachineCamera;
+    [SerializeField] private CinemachineVirtualCamera cineCamera;
     [SerializeField] private Camera cameraBrain;
-    [SerializeField] Transform doorTarget;
-    [SerializeField] Transform calenderTarget;
-    [SerializeField] Transform cauldronTarget;
+    [SerializeField] private Transform doorTarget;
+    [SerializeField] private Transform calenderTarget;
+    [SerializeField] private Transform cauldronTarget;
 
     public static Action OnResetCamera;
     public static Action TurnCameraBrainOn;
@@ -54,15 +52,15 @@ public class MenuVirtualCamera : MonoBehaviour
 
     private void Intro()
     {
-        cinemachineCamera.m_LookAt = doorTarget;
-        Cinemachine.CinemachineTrackedDolly dolly = cinemachineCamera.GetCinemachineComponent<Cinemachine.CinemachineTrackedDolly>();
+        cineCamera.m_LookAt = doorTarget;
+        var dolly = cineCamera.GetCinemachineComponent<CinemachineTrackedDolly>();
         dolly.m_PathPosition = 0;
     }
 
     private void LookAtCalendar()
     {
-        cinemachineCamera.m_LookAt = calenderTarget;
-        var dolly = cinemachineCamera.GetCinemachineComponent<CinemachineTrackedDolly>();
+        cineCamera.m_LookAt = calenderTarget;
+        var dolly = cineCamera.GetCinemachineComponent<CinemachineTrackedDolly>();
 
         dolly.m_PathPosition = 2; // Move cameraBrain
     }
@@ -70,8 +68,8 @@ public class MenuVirtualCamera : MonoBehaviour
     private void ResetCamera()
     {
         cameraBrain.enabled = false;
-        cinemachineCamera.m_LookAt = cauldronTarget;
-        var dolly = cinemachineCamera.GetCinemachineComponent<CinemachineTrackedDolly>();
+        cineCamera.m_LookAt = cauldronTarget;
+        var dolly = cineCamera.GetCinemachineComponent<CinemachineTrackedDolly>();
         dolly.m_PathPosition = 1;
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,9 +7,9 @@ public class SlimeTrail : MonoBehaviour
     [SerializeField] private float distanceBetweenPoints = 1f;
     [SerializeField] private int maxTrailDistance = 10;
 
-    private Vector3 lastSpawnedPosition;
-    private Queue<GameObject> slimeTrail = new();
-    private bool trailActive = false;
+    private Vector3 _lastSpawnedPosition;
+    private Queue<GameObject> _slimeTrail = new();
+    private bool _trailActive = false;
 
     #region OnEnable / OnDisable / OnDestroy Events
     private void OnEnable()
@@ -36,39 +35,38 @@ public class SlimeTrail : MonoBehaviour
 
     private void Update()
     {
-        if(trailActive)
+        if (!_trailActive) return;
+        
+        if(Vector3.Distance(_lastSpawnedPosition, transform.position) >= distanceBetweenPoints)
         {
-            if(Vector3.Distance(lastSpawnedPosition, transform.position) >= distanceBetweenPoints)
-            {
-                GameObject slime = Instantiate(slimePrefab, transform.position, Quaternion.identity);
-                slimeTrail.Enqueue(slime);
-                lastSpawnedPosition = transform.position;
-            }
+            GameObject slime = Instantiate(slimePrefab, transform.position, Quaternion.identity);
+            _slimeTrail.Enqueue(slime);
+            _lastSpawnedPosition = transform.position;
+        }
 
-            // Remove the oldest slime if it’s too far from the current player position.
-            if (slimeTrail.Count > maxTrailDistance)
-            {
-                    Destroy(slimeTrail.Dequeue());
-            }
+        // Remove the oldest slime if itï¿½s too far from the current player position.
+        if (_slimeTrail.Count > maxTrailDistance)
+        {
+            Destroy(_slimeTrail.Dequeue());
         }
     }
 
     private void StartSlimeTrail()
     {
-        trailActive = true;
+        _trailActive = true;
     }
 
     private void EndSlimeTrail()
     {
-        trailActive = false;
+        _trailActive = false;
     }
 
     private void ResetTrail()
     {
-        foreach (GameObject slime in slimeTrail)
+        foreach (var slime in _slimeTrail)
         {
             Destroy(slime);
         }
-        slimeTrail.Clear();
+        _slimeTrail.Clear();
     }
 }

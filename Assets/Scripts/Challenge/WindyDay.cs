@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WindyDay : MonoBehaviour
@@ -14,17 +12,17 @@ public class WindyDay : MonoBehaviour
     public WindDirection windDirect;
 
     public float strength = 5;
-    private float defaultWindStrength;
+    private float _defaultWindStrength;
     public Vector3 direction;
-    private CustomTimer windDirectionChange;
-    private readonly float windChangeTime = 30f;
+    private CustomTimer _windDirectionChange;
+    private readonly float _windChangeTime = 30f;
     [SerializeField] private GameObject[] windows;
 
 
     private void Awake()
     {
-        defaultWindStrength = strength;
-        windDirectionChange = new(windChangeTime, false);
+        _defaultWindStrength = strength;
+        _windDirectionChange = new CustomTimer(_windChangeTime, false);
     }
 
     #region OnEnable / OnDisable / OnDestroy Events
@@ -49,19 +47,19 @@ public class WindyDay : MonoBehaviour
 
     private void Update()
     {
-        if(windDirectionChange.UpdateTimer())
+        if(_windDirectionChange.UpdateTimer())
         {
             ChangeWindDirection();
         }
     }
 
-    internal void StartWind()
+    private void StartWind()
     {
         foreach(var window in windows)
         {
             window.SetActive(false);
         }
-        strength = defaultWindStrength;
+        strength = _defaultWindStrength;
         ChangeWindDirection();
     }
 
@@ -87,6 +85,6 @@ public class WindyDay : MonoBehaviour
         }
         Debug.Log("Wind Direction Changed to: " + windDirect);
 
-        windDirectionChange.ResetTimer();
+        _windDirectionChange.ResetTimer();
     }
 }

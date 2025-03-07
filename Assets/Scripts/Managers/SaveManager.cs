@@ -8,18 +8,18 @@ using UnityEngine.UI;
 
 public class SaveManager : MonoBehaviour
 {
-    private string savePath;
-    private string saveFileName = "cauldronChaos.json";
+    private string _savePath;
+    private const string SaveFileName = "cauldronChaos.json";
     [SerializeField] private TextMeshProUGUI deleteFileConfirmation;
 
     public GameData gameData;
 
-    private Coroutine deleteConfirm;
+    private Coroutine _deleteConfirm;
 
     public void Start()
     {
        deleteFileConfirmation.enabled = false;
-        savePath = Path.Combine(Application.persistentDataPath, saveFileName);
+        _savePath = Path.Combine(Application.persistentDataPath, SaveFileName);
         LoadGame();
     }
 
@@ -45,7 +45,7 @@ public class SaveManager : MonoBehaviour
 
     public void CheckSaveFile()
     {
-        if (gameData.isValidSave && !GameManager.instance.IsDebugging())
+        if (gameData.isValidSave && !GameManager.Instance.IsDebugging())
         {
             Actions.OnSetUnlockedDays?.Invoke(GetUnlockedDaysCount());
             Actions.OnSetScore?.Invoke(GetAllScores());
@@ -53,7 +53,7 @@ public class SaveManager : MonoBehaviour
         }
         else
         {
-            if(GameManager.instance.IsDebugging())
+            if(GameManager.Instance.IsDebugging())
             {
                 Actions.OnSaveExist?.Invoke(true);
                 Actions.OnSetUnlockedDays?.Invoke(10);
@@ -71,17 +71,17 @@ public class SaveManager : MonoBehaviour
     }
 
 
-    public void SaveGame()
+    private void SaveGame()
     {
-        if(!GameManager.instance.IsDebugging())
+        if(!GameManager.Instance.IsDebugging())
         {
             gameData.isValidSave = true;
 
             Actions.OnSetUnlockedDays?.Invoke(GetUnlockedDaysCount());
             Actions.OnSetScore?.Invoke(GetAllScores());
 
-            string json = JsonUtility.ToJson(gameData);
-            File.WriteAllText(savePath, json);
+            var json = JsonUtility.ToJson(gameData);
+            File.WriteAllText(_savePath, json);
         }
         else
         {
@@ -91,23 +91,21 @@ public class SaveManager : MonoBehaviour
 
     private void LoadGame()
     {
-        if (File.Exists(savePath))
-        {
-            string json = File.ReadAllText(savePath);
-            gameData = JsonUtility.FromJson<GameData>(json);
-
-            gameData.days[0].isUnlocked = true;
-        }
+        if (!File.Exists(_savePath)) return;
+        
+        var json = File.ReadAllText(_savePath);
+        gameData = JsonUtility.FromJson<GameData>(json);
+        gameData.days[0].isUnlocked = true;
     }
 
     public void SaveAbovePlayerUI(Toggle abovePlayer)
     {
-        if (!GameManager.instance.IsDebugging())
+        if (!GameManager.Instance.IsDebugging())
         {
             gameData.abovePlayerUI = abovePlayer.isOn;
 
-            string json = JsonUtility.ToJson(abovePlayer);
-            File.WriteAllText(savePath, json);
+            var json = JsonUtility.ToJson(abovePlayer);
+            File.WriteAllText(_savePath, json);
         }
         else
         {
@@ -117,12 +115,12 @@ public class SaveManager : MonoBehaviour
 
     private void SaveDayScore(int day, int score, bool unlockNext)
     {
-        if (!GameManager.instance.IsDebugging())
+        if (!GameManager.Instance.IsDebugging())
         {
             // Update the day data if the day is valid
             if (day < gameData.days.Count)
             {
-                DayData dayData = gameData.days[day];
+                var dayData = gameData.days[day];
 
                 // Update the best score and people served for the day
                 if (score > dayData.bestScore)
@@ -143,18 +141,18 @@ public class SaveManager : MonoBehaviour
 
     private void UnlockDay(int day)
     {
-        if (day < gameData.days.Count)
-        {
-            gameData.days[0].isUnlocked = true;
-            gameData.days[day].isUnlocked = true;
-            Actions.OnSetUnlockedDays?.Invoke(GetUnlockedDaysCount());
-        }
+        if (day >= gameData.days.Count) return;
+        
+        gameData.days[0].isUnlocked = true;
+        gameData.days[day].isUnlocked = true;
+        Actions.OnSetUnlockedDays?.Invoke(GetUnlockedDaysCount());
     }
 
 
     private int GetUnlockedDaysCount()
     {
-        int count = 0;
+        var count = 0;
+        
         foreach (DayData day in gameData.days)
         {
             if (day.isUnlocked)
@@ -166,8 +164,8 @@ public class SaveManager : MonoBehaviour
 
     private int[] GetAllScores()
     {
-        int[] scores = new int[gameData.days.Count];
-        for (int i = 0; i < gameData.days.Count; i++)
+        var scores = new int[gameData.days.Count];
+        for (var i = 0; i < gameData.days.Count; i++)
         {
             scores[i] = gameData.days[i].bestScore;
         }
@@ -176,22 +174,22 @@ public class SaveManager : MonoBehaviour
 
     private void DeleteSave()
     {
-        if (File.Exists(savePath))
+        if (File.Exists(_savePath))
         {
-            File.Delete(savePath);
+            File.Delete(_savePath);
 
             // Will reset the game data and refresh the level select screen
-            if (!File.Exists(savePath))
+            if (!File.Exists(_savePath))
             {
                 gameData = new GameData();
                 gameData.CreateNewSave();
                 Actions.OnSaveDeleted?.Invoke();
-                deleteConfirm = StartCoroutine(ShowDeleteConfirmation("Save File Deleted"));
+                _deleteConfirm = StartCoroutine(ShowDeleteConfirmation("Save File Deleted"));
             }
         }
         else
         {
-            deleteConfirm = StartCoroutine(ShowDeleteConfirmation("No Save File Found"));
+            _deleteConfirm = StartCoroutine(ShowDeleteConfirmation("No Save File Found"));
         }
     }
 

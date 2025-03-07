@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeName: Potion of Stamina
   weight: 5
-  points: 80
+  sellAmount: 80
   steps:
   - {fileID: 11400000, guid: a23d695515e326b4095b01e42e44051d, type: 2}
   - {fileID: 11400000, guid: ba23049bb157f0b4585f6153add679f3, type: 2}

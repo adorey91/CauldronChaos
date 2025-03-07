@@ -6,7 +6,7 @@ using UnityEngine;
 public class SFXLibrary : MonoBehaviour
 {
     [SerializeField] private AudioClip[] audioClips;
-    private AudioClip lastPlayed = null;
+    private AudioClip _lastPlayed = null;
 
     //function that picks an audioclip from the list of audio clips for the SFX player
     public AudioClip PickAudioClip()
@@ -23,7 +23,7 @@ public class SFXLibrary : MonoBehaviour
             audioClip = audioClips[Random.Range(0, audioClips.Length)];
 
             //if audio picked is the last one played pick a different one
-            while (audioClip == lastPlayed)
+            while (audioClip == _lastPlayed)
             {
                 audioClip = audioClips[Random.Range(0, audioClips.Length)];
             }

@@ -1,108 +1,107 @@
 using UnityEngine;
-using static WindyDay;
 
 public class PotionOutput : MonoBehaviour
 {
     [SerializeField] private Renderer rend;
-    private MaterialPropertyBlock propBlock;
-    private Color storedColor;
+    private MaterialPropertyBlock _propBlock;
+    private Color _storedColor;
 
     public RecipeSO potionInside;
-    public bool givenToCustomer = false;
+    public bool givenToCustomer;
 
-    private bool wasPaused;
-    private bool addedWobble = false;
+    private bool _wasPaused;
+    private bool _addedWobble;
 
-    Vector3 lastPos;
-    Vector3 velocity;
-    Vector3 lastRot;
-    Vector3 angularVelocity;
+    private Vector3 _lastPos;
+    private Vector3 _velocity;
+    private Vector3 _lastRot;
+    private Vector3 _angularVelocity;
 
-    public float MaxWobble = 0.03f;
-    public float WobbleSpeed = 1f;
-    public float Recovery = 1f;
+    public float maxWobble = 0.03f;
+    public float wobbleSpeed = 1f;
+    public float recovery = 1f;
 
-    private float wobbleAmountX;
-    private float wobbleAmountZ;
-    private float wobbleAmountToAddX;
-    private float wobbleAmountToAddZ;
-    private float pulse;
-    private float time = 0.5f;
+    private float _wobbleAmountX;
+    private float _wobbleAmountZ;
+    private float _wobbleAmountToAddX;
+    private float _wobbleAmountToAddZ;
+    private float _pulse;
+    private float _time = 0.5f;
 
 
     public void Update()
     {
-        if(wasPaused && Time.timeScale > 0)
+        if(_wasPaused && Time.timeScale > 0)
         {
-            wasPaused = false;
+            _wasPaused = false;
             SetPotionColor();
         }
         else if (Time.timeScale == 0)
         {
-            wasPaused = true;
-            addedWobble = false;
+            _wasPaused = true;
+            _addedWobble = false;
         }
 
-        if (!wasPaused && addedWobble)
+        if (!_wasPaused && _addedWobble)
             Wobble();
     }
 
 
     public void SetPotionColor()
     {
-        storedColor = potionInside.potionColor;
+        _storedColor = potionInside.potionColor;
         ApplyColor();
     }
 
     private void ApplyColor()
     {
-        propBlock = new MaterialPropertyBlock();
-        rend.GetPropertyBlock(propBlock);
-        propBlock.SetFloat("_Fill", 0.6f);
-        propBlock.SetColor("_Color", storedColor);
-        rend.SetPropertyBlock(propBlock);
+        _propBlock = new MaterialPropertyBlock();
+        rend.GetPropertyBlock(_propBlock);
+        _propBlock.SetFloat("_Fill", 0.6f);
+        _propBlock.SetColor("_Color", _storedColor);
+        rend.SetPropertyBlock(_propBlock);
 
-        addedWobble = true;
+        _addedWobble = true;
     }
 
     private void Wobble()
     {
-        time += Time.deltaTime;
+        _time += Time.deltaTime;
 
         // Decrease wobble over time
-        wobbleAmountToAddX = Mathf.Lerp(wobbleAmountToAddX, 0, Time.deltaTime * Recovery);
-        wobbleAmountToAddZ = Mathf.Lerp(wobbleAmountToAddZ, 0, Time.deltaTime * Recovery);
+        _wobbleAmountToAddX = Mathf.Lerp(_wobbleAmountToAddX, 0, Time.deltaTime * recovery);
+        _wobbleAmountToAddZ = Mathf.Lerp(_wobbleAmountToAddZ, 0, Time.deltaTime * recovery);
 
         // Create a sine wave wobble
-        pulse = 2 * Mathf.PI * WobbleSpeed;
-        wobbleAmountX = wobbleAmountToAddX * Mathf.Sin(pulse * time);
-        wobbleAmountZ = wobbleAmountToAddZ * Mathf.Sin(pulse * time);
+        _pulse = 2 * Mathf.PI * wobbleSpeed;
+        _wobbleAmountX = _wobbleAmountToAddX * Mathf.Sin(_pulse * _time);
+        _wobbleAmountZ = _wobbleAmountToAddZ * Mathf.Sin(_pulse * _time);
 
-        if (float.IsNaN(wobbleAmountX) || float.IsNaN(wobbleAmountZ))
+        if (float.IsNaN(_wobbleAmountX) || float.IsNaN(_wobbleAmountZ))
         {
-            wobbleAmountX = 0;
-            wobbleAmountZ = 0;
+            _wobbleAmountX = 0;
+            _wobbleAmountZ = 0;
 
             return;
         }
 
         // Apply rotation wobble instead of modifying the material
         transform.localRotation = Quaternion.Euler(
-            wobbleAmountX * 5f,   // Small tilt on X
+            _wobbleAmountX * 5f,   // Small tilt on X
             transform.localRotation.eulerAngles.y, // Keep original Y rotation
-            wobbleAmountZ * 5f    // Small tilt on Z
+            _wobbleAmountZ * 5f    // Small tilt on Z
         );
 
         // Calculate velocity changes
-        velocity = (lastPos - transform.position) / Time.deltaTime;
-        angularVelocity = transform.rotation.eulerAngles - lastRot;
+        _velocity = (_lastPos - transform.position) / Time.deltaTime;
+        _angularVelocity = transform.rotation.eulerAngles - _lastRot;
 
         // Add clamped velocity to wobble
-        wobbleAmountToAddX += Mathf.Clamp((velocity.x + (angularVelocity.z * 0.2f)) * MaxWobble, -MaxWobble, MaxWobble);
-        wobbleAmountToAddZ += Mathf.Clamp((velocity.z + (angularVelocity.x * 0.2f)) * MaxWobble, -MaxWobble, MaxWobble);
+        _wobbleAmountToAddX += Mathf.Clamp((_velocity.x + (_angularVelocity.z * 0.2f)) * maxWobble, -maxWobble, maxWobble);
+        _wobbleAmountToAddZ += Mathf.Clamp((_velocity.z + (_angularVelocity.x * 0.2f)) * maxWobble, -maxWobble, maxWobble);
 
         // Keep last position and rotation
-        lastPos = transform.position;
-        lastRot = transform.rotation.eulerAngles;
+        _lastPos = transform.position;
+        _lastRot = transform.rotation.eulerAngles;
     }
 }

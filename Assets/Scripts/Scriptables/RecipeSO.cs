@@ -11,7 +11,7 @@ public class RecipeSO : ScriptableObject
     [Header("Weight")]
     [Tooltip("1 is rare, 10 is more common")]
     [Range(1,10)] public int weight;
-    public int points;
+    public int sellAmount;
 
     [Header("Ingredient Steps / Input")]
     public RecipeStepSO[] steps;

@@ -233,8 +233,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c02b75eb94a1d564cb720148a217f754, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  newCustomerSFX: {fileID: 7328759056422017956}
+  newCustomerSfx: {fileID: 0}
   door: {fileID: 430181937280486038}
+  isEntrance: 0
 --- !u!54 &8222573112492946707
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -329,8 +330,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c02b75eb94a1d564cb720148a217f754, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  newCustomerSFX: {fileID: 7328759056422017956}
+  newCustomerSfx: {fileID: 7328759056422017956}
   door: {fileID: 89236111137072693}
+  isEntrance: 1
 --- !u!54 &7878773039362208422
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeName: Potion of Anti-Perspirant
   weight: 8
-  points: 50
+  sellAmount: 50
   steps:
   - {fileID: 11400000, guid: a23d695515e326b4095b01e42e44051d, type: 2}
   - {fileID: 11400000, guid: 0ac84d26587e92d419335d287def4e69, type: 2}

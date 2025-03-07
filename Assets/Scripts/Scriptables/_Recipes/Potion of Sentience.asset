@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeName: Potion of Sentience
   weight: 5
-  points: 20
+  sellAmount: 20
   steps:
   - {fileID: 11400000, guid: 97e7804a0ec3fb94aba85a91aef9dbf8, type: 2}
   - {fileID: 11400000, guid: ba23049bb157f0b4585f6153add679f3, type: 2}

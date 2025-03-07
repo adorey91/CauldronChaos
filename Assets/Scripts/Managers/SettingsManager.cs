@@ -1,7 +1,5 @@
-using System;
-using TMPro;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -10,81 +8,82 @@ public class SettingsManager : MonoBehaviour
 {
     [Header("Settings Panels")]
     [SerializeField] private GameObject audioPanel;
+
     [SerializeField] private GameObject videoPanel;
     [SerializeField] private GameObject controlsPanel;
     [SerializeField] private GameObject systemPanel;
     [SerializeField] private GameObject deleteFilePanel;
     [SerializeField] private GameObject debugPanel;
-    private GameObject[] menuPanels;
-    private int currentMenuIndex = 0;
+    private Dictionary<Button, (GameObject panel, Page page)> _menuMap;
+    private int _currentMenuIndex;
 
     [Header("Controls")]
     [SerializeField] private GameObject controllerPanel;
+
     [SerializeField] private GameObject keyboardPanel;
     [SerializeField] private Button controlChangeButton;
 
     [Header("Settings Buttons")]
     [SerializeField] private Button[] settingsButton;
+
     [SerializeField] private Button audioButton;
     [SerializeField] private Button videoButton;
     [SerializeField] private Button controlsButton;
     [SerializeField] private Button systemButton;
     [SerializeField] private Button deleteFileButton;
     [SerializeField] private Button debugButton;
-    private Button[] menuButtons;
 
     [Header("Settings Back Buttons")]
     [SerializeField] private Button settingsBack;
+
     [SerializeField] private Button debugBack;
     [SerializeField] private Button deleteYes;
     [SerializeField] private Button deleteNo;
 
     private Gamepad _gamepad;
+    private bool _inSettings;
 
-    private bool inSettings = false;
+    private void Awake()
+    {
+        _menuMap = new Dictionary<Button, (GameObject, Page)>
+        {
+            { audioButton, (audioPanel, Page.Audio) },
+            { videoButton, (videoPanel, Page.Video) },
+            { controlsButton, (controlsPanel, Page.ControlsKeyboard) },
+            { systemButton, (systemPanel, Page.System) },
+            { deleteFileButton, (deleteFilePanel, Page.DeleteFile) },
+            { debugButton, (debugPanel, Page.DebugInput) },
+        };
+    }
 
     private void Start()
     {
         _gamepad = Gamepad.current;
 
-        menuPanels = new GameObject[] { audioPanel, videoPanel, controlsPanel, systemPanel};
-        menuButtons = new Button[] { audioButton, videoButton, controlsButton, systemButton };
-
-
-        foreach (Button settings in settingsButton)
+        foreach (var pair in _menuMap)
         {
-            settings.onClick.AddListener(OpenSettings);
+            pair.Key.onClick.AddListener(() => OpenPanel(pair.Value.panel, pair.Value.page));
         }
-        audioButton.onClick.AddListener(OpenAudio);
-        videoButton.onClick.AddListener(OpenVideo);
-        controlsButton.onClick.AddListener(OpenControls);
-        deleteFileButton.onClick.AddListener(OpenDeleteFile);
-        debugButton.onClick.AddListener(OpenDebug);
-        systemButton.onClick.AddListener(OpenSystem);
 
-        controlChangeButton.onClick.AddListener(ChangeControls);
+        controlChangeButton.onClick.AddListener(ToggleControlScheme);
+        settingsBack.onClick.AddListener(CloseSettings);
+        debugBack.onClick.AddListener(() => OpenPanel(systemPanel, Page.System));
+        deleteYes.onClick.AddListener(DeleteFile);
+        deleteNo.onClick.AddListener(() => OpenPanel(systemPanel, Page.System));
 
-        settingsBack.onClick.AddListener(ReturnFromSettings);
-        debugBack.onClick.AddListener(OpenSystem);
-        deleteYes.onClick.AddListener(DeleteFileYesButton);
-        deleteNo.onClick.AddListener(OpenSystem);
+        _currentMenuIndex = 0;
     }
 
     private void Update()
     {
-        if(!inSettings) return;
+        if (!_inSettings || _gamepad == null) return;
 
-        if(_gamepad != null)
-        {
-            if (_gamepad.rightShoulder.wasPressedThisFrame)
-                CycleMenu(1);
-         
-            if (_gamepad.leftShoulder.wasPressedThisFrame)
-                CycleMenu(-1);
-        }
+        if (_gamepad.rightShoulder.wasPressedThisFrame) CycleMenu(1);
+        if (_gamepad.leftShoulder.wasPressedThisFrame) CycleMenu(-1);
     }
 
     #region OnEnable / OnDisable / OnDestroy Events
+
     private void OnEnable()
     {
         Actions.OnOpenSettingsAction += OpenSettings;
@@ -99,126 +98,61 @@ public class SettingsManager : MonoBehaviour
     {
         Actions.OnOpenSettingsAction -= OpenSettings;
     }
+
     #endregion
 
-    private void ActivatePanel(GameObject _panel)
+    private void OpenPanel(GameObject panel,  Page page)
     {
-        audioPanel.SetActive(false);
-        videoPanel.SetActive(false);
-        controlsPanel.SetActive(false);
-        deleteFilePanel.SetActive(false);
-        systemPanel.SetActive(false);
-        debugPanel.SetActive(false);
-        videoPanel.SetActive(false);
-
-        _panel.SetActive(true);
+        foreach (var p in _menuMap.Values) p.panel.SetActive(false);
+        panel.SetActive(true);
+        Actions.OnSetUiLocation(page);
     }
 
     private void CycleMenu(int direction)
     {
-        int previousIndex = currentMenuIndex;
+        var menuList = new List<(GameObject panel, Page page)>(_menuMap.Values);
+        var buttonList = new List<Button>(_menuMap.Keys);
 
         do
         {
-            currentMenuIndex += direction;
+            _currentMenuIndex = (_currentMenuIndex + direction + menuList.Count) % menuList.Count;
+        } 
+        while (!ShouldShowMenu(_currentMenuIndex));
 
-            if(currentMenuIndex >= menuPanels.Length) currentMenuIndex = 0;
-            if(currentMenuIndex < 0) currentMenuIndex = menuPanels.Length - 1;
-        } while (!ShouldShowMenu(currentMenuIndex));
-
-        // activate the new panel
-        ActivatePanel(menuPanels[currentMenuIndex]);
-        menuButtons[currentMenuIndex].Select();
+        OpenPanel(menuList[_currentMenuIndex].panel, menuList[_currentMenuIndex].page);
+        buttonList[_currentMenuIndex].Select();
     }
+
 
     private bool ShouldShowMenu(int index)
     {
-        // if system panel is selected but the scene isnt the main menu, dont show it
-        return !(menuPanels[index] == systemPanel && SceneManager.GetActiveScene().name != "MainMenu");
+        var menuValues = new List<(GameObject panel, Page page)>(_menuMap.Values);
+        return !(menuValues[index].panel == systemPanel && SceneManager.GetActiveScene().name != "MainMenu");
     }
 
-    // Settings UI Changes. Made public so they can be accessed in the inspector.
+
     internal void OpenSettings()
     {
-        if (SceneManager.GetActiveScene().name != "MainMenu")
-            systemButton.gameObject.SetActive(false);
-        else
-            systemButton.gameObject.SetActive(true);
-
-        Actions.OnSetUiLocation(UiObject.Page.Settings);
-        ActivatePanel(audioPanel);
-        currentMenuIndex = 0;
-        inSettings = true;
+        systemButton.gameObject.SetActive(SceneManager.GetActiveScene().name == "MainMenu");
+        OpenPanel(audioPanel, Page.Audio);
+        _inSettings = true;
     }
 
-    private void OpenAudio()
+    private void ToggleControlScheme()
     {
-        ActivatePanel(audioPanel);
-        Actions.OnSetUiLocation(UiObject.Page.Audio);
+        var usingKeyboard = keyboardPanel.activeSelf;
+        keyboardPanel.SetActive(!usingKeyboard);
+        controllerPanel.SetActive(usingKeyboard);
     }
-    private void OpenVideo()
-    {
-        ActivatePanel(videoPanel);
-        Actions.OnSetUiLocation(UiObject.Page.Video);
-    }
-
-    private void OpenControls()
-    {
-        ActivatePanel(controlsPanel);
-        OpenKeyboard();
-    }
-
-    private void OpenKeyboard()
-    {
-        Actions.OnSetUiLocation(UiObject.Page.ControlsKeyboard);
-        controllerPanel.SetActive(false);
-        keyboardPanel.SetActive(true);
-        //controlsTitle.text = "Keyboard Controls";
-    }
-
-    private void OpenController()
-    {
-        Actions.OnSetUiLocation(UiObject.Page.ControlsGamepad);
-        keyboardPanel.SetActive(false);
-        controllerPanel.SetActive(true);
-        //controlsTitle.text = "Controller Controls";
-    }
-
-    private void ChangeControls()
-    {
-        if (keyboardPanel.activeSelf)
-            OpenController();
-        else
-            OpenKeyboard();
-    }
-
-    private void OpenSystem()
-    {
-        ActivatePanel(systemPanel);
-        Actions.OnSetUiLocation(UiObject.Page.System);
-    }
-
-    private void OpenDeleteFile()
-    {
-        ActivatePanel(deleteFilePanel);
-        Actions.OnSetUiLocation(UiObject.Page.DeleteFile);
-    }
-
-    private void OpenDebug()
-    {
-        ActivatePanel(debugPanel);
-        Actions.OnSetUiLocation(UiObject.Page.DebugInput);
-    }
-
-    private void DeleteFileYesButton()
+    private void DeleteFile()
     {
         Actions.OnDeleteSaveFile?.Invoke();
         OpenSettings();
     }
 
-    private void ReturnFromSettings()
+    private void CloseSettings()
     {
-        Actions.OnForceStateChange("previousState");
-        inSettings = false;
+        Actions.OnStateChange("previousState");
+        _inSettings = false;
     }
 }

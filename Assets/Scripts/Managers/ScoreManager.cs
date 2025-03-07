@@ -2,7 +2,6 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -21,12 +20,11 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private Sprite loseSprite;
 
     [Header("Score Amounts")]
-    [SerializeField] private int tipMultiplier = 2;
     [SerializeField] private int[] scorePerLevel;
 
     // keeps track of current day / day score
-    private int score = 0;
-    private int currentDay = 0;
+    private int _score;
+    private int _currentDay;
 
     private void Start()
     {
@@ -38,7 +36,7 @@ public class ScoreManager : MonoBehaviour
     private void OnEnable()
     {
         Actions.OnCustomerServed += UpdateScore;
-        Actions.OnEndDay += UpdateEODText;
+        Actions.OnEndDay += UpdateEodText;
         Actions.OnResetValues += ResetValues;
         Actions.OnSetDay += SetCurrentDay;
     }
@@ -46,7 +44,7 @@ public class ScoreManager : MonoBehaviour
     private void OnDisable()
     {
         Actions.OnCustomerServed -= UpdateScore;
-        Actions.OnEndDay -= UpdateEODText;
+        Actions.OnEndDay -= UpdateEodText;
         Actions.OnResetValues -= ResetValues;
         Actions.OnSetDay -= SetCurrentDay;
     }
@@ -54,7 +52,7 @@ public class ScoreManager : MonoBehaviour
     private void OnDestroy()
     {
         Actions.OnCustomerServed -= UpdateScore;
-        Actions.OnEndDay -= UpdateEODText;
+        Actions.OnEndDay -= UpdateEodText;
         Actions.OnResetValues -= ResetValues;
         Actions.OnSetDay -= SetCurrentDay;
     }
@@ -62,70 +60,60 @@ public class ScoreManager : MonoBehaviour
 
     private void SetCurrentDay(int day)
     {
-        currentDay = day;
+        _currentDay = day;
     }
 
-    private void UpdateScore(bool wasGivenOnTime, int regularScore)
+    private void UpdateScore(int regularScore)
     {
-        if (wasGivenOnTime)
-        {
-            int addedScore = regularScore * tipMultiplier;
-            score += addedScore;
-        }
-        else
-        {
-            score += regularScore;
-        }
+            _score += regularScore;
 
         //if(score > scorePerLevel[currentDay] && !coinParticles.isPlaying)
         //{
         //    coinParticles.Play();
         //}
 
-        quotaFill.fillAmount = (float)score / (float)scorePerLevel[currentDay];
+        quotaFill.fillAmount = (float)_score / (float)scorePerLevel[_currentDay];
         coinImage.transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0.2f), 0.5f, 1, 0.5f);
     }
 
-    private void UpdateEODText()
+    private void UpdateEodText()
     {
         bool increaseDayCount;
 
         // Check if the player has reached the score for the current day
-        if (score < scorePerLevel[currentDay])
+        if (_score < scorePerLevel[_currentDay])
             increaseDayCount = false;
         else
             increaseDayCount = true;
 
         // Save the current day's score and people served
-        Actions.OnSaveDay(currentDay, score, increaseDayCount);
+        Actions.OnSaveDay(_currentDay, _score, increaseDayCount);
 
         // Sets the EOD text
-        eodTitle.text = $"End of Day {currentDay + 1}";
-        //peopleServedEOD.text = $"People Served: {people}";
+        eodTitle.text = $"End of Day {_currentDay + 1}";
 
         // Sets the EOD win/lose sprite and score text
         if (!increaseDayCount)
         {
             eodScoreText.color = Color.red;
             eodWinLoseSprite.sprite = loseSprite;
-            eodScoreText.text = $"Score: {score}\nTry Level Again";
+            eodScoreText.text = $"Score: {_score}\nTry Level Again?";
         }
         else
         {
             eodScoreText.color = Color.green;
             eodWinLoseSprite.sprite = winSprite;
-            eodScoreText.text = $"Score: {score}";
-
+            eodScoreText.text = $"Score: {_score}\nYOU WIN!";
         }
 
-        score = 0;
+        _score = 0;
     }
 
 
-    public void ResetValues()
+    private void ResetValues()
     {
         //coinParticles.Stop();
         quotaFill.fillAmount = 0;
-        score = 0;
+        _score = 0;
     }
 }

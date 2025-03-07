@@ -6,11 +6,13 @@ using UnityEngine.AI;
 public class CauldronMovement : MonoBehaviour
 {
     // Agent Variables
-    private NavMeshAgent agent;
-    private float movementTime;
-    private Vector3 currentDestination;
-    private bool isMoving = false;
-    private CustomTimer movementTimer;
+    [Header("Movement Settings")]
+    private NavMeshAgent _agent;
+    private float _movementTime;
+    private Vector3 _currentDestination;
+    private bool _isMoving = false;
+    private CustomTimer _movementTimer;
+    [SerializeField] private float minDistance;
 
     // Model Transform for movement
     [SerializeField] private Transform cauldronModel;
@@ -20,22 +22,23 @@ public class CauldronMovement : MonoBehaviour
     [SerializeField] private float maxMovementTime = 20f;
     [SerializeField] private float liftAmount = 0.1f;
     private Vector3 _startingPos;
-    private Coroutine movement;
-    private GameObject otherCauldron;
-
-    private bool isFarFromCauldron;
+    private Coroutine _movement;
+    private GameObject _otherCauldron;
 
     private void Start()
     {
         // Gets main starting position and finds agent
         _startingPos = cauldronModel.transform.localPosition;
-        agent = GetComponent<NavMeshAgent>();
-        agent.avoidancePriority = 30;
+        _agent = GetComponent<NavMeshAgent>();
+        
+        if(_agent != null)
+            _agent.avoidancePriority = 30;
 
+        // Finds the other cauldron
         foreach (var cauldron in FindObjectsOfType<CauldronMovement>())
         {
             if (cauldron != this)
-                otherCauldron = cauldron.gameObject;
+                _otherCauldron = cauldron.gameObject;
         }
     }
 
@@ -44,20 +47,20 @@ public class CauldronMovement : MonoBehaviour
     private void OnEnable()
     {
         Actions.OnStartCauldron += StartCauldronMovement;
-        Actions.OnEndCauldron += () => isMoving = false;
+        Actions.OnEndCauldron += () => _isMoving = false;
     }
 
     private void OnDisable()
     {
         Actions.OnStartCauldron -= StartCauldronMovement;
-        Actions.OnEndCauldron -= () => isMoving = false;
+        Actions.OnEndCauldron -= () => _isMoving = false;
         StopAllCoroutines();
     }
 
     private void OnDestroy()
     {
         Actions.OnStartCauldron -= StartCauldronMovement;
-        Actions.OnEndCauldron -= () => isMoving = false;
+        Actions.OnEndCauldron -= () => _isMoving = false;
         StopAllCoroutines();
     }
 
@@ -65,38 +68,37 @@ public class CauldronMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isMoving)
+        if (!_isMoving) return;
+        
+        if (_movementTimer.UpdateTimer())
         {
-            if (movementTimer.UpdateTimer())
-            {
-                if (movement != null)
-                    StopCoroutine(movement);
-                movement = StartCoroutine(MoveCauldron());
-            }
+            if (_movement != null)
+                StopCoroutine(_movement);
+            _movement = StartCoroutine(MoveCauldron());
+        }
 
-            // avoidance check
-            if (!IsFarFromOtherCauldrons())
-            {
-                PickNewDestination();
-            }
+        // avoidance check
+        if (!IsFarFromOtherCauldrons())
+        {
+            PickNewDestination();
         }
     }
 
     // Start the movement of the cauldron. Picks a random time between two values then starts a timer.
     private void StartCauldronMovement()
     {
-        isMoving = true;
-        movementTime = Random.Range(minMovementTime, maxMovementTime);
-        movementTimer = new CustomTimer(movementTime, false);
-        movementTimer.StartTimer();
+        _isMoving = true;
+        _movementTime = Random.Range(minMovementTime, maxMovementTime);
+        _movementTimer = new CustomTimer(_movementTime, false);
+        _movementTimer.StartTimer();
     }
 
     // Coroutine to move the cauldron
     private IEnumerator MoveCauldron()
     {
-
         PickNewDestination();
         cauldronModel.DOLocalMoveY(liftAmount, 0.5f);
+       
         // Wait until the cauldron reaches the destination
         while (!ReachedTarget())
         {
@@ -105,9 +107,9 @@ public class CauldronMovement : MonoBehaviour
 
         // Start the timer again
         cauldronModel.DOLocalMove(_startingPos, 0.5f);
-        movementTime = Random.Range(minMovementTime, maxMovementTime);
-        movementTimer = new CustomTimer(movementTime, false);
-        movementTimer.StartTimer();
+        _movementTime = Random.Range(minMovementTime, maxMovementTime);
+        _movementTimer = new CustomTimer(_movementTime, false);
+        _movementTimer.StartTimer();
     }
 
     /// <summary>
@@ -115,22 +117,14 @@ public class CauldronMovement : MonoBehaviour
     /// </summary>
     private void PickNewDestination()
     {
-        currentDestination = RandomNavSphere(transform.position, wanderRadius);
-        agent.SetDestination(currentDestination);
+        _currentDestination = RandomNavSphere(transform.position, wanderRadius);
+        _agent.SetDestination(_currentDestination);
     }
 
     // Check if the cauldron is far from other cauldrons
     private bool IsFarFromOtherCauldrons()
     {
-        float minDistance = 1.5f; // Adjust as needed
-
-        if (Vector3.Distance(otherCauldron.transform.position, transform.position) < minDistance)
-        {
-            isFarFromCauldron = false;
-            return false;
-        }
-        isFarFromCauldron = true;
-        return true;
+        return !(Vector3.Distance(_otherCauldron.transform.position, transform.position) < minDistance);
     }
 
 
@@ -139,7 +133,7 @@ public class CauldronMovement : MonoBehaviour
     // Get a random position on the navmesh
     private Vector3 RandomNavSphere(Vector3 origin, float distance)
     {
-        Vector3 randomDirection = Random.insideUnitSphere * distance;
+        var randomDirection = Random.insideUnitSphere * distance;
         randomDirection += origin;
 
         if (NavMesh.SamplePosition(randomDirection, out NavMeshHit navHit, distance, -1))
@@ -153,8 +147,8 @@ public class CauldronMovement : MonoBehaviour
     // Check if the cauldron has reached the target
     private bool ReachedTarget()
     {
-        return !agent.pathPending &&
-              agent.remainingDistance <= agent.stoppingDistance &&
-              (!agent.hasPath || agent.velocity.sqrMagnitude == 0f);
+        return !_agent.pathPending &&
+              _agent.remainingDistance <= _agent.stoppingDistance &&
+              (!_agent.hasPath || _agent.velocity.sqrMagnitude == 0f);
     }
 }

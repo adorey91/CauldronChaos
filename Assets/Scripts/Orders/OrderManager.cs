@@ -1,14 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class OrderManager : MonoBehaviour
 {
     [Header("Order Variables")]
     [SerializeField] private RecipeManager recipeManager;
-    private List<RecipeSO> availableRecipes = new();
+    private List<RecipeSO> _availableRecipes = new();
 
 
     private void Start()
@@ -19,31 +16,31 @@ public class OrderManager : MonoBehaviour
 
     private void GetAvailableRecipes()
     {
-        foreach (RecipeSO recipe in recipeManager.FindAvailableRecipes())
+        foreach (var recipe in recipeManager.FindAvailableRecipes())
         {
-            for(int i = 0; i < recipe.weight; i++)
+            for(var i = 0; i < recipe.weight; i++)
             {
-                availableRecipes.Add(recipe);
+                _availableRecipes.Add(recipe);
             }
         }
     }
 
     // Generate a random order for a customer
-    internal RecipeSO GiveOrder(string name)
+    internal RecipeSO GiveOrder(string customerName)
     {
         // If there are no available recipes, return
-        if (availableRecipes.Count == 0) return null;
+        if (_availableRecipes.Count == 0) return null;
 
         RecipeSO assignedOrder;
 
-        if(name == "Evil Mage")
+        if(customerName == "Evil Mage")
         {
-            assignedOrder = availableRecipes[0];
+            assignedOrder = _availableRecipes[0];
         }
         else
         {
-            int randomIndex = Random.Range(0, availableRecipes.Count);
-            assignedOrder = availableRecipes[randomIndex];
+            var randomIndex = Random.Range(0, _availableRecipes.Count);
+            assignedOrder = _availableRecipes[randomIndex];
         }
 
         return assignedOrder;

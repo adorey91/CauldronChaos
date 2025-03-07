@@ -14,9 +14,9 @@ public class DebugMode : MonoBehaviour
     [SerializeField] private TextMeshProUGUI debugText;
     [SerializeField] private TextMeshProUGUI debugTitle;
     
-    private bool isManuallyToggling = false; // Prevents unwanted function calls
+    private bool _isManuallyToggling; // Prevents unwanted function calls
 
-    private Coroutine textCoroutine;
+    private Coroutine _textCoroutine;
 
     private void Start()
     {
@@ -37,11 +37,11 @@ public class DebugMode : MonoBehaviour
     {
         if (passwordInput.text == debugPassword)
         {
-            if(textCoroutine != null)
-                StopCoroutine(textCoroutine);
+            if(_textCoroutine != null)
+                StopCoroutine(_textCoroutine);
 
             debugTitle.text = "Enter/Exit Debug Mode";
-            textCoroutine = StartCoroutine(VisualText("Debug Mode Unlocked"));
+            _textCoroutine = StartCoroutine(VisualText("Debug Mode Unlocked"));
 
             debugToggle.gameObject.SetActive(true);
             // Clear password input field if the password is incorrect
@@ -50,10 +50,10 @@ public class DebugMode : MonoBehaviour
         }
         else
         {
-            if (textCoroutine != null)
-                StopCoroutine(textCoroutine);
+            if (_textCoroutine != null)
+                StopCoroutine(_textCoroutine);
 
-            textCoroutine = StartCoroutine(VisualText("Incorrect Password"));
+            _textCoroutine = StartCoroutine(VisualText("Incorrect Password"));
             // Clear password input field if the password is incorrect
             passwordInput.text = "";
         }
@@ -69,62 +69,62 @@ public class DebugMode : MonoBehaviour
 
     public void ToggleDebugMode()
     {
-        if(isManuallyToggling) return; // Prevent function from being triggered by value change
+        if(_isManuallyToggling) return; // Prevent function from being triggered by value change
 
-        isManuallyToggling = true;
+        _isManuallyToggling = true;
         debugMenuToggle.isOn = debugToggle.isOn; // Update UI without triggering function
-        isManuallyToggling = false;
+        _isManuallyToggling = false;
 
         if (debugToggle.isOn)
         {
             Debug.Log("Debug Mode Enabled");
-            if (textCoroutine != null)
-                StopCoroutine(textCoroutine);
+            if (_textCoroutine != null)
+                StopCoroutine(_textCoroutine);
 
-            textCoroutine = StartCoroutine(VisualText("Debug Mode Enabled"));
+            _textCoroutine = StartCoroutine(VisualText("Debug Mode Enabled"));
             BackButton();
-            GameManager.instance.SetDebugMode(true);
+            GameManager.Instance.SetDebugMode(true);
         }
         else
         {
             debugMenuToggle.isOn = false;
             Debug.Log("Debug Mode Disabled");
-            if (textCoroutine != null)
-                StopCoroutine(textCoroutine);
+            if (_textCoroutine != null)
+                StopCoroutine(_textCoroutine);
 
-            textCoroutine = StartCoroutine(VisualText("Debug Mode Disabled"));
+            _textCoroutine = StartCoroutine(VisualText("Debug Mode Disabled"));
             BackButton();
-            GameManager.instance.SetDebugMode(false);
+            GameManager.Instance.SetDebugMode(false);
         }
     }
 
     public void ToggleMenuDebugMode()
     {
-        if (isManuallyToggling) return; // Prevent execution when toggling programmatically
+        if (_isManuallyToggling) return; // Prevent execution when toggling programmatically
 
-        isManuallyToggling = true;
+        _isManuallyToggling = true;
         debugToggle.isOn = debugMenuToggle.isOn; // Update the other toggle
-        isManuallyToggling = false;
+        _isManuallyToggling = false;
 
         if (debugMenuToggle.isOn)
         {
             Debug.Log("Debug Mode Enabled");
-            if (textCoroutine != null)
-                StopCoroutine(textCoroutine);
+            if (_textCoroutine != null)
+                StopCoroutine(_textCoroutine);
 
-            textCoroutine = StartCoroutine(VisualText("Debug Mode Enabled"));
-            GameManager.instance.SetDebugMode(true);
+            _textCoroutine = StartCoroutine(VisualText("Debug Mode Enabled"));
+            GameManager.Instance.SetDebugMode(true);
 
         }
         else
         {
             Debug.Log("Debug Mode Disabled");
             debugToggle.isOn = false;
-            if (textCoroutine != null)
-                StopCoroutine(textCoroutine);
+            if (_textCoroutine != null)
+                StopCoroutine(_textCoroutine);
 
-            textCoroutine = StartCoroutine(VisualText("Debug Mode Disabled"));
-            GameManager.instance.SetDebugMode(false);
+            _textCoroutine = StartCoroutine(VisualText("Debug Mode Disabled"));
+            GameManager.Instance.SetDebugMode(false);
         }
     }
 
